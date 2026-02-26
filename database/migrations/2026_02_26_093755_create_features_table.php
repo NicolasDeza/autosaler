@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->string('code')->unique();
             //! AJOUT D'un Label
-            $table->string('label');
+            $table->string('name');
 
             $table->timestamps();
         });
