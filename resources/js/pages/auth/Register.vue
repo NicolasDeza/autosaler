@@ -25,19 +25,35 @@ import { store } from '@/routes/register';
             class="flex flex-col gap-6"
         >
             <div class="grid gap-6">
-                <div class="grid gap-2">
-                    <Label for="name">Name</Label>
-                    <Input
-                        id="name"
-                        type="text"
-                        required
-                        autofocus
-                        :tabindex="1"
-                        autocomplete="name"
-                        name="name"
-                        placeholder="Full name"
-                    />
-                    <InputError :message="errors.name" />
+                <div class="flex gap-2">
+                    <div class="grid gap-2">
+                        <Label for="first_name">First Name</Label>
+                        <Input
+                            id="first_name"
+                            type="text"
+                            required
+                            autofocus
+                            :tabindex="1"
+                            autocomplete="given-name"
+                            name="first_name"
+                            placeholder="Fisrt name"
+                        />
+                        <InputError :message="errors.first_name" />
+                    </div>
+                    <div class="grid gap-2">
+                        <Label for="last_name">Last Name</Label>
+                        <Input
+                            id="last_name"
+                            type="text"
+                            required
+                            autofocus
+                            :tabindex="1"
+                            autocomplete="family-name"
+                            name="last_name"
+                            placeholder="Last name"
+                        />
+                        <InputError :message="errors.last_name" />
+                    </div>
                 </div>
 
                 <div class="grid gap-2">
