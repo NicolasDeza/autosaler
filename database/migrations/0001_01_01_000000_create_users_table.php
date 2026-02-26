@@ -16,9 +16,7 @@ return new class extends Migration
 
             $table->foreignId('company_id')
                   ->nullable()
-                  ->unique()
-                  ->constrained('companies')
-                  ->nullOnDelete();
+                  ->unique();
 
             $table->string('name');
             $table->string('first_name')->nullable();
