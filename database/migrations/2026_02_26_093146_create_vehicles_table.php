@@ -52,7 +52,7 @@ return new class extends Migration
         // ENUMS
         $table->enum('interior_type', [
             'fabric','leather','alcantara','synthetic','suede'
-        ]);
+        ])->index();
 
         $table->enum('fuel_type', [
             'petrol','diesel','electric','hybrid',
@@ -88,16 +88,16 @@ return new class extends Migration
         ])->default('unknow');
 
         // TECHNICAL Infos
-        $table->integer('power_kw');
+        $table->unsignedInteger('power_kw');
         $table->decimal('price', 10, 2)->index();
-        $table->integer('mileage')->index();
+        $table->unsignedInteger('mileage')->index();
         $table->decimal('fuel_consumption_avg', 5, 2)->nullable();
-        $table->integer('co2_emission')->nullable();
+        $table->unsignedInteger('co2_emission')->nullable();
 
-        $table->integer('gear_count')->nullable();
-        $table->integer('doors');
-        $table->integer('sieges');
-        $table->integer('previous_owner')->nullable();
+        $table->unsignedInteger('gear_count');
+        $table->unsignedInteger('doors');
+        $table->unsignedInteger('sieges');
+        $table->unsignedInteger('previous_owner')->nullable();
 
         $table->boolean('complete_maintenance_book')->default(false);
         $table->boolean('non_smoker')->default(false);
@@ -114,6 +114,13 @@ return new class extends Migration
 
         // INDEX Composite
         $table->index(['brand_id', 'model_id', 'model_year_id']);
+        $table->index([
+            'status',
+            'brand_id',
+            'fuel_type',
+            'transmission',
+            'body_type'
+        ], 'vehicles_filter_index');
 
         // INDEX created_at !!!
         $table->index('created_at');

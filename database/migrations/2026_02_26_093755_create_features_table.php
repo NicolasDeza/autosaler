@@ -14,9 +14,7 @@ return new class extends Migration
         Schema::create('features', function (Blueprint $table) {
             $table->id();
 
-            $table->string('code')->unique();
-            //! AJOUT D'un Label
-            $table->string('name');
+            $table->string('key')->unique();
 
             $table->timestamps();
         });

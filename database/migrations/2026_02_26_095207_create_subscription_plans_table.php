@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('subscription_plans', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name')->unique();
+            $table->string('key')->unique();
             $table->decimal('price', 10, 2);
 
             $table->unsignedInteger('listing_limit');

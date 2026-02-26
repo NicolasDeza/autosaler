@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('vehicle_id')
                   ->constrained('vehicles')
                   ->cascadeOnDelete()
-                  ->unique(); //! RAJOUT De Unique
+                  ->unique();
 
             $table->unsignedInteger('views_count')->default(0);
             $table->unsignedInteger('contact_count')->default(0);

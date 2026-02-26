@@ -18,13 +18,17 @@ return new class extends Migration
                   ->constrained('countries')
                   ->cascadeOnDelete();
 
-            $table->string('name')->index();
+            $table->string('key')->index();
             $table->string('zip_code');
 
             $table->timestamps();
 
-            // INDEX Composite
-            $table->index(['country_id', 'name']);
+            // Unicité
+            $table->unique(['country_id', 'zip_code', 'key']);
+
+            // Index pour recherche rapide
+            $table->index(['country_id', 'key']);
+            $table->index(['country_id', 'zip_code']);
         });
     }
 

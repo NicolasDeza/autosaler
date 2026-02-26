@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
 
             $table->string('name')->index();
-            $table->string('adress');
             $table->string('tva_number')->nullable();
+            $table->string('adress');
 
             $table->foreignId('country_id')
                   ->constrained('countries')
