@@ -51,7 +51,37 @@ class HandleInertiaRequests extends Middleware
                     )
                     : null,
             ],
+            'locale' => fn() => app()->getLocale(),
+            // 'translations' => fn() => $this->getTranslations(),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
+    }
+
+    protected function getTranslations()
+    {
+        $locale = app()->getLocale();
+
+        return cache()->remember("translations_$locale", 3600, function () use ($locale) {
+            $translations = [];
+
+            $jsonPath = lang_path("$locale.json");
+            if (file_exists($jsonPath)) {
+                $translations = json_decode(file_get_contents($jsonPath), true);
+            }
+
+            $langPath = lang_path($locale);
+            if (is_dir($langPath)) {
+                foreach (glob("$langPath/*.php") as $file) {
+                    $filename = basename($file, '.php');
+                    $fileTranslations = require $file;
+
+                    foreach ($fileTranslations as $key => $value) {
+                        $translations["$filename.$key"] = $value;
+                    }
+                }
+            }
+
+            return $translations;
+        });
     }
 }

@@ -42,10 +42,15 @@ import UserMenuContent from '@/components/UserMenuContent.vue';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { getInitials } from '@/composables/useInitials';
 import { usePermissions } from '@/composables/usePermissions';
+import { useTranslation } from '@/composables/useTranslation';
 import { toUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
 
 import type { BreadcrumbItem, NavItem } from '@/types';
+import type { ExtendedPageProps } from '@/types/inertia';
+
+const { __, currentLocale } = useTranslation();
+const page = usePage<ExtendedPageProps>();
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];
@@ -55,7 +60,9 @@ const props = withDefaults(defineProps<Props>(), {
     breadcrumbs: () => [],
 });
 
-const page = usePage();
+console.log('Locale actuelle:', currentLocale());
+
+// const page = usePage();
 const auth = computed(() => page.props.auth);
 const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
 
@@ -67,7 +74,7 @@ const activeItemStyles =
 const mainNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
         {
-            title: 'Dashboard',
+            title: __('nav.nav_home'),
             href: dashboard(),
             icon: LayoutGrid,
         },
