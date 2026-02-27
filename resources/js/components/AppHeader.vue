@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-vue-next';
+import {
+    BookOpen,
+    Folder,
+    LayoutGrid,
+    Menu,
+    Search,
+    Shield,
+} from 'lucide-vue-next';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
@@ -34,9 +41,11 @@ import {
 import UserMenuContent from '@/components/UserMenuContent.vue';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { getInitials } from '@/composables/useInitials';
+import { usePermissions } from '@/composables/usePermissions';
 import { toUrl } from '@/lib/utils';
-import type { BreadcrumbItem, NavItem } from '@/types';
 import { dashboard } from '@/routes';
+
+import type { BreadcrumbItem, NavItem } from '@/types';
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];
@@ -50,16 +59,38 @@ const page = usePage();
 const auth = computed(() => page.props.auth);
 const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
 
+const { can, hasRole } = usePermissions();
+
 const activeItemStyles =
     'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
+const mainNavItems = computed<NavItem[]>(() => {
+    const items: NavItem[] = [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+    ];
+
+    if (can('view_admin_dashboard')) {
+        items.push({
+            title: 'Admin Dashboard',
+            href: 'admindashboard',
+            icon: Shield,
+        });
+    }
+
+    // if (hasRole('admin')) {
+    //     items.push({
+    //         title: 'Admin Dashboard',
+    //         href: 'admindashboard',
+    //         icon: Shield,
+    //     });
+    // }
+
+    return items;
+});
 
 const rightNavItems: NavItem[] = [
     {

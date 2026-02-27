@@ -19,11 +19,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //     return Inertia::render('SellerDashboard');
     // })->name('seller.dashboard');
 
-    Route::middleware('role:admin')->group(function () {
-        Route::get('/admin/dashboard', function () {
+    Route::middleware('permission:view_admin_dashboard')->group(function () {
+        Route::get('/admindashboard', function () {
             return Inertia::render('AdminDashboard');
-        })->name('admin.dashboard');
+        })->name('admin_dashboard');
     });
+
+    // Route::middleware('role:admin')->group(function () {
+    //     Route::get('/admindashboard', function () {
+    //         return Inertia::render('AdminDashboard');
+    //     })->name('admin_dashboard');
+    // });
 });
 
 require __DIR__ . '/settings.php';
