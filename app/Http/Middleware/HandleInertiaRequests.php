@@ -51,7 +51,7 @@ class HandleInertiaRequests extends Middleware
                     )
                     : null,
             ],
-            'locale' => fn() => app()->getLocale(),
+            'locale' => fn() => session('locale', app()->getLocale()),
             // 'translations' => fn() => $this->getTranslations(),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];

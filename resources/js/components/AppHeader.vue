@@ -48,8 +48,9 @@ import { dashboard } from '@/routes';
 
 import type { BreadcrumbItem, NavItem } from '@/types';
 import type { ExtendedPageProps } from '@/types/inertia';
+import LanguageSelector from './LanguageSelector.vue';
 
-const { __, currentLocale } = useTranslation();
+const { __, locale } = useTranslation();
 const page = usePage<ExtendedPageProps>();
 
 type Props = {
@@ -60,7 +61,7 @@ const props = withDefaults(defineProps<Props>(), {
     breadcrumbs: () => [],
 });
 
-console.log('Locale actuelle:', currentLocale());
+console.log('Locale actuelle:', locale.value);
 
 // const page = usePage();
 const auth = computed(() => page.props.auth);
@@ -275,6 +276,8 @@ const rightNavItems: NavItem[] = [
                             </template>
                         </div>
                     </div>
+
+                    <LanguageSelector />
 
                     <DropdownMenu>
                         <DropdownMenuTrigger :as-child="true">

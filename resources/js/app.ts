@@ -3,6 +3,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import '../css/app.css';
+import 'flag-icons/css/flag-icons.min.css';
 import { loadTranslations } from '@/composables/useTranslation';
 import { initializeTheme } from './composables/useAppearance';
 import type { ExtendedPageProps } from './types/inertia';

@@ -58,4 +58,19 @@ Route::get('/translations/{locale}', function ($locale) {
     );
 });
 
+Route::post('/locale', function (\Illuminate\Http\Request $request) {
+    $locale = $request->input('locale');
+
+    abort_unless(in_array($locale, config('app.available_locales', ['en', 'fr'])), 400);
+
+    // Stocker la langue dans la session
+    session(['locale' => $locale]);
+    app()->setLocale($locale);
+
+    return response()->json([
+        'success' => true,
+        'locale' => $locale,
+    ]);
+});
+
 require __DIR__ . '/settings.php';
