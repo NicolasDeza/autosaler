@@ -63,11 +63,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 console.log('Locale actuelle:', locale.value);
 
-// const page = usePage();
 const auth = computed(() => page.props.auth);
 const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
 
-const { can, hasRole } = usePermissions();
+const { can } = usePermissions();
 
 const activeItemStyles =
     'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
@@ -88,14 +87,6 @@ const mainNavItems = computed<NavItem[]>(() => {
             icon: Shield,
         });
     }
-
-    // if (hasRole('admin')) {
-    //     items.push({
-    //         title: 'Admin Dashboard',
-    //         href: 'admindashboard',
-    //         icon: Shield,
-    //     });
-    // }
 
     return items;
 });
@@ -130,7 +121,7 @@ const rightNavItems: NavItem[] = [
                                 <Menu class="h-5 w-5" />
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="left" class="w-[300px] p-6">
+                        <SheetContent side="left" class="w-75 p-6">
                             <SheetTitle class="sr-only"
                                 >Navigation Menu</SheetTitle
                             >
