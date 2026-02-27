@@ -27,15 +27,15 @@ return new class extends Migration
 
         // DATASET AUTO
         $table->foreignId('brand_id')
-              ->constrained('brands')
+              ->constrained('vehicle_brands')
               ->restrictOnDelete();
 
         $table->foreignId('model_id')
-              ->constrained('models')
+              ->constrained('vehicle_models')
               ->restrictOnDelete();
 
         $table->foreignId('model_year_id')
-              ->constrained('model_years')
+              ->constrained('vehicle_model_years')
               ->restrictOnDelete();
 
         // COLORS
@@ -91,7 +91,10 @@ return new class extends Migration
         $table->unsignedInteger('power_kw');
         $table->decimal('price', 10, 2)->index();
         $table->unsignedInteger('mileage')->index();
+        $table->unsignedInteger('engine_displacement')->nullable(); // cm³ cylindrée
+        $table->unsignedTinyInteger('cylinder_count')->nullable();
         $table->decimal('fuel_consumption_avg', 5, 2)->nullable();
+        $table->unsignedInteger('weight_kg')->nullable();
         $table->unsignedInteger('co2_emission')->nullable();
 
         $table->unsignedInteger('gear_count');

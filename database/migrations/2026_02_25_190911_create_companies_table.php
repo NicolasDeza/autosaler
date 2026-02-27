@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->string('name')->index();
             $table->string('tva_number')->nullable();
+            $table->string('phone')->nullable();
             $table->string('adress');
 
             $table->foreignId('country_id')

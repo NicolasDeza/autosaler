@@ -11,12 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('brands', function (Blueprint $table) {
+        Schema::create('vehicle_model_years', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name')->unique();
+            $table->foreignId('model_id')
+                  ->constrained('vehicle_models')
+                  ->cascadeOnDelete();
+
+            $table->integer('year');
 
             $table->timestamps();
+
+            // INDEX Composite
+            $table->unique(['model_id', 'year']);
         });
     }
 
@@ -25,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('vehicle_model_years');
     }
 };
