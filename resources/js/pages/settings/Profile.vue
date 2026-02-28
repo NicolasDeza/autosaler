@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { Form, Head, Link, usePage } from '@inertiajs/vue3';
+import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import DeleteUser from '@/components/DeleteUser.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useTranslation } from '@/composables/useTranslation';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { type BreadcrumbItem } from '@/types';
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
+import { type BreadcrumbItem } from '@/types';
 
 type Props = {
     mustVerifyEmail: boolean;
@@ -27,6 +28,8 @@ const breadcrumbItems: BreadcrumbItem[] = [
     },
 ];
 
+const { __ } = useTranslation();
+
 const page = usePage();
 const user = page.props.auth.user;
 </script>
@@ -35,14 +38,14 @@ const user = page.props.auth.user;
     <AppLayout :breadcrumbs="breadcrumbItems">
         <Head title="Profile settings" />
 
-        <h1 class="sr-only">Profile Settings</h1>
+        <h1 class="sr-only">{{ __('settings.profile_title') }}</h1>
 
         <SettingsLayout>
             <div class="flex flex-col space-y-6">
                 <Heading
                     variant="small"
-                    title="Profile information"
-                    description="Update your name and email address"
+                    :title="__('settings.profile_title')"
+                    :description="__('settings.profile_description')"
                 />
 
                 <Form
@@ -52,7 +55,9 @@ const user = page.props.auth.user;
                 >
                     <div class="flex gap-2">
                         <div class="grid grow gap-2">
-                            <Label for="first_name">First Name</Label>
+                            <Label for="first_name">{{
+                                __('settings.profile_first_name')
+                            }}</Label>
                             <Input
                                 id="first_name"
                                 class="mt-1 block w-full"
@@ -60,7 +65,7 @@ const user = page.props.auth.user;
                                 :default-value="user.first_name"
                                 required
                                 autocomplete="given-name"
-                                placeholder="Fisrt name"
+                                :placeholder="__('settings.profile_first_name')"
                             />
                             <InputError
                                 class="mt-2"
@@ -68,7 +73,9 @@ const user = page.props.auth.user;
                             />
                         </div>
                         <div class="grid grow gap-2">
-                            <Label for="last_name">Last Name</Label>
+                            <Label for="last_name">{{
+                                __('settings.profile_last_name')
+                            }}</Label>
                             <Input
                                 id="last_name"
                                 class="mt-1 block w-full"
@@ -76,7 +83,7 @@ const user = page.props.auth.user;
                                 :default-value="user.last_name"
                                 required
                                 autocomplete="family-name"
-                                placeholder="Last name"
+                                :placeholder="__('settings.profile_last_name')"
                             />
                             <InputError
                                 class="mt-2"
@@ -85,7 +92,9 @@ const user = page.props.auth.user;
                         </div>
                     </div>
                     <div class="grid gap-2">
-                        <Label for="email">Email address</Label>
+                        <Label for="email">{{
+                            __('settings.profile_email')
+                        }}</Label>
                         <Input
                             id="email"
                             type="email"
@@ -94,20 +103,24 @@ const user = page.props.auth.user;
                             :default-value="user.email"
                             required
                             autocomplete="username"
-                            placeholder="Email address"
+                            :placeholder="__('settings.profile_email')"
                         />
                         <InputError class="mt-2" :message="errors.email" />
                     </div>
 
                     <div v-if="mustVerifyEmail && !user.email_verified_at">
                         <p class="-mt-4 text-sm text-muted-foreground">
-                            Your email address is unverified.
+                            {{ __('settings.profile_email_not_verified') }}
                             <Link
                                 :href="send()"
                                 as="button"
                                 class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                             >
-                                Click here to resend the verification email.
+                                {{
+                                    __(
+                                        'settings.profile_send_verification_link',
+                                    )
+                                }}
                             </Link>
                         </p>
 
@@ -115,8 +128,7 @@ const user = page.props.auth.user;
                             v-if="status === 'verification-link-sent'"
                             class="mt-2 text-sm font-medium text-green-600"
                         >
-                            A new verification link has been sent to your email
-                            address.
+                            {{ __('settings.profile_email_verification_sent') }}
                         </div>
                     </div>
 
@@ -124,7 +136,7 @@ const user = page.props.auth.user;
                         <Button
                             :disabled="processing"
                             data-test="update-profile-button"
-                            >Save</Button
+                            >{{ __('settings.profile_save') }}</Button
                         >
 
                         <Transition
@@ -137,7 +149,7 @@ const user = page.props.auth.user;
                                 v-show="recentlySuccessful"
                                 class="text-sm text-neutral-600"
                             >
-                                Saved.
+                                {{ __('settings.profile_updated') }}
                             </p>
                         </Transition>
                     </div>
