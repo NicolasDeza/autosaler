@@ -90,16 +90,16 @@ const mainNavItems = computed<NavItem[]>(() => {
 });
 
 const rightNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
-    },
+    // {
+    //     title: 'Repository',
+    //     href: 'https://github.com/laravel/vue-starter-kit',
+    //     icon: Folder,
+    // },
+    // {
+    //     title: 'Documentation',
+    //     href: 'https://laravel.com/docs/starter-kits#vue',
+    //     icon: BookOpen,
+    // },
 ];
 </script>
 
@@ -209,7 +209,7 @@ const rightNavItems: NavItem[] = [
                                 </Link>
                                 <div
                                     v-if="isCurrentUrl(item.href)"
-                                    class="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"
+                                    class="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-red-500"
                                 ></div>
                             </NavigationMenuItem>
                         </NavigationMenuList>
@@ -257,7 +257,9 @@ const rightNavItems: NavItem[] = [
                                                 </a>
                                             </Button>
                                         </TooltipTrigger>
-                                        <TooltipContent>
+                                        <TooltipContent
+                                            class="dark border border-background/50"
+                                        >
                                             <p>{{ item.title }}</p>
                                         </TooltipContent>
                                     </Tooltip>
