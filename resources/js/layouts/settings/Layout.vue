@@ -1,34 +1,38 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
+import { useTranslation } from '@/composables/useTranslation';
 import { toUrl } from '@/lib/utils';
-import { type NavItem } from '@/types';
-import { edit as editAppearance } from '@/routes/appearance';
+// import { edit as editAppearance } from '@/routes/appearance';
 import { edit as editProfile } from '@/routes/profile';
 import { show } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
+import { type NavItem } from '@/types';
 
-const sidebarNavItems: NavItem[] = [
+const { __ } = useTranslation();
+
+const sidebarNavItems = computed<NavItem[]>(() => [
     {
-        title: 'Profile',
+        title: __('settings.menu_profile'),
         href: editProfile(),
     },
     {
-        title: 'Password',
+        title: __('settings.menu_password'),
         href: editPassword(),
     },
     {
-        title: 'Two-Factor Auth',
+        title: __('settings.menu_2fa'),
         href: show(),
     },
-    {
-        title: 'Appearance',
-        href: editAppearance(),
-    },
-];
+    // {
+    //     title: __('settings.menu_appearance'),
+    //     href: editAppearance(),
+    // },
+]);
 
 const { isCurrentUrl } = useCurrentUrl();
 </script>
@@ -36,8 +40,8 @@ const { isCurrentUrl } = useCurrentUrl();
 <template>
     <div class="px-4 py-6">
         <Heading
-            title="Settings"
-            description="Manage your profile and account settings"
+            :title="__('settings.page_title')"
+            :description="__('settings.page_description')"
         />
 
         <div class="flex flex-col lg:flex-row lg:space-x-12">

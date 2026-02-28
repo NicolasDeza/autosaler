@@ -42,10 +42,16 @@ import UserMenuContent from '@/components/UserMenuContent.vue';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { getInitials } from '@/composables/useInitials';
 import { usePermissions } from '@/composables/usePermissions';
+import { useTranslation } from '@/composables/useTranslation';
 import { toUrl } from '@/lib/utils';
-import { dashboard } from '@/routes';
+import { admin_dashboard, dashboard } from '@/routes';
 
 import type { BreadcrumbItem, NavItem } from '@/types';
+import type { ExtendedPageProps } from '@/types/inertia';
+import LanguageSelector from './LanguageSelector.vue';
+
+const { __ } = useTranslation();
+const page = usePage<ExtendedPageProps>();
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];
@@ -55,19 +61,18 @@ const props = withDefaults(defineProps<Props>(), {
     breadcrumbs: () => [],
 });
 
-const page = usePage();
 const auth = computed(() => page.props.auth);
 const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
 
-const { can, hasRole } = usePermissions();
+const { can } = usePermissions();
 
 const activeItemStyles =
-    'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
+    'text-neutral-900 dark:bg-foreground dark:text-background';
 
 const mainNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
         {
-            title: 'Dashboard',
+            title: __('nav.nav_home'),
             href: dashboard(),
             icon: LayoutGrid,
         },
@@ -75,19 +80,11 @@ const mainNavItems = computed<NavItem[]>(() => {
 
     if (can('view_admin_dashboard')) {
         items.push({
-            title: 'Admin Dashboard',
-            href: 'admindashboard',
+            title: __('nav.nav_admin_panel'),
+            href: admin_dashboard(),
             icon: Shield,
         });
     }
-
-    // if (hasRole('admin')) {
-    //     items.push({
-    //         title: 'Admin Dashboard',
-    //         href: 'admindashboard',
-    //         icon: Shield,
-    //     });
-    // }
 
     return items;
 });
@@ -107,8 +104,8 @@ const rightNavItems: NavItem[] = [
 </script>
 
 <template>
-    <div>
-        <div class="border-b border-sidebar-border/80">
+    <div class="dark text-foreground">
+        <div class="border-b border-sidebar-border/80 bg-background">
             <div class="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                 <!-- Mobile Menu -->
                 <div class="lg:hidden">
@@ -122,7 +119,7 @@ const rightNavItems: NavItem[] = [
                                 <Menu class="h-5 w-5" />
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="left" class="w-[300px] p-6">
+                        <SheetContent side="left" class="w-75 p-6">
                             <SheetTitle class="sr-only"
                                 >Navigation Menu</SheetTitle
                             >
@@ -199,7 +196,7 @@ const rightNavItems: NavItem[] = [
                                             item.href,
                                             activeItemStyles,
                                         ),
-                                        'h-9 cursor-pointer px-3',
+                                        'h-9 cursor-pointer px-3 hover:bg-foreground/90 hover:text-background/90',
                                     ]"
                                     :href="item.href"
                                 >
@@ -269,6 +266,8 @@ const rightNavItems: NavItem[] = [
                         </div>
                     </div>
 
+                    <LanguageSelector />
+
                     <DropdownMenu>
                         <DropdownMenuTrigger :as-child="true">
                             <Button
@@ -285,7 +284,7 @@ const rightNavItems: NavItem[] = [
                                         :alt="auth.user.first_name"
                                     />
                                     <AvatarFallback
-                                        class="rounded-lg bg-neutral-200 font-semibold text-black dark:bg-neutral-700 dark:text-white"
+                                        class="rounded-lg bg-neutral-200 font-semibold text-black dark:bg-foreground/15 dark:text-white"
                                     >
                                         {{
                                             getInitials(
