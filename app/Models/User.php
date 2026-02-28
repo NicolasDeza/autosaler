@@ -9,6 +9,10 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
+use App\Models\Company;
+use App\Models\Vehicle;
+use App\Models\Subscription;
+
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -20,6 +24,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'company_id',
         'first_name',
         'last_name',
         'email',
@@ -51,4 +56,33 @@ class User extends Authenticatable
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
+
+
+    public function company()
+   {
+    return $this->belongsTo(Company::class);
+   }
+
+
+    public function vehicles()
+  {
+    return $this->hasMany(Vehicle::class);
+  }
+
+
+  public function favoriteVehicles()
+  {
+    return $this->belongsToMany(
+        Vehicle::class,
+        'user_vehicles',
+        'user_id',
+        'vehicle_for_sale_id'
+    );
+  }
+
+
+  public function subscriptions()
+  {
+    return $this->hasMany(Subscription::class);
+  }
 }
