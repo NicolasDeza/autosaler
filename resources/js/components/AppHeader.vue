@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
 import {
-    BookOpen,
-    Folder,
+    // BookOpen,
+    // Folder,
     LayoutGrid,
     Menu,
     Search,
@@ -104,7 +104,7 @@ const rightNavItems: NavItem[] = [
 </script>
 
 <template>
-    <div class="dark text-foreground">
+    <header class="dark text-foreground">
         <div class="border-b border-sidebar-border/80 bg-background">
             <div class="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                 <!-- Mobile Menu -->
@@ -281,7 +281,7 @@ const rightNavItems: NavItem[] = [
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                class="relative size-10 w-auto rounded-full p-1 focus-within:ring-2 focus-within:ring-primary"
+                                class="relative size-10 w-auto rounded-full p-1 focus-within:ring-2 focus-within:ring-primary cursor-pointer transition-opacity hover:opacity-80"
                             >
                                 <Avatar
                                     class="size-8 overflow-hidden rounded-full"
@@ -322,5 +322,5 @@ const rightNavItems: NavItem[] = [
                 <Breadcrumbs :breadcrumbs="breadcrumbs" />
             </div>
         </div>
-    </div>
+    </header>
 </template>
