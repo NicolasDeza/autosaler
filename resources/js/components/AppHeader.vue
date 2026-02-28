@@ -86,7 +86,7 @@ const mainNavItems = computed<NavItem[]>(() => {
 
     if (can('view_admin_dashboard')) {
         items.push({
-            title: __('nav.nav_admin_panel'),
+            title: __('nav.admin_panel'),
             href: admin_dashboard(),
             icon: Shield,
         });
@@ -210,6 +210,12 @@ const rightNavItems: NavItem[] = [
                                         v-if="item.icon"
                                         :is="item.icon"
                                         class="mr-2 h-4 w-4"
+                                        :class="[
+                                            whenCurrentUrl(
+                                                item.href,
+                                                'text-red-500',
+                                            ),
+                                        ]"
                                     />
                                     {{ item.title }}
                                 </Link>
