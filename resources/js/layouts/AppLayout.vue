@@ -13,6 +13,9 @@ withDefaults(defineProps<Props>(), {
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
+        <template v-if="$slots['full-width']" #full-width>
+            <slot name="full-width" />
+        </template>
         <slot />
     </AppLayout>
 </template>

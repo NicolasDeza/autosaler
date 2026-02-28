@@ -3,6 +3,7 @@ import { Link, usePage } from '@inertiajs/vue3';
 import {
     // BookOpen,
     // Folder,
+    Home,
     LayoutGrid,
     Menu,
     Search,
@@ -72,7 +73,12 @@ const activeItemStyles =
 const mainNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
         {
-            title: __('nav.home'),
+            title: __('nav.nav_home'),
+            href: '/',
+            icon: Home,
+        },
+        {
+            title: __('nav.nav_dashboard'),
             href: dashboard(),
             icon: LayoutGrid,
         },
@@ -174,7 +180,7 @@ const rightNavItems: NavItem[] = [
                     </Sheet>
                 </div>
 
-                <Link :href="dashboard()" class="flex items-center gap-x-2">
+                <Link href="/" class="flex items-center gap-x-2">
                     <AppLogo />
                 </Link>
 
