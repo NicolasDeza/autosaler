@@ -44,13 +44,13 @@ import { getInitials } from '@/composables/useInitials';
 import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
 import { toUrl } from '@/lib/utils';
-import { dashboard } from '@/routes';
+import { admin_dashboard, dashboard } from '@/routes';
 
 import type { BreadcrumbItem, NavItem } from '@/types';
 import type { ExtendedPageProps } from '@/types/inertia';
 import LanguageSelector from './LanguageSelector.vue';
 
-const { __, locale } = useTranslation();
+const { __ } = useTranslation();
 const page = usePage<ExtendedPageProps>();
 
 type Props = {
@@ -60,8 +60,6 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
     breadcrumbs: () => [],
 });
-
-console.log('Locale actuelle:', locale.value);
 
 const auth = computed(() => page.props.auth);
 const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
@@ -82,8 +80,8 @@ const mainNavItems = computed<NavItem[]>(() => {
 
     if (can('view_admin_dashboard')) {
         items.push({
-            title: 'Admin Dashboard',
-            href: 'admindashboard',
+            title: __('nav.nav_admin_panel'),
+            href: admin_dashboard(),
             icon: Shield,
         });
     }
