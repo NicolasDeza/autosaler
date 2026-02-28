@@ -67,7 +67,7 @@ const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
 const { can } = usePermissions();
 
 const activeItemStyles =
-    'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
+    'text-neutral-900 dark:bg-foreground dark:text-background';
 
 const mainNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
@@ -104,8 +104,8 @@ const rightNavItems: NavItem[] = [
 </script>
 
 <template>
-    <div>
-        <div class="border-b border-sidebar-border/80">
+    <div class="dark text-foreground">
+        <div class="border-b border-sidebar-border/80 bg-background">
             <div class="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                 <!-- Mobile Menu -->
                 <div class="lg:hidden">
@@ -196,7 +196,7 @@ const rightNavItems: NavItem[] = [
                                             item.href,
                                             activeItemStyles,
                                         ),
-                                        'h-9 cursor-pointer px-3',
+                                        'h-9 cursor-pointer px-3 hover:bg-foreground/90 hover:text-background/90',
                                     ]"
                                     :href="item.href"
                                 >
@@ -284,7 +284,7 @@ const rightNavItems: NavItem[] = [
                                         :alt="auth.user.first_name"
                                     />
                                     <AvatarFallback
-                                        class="rounded-lg bg-neutral-200 font-semibold text-black dark:bg-neutral-700 dark:text-white"
+                                        class="rounded-lg bg-neutral-200 font-semibold text-black dark:bg-foreground/15 dark:text-white"
                                     >
                                         {{
                                             getInitials(

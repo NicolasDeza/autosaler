@@ -1,6 +1,6 @@
 <template>
     <div class="flex items-center gap-2">
-        <Select id="locale-select" v-model="selected" class="">
+        <Select id="locale-select" v-model="selected">
             <SelectTrigger
                 class="flex h-6 w-8 items-center justify-center border-0 p-0 focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-transparent [&_svg]:hidden"
             >
@@ -11,7 +11,7 @@
                 ></span>
             </SelectTrigger>
 
-            <SelectContent>
+            <SelectContent align="end">
                 <SelectItem
                     v-for="lang in availableLocales"
                     :key="lang.value"
