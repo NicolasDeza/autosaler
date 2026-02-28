@@ -2,7 +2,7 @@
     <div class="flex items-center gap-2">
         <Select id="locale-select" v-model="selected">
             <SelectTrigger
-                class="flex h-6 w-8 cursor-pointer! items-center justify-center border-0 p-0 focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-transparent [&_svg]:hidden opacity-85 transition-opacity duration-150 hover:opacity-100"
+                class="flex h-8 w-auto cursor-pointer! items-center gap-1.5 rounded-md border-0 px-2 opacity-80 transition-[colors,opacity] duration-150 hover:bg-foreground/10 hover:opacity-100 focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-transparent [&[data-state=open]_svg:last-child]:rotate-180 [&_svg:last-child]:size-3 [&_svg:last-child]:opacity-60 [&_svg:last-child]:transition-transform [&_svg:last-child]:duration-200"
             >
                 <span
                     v-if="selectedFlag"

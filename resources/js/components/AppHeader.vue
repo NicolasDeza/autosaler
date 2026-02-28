@@ -104,7 +104,7 @@ const rightNavItems: NavItem[] = [
 </script>
 
 <template>
-    <div class="dark text-foreground">
+    <header class="dark text-foreground">
         <div class="border-b border-sidebar-border/80 bg-background">
             <div class="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                 <!-- Mobile Menu -->
@@ -316,5 +316,5 @@ const rightNavItems: NavItem[] = [
                 <Breadcrumbs :breadcrumbs="breadcrumbs" />
             </div>
         </div>
-    </div>
+    </header>
 </template>
