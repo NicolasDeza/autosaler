@@ -54,7 +54,6 @@ import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
 import { admin_dashboard, dashboard } from '@/routes';
 import type { NavItem } from '@/types';
-import AppLogo from './AppLogo.vue';
 import AppLogoLg from './AppLogoLg.vue';
 
 const { __ } = useTranslation();
