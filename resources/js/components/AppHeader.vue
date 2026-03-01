@@ -45,7 +45,7 @@ import { getInitials } from '@/composables/useInitials';
 import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
 import { toUrl } from '@/lib/utils';
-import { admin_dashboard, dashboard } from '@/routes';
+import { admin_dashboard, dashboard, login, register } from '@/routes';
 
 import type { BreadcrumbItem, NavItem } from '@/types';
 import type { ExtendedPageProps } from '@/types/inertia';
@@ -110,7 +110,7 @@ const rightNavItems: NavItem[] = [
 </script>
 
 <template>
-    <header class="dark text-foreground sticky top-0 z-50">
+    <header class="dark sticky top-0 z-50 text-foreground">
         <div class="border-b border-sidebar-border/80 bg-background">
             <div class="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                 <!-- Mobile Menu -->
@@ -125,14 +125,19 @@ const rightNavItems: NavItem[] = [
                                 <Menu class="h-5 w-5" />
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="left" class="w-75 p-6">
+                        <SheetContent
+                            side="left"
+                            class="dark w-75 bg-background p-6 text-foreground"
+                        >
                             <SheetTitle class="sr-only"
                                 >Navigation Menu</SheetTitle
                             >
-                            <SheetHeader class="flex justify-start text-left">
-                                <AppLogoIcon
-                                    class="size-6 fill-current text-black dark:text-white"
-                                />
+                            <SheetHeader
+                                class="flex items-center justify-center text-left"
+                            >
+                                <div class="flex items-center gap-x-2">
+                                    <AppLogo />
+                                </div>
                             </SheetHeader>
                             <div
                                 class="flex h-full flex-1 flex-col justify-between space-y-4 py-6"
@@ -142,7 +147,7 @@ const rightNavItems: NavItem[] = [
                                         v-for="item in mainNavItems"
                                         :key="item.title"
                                         :href="item.href"
-                                        class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent"
+                                        class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-foreground/90 hover:text-background/90"
                                         :class="
                                             whenCurrentUrl(
                                                 item.href,
@@ -154,6 +159,12 @@ const rightNavItems: NavItem[] = [
                                             v-if="item.icon"
                                             :is="item.icon"
                                             class="h-5 w-5"
+                                            :class="[
+                                                whenCurrentUrl(
+                                                    item.href,
+                                                    'text-red-500',
+                                                ),
+                                            ]"
                                         />
                                         {{ item.title }}
                                     </Link>
@@ -282,18 +293,18 @@ const rightNavItems: NavItem[] = [
 
                     <LanguageSelector />
 
-                    <DropdownMenu>
+                    <DropdownMenu v-if="auth && auth.user">
                         <DropdownMenuTrigger :as-child="true">
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                class="relative size-10 w-auto rounded-full p-1 focus-within:ring-2 focus-within:ring-primary cursor-pointer transition-opacity hover:opacity-80"
+                                class="relative size-10 w-auto cursor-pointer rounded-full p-1 transition-opacity focus-within:ring-2 focus-within:ring-primary hover:opacity-80"
                             >
                                 <Avatar
                                     class="size-8 overflow-hidden rounded-full"
                                 >
                                     <AvatarImage
-                                        v-if="auth.user.avatar"
+                                        v-if="auth.user?.avatar"
                                         :src="auth.user.avatar"
                                         :alt="auth.user.first_name"
                                     />
@@ -314,6 +325,21 @@ const rightNavItems: NavItem[] = [
                             <UserMenuContent :user="auth.user" />
                         </DropdownMenuContent>
                     </DropdownMenu>
+                    <template v-else>
+                        <Link
+                            :href="login()"
+                            class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+                        >
+                            Log in
+                        </Link>
+                        <Link
+                            v-if="page.props.canRegister"
+                            :href="register()"
+                            class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                        >
+                            Register
+                        </Link>
+                    </template>
                 </div>
             </div>
         </div>
