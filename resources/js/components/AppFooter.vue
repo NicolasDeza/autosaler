@@ -68,10 +68,10 @@
                     <p class="text-xs text-muted-foreground">
                         © {{ new Date().getFullYear() }}
                         <span class="font-semibold text-foreground">AutoSaler</span>
-                        — Tous droits réservés
+                        — {{ __('nav.all_rights_reserved') }}
                     </p>
                     <p class="text-xs text-muted-foreground">
-                        Site réalisé par
+                        {{ __('nav.made_by') }}
                         <a href="/" target="_blank" rel="noopener noreferrer" class="font-semibold text-red-500 underline decoration-red-500 underline-offset-4 hover:text-red-400">
                             La passion
                         </a>

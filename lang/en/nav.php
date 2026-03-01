@@ -14,5 +14,7 @@ return [
     'cookie_policy' => 'Cookie Policy',
 
     //footer
-    'footer_description' => 'Vehicle Selling Platform with 100% confidence.'
+    'footer_description' => 'Vehicle Selling Platform with 100% confidence.',
+    'all_rights_reserved' => 'All rights reserved.',
+    'made_by' => 'Made by',
 ];
