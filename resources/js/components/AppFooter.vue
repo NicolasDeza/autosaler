@@ -1,47 +1,82 @@
 <template>
     <div class="dark text-foreground">
-        <div class="border-b border-sidebar-border/80 bg-background">
-            <div class="mx-auto grid grid-cols-4 px-4 py-10 md:max-w-7xl">
-                <div class="col-span-2 flex flex-col gap-4">
-                    <div class="flex">
-                        <Link :href="dashboard()" class="flex gap-x-2">
+        <!-- Accent top bar -->
+        <div class="h-px bg-linear-to-r from-transparent via-red-500 to-transparent"></div>
+
+        <div class="bg-background">
+            <div class="mx-auto md:max-w-7xl px-4">
+                <!-- Main footer content -->
+                <div class="grid grid-cols-1 gap-12 py-16 sm:grid-cols-2 lg:grid-cols-4">
+                    <!-- Brand column -->
+                    <div class="flex flex-col items-center gap-6 sm:col-span-2 sm:items-start">
+                        <Link :href="dashboard()" class="flex items-center gap-x-2 w-fit">
                             <AppLogoLg />
                         </Link>
+                        <p class="max-w-sm text-center text-sm leading-relaxed text-muted-foreground sm:text-left">
+                            {{ __('nav.footer_description') }}
+                        </p>
+                        <!-- Socials -->
+                        <div class="flex gap-3">
+                            <a
+                                v-for="social in socialLinks"
+                                :key="social.label"
+                                :href="social.href"
+                                :aria-label="social.label"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="flex size-9 items-center justify-center rounded-lg border border-border bg-secondary/50 text-muted-foreground transition-colors hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400"
+                            >
+                                <span class="sr-only">{{ social.label }}</span>
+                                <Facebook class="size-4" />
+                            </a>
+                        </div>
                     </div>
-                    <div class="max-w-96">
-                        {{ __('nav.footer_description') }}
+
+                    <!-- Menu column -->
+                    <div class="flex flex-col items-center gap-4 sm:items-start">
+                        <p class="text-xs font-semibold uppercase tracking-widest text-white border-b-2 border-red-500 pb-2 w-fit">Menu</p>
+                        <nav class="flex flex-col items-center gap-2 sm:items-start">
+                            <Link
+                                v-for="item in menuItems"
+                                :key="item.title"
+                                :href="item.href"
+                                class="text-sm text-foreground/70 transition-colors hover:text-red-400 hover:underline decoration-red-400 underline-offset-4"
+                            >
+                                {{ item.title }}
+                            </Link>
+                        </nav>
                     </div>
-                    <div>socials</div>
+
+                    <!-- Legal column -->
+                    <div class="flex flex-col items-center gap-4 sm:items-start">
+                        <p class="text-xs font-semibold uppercase tracking-widest text-white border-b-2 border-red-500 pb-2 w-fit">Légal</p>
+                        <nav class="flex flex-col items-center gap-2 sm:items-start">
+                            <Link
+                                v-for="item in legalItems"
+                                :key="item.title"
+                                :href="item.href"
+                                class="text-sm text-foreground/70 transition-colors hover:text-red-400 hover:underline decoration-red-400 underline-offset-4"
+                            >
+                                {{ item.title }}
+                            </Link>
+                        </nav>
+                    </div>
                 </div>
-                <!-- <div class="flex grow justify-between"> -->
-                <div class="flex flex-col gap-4">
-                    <div class="font-bold">Menu</div>
-                    <Link
-                        v-for="item in menuItems"
-                        :key="item.title"
-                        :href="item.href"
-                        class="flex items-center rounded-lg text-sm font-medium hover:underline"
-                    >
-                        {{ item.title }}
-                    </Link>
+
+                <!-- Bottom bar -->
+                <div class="flex flex-col items-center justify-between gap-4 border-t border-white/20 py-6 sm:flex-row">
+                    <p class="text-xs text-muted-foreground">
+                        © {{ new Date().getFullYear() }}
+                        <span class="font-semibold text-foreground">AutoSaler</span>
+                        — Tous droits réservés
+                    </p>
+                    <p class="text-xs text-muted-foreground">
+                        Site réalisé par
+                        <a href="/" target="_blank" rel="noopener noreferrer" class="font-semibold text-red-500 underline decoration-red-500 underline-offset-4 hover:text-red-400">
+                            La passion
+                        </a>
+                    </p>
                 </div>
-                <div class="flex flex-col gap-4">
-                    <div class="font-bold">Legal</div>
-                    <Link
-                        v-for="item in legalItems"
-                        :key="item.title"
-                        :href="item.href"
-                        class="flex items-center rounded-lg text-sm font-medium hover:underline"
-                    >
-                        {{ item.title }}
-                    </Link>
-                </div>
-                <!-- </div> -->
-            </div>
-            <div
-                class="mx-auto flex justify-center border-t border-red-500 px-4 py-10 md:max-w-7xl"
-            >
-                Copyright ©{{ new Date().getFullYear() }} AutoSaler
             </div>
         </div>
     </div>
@@ -49,6 +84,7 @@
 
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import { Facebook } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
@@ -58,6 +94,10 @@ import AppLogoLg from './AppLogoLg.vue';
 
 const { __ } = useTranslation();
 const { can } = usePermissions();
+
+const socialLinks = [
+    { label: 'Facebook', href: '#', icon: 'facebook' },
+];
 
 const menuItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
