@@ -24,7 +24,7 @@
                                 :aria-label="social.label"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                class="flex size-9 items-center justify-center rounded-lg border border-border bg-secondary/50 text-muted-foreground transition-colors hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400"
+                                class="flex size-9 items-center justify-center rounded border border-[#3E3E3A] bg-transparent text-muted-foreground transition-colors hover:border-[#62605b] hover:text-red-400"
                             >
                                 <span class="sr-only">{{ social.label }}</span>
                                 <Facebook class="size-4" />
