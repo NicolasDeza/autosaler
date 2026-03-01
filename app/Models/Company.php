@@ -16,42 +16,37 @@ class Company extends Model
 
     protected $fillable = [
         'name',
-        'adress',
+        'address',
         'city_id',
         'country_id',
         'tva_number',
         'phone',
     ];
 
-
-    // Company vers Users
-    public function users()
+    
+    public function user()
     {
-        return $this->hasMany(User::class);
+        return $this->hasOne(User::class);
     }
 
-    // Company vers Vehicles
+
     public function vehicles()
     {
         return $this->hasManyThrough(
             Vehicle::class,
-            User::class,
-            'company_id', // FK de  users
-            'user_id',    // FK  devehicles
-            'id',
-            'id'
+            User::class
         );
     }
 
 
     public function city()
-   {
-    return $this->belongsTo(City::class);
-   }
+    {
+        return $this->belongsTo(City::class);
+    }
 
 
-   public function country()
-   {
-    return $this->belongsTo(Country::class);
-   }
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
 }
