@@ -125,14 +125,19 @@ const rightNavItems: NavItem[] = [
                                 <Menu class="h-5 w-5" />
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="left" class="w-75 p-6">
+                        <SheetContent
+                            side="left"
+                            class="dark w-75 bg-background p-6 text-foreground"
+                        >
                             <SheetTitle class="sr-only"
                                 >Navigation Menu</SheetTitle
                             >
-                            <SheetHeader class="flex justify-start text-left">
-                                <AppLogoIcon
-                                    class="size-6 fill-current text-black dark:text-white"
-                                />
+                            <SheetHeader
+                                class="flex items-center justify-center text-left"
+                            >
+                                <div class="flex items-center gap-x-2">
+                                    <AppLogo />
+                                </div>
                             </SheetHeader>
                             <div
                                 class="flex h-full flex-1 flex-col justify-between space-y-4 py-6"
@@ -142,7 +147,7 @@ const rightNavItems: NavItem[] = [
                                         v-for="item in mainNavItems"
                                         :key="item.title"
                                         :href="item.href"
-                                        class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent"
+                                        class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-foreground/90 hover:text-background/90"
                                         :class="
                                             whenCurrentUrl(
                                                 item.href,
@@ -154,6 +159,12 @@ const rightNavItems: NavItem[] = [
                                             v-if="item.icon"
                                             :is="item.icon"
                                             class="h-5 w-5"
+                                            :class="[
+                                                whenCurrentUrl(
+                                                    item.href,
+                                                    'text-red-500',
+                                                ),
+                                            ]"
                                         />
                                         {{ item.title }}
                                     </Link>
