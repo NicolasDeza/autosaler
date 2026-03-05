@@ -6,20 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class VehicleBrand extends Model
+class ExteriorColor extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'code',
+        'sort_order',
+        'is_active',
     ];
 
-    /**
-     * @return HasMany<VehicleModel, $this>
-     */
-    public function models(): HasMany
+    protected function casts(): array
     {
-        return $this->hasMany(VehicleModel::class);
+        return [
+            'is_active' => 'boolean',
+        ];
     }
 
     /**
@@ -27,6 +28,6 @@ class VehicleBrand extends Model
      */
     public function vehicleAds(): HasMany
     {
-        return $this->hasMany(VehicleAd::class, 'brand_id');
+        return $this->hasMany(VehicleAd::class);
     }
 }

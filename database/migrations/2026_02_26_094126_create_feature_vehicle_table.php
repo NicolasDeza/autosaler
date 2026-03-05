@@ -14,18 +14,18 @@ return new class extends Migration
         Schema::create('feature_vehicle', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('vehicle_id')
-                  ->constrained('vehicles')
-                  ->cascadeOnDelete();
+            $table->foreignId('vehicle_ad_id')
+                ->constrained('vehicle_ads')
+                ->cascadeOnDelete();
 
             $table->foreignId('feature_id')
-                  ->constrained('features')
-                  ->restrictOnDelete();
+                ->constrained('features')
+                ->restrictOnDelete();
 
             $table->timestamps();
 
             // INDEX Composite
-            $table->unique(['vehicle_id', 'feature_id']);
+            $table->unique(['vehicle_ad_id', 'feature_id']);
 
         });
     }

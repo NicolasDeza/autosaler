@@ -1,0 +1,198 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+class VehicleAd extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'status',
+
+        'brand_id',
+        'model_id',
+        'vehicle_version_id',
+
+        'exterior_color_id',
+        'exterior_color_metalised',
+        'interior_color_id',
+        'interior_type_id',
+
+        'fuel_type_id',
+        'body_type_id',
+        'euro_norm_id',
+        'transmission_type_id',
+
+        'price',
+        'mileage',
+        'power_kw',
+        'engine_displacement',
+        'cylinder_count',
+        'fuel_consumption_avg',
+        'weight_kg',
+        'co2_emission',
+
+        'gear_count',
+        'doors',
+        'seats',
+        'previous_owner',
+
+        'technical_inspection_status',
+        'is_damaged',
+        'has_accident',
+        'complete_maintenance_book',
+        'non_smoker',
+
+        'vin',
+        'registration_number',
+        'first_registration_date',
+        'purchase_date',
+
+        'description',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'price' => 'decimal:2',
+            'fuel_consumption_avg' => 'decimal:2',
+            'exterior_color_metalised' => 'boolean',
+            'technical_inspection_status' => 'boolean',
+            'is_damaged' => 'boolean',
+            'has_accident' => 'boolean',
+            'complete_maintenance_book' => 'boolean',
+            'non_smoker' => 'boolean',
+            'first_registration_date' => 'date',
+            'purchase_date' => 'date',
+        ];
+    }
+
+    /**
+     * @return BelongsTo<User, $this>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return BelongsTo<VehicleBrand, $this>
+     */
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(VehicleBrand::class, 'brand_id');
+    }
+
+    /**
+     * @return BelongsTo<VehicleModel, $this>
+     */
+    public function model(): BelongsTo
+    {
+        return $this->belongsTo(VehicleModel::class, 'model_id');
+    }
+
+    /**
+     * @return BelongsTo<VehicleVersion, $this>
+     */
+    public function vehicleVersion(): BelongsTo
+    {
+        return $this->belongsTo(VehicleVersion::class);
+    }
+
+    /**
+     * @return BelongsTo<ExteriorColor, $this>
+     */
+    public function exteriorColor(): BelongsTo
+    {
+        return $this->belongsTo(ExteriorColor::class);
+    }
+
+    /**
+     * @return BelongsTo<InteriorColor, $this>
+     */
+    public function interiorColor(): BelongsTo
+    {
+        return $this->belongsTo(InteriorColor::class);
+    }
+
+    /**
+     * @return BelongsTo<InteriorType, $this>
+     */
+    public function interiorType(): BelongsTo
+    {
+        return $this->belongsTo(InteriorType::class);
+    }
+
+    /**
+     * @return BelongsTo<FuelType, $this>
+     */
+    public function fuelType(): BelongsTo
+    {
+        return $this->belongsTo(FuelType::class);
+    }
+
+    /**
+     * @return BelongsTo<BodyType, $this>
+     */
+    public function bodyType(): BelongsTo
+    {
+        return $this->belongsTo(BodyType::class);
+    }
+
+    /**
+     * @return BelongsTo<EuroNorm, $this>
+     */
+    public function euroNorm(): BelongsTo
+    {
+        return $this->belongsTo(EuroNorm::class);
+    }
+
+    /**
+     * @return BelongsTo<TransmissionType, $this>
+     */
+    public function transmissionType(): BelongsTo
+    {
+        return $this->belongsTo(TransmissionType::class);
+    }
+
+    /**
+     * @return HasOne<VehicleStat, $this>
+     */
+    public function stat(): HasOne
+    {
+        return $this->hasOne(VehicleStat::class, 'vehicle_ad_id');
+    }
+
+    /**
+     * @return BelongsToMany<Feature, $this>
+     */
+    public function features(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Feature::class,
+            'feature_vehicle',
+            'vehicle_ad_id',
+            'feature_id',
+        );
+    }
+
+    /**
+     * @return BelongsToMany<User, $this>
+     */
+    public function favoredByUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'user_vehicles',
+            'vehicle_ad_id',
+            'user_id',
+        );
+    }
+}

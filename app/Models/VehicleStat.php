@@ -2,26 +2,26 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-use App\Models\Vehicle;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class VehicleStat extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'vehicle_id',
+        'vehicle_ad_id',
         'views_count',
         'contact_count',
         'fav_count',
     ];
 
-
-    public function vehicle()
+    /**
+     * @return BelongsTo<VehicleAd, $this>
+     */
+    public function vehicleAd(): BelongsTo
     {
-        return $this->belongsTo(Vehicle::class);
+        return $this->belongsTo(VehicleAd::class);
     }
 }

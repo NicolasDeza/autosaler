@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-use App\Models\Vehicle;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Feature extends Model
 {
@@ -15,14 +14,16 @@ class Feature extends Model
         'key',
     ];
 
-
-    public function vehicles()
+    /**
+     * @return BelongsToMany<VehicleAd, $this>
+     */
+    public function vehicleAds(): BelongsToMany
     {
         return $this->belongsToMany(
-            Vehicle::class,
+            VehicleAd::class,
             'feature_vehicle',
             'feature_id',
-            'vehicle_id'
+            'vehicle_ad_id',
         );
     }
 }

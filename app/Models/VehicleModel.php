@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-use App\Models\VehicleBrand;
-use App\Models\VehicleModelYear;
-use App\Models\Vehicle;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class VehicleModel extends Model
 {
@@ -18,19 +16,27 @@ class VehicleModel extends Model
         'name',
     ];
 
-
-    public function brand()
+    /**
+     * @return BelongsTo<VehicleBrand, $this>
+     */
+    public function brand(): BelongsTo
     {
         return $this->belongsTo(VehicleBrand::class, 'brand_id');
     }
 
-    public function years()
+    /**
+     * @return HasMany<VehicleVersion, $this>
+     */
+    public function versions(): HasMany
     {
-        return $this->hasMany(VehicleModelYear::class);
+        return $this->hasMany(VehicleVersion::class, 'model_id');
     }
 
-    public function vehicles()
+    /**
+     * @return HasMany<VehicleAd, $this>
+     */
+    public function vehicleAds(): HasMany
     {
-        return $this->hasMany(Vehicle::class, 'model_id');
+        return $this->hasMany(VehicleAd::class, 'model_id');
     }
 }

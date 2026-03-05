@@ -15,16 +15,16 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('user_id')
-                  ->constrained('users')
-                  ->cascadeOnDelete();
+                ->constrained('users')
+                ->cascadeOnDelete();
 
-            $table->foreignId('vehicle_for_sale_id')
-                  ->constrained('vehicles')
-                  ->cascadeOnDelete();
+            $table->foreignId('vehicle_ad_id')
+                ->constrained('vehicle_ads')
+                ->cascadeOnDelete();
 
             $table->timestamps();
             // INDEX Composite
-            $table->unique(['user_id', 'vehicle_for_sale_id']);
+            $table->unique(['user_id', 'vehicle_ad_id']);
         });
     }
 
