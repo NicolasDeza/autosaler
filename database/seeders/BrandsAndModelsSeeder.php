@@ -62,17 +62,20 @@ class BrandsAndModelsSeeder extends Seeder
                     ->toArray();
 
                 foreach (array_keys($modelsMap) as $modelName) {
-                    if (! in_array(strtolower($modelName), $existingModels)) {
+                    $lowerModelName = strtolower($modelName);
+                    if (! in_array($lowerModelName, $existingModels)) {
                         $modelsToInsert[] = [
                             'brand_id' => $brand->id,
                             'name' => $modelName,
                         ];
+                        // Add to existingModels so case variants like "QUATTRO" and "quattro" don't get appended both
+                        $existingModels[] = $lowerModelName;
                     }
                 }
 
                 // Chunk inserts to avoid query size limits (PDO placeholders limit)
                 foreach (array_chunk($modelsToInsert, 500) as $chunk) {
-                    VehicleModel::insert($chunk);
+                    VehicleModel::insertOrIgnore($chunk);
                 }
             }
 
