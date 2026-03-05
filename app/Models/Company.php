@@ -11,17 +11,17 @@ class Company extends Model
 
     protected $fillable = [
         'name',
-        'adress',
+        'address',
         'city_id',
         'country_id',
         'tva_number',
         'phone',
     ];
 
-    // Company vers Users
-    public function users()
+    
+    public function user()
     {
-        return $this->hasMany(User::class);
+        return $this->hasOne(User::class);
     }
 
     // Company vers VehicleAds
