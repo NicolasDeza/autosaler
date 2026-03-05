@@ -5,11 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\User;
-use App\Models\Vehicle;
-use App\Models\City;
-use App\Models\Country;
-
 class Company extends Model
 {
     use HasFactory;
@@ -23,35 +18,32 @@ class Company extends Model
         'phone',
     ];
 
-
     // Company vers Users
     public function users()
     {
         return $this->hasMany(User::class);
     }
 
-    // Company vers Vehicles
-    public function vehicles()
+    // Company vers VehicleAds
+    public function vehicleAds(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
     {
         return $this->hasManyThrough(
-            Vehicle::class,
+            VehicleAd::class,
             User::class,
-            'company_id', // FK de  users
-            'user_id',    // FK  devehicles
+            'company_id',
+            'user_id',
             'id',
-            'id'
+            'id',
         );
     }
 
-
     public function city()
-   {
-    return $this->belongsTo(City::class);
-   }
+    {
+        return $this->belongsTo(City::class);
+    }
 
-
-   public function country()
-   {
-    return $this->belongsTo(Country::class);
-   }
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
 }

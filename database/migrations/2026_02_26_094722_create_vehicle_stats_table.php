@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('vehicle_stats', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('vehicle_id')
-                  ->constrained('vehicles')
-                  ->cascadeOnDelete()
-                  ->unique();
+            $table->foreignId('vehicle_ad_id')
+                ->constrained('vehicle_ads')
+                ->cascadeOnDelete()
+                ->unique();
 
             $table->unsignedInteger('views_count')->default(0);
             $table->unsignedInteger('contact_count')->default(0);
