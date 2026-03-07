@@ -17,7 +17,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $permissions = [
             // Dashboard Group
             ['name' => 'post_ads'],
-            ['name' => 'view_seller_dashboard'],
+            ['name' => 'view_dealer_dashboard'],
             ['name' => 'view_admin_dashboard'],
 
             // Orders Group
@@ -35,7 +35,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Create Roles
         $adminRole = Role::updateOrCreate(['name' => 'admin']);
-        $sellerRole = Role::updateOrCreate(['name' => 'seller']);
+        $dealerRole = Role::updateOrCreate(['name' => 'dealer']);
         $user = Role::updateOrCreate(['name' => 'user']);
 
         $adminRole->syncPermissions([
@@ -43,9 +43,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'view_admin_dashboard'
         ]);
 
-        $sellerRole->syncPermissions([
+        $dealerRole->syncPermissions([
             'post_ads',
-            'view_seller_dashboard'
+            'view_dealer_dashboard'
         ]);
 
 

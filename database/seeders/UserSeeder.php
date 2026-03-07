@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
                     'last_name' => 'Doe',
                     'email' => 'john@johngarage.com',
                     'password' => Hash::make('password'),
-                    'role' => 'seller',
+                    'role' => 'dealer',
                     // 'company' => [
                     //     'name' => 'John\'s Garage',
                     // ],
@@ -45,7 +45,7 @@ class UserSeeder extends Seeder
                     'last_name' => 'Smith',
                     'email' => 'jane@janegarage.com',
                     'password' => Hash::make('password'),
-                    'role' => 'seller',
+                    'role' => 'dealer',
                     // 'company' => [
                     //     'name' => 'Jane\'s Garage',
                     // ],

@@ -15,14 +15,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    // Route::get('/seller/dashboard', function () {
-    //     return Inertia::render('SellerDashboard');
-    // })->name('seller.dashboard');
 
     Route::middleware('permission:view_admin_dashboard')->group(function () {
-        Route::get('/admindashboard', function () {
+        Route::get('/admin/dashboard', function () {
             return Inertia::render('AdminDashboard');
         })->name('admin_dashboard');
+    });
+
+    Route::middleware('permission:view_dealer_dashboard')->group(function () {
+        Route::get('/dealer/dashboard', [\App\Http\Controllers\DealerDashboardController::class, 'index'])
+            ->name('dealer_dashboard');
     });
 
     // Route::middleware('role:admin')->group(function () {
