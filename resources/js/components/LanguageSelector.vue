@@ -40,7 +40,8 @@ import { useTranslation } from '@/composables/useTranslation';
 const { locale } = useTranslation();
 
 const availableLocales = [
-    { value: 'fr', label: 'Français', flag: 'fr' },
+    { value: 'fr', label: 'Français', flag: 'be' },
+    { value: 'nl', label: 'Nederlands', flag: 'be' },
     { value: 'en', label: 'English', flag: 'gb' },
 ];
 

@@ -15,7 +15,7 @@
                         <Printer class="mr-2 h-4 w-4" /> Liste imprimée
                     </Button>
                     <Button as-child size="sm">
-                        <Link :href="vehicleCreate.url()">
+                        <Link :href="vehicleCreate().url">
                             <Plus class="mr-2 h-4 w-4" />
                             Créer une annonce
                         </Link>
