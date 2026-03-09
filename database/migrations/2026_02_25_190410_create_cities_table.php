@@ -15,19 +15,19 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('country_id')
-                  ->constrained('countries')
-                  ->cascadeOnDelete();
+                ->constrained('countries')
+                ->cascadeOnDelete();
 
-            $table->string('key')->index();
+            $table->string('code')->index();
             $table->string('zip_code');
 
             $table->timestamps();
 
             // Unicité
-            $table->unique(['country_id', 'zip_code', 'key']);
+            $table->unique(['country_id', 'zip_code', 'code']);
 
             // Index pour recherche rapide
-            $table->index(['country_id', 'key']);
+            $table->index(['country_id', 'code']);
             $table->index(['country_id', 'zip_code']);
         });
     }

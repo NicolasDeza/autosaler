@@ -1,18 +1,29 @@
 <template>
     <div class="dark text-foreground">
         <!-- Accent top bar -->
-        <div class="h-px bg-linear-to-r from-transparent via-red-500 to-transparent"></div>
+        <div
+            class="h-px bg-linear-to-r from-transparent via-red-500 to-transparent"
+        ></div>
 
         <div class="bg-background">
-            <div class="mx-auto md:max-w-7xl px-4">
+            <div class="mx-auto px-4 md:max-w-7xl">
                 <!-- Main footer content -->
-                <div class="grid grid-cols-1 gap-12 py-16 sm:grid-cols-2 lg:grid-cols-4">
+                <div
+                    class="grid grid-cols-1 gap-12 py-16 sm:grid-cols-2 lg:grid-cols-4"
+                >
                     <!-- Brand column -->
-                    <div class="flex flex-col items-center gap-6 sm:col-span-2 sm:items-start">
-                        <Link :href="dashboard()" class="flex items-center gap-x-2 w-fit">
+                    <div
+                        class="flex flex-col items-center gap-6 sm:col-span-2 sm:items-start"
+                    >
+                        <Link
+                            :href="dashboard()"
+                            class="flex w-fit items-center gap-x-2"
+                        >
                             <AppLogoLg />
                         </Link>
-                        <p class="max-w-sm text-center text-sm leading-relaxed text-muted-foreground sm:text-left">
+                        <p
+                            class="max-w-sm text-center text-sm leading-relaxed text-muted-foreground sm:text-left"
+                        >
                             {{ __('nav.footer_description') }}
                         </p>
                         <!-- Socials -->
@@ -33,14 +44,22 @@
                     </div>
 
                     <!-- Menu column -->
-                    <div class="flex flex-col items-center gap-4 sm:items-start">
-                        <p class="text-xs font-semibold uppercase tracking-widest text-white border-b-2 border-red-500 pb-2 w-fit">Menu</p>
-                        <nav class="flex flex-col items-center gap-2 sm:items-start">
+                    <div
+                        class="flex flex-col items-center gap-4 sm:items-start"
+                    >
+                        <p
+                            class="w-fit border-b-2 border-red-500 pb-2 text-xs font-semibold tracking-widest text-white uppercase"
+                        >
+                            Menu
+                        </p>
+                        <nav
+                            class="flex flex-col items-center gap-2 sm:items-start"
+                        >
                             <Link
                                 v-for="item in menuItems"
                                 :key="item.title"
                                 :href="item.href"
-                                class="text-sm text-foreground/70 transition-colors hover:text-red-400 hover:underline decoration-red-400 underline-offset-4"
+                                class="text-sm text-foreground/70 decoration-red-400 underline-offset-4 transition-colors hover:text-red-400 hover:underline"
                             >
                                 {{ item.title }}
                             </Link>
@@ -48,14 +67,22 @@
                     </div>
 
                     <!-- Legal column -->
-                    <div class="flex flex-col items-center gap-4 sm:items-start">
-                        <p class="text-xs font-semibold uppercase tracking-widest text-white border-b-2 border-red-500 pb-2 w-fit">Légal</p>
-                        <nav class="flex flex-col items-center gap-2 sm:items-start">
+                    <div
+                        class="flex flex-col items-center gap-4 sm:items-start"
+                    >
+                        <p
+                            class="w-fit border-b-2 border-red-500 pb-2 text-xs font-semibold tracking-widest text-white uppercase"
+                        >
+                            Légal
+                        </p>
+                        <nav
+                            class="flex flex-col items-center gap-2 sm:items-start"
+                        >
                             <Link
                                 v-for="item in legalItems"
                                 :key="item.title"
                                 :href="item.href"
-                                class="text-sm text-foreground/70 transition-colors hover:text-red-400 hover:underline decoration-red-400 underline-offset-4"
+                                class="text-sm text-foreground/70 decoration-red-400 underline-offset-4 transition-colors hover:text-red-400 hover:underline"
                             >
                                 {{ item.title }}
                             </Link>
@@ -64,15 +91,24 @@
                 </div>
 
                 <!-- Bottom bar -->
-                <div class="flex flex-col items-center justify-between gap-4 border-t border-white/20 py-6 sm:flex-row">
+                <div
+                    class="flex flex-col items-center justify-between gap-4 border-t border-white/20 py-6 sm:flex-row"
+                >
                     <p class="text-xs text-muted-foreground">
                         © {{ new Date().getFullYear() }}
-                        <span class="font-semibold text-foreground">AutoSaler</span>
+                        <span class="font-semibold text-foreground"
+                            >AutoSaler</span
+                        >
                         — {{ __('nav.all_rights_reserved') }}
                     </p>
                     <p class="text-xs text-muted-foreground">
                         {{ __('nav.made_by') }}
-                        <a href="/" target="_blank" rel="noopener noreferrer" class="font-semibold text-red-500 underline decoration-red-500 underline-offset-4 hover:text-red-400">
+                        <a
+                            href="/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="font-semibold text-red-500 underline decoration-red-500 underline-offset-4 hover:text-red-400"
+                        >
                             La passion
                         </a>
                     </p>
@@ -95,9 +131,7 @@ import AppLogoLg from './AppLogoLg.vue';
 const { __ } = useTranslation();
 const { can } = usePermissions();
 
-const socialLinks = [
-    { label: 'Facebook', href: '#', icon: 'facebook' },
-];
+const socialLinks = [{ label: 'Facebook', href: '#', icon: 'facebook' }];
 
 const menuItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [

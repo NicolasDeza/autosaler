@@ -8,6 +8,7 @@ import PriceCard from '@/components/PriceCard.vue'
 import RecentVehiclesSection from '@/components/RecentVehiclesSection.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 
+
 interface Vehicle {
   id: number
   price: string
@@ -17,6 +18,7 @@ interface Vehicle {
   model: { id: number; name: string } | null
   fuel_type: { id: number; code: string } | null
   transmission_type: { id: number; code: string } | null
+  user: { company: { name: string } | null } | null
 }
 
 defineProps<{
@@ -26,7 +28,7 @@ defineProps<{
 </script>
 
 <template>
-  <Head title="Autosaler" />
+    <Head title="Autosaler" />
 
   <AppLayout>
     <template #full-width>

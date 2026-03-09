@@ -30,6 +30,7 @@ class VehicleAd extends Model
         'euro_norm_id',
         'transmission_type_id',
 
+        'vehicle_version_name',
         'price',
         'mileage',
         'power_kw',
