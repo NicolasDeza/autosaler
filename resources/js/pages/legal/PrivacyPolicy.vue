@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import { useTranslation } from '@/composables/useTranslation';
+import { cookies } from '@/routes/legal';
 import AppLayout from '@/layouts/AppLayout.vue';
 
 const { __ } = useTranslation();
@@ -223,7 +224,7 @@ const { __ } = useTranslation();
                 <p class="text-sm text-muted-foreground">
                     {{ __('privacyPolicy.s8_link_intro') }}
                     <Link
-                        href="/legal/cookies"
+                        :href="cookies().url"
                         class="font-medium text-red-500 underline underline-offset-4 hover:text-red-400"
                     >
                         {{ __('privacyPolicy.s8_link_text') }}

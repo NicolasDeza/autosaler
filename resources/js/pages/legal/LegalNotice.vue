@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import { useTranslation } from '@/composables/useTranslation';
+import { privacy } from '@/routes/legal';
 import AppLayout from '@/layouts/AppLayout.vue';
 
 const { __ } = useTranslation();
@@ -144,7 +145,7 @@ const { __ } = useTranslation();
                 <p class="text-sm leading-relaxed text-muted-foreground">
                     {{ __('legalNotice.s7_text_pre') }}
                     <Link
-                        href="/legal/privacy"
+                        :href="privacy().url"
                         class="font-medium text-red-500 underline underline-offset-4 hover:text-red-400"
                     >
                         {{ __('legalNotice.s7_link_text') }}

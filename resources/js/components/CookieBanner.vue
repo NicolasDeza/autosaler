@@ -4,6 +4,7 @@ import { ChevronDown, ChevronUp, Cookie, ShieldCheck } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { useCookieConsent } from '@/composables/useCookieConsent';
 import { useTranslation } from '@/composables/useTranslation';
+import { cookies } from '@/routes/legal';
 
 const { hasDecided, acceptAll, rejectAll, saveCustom } = useCookieConsent();
 const { __ } = useTranslation();
@@ -58,7 +59,7 @@ function handleSaveCustom() {
                             </p>
                             <p class="mt-0.5 text-xs leading-relaxed text-muted-foreground">
                                 {{ __('cookieBanner.banner_desc') }}
-                                <Link href="/legal/cookies" class="font-medium text-red-500 underline underline-offset-2 hover:text-red-400">
+                                <Link :href="cookies().url" class="font-medium text-red-500 underline underline-offset-2 hover:text-red-400">
                                     {{ __('cookieBanner.learn_more') }}
                                 </Link>
                             </p>

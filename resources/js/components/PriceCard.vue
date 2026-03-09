@@ -3,6 +3,7 @@ import { useForm } from '@inertiajs/vue3'
 import { Check, Send } from 'lucide-vue-next'
 import { ref, computed } from 'vue'
 import { toast } from 'vue-sonner'
+import SubscriptionInquiryController from '@/actions/App/Http/Controllers/SubscriptionInquiryController'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {
@@ -50,7 +51,7 @@ function openModal() {
 }
 
 function submit() {
-  form.post('/subscription-inquiry', {
+  form.post(SubscriptionInquiryController().url, {
     preserveScroll: true,
     preserveState: true,
     onSuccess: () => {
