@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3'
-import BentoGrid from '@/components/BentoGrid.vue'
 import BrandsSection from '@/components/BrandsSection.vue'
 import HeroSection from '@/components/HeroSection.vue'
 import HomeSearchFilter from '@/components/HomeSearchFilter.vue'
