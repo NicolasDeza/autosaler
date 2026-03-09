@@ -8,6 +8,7 @@ import {
     Menu,
     Search,
     Shield,
+    Car,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
@@ -51,6 +52,7 @@ import {
     login,
     register,
 } from '@/routes';
+import vehicles from '@/routes/vehicles';
 
 import type { BreadcrumbItem, NavItem } from '@/types';
 import type { ExtendedPageProps } from '@/types/inertia';
@@ -81,6 +83,11 @@ const mainNavItems = computed<NavItem[]>(() => {
             title: __('nav.nav_home'),
             href: '/',
             icon: Home,
+        },
+        {
+            title: 'Véhicules',
+            href: vehicles.index(),
+            icon: Car,
         },
         {
             title: __('nav.nav_dashboard'),

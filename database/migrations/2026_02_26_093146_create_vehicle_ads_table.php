@@ -16,9 +16,8 @@ return new class extends Migration
 
             // USER
             $table->foreignId('user_id')
-                ->nullable()
                 ->constrained('users')
-                ->nullOnDelete();
+                ->cascadeOnDelete();
 
             // STATUS
             $table->enum('status', ['draft', 'active', 'sold', 'archived'])
@@ -35,23 +34,27 @@ return new class extends Migration
                 ->restrictOnDelete();
 
             $table->foreignId('vehicle_version_id')
+                ->nullable()
                 ->constrained('vehicle_versions')
-                ->restrictOnDelete();
+                ->nullOnDelete();
 
             // COLORS
             $table->foreignId('exterior_color_id')
+                ->nullable()
                 ->constrained('exterior_colors')
-                ->restrictOnDelete();
+                ->nullOnDelete();
 
             $table->boolean('exterior_color_metalised')->default(false);
 
             $table->foreignId('interior_color_id')
+                ->nullable()
                 ->constrained('interior_colors')
-                ->restrictOnDelete();
+                ->nullOnDelete();
 
             $table->foreignId('interior_type_id')
+                ->nullable()
                 ->constrained('interior_types')
-                ->restrictOnDelete();
+                ->nullOnDelete();
 
             $table->foreignId('fuel_type_id')
                 ->constrained('fuel_types')
@@ -62,14 +65,17 @@ return new class extends Migration
                 ->restrictOnDelete();
 
             $table->foreignId('euro_norm_id')
+                ->nullable()
                 ->constrained('euro_norms')
-                ->restrictOnDelete();
+                ->nullOnDelete();
 
             $table->foreignId('transmission_type_id')
+                ->nullable()
                 ->constrained('transmission_types')
-                ->restrictOnDelete();
+                ->nullOnDelete();
 
             // TECHNICAL Infos
+            $table->string('vehicle_version_name');
             $table->decimal('price', 10, 2)->index();
             $table->unsignedInteger('mileage')->index();
             $table->unsignedInteger('power_kw')->nullable();
@@ -79,9 +85,9 @@ return new class extends Migration
             $table->unsignedInteger('weight_kg')->nullable();
             $table->unsignedInteger('co2_emission')->nullable();
 
-            $table->unsignedTinyInteger('gear_count');
-            $table->unsignedTinyInteger('doors');
-            $table->unsignedTinyInteger('seats');
+            $table->unsignedTinyInteger('gear_count')->nullable();
+            $table->unsignedTinyInteger('doors')->nullable();
+            $table->unsignedTinyInteger('seats')->nullable();
             $table->unsignedInteger('previous_owner')->nullable();
 
             $table->boolean('technical_inspection_status')->nullable();
@@ -90,8 +96,7 @@ return new class extends Migration
             $table->boolean('complete_maintenance_book')->default(false);
             $table->boolean('non_smoker')->default(false);
 
-            $table->string('vin', 50)->unique();
-            $table->string('registration_number', 50)->nullable()->index();
+            $table->string('vin', 50)->unique()->nullable();
 
             $table->date('first_registration_date')->nullable()->index();
             $table->date('purchase_date')->nullable();

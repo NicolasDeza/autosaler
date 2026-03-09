@@ -37,8 +37,14 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from '@/components/ui/pagination';
-import { router } from '@inertiajs/vue3';
+import { router, Link } from '@inertiajs/vue3';
 import { dealer_dashboard } from '@/routes';
+import {
+    show as vehicleShow,
+    edit as vehicleEdit,
+    destroy as vehicleDestroy,
+    update_status as vehicleUpdateStatus,
+} from '@/routes/vehicles';
 
 import {
     MoreHorizontal,
@@ -64,6 +70,18 @@ const formatPrice = (price: number) => {
         style: 'currency',
         currency: 'EUR',
     }).format(price);
+};
+
+const toggleStatus = (ad: any, checked: boolean) => {
+    const newStatus = checked ? 'active' : 'draft';
+    router.patch(
+        vehicleUpdateStatus.url(ad.id),
+        { status: newStatus },
+        {
+            preserveScroll: true,
+            onError: (err) => console.error('Error updating status:', err),
+        },
+    );
 };
 </script>
 
@@ -157,6 +175,7 @@ const formatPrice = (price: number) => {
                                     <div class="font-medium">
                                         {{ ad.brand?.name }}
                                         {{ ad.model?.name }}
+                                        {{ ad.vehicle_version_name }}
                                     </div>
                                     <div
                                         class="line-clamp-1 text-xs text-muted-foreground"
@@ -192,9 +211,12 @@ const formatPrice = (price: number) => {
                                 <TableCell>
                                     <div class="flex items-center gap-2">
                                         <Switch
-                                            :checked="
-                                                ad.status === 'active' ||
-                                                ad.status === 'published'
+                                            :model-value="
+                                                ad.status === 'active'
+                                            "
+                                            @update:model-value="
+                                                (checked: boolean) =>
+                                                    toggleStatus(ad, checked)
                                             "
                                         />
                                     </div>
@@ -219,17 +241,43 @@ const formatPrice = (price: number) => {
                                             <DropdownMenuLabel
                                                 >Actions</DropdownMenuLabel
                                             >
+                                            <DropdownMenuItem asChild>
+                                                <Link
+                                                    :href="
+                                                        vehicleShow.url(ad.id)
+                                                    "
+                                                    class="w-full cursor-pointer"
+                                                >
+                                                    Voir l'annonce
+                                                </Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem asChild>
+                                                <Link
+                                                    :href="
+                                                        vehicleEdit.url(ad.id)
+                                                    "
+                                                    class="w-full cursor-pointer"
+                                                >
+                                                    Modifier
+                                                </Link>
+                                            </DropdownMenuItem>
                                             <DropdownMenuItem
-                                                >Voir
-                                                l'annonce</DropdownMenuItem
-                                            >
-                                            <DropdownMenuItem
-                                                >Modifier</DropdownMenuItem
-                                            >
-                                            <DropdownMenuItem
+                                                asChild
                                                 class="text-destructive"
-                                                >Supprimer</DropdownMenuItem
                                             >
+                                                <Link
+                                                    :href="
+                                                        vehicleDestroy.url(
+                                                            ad.id,
+                                                        )
+                                                    "
+                                                    method="delete"
+                                                    as="button"
+                                                    class="w-full cursor-pointer"
+                                                >
+                                                    Supprimer
+                                                </Link>
+                                            </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 </TableCell>

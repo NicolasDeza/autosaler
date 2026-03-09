@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
+use App\Models\Company;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -36,9 +35,15 @@ class UserSeeder extends Seeder
                     'email' => 'john@johngarage.com',
                     'password' => Hash::make('password'),
                     'role' => 'dealer',
-                    // 'company' => [
-                    //     'name' => 'John\'s Garage',
-                    // ],
+                    'company' => [
+                        'name' => 'John\'s Garage',
+                        'tva_number' => '123456789',
+                        'email' => 'john@johngarage.com',
+                        'phone' => '123456789',
+                        'address' => '240 Avenue Louise',
+                        'country_id' => 1,
+                        'city_id' => 73,
+                    ],
                 ],
                 [
                     'first_name' => 'Jane',
@@ -46,9 +51,15 @@ class UserSeeder extends Seeder
                     'email' => 'jane@janegarage.com',
                     'password' => Hash::make('password'),
                     'role' => 'dealer',
-                    // 'company' => [
-                    //     'name' => 'Jane\'s Garage',
-                    // ],
+                    'company' => [
+                        'name' => 'Jane\'s Garage',
+                        'tva_number' => '123456789',
+                        'email' => 'jane@janegarage.com',
+                        'phone' => '123456789',
+                        'address' => '123 Chaussee de Bruxelles',
+                        'country_id' => 1,
+                        'city_id' => 171,
+                    ],
                 ],
                 [
                     'first_name' => 'Alice',
@@ -61,19 +72,24 @@ class UserSeeder extends Seeder
 
             foreach ($usersData as $userData) {
 
-                $company = null;
+                // $company = null;
 
+                if (isset($userData['company'])) {
+                    $this->command->info("--- Creating Company: {$userData['company']['name']} ---");
+                    $company = Company::create([
+                        'name' => $userData['company']['name'],
+                        'tva_number' => $userData['company']['tva_number'],
+                        'email' => $userData['company']['email'],
+                        'phone' => $userData['company']['phone'],
+                        'address' => $userData['company']['address'],
+                        'country_id' => $userData['company']['country_id'],
+                        'city_id' => $userData['company']['city_id'],
+                    ]);
 
-                // if (isset($userData['company'])) {
-                // $this->command->info("--- Creating Company: {$userData['company']['name']} ---");
-                //     $company = Company::create([
-                //         'name' => $userData['company']['name'],
-                //     ]);
-
-                //     $this->command->info("Created Company: {$company->name} with email: {$company->email}");
-                // } else {
-                //     $company = null;
-                // }
+                    $this->command->info("Created Company: {$company->name} with email: {$company->email}");
+                } else {
+                    $company = null;
+                }
 
                 $user = User::create([
                     'first_name' => $userData['first_name'],
