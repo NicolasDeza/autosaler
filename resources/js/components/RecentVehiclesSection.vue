@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import { Fuel, Gauge, Calendar, ImageOff, Star } from 'lucide-vue-next';
+import { show } from '@/actions/App/Http/Controllers/VehicleAdController';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslation } from '@/composables/useTranslation';
-import { Link } from '@inertiajs/vue3';
-import { show } from '@/actions/App/Http/Controllers/VehicleAdController';
 
 const { __ } = useTranslation();
 
