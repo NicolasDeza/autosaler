@@ -648,6 +648,9 @@ const FilterSearchSelect = defineComponent({
                                                     ) => {
                                                         e.stopPropagation();
                                                     },
+                                                    onKeydown: (e: Event) => {
+                                                        e.stopPropagation();
+                                                    },
                                                 }),
                                             ],
                                         ),
