@@ -1,24 +1,31 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SubscriptionInquiryController;
 use App\Http\Controllers\VehicleAdController;
 use App\Http\Controllers\VehicleModelController;
 use App\Http\Controllers\VehicleVersionController;
 use App\Http\Controllers\DealerDashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Laravel\Fortify\Features;
 
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::post('/subscription-inquiry', SubscriptionInquiryController::class)->name('subscription.inquiry');
+
+// Pages légales
+Route::prefix('legal')->name('legal.')->group(function () {
+    Route::get('/notices', fn () => Inertia::render('legal/LegalNotice'))->name('notices');
+    Route::get('/privacy', fn () => Inertia::render('legal/PrivacyPolicy'))->name('privacy');
+    Route::get('/cookies', fn () => Inertia::render('legal/Cookies'))->name('cookies');
+});
 Route::get('/vehicle-models', [VehicleModelController::class, 'index'])->name('vehicle-models.index');
 Route::get('/vehicle-versions', [VehicleVersionController::class, 'index'])->name('vehicle-versions.index');
 
 Route::get('/vehicles', [VehicleAdController::class, 'index'])->name('vehicles.index');
 Route::get('/vehicles/{vehicleAd}', [VehicleAdController::class, 'show'])->name('vehicles.show')->whereNumber('vehicleAd');
 
-Route::get('/', function () {
-    return Inertia::render('Index', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {

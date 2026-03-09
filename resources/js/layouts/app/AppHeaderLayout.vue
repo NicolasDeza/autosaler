@@ -3,6 +3,7 @@ import AppContent from '@/components/AppContent.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import AppHeader from '@/components/AppHeader.vue';
 import AppShell from '@/components/AppShell.vue';
+import CookieBanner from '@/components/CookieBanner.vue';
 import type { BreadcrumbItem } from '@/types';
 
 type Props = {
@@ -22,5 +23,6 @@ withDefaults(defineProps<Props>(), {
             <slot />
         </AppContent>
         <AppFooter />
+        <CookieBanner />
     </AppShell>
 </template>

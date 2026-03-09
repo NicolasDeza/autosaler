@@ -3,10 +3,10 @@ import HeroCarousel from '@/components/HeroCarousel.vue';
 </script>
 
 <template>
-    <section
-        class="relative h-[80vh] min-h-125 w-full overflow-hidden bg-black sm:h-170"
-    >
-        <!-- Carousel -->
-        <HeroCarousel />
-    </section>
+<section class="relative w-full h-[65vh] sm:h-140 min-h-100 overflow-hidden bg-black">
+
+  <!-- Carousel -->
+  <HeroCarousel />
+
+</section>
 </template>

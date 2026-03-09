@@ -1,9 +1,11 @@
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
-import { createApp, h } from 'vue';
+import { createApp, h, Teleport } from 'vue';
 import '../css/app.css';
 import 'flag-icons/css/flag-icons.min.css';
+import 'vue-sonner/style.css';
+import { Toaster } from '@/components/ui/sonner';
 import { loadTranslations } from '@/composables/useTranslation';
 import { initializeTheme } from './composables/useAppearance';
 import type { ExtendedPageProps } from './types/inertia';
@@ -23,7 +25,14 @@ createInertiaApp({
 
         await loadTranslations(locale);
 
-        createApp({ render: () => h(App, props) })
+        createApp({
+            render: () => [
+                h(App, props),
+                h(Teleport, { to: 'body' }, [
+                    h(Toaster, { richColors: true, position: 'bottom-right' }),
+                ]),
+            ],
+        })
             .use(plugin)
             .mount(el);
     },
