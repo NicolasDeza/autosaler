@@ -119,12 +119,12 @@ class VehicleAdController extends Controller
 
         return Inertia::render('VehicleAds/Index', [
             'ads' => $ads,
-            'brands' => fn () => VehicleBrand::orderBy('name')->get(['id', 'name']),
-            'fuelTypes' => fn () => FuelType::orderBy('code')->get(['id', 'code']),
-            'bodyTypes' => fn () => BodyType::orderBy('code')->get(['id', 'code']),
-            'transmissionTypes' => fn () => TransmissionType::orderBy('code')->get(['id', 'code']),
-            'exteriorColors' => fn () => ExteriorColor::orderBy('code')->get(['id', 'code']),
-            'euroNorms' => fn () => EuroNorm::orderBy('code')->get(['id', 'code']),
+            'brands' => Inertia::defer(fn () => VehicleBrand::orderBy('name')->get(['id', 'name']), 'filters'),
+            'fuelTypes' => Inertia::defer(fn () => FuelType::orderBy('code')->get(['id', 'code']), 'filters'),
+            'bodyTypes' => Inertia::defer(fn () => BodyType::orderBy('code')->get(['id', 'code']), 'filters'),
+            'transmissionTypes' => Inertia::defer(fn () => TransmissionType::orderBy('code')->get(['id', 'code']), 'filters'),
+            'exteriorColors' => Inertia::defer(fn () => ExteriorColor::orderBy('code')->get(['id', 'code']), 'filters'),
+            'euroNorms' => Inertia::defer(fn () => EuroNorm::orderBy('code')->get(['id', 'code']), 'filters'),
             'filters' => $request->only([
                 'brand_id', 'model_id', 'min_price', 'max_price',
                 'min_year', 'max_year', 'max_mileage',

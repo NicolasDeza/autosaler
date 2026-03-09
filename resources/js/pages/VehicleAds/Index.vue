@@ -20,258 +20,294 @@
                     >
                 </div>
 
-                <div class="space-y-6">
-                    <!-- Marque -->
-                    <FilterSelect
-                        label="Marque"
-                        v-model="form.brand_id"
-                        :options="brands"
-                        option-label="name"
-                        placeholder="Toutes les marques"
-                    />
-
-                    <!-- Modèle -->
-                    <FilterSelect
-                        label="Modèle"
-                        v-model="form.model_id"
-                        :options="models"
-                        option-label="name"
-                        placeholder="Tous les modèles"
-                        :disabled="
-                            !form.brand_id ||
-                            form.brand_id === 'all' ||
-                            !models.length
-                        "
-                    />
-
-                    <!-- Prix -->
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between">
-                            <Label class="text-sm font-semibold text-slate-200"
-                                >Prix (€)</Label
-                            >
-                            <span class="text-xs text-slate-400">
-                                {{ form.min_price?.toLocaleString() }} -
-                                {{
-                                    form.max_price >= 200000
-                                        ? '200k+'
-                                        : form.max_price?.toLocaleString()
-                                }}
-                            </span>
-                        </div>
-                        <Slider
-                            v-model="priceRange"
-                            :max="200000"
-                            :min="0"
-                            :step="1000"
-                            class="py-4"
-                            @update:modelValue="onPriceChange"
-                        />
-                    </div>
-
-                    <!-- Année -->
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between">
-                            <Label class="text-sm font-semibold text-slate-200"
-                                >Année</Label
-                            >
-                            <span class="text-xs text-slate-400"
-                                >{{ form.min_year }} - {{ form.max_year }}</span
-                            >
-                        </div>
-                        <Slider
-                            v-model="yearRange"
-                            :max="currentYear"
-                            :min="2000"
-                            :step="1"
-                            class="py-4"
-                            @update:modelValue="onYearChange"
-                        />
-                    </div>
-
-                    <!-- Kilométrage -->
-                    <div class="space-y-3">
-                        <Label class="text-sm font-semibold text-slate-200"
-                            >Kilométrage</Label
-                        >
-                        <Select v-model="form.max_mileage">
-                            <SelectTrigger
-                                class="w-full border-slate-700 bg-slate-800 text-white"
-                            >
-                                <SelectValue placeholder="Peu importe" />
-                            </SelectTrigger>
-                            <SelectContent
-                                class="border-slate-700 bg-slate-800 text-white"
-                            >
-                                <SelectItem value="all">Peu importe</SelectItem>
-                                <SelectItem value="10000">10 000 km</SelectItem>
-                                <SelectItem value="25000">25 000 km</SelectItem>
-                                <SelectItem value="50000">50 000 km</SelectItem>
-                                <SelectItem value="100000"
-                                    >100 000 km</SelectItem
-                                >
-                                <SelectItem value="150000"
-                                    >150 000 km</SelectItem
-                                >
-                                <SelectItem value="200000"
-                                    >200 000 km</SelectItem
-                                >
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <!-- Carburant -->
-                    <FilterCheckboxGroup
-                        label="Carburant"
-                        :options="fuelTypes"
-                        option-label="code"
-                        v-model="form.fuel_types"
-                    />
-
-                    <!-- Type de carrosserie -->
-                    <FilterCheckboxGroup
-                        label="Carrosserie"
-                        :options="bodyTypes"
-                        option-label="code"
-                        v-model="form.body_types"
-                    />
-
-                    <!-- Transmission -->
-                    <FilterCheckboxGroup
-                        label="Transmission"
-                        :options="transmissionTypes"
-                        option-label="code"
-                        v-model="form.transmission_types"
-                    />
-
-                    <!-- Couleur extérieure -->
-                    <FilterSelect
-                        label="Couleur extérieure"
-                        v-model="form.exterior_color_id"
-                        :options="exteriorColors"
-                        option-label="code"
-                        placeholder="Toutes"
-                    />
-
-                    <!-- Norme Euro -->
-                    <FilterSelect
-                        label="Norme Euro"
-                        v-model="form.euro_norm_id"
-                        :options="euroNorms"
-                        option-label="code"
-                        placeholder="Toutes"
-                    />
-
-                    <!-- Portes -->
-                    <FilterSelect
-                        label="Portes"
-                        v-model="form.doors"
-                        :options="doorOptions"
-                        option-label="label"
-                        placeholder="Peu importe"
-                    />
-
-                    <!-- Sièges -->
-                    <FilterSelect
-                        label="Sièges"
-                        v-model="form.seats"
-                        :options="seatOptions"
-                        option-label="label"
-                        placeholder="Peu importe"
-                    />
-
-                    <!-- Booleans -->
-                    <Collapsible class="space-y-3">
-                        <CollapsibleTrigger
-                            class="flex w-full items-center justify-between"
-                        >
-                            <Label
-                                class="cursor-pointer text-sm font-semibold text-slate-200"
-                                >État</Label
-                            >
-                            <ChevronDown
-                                class="h-4 w-4 text-slate-400 transition-transform duration-200 [[data-state=open]_&]:rotate-180"
-                            />
-                        </CollapsibleTrigger>
-                        <CollapsibleContent
-                            forceMount
-                            class="data-[state=closed]:hidden"
-                        >
-                            <div class="space-y-2 pt-1">
-                                <div class="flex items-center space-x-2">
-                                    <Checkbox
-                                        id="chk-non-damaged"
-                                        :checked="form.is_damaged === false"
-                                        @update:checked="
-                                            (v) =>
-                                                (form.is_damaged = v
-                                                    ? false
-                                                    : null)
-                                        "
-                                    />
-                                    <label
-                                        for="chk-non-damaged"
-                                        class="cursor-pointer text-sm text-slate-300"
-                                        >Non endommagé</label
-                                    >
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <Checkbox
-                                        id="chk-no-accident"
-                                        :checked="form.has_accident === false"
-                                        @update:checked="
-                                            (v) =>
-                                                (form.has_accident = v
-                                                    ? false
-                                                    : null)
-                                        "
-                                    />
-                                    <label
-                                        for="chk-no-accident"
-                                        class="cursor-pointer text-sm text-slate-300"
-                                        >Pas d'accident</label
-                                    >
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <Checkbox
-                                        id="chk-maintenance"
-                                        :checked="
-                                            form.complete_maintenance_book ===
-                                            true
-                                        "
-                                        @update:checked="
-                                            (v) =>
-                                                (form.complete_maintenance_book =
-                                                    v ? true : null)
-                                        "
-                                    />
-                                    <label
-                                        for="chk-maintenance"
-                                        class="cursor-pointer text-sm text-slate-300"
-                                        >Carnet entretien complet</label
-                                    >
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <Checkbox
-                                        id="chk-non-smoker"
-                                        :checked="form.non_smoker === true"
-                                        @update:checked="
-                                            (v) =>
-                                                (form.non_smoker = v
-                                                    ? true
-                                                    : null)
-                                        "
-                                    />
-                                    <label
-                                        for="chk-non-smoker"
-                                        class="cursor-pointer text-sm text-slate-300"
-                                        >Non fumeur</label
-                                    >
-                                </div>
+                <Deferred
+                    :data="[
+                        'brands',
+                        'fuelTypes',
+                        'bodyTypes',
+                        'transmissionTypes',
+                        'exteriorColors',
+                        'euroNorms',
+                    ]"
+                >
+                    <template #fallback>
+                        <div class="space-y-6">
+                            <div v-for="i in 6" :key="i" class="space-y-3">
+                                <Skeleton class="h-4 w-24 bg-slate-700" />
+                                <Skeleton
+                                    class="h-10 w-full rounded-md bg-slate-800"
+                                />
                             </div>
-                        </CollapsibleContent>
-                    </Collapsible>
-                </div>
+                        </div>
+                    </template>
+
+                    <div class="space-y-6">
+                        <!-- Marque -->
+                        <FilterSearchSelect
+                            label="Marque"
+                            v-model="form.brand_id"
+                            :options="brands ?? []"
+                            option-label="name"
+                            placeholder="Toutes les marques"
+                            searchable
+                        />
+
+                        <!-- Modèle -->
+                        <FilterSelect
+                            label="Modèle"
+                            v-model="form.model_id"
+                            :options="models"
+                            option-label="name"
+                            placeholder="Tous les modèles"
+                            :disabled="
+                                !form.brand_id ||
+                                form.brand_id === 'all' ||
+                                !models.length
+                            "
+                        />
+
+                        <!-- Prix -->
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <Label
+                                    class="text-sm font-semibold text-slate-200"
+                                    >Prix (€)</Label
+                                >
+                                <span class="text-xs text-slate-400">
+                                    {{ form.min_price?.toLocaleString() }} -
+                                    {{
+                                        form.max_price >= 200000
+                                            ? '200k+'
+                                            : form.max_price?.toLocaleString()
+                                    }}
+                                </span>
+                            </div>
+                            <Slider
+                                v-model="priceRange"
+                                :max="200000"
+                                :min="0"
+                                :step="1000"
+                                class="py-4"
+                                @update:modelValue="onPriceChange"
+                            />
+                        </div>
+
+                        <!-- Année -->
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <Label
+                                    class="text-sm font-semibold text-slate-200"
+                                    >Année</Label
+                                >
+                                <span class="text-xs text-slate-400"
+                                    >{{ form.min_year }} -
+                                    {{ form.max_year }}</span
+                                >
+                            </div>
+                            <Slider
+                                v-model="yearRange"
+                                :max="currentYear"
+                                :min="2000"
+                                :step="1"
+                                class="py-4"
+                                @update:modelValue="onYearChange"
+                            />
+                        </div>
+
+                        <!-- Kilométrage -->
+                        <div class="space-y-3">
+                            <Label class="text-sm font-semibold text-slate-200"
+                                >Kilométrage</Label
+                            >
+                            <Select v-model="form.max_mileage">
+                                <SelectTrigger
+                                    class="w-full border-slate-700 bg-slate-800 text-white"
+                                >
+                                    <SelectValue placeholder="Peu importe" />
+                                </SelectTrigger>
+                                <SelectContent
+                                    class="border-slate-700 bg-slate-800 text-white"
+                                >
+                                    <SelectItem value="all"
+                                        >Peu importe</SelectItem
+                                    >
+                                    <SelectItem value="10000"
+                                        >10 000 km</SelectItem
+                                    >
+                                    <SelectItem value="25000"
+                                        >25 000 km</SelectItem
+                                    >
+                                    <SelectItem value="50000"
+                                        >50 000 km</SelectItem
+                                    >
+                                    <SelectItem value="100000"
+                                        >100 000 km</SelectItem
+                                    >
+                                    <SelectItem value="150000"
+                                        >150 000 km</SelectItem
+                                    >
+                                    <SelectItem value="200000"
+                                        >200 000 km</SelectItem
+                                    >
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        <!-- Carburant -->
+                        <FilterCheckboxGroup
+                            label="Carburant"
+                            :options="fuelTypes ?? []"
+                            option-label="code"
+                            v-model="form.fuel_types"
+                        />
+
+                        <!-- Type de carrosserie -->
+                        <FilterCheckboxGroup
+                            label="Carrosserie"
+                            :options="bodyTypes ?? []"
+                            option-label="code"
+                            v-model="form.body_types"
+                        />
+
+                        <!-- Transmission -->
+                        <FilterCheckboxGroup
+                            label="Transmission"
+                            :options="transmissionTypes ?? []"
+                            option-label="code"
+                            v-model="form.transmission_types"
+                        />
+
+                        <!-- Couleur extérieure -->
+                        <FilterSelect
+                            label="Couleur extérieure"
+                            v-model="form.exterior_color_id"
+                            :options="exteriorColors ?? []"
+                            option-label="code"
+                            placeholder="Toutes"
+                        />
+
+                        <!-- Norme Euro -->
+                        <FilterSelect
+                            label="Norme Euro"
+                            v-model="form.euro_norm_id"
+                            :options="euroNorms ?? []"
+                            option-label="code"
+                            placeholder="Toutes"
+                        />
+
+                        <!-- Portes -->
+                        <FilterSelect
+                            label="Portes"
+                            v-model="form.doors"
+                            :options="doorOptions"
+                            option-label="label"
+                            placeholder="Peu importe"
+                        />
+
+                        <!-- Sièges -->
+                        <FilterSelect
+                            label="Sièges"
+                            v-model="form.seats"
+                            :options="seatOptions"
+                            option-label="label"
+                            placeholder="Peu importe"
+                        />
+
+                        <!-- Booleans -->
+                        <Collapsible class="space-y-3">
+                            <CollapsibleTrigger
+                                class="flex w-full items-center justify-between"
+                            >
+                                <Label
+                                    class="cursor-pointer text-sm font-semibold text-slate-200"
+                                    >État</Label
+                                >
+                                <ChevronDown
+                                    class="h-4 w-4 text-slate-400 transition-transform duration-200 [[data-state=open]_&]:rotate-180"
+                                />
+                            </CollapsibleTrigger>
+                            <CollapsibleContent
+                                forceMount
+                                class="data-[state=closed]:hidden"
+                            >
+                                <div class="space-y-2 pt-1">
+                                    <div class="flex items-center space-x-2">
+                                        <Checkbox
+                                            id="chk-non-damaged"
+                                            :checked="form.is_damaged === false"
+                                            @update:checked="
+                                                (v) =>
+                                                    (form.is_damaged = v
+                                                        ? false
+                                                        : null)
+                                            "
+                                        />
+                                        <label
+                                            for="chk-non-damaged"
+                                            class="cursor-pointer text-sm text-slate-300"
+                                            >Non endommagé</label
+                                        >
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <Checkbox
+                                            id="chk-no-accident"
+                                            :checked="
+                                                form.has_accident === false
+                                            "
+                                            @update:checked="
+                                                (v) =>
+                                                    (form.has_accident = v
+                                                        ? false
+                                                        : null)
+                                            "
+                                        />
+                                        <label
+                                            for="chk-no-accident"
+                                            class="cursor-pointer text-sm text-slate-300"
+                                            >Pas d'accident</label
+                                        >
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <Checkbox
+                                            id="chk-maintenance"
+                                            :checked="
+                                                form.complete_maintenance_book ===
+                                                true
+                                            "
+                                            @update:checked="
+                                                (v) =>
+                                                    (form.complete_maintenance_book =
+                                                        v ? true : null)
+                                            "
+                                        />
+                                        <label
+                                            for="chk-maintenance"
+                                            class="cursor-pointer text-sm text-slate-300"
+                                            >Carnet entretien complet</label
+                                        >
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <Checkbox
+                                            id="chk-non-smoker"
+                                            :checked="form.non_smoker === true"
+                                            @update:checked="
+                                                (v) =>
+                                                    (form.non_smoker = v
+                                                        ? true
+                                                        : null)
+                                            "
+                                        />
+                                        <label
+                                            for="chk-non-smoker"
+                                            class="cursor-pointer text-sm text-slate-300"
+                                            >Non fumeur</label
+                                        >
+                                    </div>
+                                </div>
+                            </CollapsibleContent>
+                        </Collapsible>
+                    </div>
+                </Deferred>
             </aside>
 
             <!-- Main Content -->
@@ -432,7 +468,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue';
-import { Head, router } from '@inertiajs/vue3';
+import { Head, router, Deferred } from '@inertiajs/vue3';
 import axios from 'axios';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Card } from '@/components/ui/card';
@@ -441,6 +477,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
     Select,
     SelectContent,
@@ -453,6 +490,7 @@ import {
     ChevronLeft,
     Star,
     Car as CarIcon,
+    Search,
 } from 'lucide-vue-next';
 import vehiclesRoutes from '@/routes/vehicles';
 
@@ -510,6 +548,123 @@ const FilterSelect = defineComponent({
                                     h(
                                         SelectItem,
                                         { key: o.id, value: String(o.id) },
+                                        () => o[props.optionLabel],
+                                    ),
+                                ),
+                            ],
+                        ),
+                    ],
+                ),
+            ]);
+    },
+});
+
+// FilterSearchSelect – a labelled Select with search input to handle large lists
+const FilterSearchSelect = defineComponent({
+    props: {
+        label: String,
+        modelValue: String,
+        options: { type: Array as () => any[], default: () => [] },
+        optionLabel: { type: String, default: 'code' },
+        placeholder: { type: String, default: 'Tous' },
+        disabled: { type: Boolean, default: false },
+    },
+    emits: ['update:modelValue'],
+    setup(props, { emit }) {
+        const searchQuery = ref('');
+
+        const filteredOptions = computed(() => {
+            const query = searchQuery.value.toLowerCase().trim();
+            if (!query) return props.options;
+            return props.options.filter((o: any) =>
+                o[props.optionLabel]?.toLowerCase().includes(query),
+            );
+        });
+
+        return () =>
+            h('div', { class: 'space-y-3' }, [
+                h(
+                    Label,
+                    { class: 'text-sm font-semibold text-slate-200' },
+                    () => props.label,
+                ),
+                h(
+                    Select,
+                    {
+                        modelValue: props.modelValue,
+                        'onUpdate:modelValue': (v: string) => {
+                            emit('update:modelValue', v);
+                        },
+                        disabled: props.disabled,
+                    },
+                    () => [
+                        h(
+                            SelectTrigger,
+                            {
+                                class: 'w-full border-slate-700 bg-slate-800 text-white disabled:opacity-50',
+                            },
+                            () =>
+                                h(SelectValue, {
+                                    placeholder: props.placeholder,
+                                }),
+                        ),
+                        h(
+                            SelectContent,
+                            {
+                                class: 'border-slate-700 bg-slate-800 text-white',
+                            },
+                            () => [
+                                // Search input (non-selectable)
+                                h(
+                                    'div',
+                                    {
+                                        class: 'sticky top-0 z-10 border-b border-slate-700 bg-slate-800 p-2',
+                                    },
+                                    [
+                                        h(
+                                            'div',
+                                            {
+                                                class: 'flex items-center gap-2 rounded-md border border-slate-600 bg-slate-900 px-2',
+                                            },
+                                            [
+                                                h(Search, {
+                                                    class: 'h-3.5 w-3.5 shrink-0 text-slate-400',
+                                                }),
+                                                h('input', {
+                                                    type: 'text',
+                                                    class: 'h-8 w-full bg-transparent text-sm text-white placeholder-slate-400 outline-none',
+                                                    placeholder:
+                                                        'Rechercher...',
+                                                    value: searchQuery.value,
+                                                    onInput: (e: any) => {
+                                                        searchQuery.value =
+                                                            e.target.value;
+                                                    },
+                                                    onClick: (e: Event) => {
+                                                        e.stopPropagation();
+                                                    },
+                                                    onPointerdown: (
+                                                        e: Event,
+                                                    ) => {
+                                                        e.stopPropagation();
+                                                    },
+                                                }),
+                                            ],
+                                        ),
+                                    ],
+                                ),
+                                h(
+                                    SelectItem,
+                                    { value: 'all' },
+                                    () => props.placeholder,
+                                ),
+                                ...filteredOptions.value.map((o: any) =>
+                                    h(
+                                        SelectItem,
+                                        {
+                                            key: o.id,
+                                            value: String(o.id),
+                                        },
                                         () => o[props.optionLabel],
                                     ),
                                 ),
@@ -644,12 +799,12 @@ interface PaginationData {
 
 const props = defineProps<{
     ads: PaginationData;
-    brands: any[];
-    fuelTypes: any[];
-    bodyTypes: any[];
-    transmissionTypes: any[];
-    exteriorColors: any[];
-    euroNorms: any[];
+    brands?: any[];
+    fuelTypes?: any[];
+    bodyTypes?: any[];
+    transmissionTypes?: any[];
+    exteriorColors?: any[];
+    euroNorms?: any[];
     filters?: Record<string, any>;
 }>();
 
