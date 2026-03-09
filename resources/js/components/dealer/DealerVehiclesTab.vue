@@ -38,7 +38,7 @@ import {
     PaginationPrevious,
 } from '@/components/ui/pagination';
 import { router, Link } from '@inertiajs/vue3';
-import { dealer_dashboard } from '@/routes';
+import dealer_dashboard from '@/routes/dealer_dashboard';
 import {
     show as vehicleShow,
     edit as vehicleEdit,
@@ -312,9 +312,11 @@ const toggleStatus = (ad: any, checked: boolean) => {
                     @update:page="
                         (p) =>
                             router.get(
-                                dealer_dashboard({
-                                    page: p,
-                                    search: searchQuery,
+                                dealer_dashboard.index.url({
+                                    query: {
+                                        page: p,
+                                        search: searchQuery,
+                                    },
                                 }),
                                 {},
                                 { preserveState: true },

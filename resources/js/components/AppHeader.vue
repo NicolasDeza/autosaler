@@ -45,13 +45,8 @@ import { getInitials } from '@/composables/useInitials';
 import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
 import { toUrl } from '@/lib/utils';
-import {
-    admin_dashboard,
-    dealer_dashboard,
-    dashboard,
-    login,
-    register,
-} from '@/routes';
+import { admin_dashboard, dashboard, login, register } from '@/routes';
+import dealer_dashboard from '@/routes/dealer_dashboard';
 import vehicles from '@/routes/vehicles';
 
 import type { BreadcrumbItem, NavItem } from '@/types';
@@ -107,7 +102,7 @@ const mainNavItems = computed<NavItem[]>(() => {
     if (can('view_dealer_dashboard')) {
         items.push({
             title: __('nav.dealer_panel'),
-            href: dealer_dashboard(),
+            href: dealer_dashboard.index(),
             icon: Shield,
         });
     }

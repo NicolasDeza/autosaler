@@ -15,7 +15,7 @@ class DealerDashboardController extends Controller
             ->where('user_id', auth()->id())
             ->paginate(10);
 
-        return Inertia::render('DealerDashboard', [
+        return Inertia::render('DealerDashboard/Index', [
             'ads' => $ads
         ]);
     }

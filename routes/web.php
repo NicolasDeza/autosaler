@@ -3,6 +3,7 @@
 use App\Http\Controllers\VehicleAdController;
 use App\Http\Controllers\VehicleModelController;
 use App\Http\Controllers\VehicleVersionController;
+use App\Http\Controllers\DealerDashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -37,9 +38,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         })->name('admin_dashboard');
     });
 
-    Route::middleware('permission:view_dealer_dashboard')->group(function () {
-        Route::get('/dealer/dashboard', [\App\Http\Controllers\DealerDashboardController::class, 'index'])
-            ->name('dealer_dashboard');
+    Route::middleware('permission:view_dealer_dashboard')->prefix('dealer')->name('dealer_dashboard.')->group(function () {
+        Route::get('/dashboard', [DealerDashboardController::class, 'index'])
+            ->name('index');
     });
 
     // Route::middleware('role:admin')->group(function () {

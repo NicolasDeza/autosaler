@@ -1,7 +1,7 @@
 <template>
     <Head title="Dealer Dashboard" />
 
-    <AppLayout>
+    <AppLayout :breadcrumbs="breadcrumbs">
         <div
             class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-6"
         >
@@ -51,6 +51,19 @@ import { Download, Printer, Plus } from 'lucide-vue-next';
 import { create as vehicleCreate } from '@/routes/vehicles';
 import DealerOverviewTab from '@/components/dealer/DealerOverviewTab.vue';
 import DealerVehiclesTab from '@/components/dealer/DealerVehiclesTab.vue';
+import type { BreadcrumbItem } from '@/types';
+import dealer_dashboard from '@/routes/dealer_dashboard'; // Adjust the import based on wayfinder output
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Dealer Dashboard',
+        href: dealer_dashboard.index
+            ? dealer_dashboard.index.url()
+            : (dealer_dashboard as any).url
+              ? (dealer_dashboard as any).url()
+              : '/dealer/dashboard',
+    },
+];
 
 interface Props {
     ads: any;
