@@ -37,7 +37,6 @@ defineProps<{
     <HomeSearchFilter />
     <RecentVehiclesSection :vehicles="recentVehicles" />
     <BrandsSection />
-    <BentoGrid />
     <PriceCard />
   </AppLayout>
 </template>
