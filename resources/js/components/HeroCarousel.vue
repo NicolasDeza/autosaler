@@ -132,22 +132,17 @@ onUnmounted(() => {
   </div>
 
   <!-- Contenu centré -->
-  <div class="absolute inset-0 z-10 flex items-center justify-center px-6">
+  <div class="absolute inset-0 z-10 flex items-center justify-center px-6 pb-32 sm:pb-40">
     <div
       class="w-full max-w-3xl text-center transition-all duration-500 ease-out"
       :class="transitioning ? 'opacity-0 translate-y-6 blur-sm' : 'opacity-100 translate-y-0 blur-none'"
       aria-live="polite"
       aria-atomic="true"
     >
-      <!-- Tag -->
-      <div class="inline-flex items-center gap-3 mb-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-2">
-        <span class="h-px w-6 bg-red-500 block shrink-0"></span>
-        <span class="text-red-500 text-xs font-bold tracking-[0.25em] uppercase">AutoSaler</span>
-        <span class="h-px w-6 bg-red-500 block shrink-0"></span>
-      </div>
+
 
       <!-- Titre -->
-      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.05] mb-5">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.05] mb-5">
         {{ slides[current].title }}
       </h1>
 
@@ -202,27 +197,6 @@ onUnmounted(() => {
       <path d="M8 5v14l11-7z"/>
     </svg>
   </button>
-
-  <!-- Barres de progression + compteur -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
-    <button
-      v-for="(slide, i) in slides"
-      :key="'bar-'+i"
-      @click="goTo(i)"
-      :aria-label="`${__('hero.go_to_slide')} ${i + 1}`"
-      :aria-current="i === current ? 'true' : undefined"
-      class="relative h-0.5 cursor-pointer overflow-hidden rounded-full transition-all duration-300"
-      :class="i === current ? 'w-16 bg-white/20' : 'w-8 bg-white/20 hover:bg-white/40'"
-    >
-      <div
-        v-if="i === current"
-        class="absolute inset-0 bg-red-500 origin-left"
-        :style="{ animation: 'progress 5s linear forwards' }"
-      ></div>
-      <div v-else-if="i < current" class="absolute inset-0 bg-white/50"></div>
-    </button>
-    <span class="text-white/40 text-xs font-mono">{{ String(current + 1).padStart(2, '0') }} / {{ String(slides.length).padStart(2, '0') }}</span>
-  </div>
 
 </div>
 </template>

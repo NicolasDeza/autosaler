@@ -121,15 +121,15 @@ const legalItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
         {
             title: __('nav.legal_notices'),
-            href: 'legal/notices',
+            href: '/legal/notices',
         },
         {
             title: __('nav.privacy_policy'),
-            href: 'legal/privacy',
+            href: '/legal/privacy',
         },
         {
             title: __('nav.cookie_policy'),
-            href: 'legal/cookies',
+            href: '/legal/cookies',
         },
     ];
 

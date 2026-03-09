@@ -1,14 +1,21 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SubscriptionInquiryController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Laravel\Fortify\Features;
 
-Route::get('/', function () {
-    return Inertia::render('Index', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('home');
+// Page d'accueil (Home page)
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::post('/subscription-inquiry', SubscriptionInquiryController::class)->name('subscription.inquiry');
+
+// Pages légales
+Route::prefix('legal')->name('legal.')->group(function () {
+    Route::get('/notices', fn () => Inertia::render('legal/LegalNotice'))->name('notices');
+    Route::get('/privacy', fn () => Inertia::render('legal/PrivacyPolicy'))->name('privacy');
+    Route::get('/cookies', fn () => Inertia::render('legal/Cookies'))->name('cookies');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
@@ -73,4 +80,4 @@ Route::post('/locale', function (\Illuminate\Http\Request $request) {
     ]);
 });
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';
