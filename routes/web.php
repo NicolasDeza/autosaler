@@ -1,8 +1,18 @@
 <?php
 
+use App\Http\Controllers\VehicleAdController;
+use App\Http\Controllers\VehicleModelController;
+use App\Http\Controllers\VehicleVersionController;
+use App\Http\Controllers\DealerDashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
+
+Route::get('/vehicle-models', [VehicleModelController::class, 'index'])->name('vehicle-models.index');
+Route::get('/vehicle-versions', [VehicleVersionController::class, 'index'])->name('vehicle-versions.index');
+
+Route::get('/vehicles', [VehicleAdController::class, 'index'])->name('vehicles.index');
+Route::get('/vehicles/{vehicleAd}', [VehicleAdController::class, 'show'])->name('vehicles.show')->whereNumber('vehicleAd');
 
 Route::get('/', function () {
     return Inertia::render('Index', [
@@ -15,14 +25,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    // Route::get('/seller/dashboard', function () {
-    //     return Inertia::render('SellerDashboard');
-    // })->name('seller.dashboard');
+    Route::get('/vehicles/create', [VehicleAdController::class, 'create'])->name('vehicles.create');
+    Route::post('/vehicles', [VehicleAdController::class, 'store'])->name('vehicles.store');
+    Route::get('/vehicles/{vehicleAd}/edit', [VehicleAdController::class, 'edit'])->name('vehicles.edit');
+    Route::put('/vehicles/{vehicleAd}', [VehicleAdController::class, 'update'])->name('vehicles.update');
+    Route::patch('/vehicles/{vehicleAd}/status', [VehicleAdController::class, 'updateStatus'])->name('vehicles.update_status');
+    Route::delete('/vehicles/{vehicleAd}', [VehicleAdController::class, 'destroy'])->name('vehicles.destroy');
 
     Route::middleware('permission:view_admin_dashboard')->group(function () {
-        Route::get('/admindashboard', function () {
+        Route::get('/admin/dashboard', function () {
             return Inertia::render('AdminDashboard');
         })->name('admin_dashboard');
+    });
+
+    Route::middleware('permission:view_dealer_dashboard')->prefix('dealer')->name('dealer_dashboard.')->group(function () {
+        Route::get('/dashboard', [DealerDashboardController::class, 'index'])
+            ->name('index');
     });
 
     // Route::middleware('role:admin')->group(function () {
@@ -73,4 +91,4 @@ Route::post('/locale', function (\Illuminate\Http\Request $request) {
     ]);
 });
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';

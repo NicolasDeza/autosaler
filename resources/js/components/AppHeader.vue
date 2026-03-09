@@ -8,6 +8,7 @@ import {
     Menu,
     Search,
     Shield,
+    Car,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
@@ -45,6 +46,8 @@ import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
 import { toUrl } from '@/lib/utils';
 import { admin_dashboard, dashboard, login, register } from '@/routes';
+import dealer_dashboard from '@/routes/dealer_dashboard';
+import vehicles from '@/routes/vehicles';
 
 import type { BreadcrumbItem, NavItem } from '@/types';
 import type { ExtendedPageProps } from '@/types/inertia';
@@ -77,6 +80,11 @@ const mainNavItems = computed<NavItem[]>(() => {
             icon: Home,
         },
         {
+            title: 'Véhicules',
+            href: vehicles.index(),
+            icon: Car,
+        },
+        {
             title: __('nav.nav_dashboard'),
             href: dashboard(),
             icon: LayoutGrid,
@@ -87,6 +95,14 @@ const mainNavItems = computed<NavItem[]>(() => {
         items.push({
             title: __('nav.admin_panel'),
             href: admin_dashboard(),
+            icon: Shield,
+        });
+    }
+
+    if (can('view_dealer_dashboard')) {
+        items.push({
+            title: __('nav.dealer_panel'),
+            href: dealer_dashboard.index(),
             icon: Shield,
         });
     }

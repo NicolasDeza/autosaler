@@ -15,17 +15,18 @@ return new class extends Migration
             $table->id();
 
             $table->string('name')->index();
+            $table->string('email')->unique();
             $table->string('tva_number')->nullable();
             $table->string('phone')->nullable();
-            $table->string('adress');
+            $table->string('address');
 
             $table->foreignId('country_id')
-                  ->constrained('countries')
-                   ->restrictOnDelete();
+                ->constrained('countries')
+                ->restrictOnDelete();
 
             $table->foreignId('city_id')
-                  ->constrained('cities')
-                  ->restrictOnDelete();
+                ->constrained('cities')
+                ->restrictOnDelete();
 
             $table->timestamps();
 
