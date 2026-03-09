@@ -16,7 +16,7 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '../../../label';
+import { Label } from '@/components/ui/label';
 import { useTranslation } from '@/composables/useTranslation';
 
 const passwordInput = useTemplateRef('passwordInput');
