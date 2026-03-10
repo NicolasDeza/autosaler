@@ -115,6 +115,21 @@ class VehicleAdController extends Controller
             $query->where('non_smoker', $request->non_smoker === '1');
         }
 
+        if ($request->filled('city')) {
+            $query->whereHas('user.company.city', function ($q) use ($request) {
+                $q->where('code', 'LIKE', '%'.$request->city.'%')
+                    ->orWhere('zip_code', 'LIKE', '%'.$request->city.'%');
+
+                $tokens = explode(' ', $request->city);
+                if (count($tokens) > 1) {
+                    $q->orWhere(function ($sq) use ($tokens) {
+                        $sq->where('zip_code', 'LIKE', '%'.$tokens[0].'%')
+                            ->where('code', 'LIKE', '%'.implode(' ', array_slice($tokens, 1)).'%');
+                    });
+                }
+            });
+        }
+
         $ads = $query->simplePaginate(15);
 
         return Inertia::render('VehicleAds/Index', [
@@ -132,6 +147,7 @@ class VehicleAdController extends Controller
                 'exterior_color_id', 'euro_norm_id',
                 'doors', 'seats',
                 'is_damaged', 'has_accident', 'complete_maintenance_book', 'non_smoker',
+                'city',
             ]),
         ]);
     }

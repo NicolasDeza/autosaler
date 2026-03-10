@@ -11,7 +11,7 @@ return [
     'year_label' => '1ère immatriculation',
     'year_placeholder' => '1ère immatriculation',
     'location_label' => 'Localisation',
-    'location_placeholder' => 'Ville / CP',
+    'location_placeholder' => 'Emplacement',
     'search_button' => 'Rechercher',
     'more_criteria' => 'PLUS DE CRITÈRES (KILOMÉTRAGE, ÉNERGIE...)',
 ];

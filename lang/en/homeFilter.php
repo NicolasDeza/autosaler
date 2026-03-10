@@ -11,7 +11,7 @@ return [
     'year_label' => 'First registration',
     'year_placeholder' => 'First registration',
     'location_label' => 'Location',
-    'location_placeholder' => 'City / Zip',
+    'location_placeholder' => 'Location',
     'search_button' => 'Search',
     'more_criteria' => 'MORE CRITERIA (MILEAGE, FUEL...)',
 ];
