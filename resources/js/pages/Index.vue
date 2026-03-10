@@ -1,41 +1,46 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3'
-import BrandsSection from '@/components/BrandsSection.vue'
-import HeroSection from '@/components/HeroSection.vue'
-import HomeSearchFilter from '@/components/HomeSearchFilter.vue'
-import PriceCard from '@/components/PriceCard.vue'
-import RecentVehiclesSection from '@/components/RecentVehiclesSection.vue'
-import AppLayout from '@/layouts/AppLayout.vue'
-
+import { Head, Deferred } from '@inertiajs/vue3';
+import BrandsSection from '@/components/BrandsSection.vue';
+import HeroSection from '@/components/HeroSection.vue';
+import HomeSearchFilter from '@/components/HomeSearchFilter.vue';
+import PriceCard from '@/components/PriceCard.vue';
+import RecentVehiclesSection from '@/components/RecentVehiclesSection.vue';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 interface Vehicle {
-  id: number
-  price: string
-  mileage: number
-  first_registration_date: string | null
-  brand: { id: number; name: string } | null
-  model: { id: number; name: string } | null
-  fuel_type: { id: number; code: string } | null
-  transmission_type: { id: number; code: string } | null
-  user: { company: { name: string } | null } | null
+    id: number;
+    price: string;
+    mileage: number;
+    first_registration_date: string | null;
+    brand: { id: number; name: string } | null;
+    model: { id: number; name: string } | null;
+    fuel_type: { id: number; code: string } | null;
+    transmission_type: { id: number; code: string } | null;
+    user: { company: { name: string } | null } | null;
 }
 
 defineProps<{
-  canRegister: boolean
-  recentVehicles: Vehicle[]
-}>()
+    canRegister: boolean;
+    recentVehicles: Vehicle[];
+    brands?: any[];
+}>();
 </script>
 
 <template>
     <Head title="Autosaler" />
 
-  <AppLayout>
-    <template #full-width>
-      <HeroSection />
-    </template>
-    <HomeSearchFilter />
-    <RecentVehiclesSection :vehicles="recentVehicles" />
-    <BrandsSection />
-    <PriceCard />
-  </AppLayout>
+    <AppLayout>
+        <template #full-width>
+            <HeroSection />
+        </template>
+        <Deferred data="brands">
+            <template #fallback>
+                <HomeSearchFilter :brands="[]" />
+            </template>
+            <HomeSearchFilter :brands="brands" />
+        </Deferred>
+        <RecentVehiclesSection :vehicles="recentVehicles" />
+        <BrandsSection />
+        <PriceCard />
+    </AppLayout>
 </template>

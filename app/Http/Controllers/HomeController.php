@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\VehicleAd;
+use App\Models\VehicleBrand;
 use Inertia\Inertia;
 use Inertia\Response;
 use Laravel\Fortify\Features;
@@ -21,6 +22,7 @@ class HomeController extends Controller
         return Inertia::render('Index', [
             'canRegister' => Features::enabled(Features::registration()),
             'recentVehicles' => $recentVehicles,
+            'brands' => Inertia::defer(fn () => VehicleBrand::orderBy('name')->get(['id', 'name']))->once(),
         ]);
     }
 }
