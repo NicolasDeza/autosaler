@@ -23,33 +23,38 @@ class VehicleAdFactory extends Factory
 {
     public function definition(): array
     {
-        $brand = VehicleBrand::firstOrCreate(['name' => 'Volkswagen']);
-        $model = VehicleModel::firstOrCreate(['brand_id' => $brand->id, 'name' => 'Golf']);
+        $brand = VehicleBrand::inRandomOrder()->first() ?? VehicleBrand::firstOrCreate(['name' => 'Volkswagen']);
+        $model = VehicleModel::where('brand_id', $brand->id)->inRandomOrder()->first() ?? VehicleModel::firstOrCreate(['brand_id' => $brand->id, 'name' => 'Golf']);
 
-        $fuelType = FuelType::firstOrCreate(['code' => 'petrol'], ['sort_order' => 1, 'is_active' => true]);
-        $bodyType = BodyType::firstOrCreate(['code' => 'hatchback'], ['sort_order' => 2, 'is_active' => true]);
-        $transmissionType = TransmissionType::firstOrCreate(['code' => 'manual'], ['sort_order' => 1, 'is_active' => true]);
-        $euroNorm = EuroNorm::firstOrCreate(['code' => 'euro_6d'], ['sort_order' => 9, 'is_active' => true]);
-        $exteriorColor = ExteriorColor::firstOrCreate(['code' => 'gray'], ['sort_order' => 3, 'is_active' => true]);
-        $interiorColor = InteriorColor::firstOrCreate(['code' => 'black'], ['sort_order' => 1, 'is_active' => true]);
-        $interiorType = InteriorType::firstOrCreate(['code' => 'fabric'], ['sort_order' => 1, 'is_active' => true]);
+        $fuelType = FuelType::inRandomOrder()->first() ?? FuelType::firstOrCreate(['code' => 'petrol'], ['sort_order' => 1, 'is_active' => true]);
+        $bodyType = BodyType::inRandomOrder()->first() ?? BodyType::firstOrCreate(['code' => 'hatchback'], ['sort_order' => 2, 'is_active' => true]);
+        $transmissionType = TransmissionType::inRandomOrder()->first() ?? TransmissionType::firstOrCreate(['code' => 'manual'], ['sort_order' => 1, 'is_active' => true]);
+        $euroNorm = EuroNorm::inRandomOrder()->first() ?? EuroNorm::firstOrCreate(['code' => 'euro_6d'], ['sort_order' => 9, 'is_active' => true]);
+        $exteriorColor = ExteriorColor::inRandomOrder()->first() ?? ExteriorColor::firstOrCreate(['code' => 'gray'], ['sort_order' => 3, 'is_active' => true]);
+        $interiorColor = InteriorColor::inRandomOrder()->first() ?? InteriorColor::firstOrCreate(['code' => 'black'], ['sort_order' => 1, 'is_active' => true]);
+        $interiorType = InteriorType::inRandomOrder()->first() ?? InteriorType::firstOrCreate(['code' => 'fabric'], ['sort_order' => 1, 'is_active' => true]);
 
-        $version = VehicleVersion::firstOrCreate(
-            ['model_id' => $model->id, 'name' => '1.5 TSI 130 ch'],
+        $engines = ['1.0 TSI 110ch', '1.5 TSI 130ch', '1.5 TSI 150ch', '2.0 TDI 150ch', '2.0 TDI 200ch', 'Hybrid 204ch', 'Electric 204ch'];
+        $trims = ['Life', 'Style', 'R-Line', 'Business', 'Performance', 'Executive', 'Lounge'];
+        
+        $randomEngine = fake()->randomElement($engines);
+        $randomTrim = fake()->randomElement($trims);
+        $versionName = "{$randomEngine} {$randomTrim}";
+
+        $version = VehicleVersion::where('model_id', $model->id)->inRandomOrder()->first() ?? VehicleVersion::firstOrCreate(
+            ['model_id' => $model->id, 'name' => $versionName],
             [
-                'model_id' => $model->id,
-                'name' => '1.5 TSI 130 ch',
-                'start_year' => 2020,
+                'start_year' => fake()->numberBetween(2018, 2024),
                 'body_type_id' => $bodyType->id,
                 'fuel_type_id' => $fuelType->id,
                 'transmission_type_id' => $transmissionType->id,
                 'euro_norm_id' => $euroNorm->id,
-                'power_kw' => 96,
-                'engine_displacement' => 1498,
+                'power_kw' => fake()->numberBetween(80, 150),
+                'engine_displacement' => fake()->numberBetween(999, 1998),
                 'cylinder_count' => 4,
-                'fuel_consumption_avg' => 6.1,
-                'co2_emission' => 140,
-                'gear_count' => 6,
+                'fuel_consumption_avg' => fake()->randomFloat(1, 4.5, 7.5),
+                'co2_emission' => fake()->numberBetween(95, 160),
+                'gear_count' => fake()->randomElement([5, 6, 7, 8]),
             ]
         );
 
@@ -59,6 +64,7 @@ class VehicleAdFactory extends Factory
             'brand_id' => $brand->id,
             'model_id' => $model->id,
             'vehicle_version_id' => $version->id,
+            'vehicle_version_name' => $version->name,
             'exterior_color_id' => $exteriorColor->id,
             'exterior_color_metalised' => false,
             'interior_color_id' => $interiorColor->id,
@@ -85,7 +91,6 @@ class VehicleAdFactory extends Factory
             'complete_maintenance_book' => true,
             'non_smoker' => true,
             'vin' => strtoupper(Str::random(17)),
-            'registration_number' => strtoupper(fake()->bothify('??-###-??')),
             'first_registration_date' => fake()->dateTimeBetween('-10 years', '-1 year')->format('Y-m-d'),
             'purchase_date' => fake()->dateTimeBetween('-2 years', 'now')->format('Y-m-d'),
             'description' => fake()->paragraph(),

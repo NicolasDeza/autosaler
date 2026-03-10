@@ -1,51 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationFirst,
-    PaginationItem,
-    PaginationLast,
-    PaginationNext,
-    PaginationPrevious,
-} from '@/components/ui/pagination';
 import { router, Link } from '@inertiajs/vue3';
-import dealer_dashboard from '@/routes/dealer_dashboard';
-import {
-    show as vehicleShow,
-    edit as vehicleEdit,
-    destroy as vehicleDestroy,
-    update_status as vehicleUpdateStatus,
-} from '@/routes/vehicles';
-
 import {
     MoreHorizontal,
     Eye,
@@ -55,6 +9,41 @@ import {
     Image as ImageIcon,
     Search,
 } from 'lucide-vue-next';
+import { ref } from 'vue';
+import AppPagination from '@/components/AppPagination.vue';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
+import dealer_dashboard from '@/routes/dealer_dashboard';
+import {
+    show as vehicleShow,
+    edit as vehicleEdit,
+    destroy as vehicleDestroy,
+    update_status as vehicleUpdateStatus,
+} from '@/routes/vehicles';
 
 interface Props {
     ads: any; // Ideally mapped to PaginatedResource<VehicleAd>
@@ -63,6 +52,34 @@ interface Props {
 const props = defineProps<Props>();
 
 const searchQuery = ref('');
+
+const handlePageChange = (p: number) => {
+    router.get(
+        dealer_dashboard.index.url({
+            query: {
+                page: p,
+                per_page: props.ads.per_page,
+                search: searchQuery.value,
+            },
+        }),
+        {},
+        { preserveState: true },
+    );
+};
+
+const handlePerPageChange = (pp: string) => {
+    router.get(
+        dealer_dashboard.index.url({
+            query: {
+                page: 1,
+                per_page: pp,
+                search: searchQuery.value,
+            },
+        }),
+        {},
+        { preserveState: true },
+    );
+};
 
 // Format currency
 const formatPrice = (price: number) => {
@@ -105,7 +122,7 @@ const toggleStatus = (ad: any, checked: boolean) => {
                             v-model="searchQuery"
                         />
                         <span
-                            class="absolute inset-y-0 start-0 flex items-center justify-center px-3"
+                            class="absolute inset-y-0 inset-s-0 flex items-center justify-center px-3"
                         >
                             <Search class="h-4 w-4 text-muted-foreground" />
                         </span>
@@ -151,10 +168,7 @@ const toggleStatus = (ad: any, checked: boolean) => {
                                         </div>
                                         <div>
                                             <div class="font-medium">
-                                                #{{
-                                                    ad.id ||
-                                                    ad.registration_number
-                                                }}
+                                                #{{ ad.id }}
                                             </div>
                                             <div
                                                 class="flex items-center gap-1 text-xs text-muted-foreground"
@@ -294,55 +308,15 @@ const toggleStatus = (ad: any, checked: boolean) => {
                 </Table>
             </div>
 
-            <div
-                v-if="ads && ads.last_page > 1"
-                class="flex items-center justify-between border-t border-border/50 p-4"
-            >
-                <div class="text-sm text-muted-foreground">
-                    Affichage de {{ ads.from || 0 }} à
-                    {{ ads.to || 0 }} véhicules sur {{ ads.total || 0 }}
-                </div>
-                <Pagination
-                    v-slot="{ page }"
-                    :total="ads.total"
-                    :items-per-page="ads.per_page || 10"
-                    :sibling-count="1"
-                    show-edges
-                    :default-page="ads.current_page"
-                    @update:page="
-                        (p) =>
-                            router.get(
-                                dealer_dashboard.index.url({
-                                    query: {
-                                        page: p,
-                                        search: searchQuery,
-                                    },
-                                }),
-                                {},
-                                { preserveState: true },
-                            )
-                    "
-                >
-                    <PaginationContent v-slot="{ items }">
-                        <PaginationFirst />
-                        <PaginationPrevious />
-
-                        <template v-for="(item, index) in items" :key="index">
-                            <PaginationItem
-                                v-if="item.type === 'page'"
-                                :value="item.value"
-                                :is-active="item.value === ads.current_page"
-                            >
-                                {{ item.value }}
-                            </PaginationItem>
-                            <PaginationEllipsis v-else :index="index" />
-                        </template>
-
-                        <PaginationNext />
-                        <PaginationLast />
-                    </PaginationContent>
-                </Pagination>
-            </div>
+            <AppPagination
+                v-if="ads"
+                :pagination="ads"
+                :per-page="ads.per_page"
+                resource-label="véhicules"
+                @update:page="handlePageChange"
+                @update:per-page="handlePerPageChange"
+                class="border-t border-border/50 bg-transparent shadow-none"
+            />
         </CardContent>
     </Card>
 </template>

@@ -52,7 +52,6 @@ class VehicleAd extends Model
         'non_smoker',
 
         'vin',
-        'registration_number',
         'first_registration_date',
         'purchase_date',
 
