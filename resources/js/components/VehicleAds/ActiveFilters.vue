@@ -12,6 +12,8 @@ const props = defineProps<{
     transmissionTypes?: any[];
     exteriorColors?: any[];
     euroNorms?: any[];
+    interiorColors?: any[];
+    interiorTypes?: any[];
     models?: any[];
     currentYear: number;
 }>();
@@ -165,6 +167,30 @@ const activeFilters = computed(() => {
             key: 'euro_norm_id',
             label: `Norme Euro: ${norm?.code || v.euro_norm_id}`,
             onRemove: () => emit('updateFilter', 'euro_norm_id', 'all'),
+        });
+    }
+
+    // Interior color
+    if (v.interior_color_id && v.interior_color_id !== 'all') {
+        const color = props.interiorColors?.find(
+            (c: any) => String(c.id) === String(v.interior_color_id),
+        );
+        filters.push({
+            key: 'interior_color_id',
+            label: `Coul. Int.: ${color?.code || v.interior_color_id}`,
+            onRemove: () => emit('updateFilter', 'interior_color_id', 'all'),
+        });
+    }
+
+    // Interior type
+    if (v.interior_type_id && v.interior_type_id !== 'all') {
+        const type = props.interiorTypes?.find(
+            (t: any) => String(t.id) === String(v.interior_type_id),
+        );
+        filters.push({
+            key: 'interior_type_id',
+            label: `Mat. Int.: ${type?.code || v.interior_type_id}`,
+            onRemove: () => emit('updateFilter', 'interior_type_id', 'all'),
         });
     }
 

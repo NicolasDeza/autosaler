@@ -15,6 +15,8 @@
                 :transmission-types="transmissionTypes"
                 :exterior-colors="exteriorColors"
                 :euro-norms="euroNorms"
+                :interior-colors="interiorColors"
+                :interior-types="interiorTypes"
                 @reset-filters="resetFilters"
             />
 
@@ -36,6 +38,8 @@
                         :transmission-types="transmissionTypes"
                         :exterior-colors="exteriorColors"
                         :euro-norms="euroNorms"
+                        :interior-colors="interiorColors"
+                        :interior-types="interiorTypes"
                         :models="models"
                         :current-year="currentYear"
                         @reset-all="resetFilters"
@@ -213,6 +217,8 @@ const props = defineProps<{
     transmissionTypes?: any[];
     exteriorColors?: any[];
     euroNorms?: any[];
+    interiorColors?: any[];
+    interiorTypes?: any[];
     filters?: Record<string, any>;
 }>();
 
@@ -237,6 +243,10 @@ const form = reactive({
         ? String(f.exterior_color_id)
         : 'all',
     euro_norm_id: f.euro_norm_id ? String(f.euro_norm_id) : 'all',
+    interior_color_id: f.interior_color_id
+        ? String(f.interior_color_id)
+        : 'all',
+    interior_type_id: f.interior_type_id ? String(f.interior_type_id) : 'all',
     doors: f.doors ? String(f.doors) : 'all',
     seats: f.seats ? String(f.seats) : 'all',
     is_damaged:
@@ -318,6 +328,10 @@ const getFilterParams = () => {
         q.exterior_color_id = v.exterior_color_id;
     if (v.euro_norm_id && v.euro_norm_id !== 'all')
         q.euro_norm_id = v.euro_norm_id;
+    if (v.interior_color_id && v.interior_color_id !== 'all')
+        q.interior_color_id = v.interior_color_id;
+    if (v.interior_type_id && v.interior_type_id !== 'all')
+        q.interior_type_id = v.interior_type_id;
     if (v.doors && v.doors !== 'all') q.doors = v.doors;
     if (v.seats && v.seats !== 'all') q.seats = v.seats;
     if (v.is_damaged === true) q.is_damaged = '1';

@@ -69,6 +69,14 @@ class VehicleAdController extends Controller
             $query->where('euro_norm_id', $request->euro_norm_id);
         }
 
+        if ($request->filled('interior_color_id') && $request->interior_color_id !== 'all') {
+            $query->where('interior_color_id', $request->interior_color_id);
+        }
+
+        if ($request->filled('interior_type_id') && $request->interior_type_id !== 'all') {
+            $query->where('interior_type_id', $request->interior_type_id);
+        }
+
         // ── Scalar filters ──────────────────────────────────────
         if ($request->filled('min_price')) {
             $query->where('price', '>=', $request->min_price);
@@ -141,11 +149,14 @@ class VehicleAdController extends Controller
             'transmissionTypes' => Inertia::defer(fn () => TransmissionType::orderBy('code')->get(['id', 'code']), 'filters')->once(),
             'exteriorColors' => Inertia::defer(fn () => ExteriorColor::orderBy('code')->get(['id', 'code']), 'filters')->once(),
             'euroNorms' => Inertia::defer(fn () => EuroNorm::orderBy('code')->get(['id', 'code']), 'filters')->once(),
+            'interiorColors' => Inertia::defer(fn () => InteriorColor::orderBy('code')->get(['id', 'code']), 'filters')->once(),
+            'interiorTypes' => Inertia::defer(fn () => InteriorType::orderBy('code')->get(['id', 'code']), 'filters')->once(),
             'filters' => $request->only([
                 'brand_id', 'model_id', 'min_price', 'max_price',
                 'min_year', 'max_year', 'max_mileage',
                 'fuel_types', 'body_types', 'transmission_types',
                 'exterior_color_id', 'euro_norm_id',
+                'interior_color_id', 'interior_type_id',
                 'doors', 'seats',
                 'is_damaged', 'has_accident', 'complete_maintenance_book', 'non_smoker',
                 'city', 'per_page',

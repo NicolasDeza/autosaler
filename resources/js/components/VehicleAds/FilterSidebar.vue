@@ -18,6 +18,8 @@ defineProps<{
     transmissionTypes?: any[];
     exteriorColors?: any[];
     euroNorms?: any[];
+    interiorColors?: any[];
+    interiorTypes?: any[];
     models: any[];
 }>();
 
@@ -72,6 +74,8 @@ const handleUpdateModels = (models: any[]) => {
                         :transmission-types="transmissionTypes"
                         :exterior-colors="exteriorColors"
                         :euro-norms="euroNorms"
+                        :interior-colors="interiorColors"
+                        :interior-types="interiorTypes"
                         :models="models"
                         @update:models="handleUpdateModels"
                     />
@@ -108,6 +112,8 @@ const handleUpdateModels = (models: any[]) => {
                 :transmission-types="transmissionTypes"
                 :exterior-colors="exteriorColors"
                 :euro-norms="euroNorms"
+                :interior-colors="interiorColors"
+                :interior-types="interiorTypes"
                 :models="models"
                 @update:models="handleUpdateModels"
             />

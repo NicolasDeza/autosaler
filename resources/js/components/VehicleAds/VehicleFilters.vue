@@ -226,6 +226,8 @@ const props = defineProps<{
     transmissionTypes?: any[];
     exteriorColors?: any[];
     euroNorms?: any[];
+    interiorColors?: any[];
+    interiorTypes?: any[];
     models: any[];
 }>();
 
@@ -255,6 +257,12 @@ const isTransmissionActive = computed(
 );
 const isColorActive = computed(() => form.value.exterior_color_id !== 'all');
 const isEuroActive = computed(() => form.value.euro_norm_id !== 'all');
+const isInteriorColorActive = computed(
+    () => form.value.interior_color_id !== 'all',
+);
+const isInteriorTypeActive = computed(
+    () => form.value.interior_type_id !== 'all',
+);
 const isDoorsActive = computed(() => form.value.doors !== 'all');
 const isSeatsActive = computed(() => form.value.seats !== 'all');
 const isStatusActive = computed(
@@ -607,12 +615,41 @@ watch(
                 </FilterGroup>
 
                 <!-- Couleur extérieur -->
-                <FilterGroup label="Couleur" :is-active="isColorActive">
+                <FilterGroup
+                    label="Couleur extérieur"
+                    :is-active="isColorActive"
+                >
                     <FilterSelect
                         v-model="form.exterior_color_id"
                         :options="props.exteriorColors ?? []"
                         option-label="code"
                         placeholder="Toutes les couleurs"
+                    />
+                </FilterGroup>
+
+                <!-- Couleur intérieur -->
+                <FilterGroup
+                    label="Couleur intérieur"
+                    :is-active="isInteriorColorActive"
+                >
+                    <FilterSelect
+                        v-model="form.interior_color_id"
+                        :options="props.interiorColors ?? []"
+                        option-label="code"
+                        placeholder="Toutes les couleurs"
+                    />
+                </FilterGroup>
+
+                <!-- Matériaux intérieur -->
+                <FilterGroup
+                    label="Matériaux intérieur"
+                    :is-active="isInteriorTypeActive"
+                >
+                    <FilterSelect
+                        v-model="form.interior_type_id"
+                        :options="props.interiorTypes ?? []"
+                        option-label="code"
+                        placeholder="Tous les matériaux"
                     />
                 </FilterGroup>
 
