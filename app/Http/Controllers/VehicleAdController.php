@@ -130,7 +130,7 @@ class VehicleAdController extends Controller
             });
         }
 
-        $ads = $query->simplePaginate(15);
+        $ads = $query->paginate(15);
 
         return Inertia::render('VehicleAds/Index', [
             'ads' => $ads,

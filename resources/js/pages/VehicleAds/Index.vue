@@ -43,10 +43,7 @@
 
                     <div class="space-y-6">
                         <!-- Marque -->
-                        <FilterGroup
-                            label="Marque"
-                            :is-active="form.brand_id !== 'all'"
-                        >
+                        <FilterGroup label="Marque" :is-active="isBrandActive">
                             <FilterSearchSelect
                                 v-model="form.brand_id"
                                 :options="brands ?? []"
@@ -59,7 +56,7 @@
                         <!-- Modèle -->
                         <FilterGroup
                             label="Modèle"
-                            :is-active="form.model_id !== 'all'"
+                            :is-active="isModelActive"
                             :disabled="
                                 !form.brand_id ||
                                 form.brand_id === 'all' ||
@@ -82,7 +79,7 @@
                         <!-- Ville / CP -->
                         <FilterGroup
                             label="Emplacement"
-                            :is-active="!!form.city"
+                            :is-active="isLocationActive"
                         >
                             <div class="relative z-50 space-y-3">
                                 <div class="relative h-10 w-full">
@@ -140,12 +137,7 @@
                         </FilterGroup>
 
                         <!-- Prix -->
-                        <FilterGroup
-                            label="Prix"
-                            :is-active="
-                                form.min_price > 0 || form.max_price < 200000
-                            "
-                        >
+                        <FilterGroup label="Prix" :is-active="isPriceActive">
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <span class="text-xs text-slate-400">
@@ -170,11 +162,8 @@
 
                         <!-- Année -->
                         <FilterGroup
-                            label="Année"
-                            :is-active="
-                                form.min_year > 2000 ||
-                                form.max_year < currentYear
-                            "
+                            label="1ère immatriculation"
+                            :is-active="isYearActive"
                         >
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between">
@@ -197,7 +186,7 @@
                         <!-- Kilométrage -->
                         <FilterGroup
                             label="Kilométrage"
-                            :is-active="form.max_mileage !== 'all'"
+                            :is-active="isMileageActive"
                         >
                             <Select v-model="form.max_mileage">
                                 <SelectTrigger
@@ -236,9 +225,10 @@
                         <!-- Carburant -->
                         <FilterGroup
                             label="Carburant"
-                            :is-active="form.fuel_types.length > 0"
+                            :is-active="isFuelActive"
                         >
                             <FilterCheckboxGroup
+                                label="fuel"
                                 :options="fuelTypes ?? []"
                                 option-label="code"
                                 v-model="form.fuel_types"
@@ -248,9 +238,10 @@
                         <!-- Type de carrosserie -->
                         <FilterGroup
                             label="Carrosserie"
-                            :is-active="form.body_types.length > 0"
+                            :is-active="isBodyActive"
                         >
                             <FilterCheckboxGroup
+                                label="body"
                                 :options="bodyTypes ?? []"
                                 option-label="code"
                                 v-model="form.body_types"
@@ -260,9 +251,10 @@
                         <!-- Transmission -->
                         <FilterGroup
                             label="Transmission"
-                            :is-active="form.transmission_types.length > 0"
+                            :is-active="isTransmissionActive"
                         >
                             <FilterCheckboxGroup
+                                label="trans"
                                 :options="transmissionTypes ?? []"
                                 option-label="code"
                                 v-model="form.transmission_types"
@@ -272,7 +264,7 @@
                         <!-- Couleur extérieure -->
                         <FilterGroup
                             label="Couleur extérieure"
-                            :is-active="form.exterior_color_id !== 'all'"
+                            :is-active="isColorActive"
                         >
                             <FilterSelect
                                 v-model="form.exterior_color_id"
@@ -285,7 +277,7 @@
                         <!-- Norme Euro -->
                         <FilterGroup
                             label="Norme Euro"
-                            :is-active="form.euro_norm_id !== 'all'"
+                            :is-active="isEuroActive"
                         >
                             <FilterSelect
                                 v-model="form.euro_norm_id"
@@ -296,10 +288,7 @@
                         </FilterGroup>
 
                         <!-- Portes -->
-                        <FilterGroup
-                            label="Portes"
-                            :is-active="form.doors !== 'all'"
-                        >
+                        <FilterGroup label="Portes" :is-active="isDoorsActive">
                             <FilterSelect
                                 v-model="form.doors"
                                 :options="doorOptions"
@@ -309,10 +298,7 @@
                         </FilterGroup>
 
                         <!-- Sièges -->
-                        <FilterGroup
-                            label="Sièges"
-                            :is-active="form.seats !== 'all'"
-                        >
+                        <FilterGroup label="Sièges" :is-active="isSeatsActive">
                             <FilterSelect
                                 v-model="form.seats"
                                 :options="seatOptions"
@@ -322,15 +308,7 @@
                         </FilterGroup>
 
                         <!-- Booleans -->
-                        <FilterGroup
-                            label="État"
-                            :is-active="
-                                form.is_damaged !== null ||
-                                form.has_accident !== null ||
-                                form.complete_maintenance_book !== null ||
-                                form.non_smoker !== null
-                            "
-                        >
+                        <FilterGroup label="État" :is-active="isStatusActive">
                             <div class="space-y-2 pt-1">
                                 <div class="flex items-center space-x-2">
                                     <Checkbox
@@ -405,7 +383,31 @@
             </aside>
 
             <!-- Main Content -->
-            <main class="flex flex-1 flex-col gap-4">
+            <main class="flex flex-1 flex-col gap-6">
+                <!-- Filters Summary and Result Count -->
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-end justify-between">
+                        <h2 class="text-2xl font-bold text-slate-900">
+                            {{ ads.total }} véhicules trouvés
+                        </h2>
+                    </div>
+
+                    <ActiveFilters
+                        :form="form"
+                        :brands="brands"
+                        :fuel-types="fuelTypes"
+                        :body-types="bodyTypes"
+                        :transmission-types="transmissionTypes"
+                        :exterior-colors="exteriorColors"
+                        :euro-norms="euroNorms"
+                        :models="models"
+                        :current-year="currentYear"
+                        @reset-all="resetFilters"
+                        @update-filter="updateFilter"
+                        @update-price="onPriceChange"
+                        @update-year="onYearChange"
+                    />
+                </div>
                 <!-- Vehicles List -->
                 <div class="flex flex-col gap-4">
                     <Card
@@ -571,8 +573,10 @@ import {
     Search,
     MapPin,
 } from 'lucide-vue-next';
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, reactive } from 'vue';
 import { defineComponent, h } from 'vue';
+import ActiveFilters from '@/components/ActiveFilters.vue';
+import FilterCheckboxGroup from '@/components/FilterCheckboxGroup.vue';
 import FilterGroup from '@/components/FilterGroup.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -780,62 +784,6 @@ const FilterSearchSelect = defineComponent({
     },
 });
 
-// FilterCheckboxGroup – a labelled collapsible list of checkboxes
-const FilterCheckboxGroup = defineComponent({
-    props: {
-        label: String,
-        modelValue: { type: Array as () => string[], default: () => [] },
-        options: { type: Array as () => any[], default: () => [] },
-        optionLabel: { type: String, default: 'code' },
-    },
-    emits: ['update:modelValue'],
-    setup(props, { emit }) {
-        const toggle = (id: string, checked: boolean) => {
-            const current = [...props.modelValue];
-            if (checked && !current.includes(id)) {
-                current.push(id);
-            } else if (!checked) {
-                const idx = current.indexOf(id);
-                if (idx > -1) current.splice(idx, 1);
-            }
-            emit('update:modelValue', current);
-        };
-
-        return () =>
-            h(
-                'div',
-                { class: 'space-y-2 pt-2' },
-                props.options.map((o: any) =>
-                    h(
-                        'div',
-                        {
-                            key: o.id,
-                            class: 'flex items-center space-x-2',
-                        },
-                        [
-                            h(Checkbox, {
-                                id: `${props.label}-${o.id}`,
-                                checked: props.modelValue.includes(
-                                    String(o.id),
-                                ),
-                                'onUpdate:checked': (v: boolean) =>
-                                    toggle(String(o.id), v),
-                            }),
-                            h(
-                                'label',
-                                {
-                                    for: `${props.label}-${o.id}`,
-                                    class: 'cursor-pointer text-sm text-slate-300',
-                                },
-                                o[props.optionLabel],
-                            ),
-                        ],
-                    ),
-                ),
-            );
-    },
-});
-
 // ── Static option arrays ────────────────────────────────────────
 const doorOptions = [
     { id: '2', label: '2' },
@@ -874,12 +822,12 @@ const f = props.filters || {};
 const toArr = (v: any): string[] =>
     v ? (Array.isArray(v) ? v.map(String) : [String(v)]) : [];
 
-const form = ref({
+const form = reactive({
     brand_id: f.brand_id ? String(f.brand_id) : 'all',
     model_id: f.model_id ? String(f.model_id) : 'all',
     min_price: f.min_price ? Number(f.min_price) : 0,
     max_price: f.max_price ? Number(f.max_price) : 200000,
-    min_year: f.min_year ? Number(f.min_year) : 2000,
+    min_year: f.min_year ? Number(f.min_year) : 1980,
     max_year: f.max_year ? Number(f.max_year) : currentYear,
     max_mileage: f.max_mileage ? String(f.max_mileage) : 'all',
     fuel_types: toArr(f.fuel_types),
@@ -919,8 +867,34 @@ const form = ref({
     city: f.city ? String(f.city) : '',
 });
 
-const yearRange = ref([form.value.min_year, form.value.max_year]);
-const priceRange = ref([form.value.min_price, form.value.max_price]);
+const yearRange = ref([form.min_year, form.max_year]);
+const priceRange = ref([form.min_price, form.max_price]);
+
+// ── Visibility Computeds ────────────────────────────────────────
+const isBrandActive = computed(() => form.brand_id !== 'all');
+const isModelActive = computed(() => form.model_id !== 'all');
+const isLocationActive = computed(() => !!form.city);
+const isPriceActive = computed(
+    () => form.min_price > 0 || form.max_price < 200000,
+);
+const isYearActive = computed(
+    () => form.min_year > 1980 || form.max_year < currentYear,
+);
+const isMileageActive = computed(() => form.max_mileage !== 'all');
+const isFuelActive = computed(() => form.fuel_types.length > 0);
+const isBodyActive = computed(() => form.body_types.length > 0);
+const isTransmissionActive = computed(() => form.transmission_types.length > 0);
+const isColorActive = computed(() => form.exterior_color_id !== 'all');
+const isEuroActive = computed(() => form.euro_norm_id !== 'all');
+const isDoorsActive = computed(() => form.doors !== 'all');
+const isSeatsActive = computed(() => form.seats !== 'all');
+const isStatusActive = computed(
+    () =>
+        form.is_damaged !== null ||
+        form.has_accident !== null ||
+        form.complete_maintenance_book !== null ||
+        form.non_smoker !== null,
+);
 
 // ── On-demand data fetching ─────────────────────────────────────
 const models = ref<any[]>([]);
@@ -929,10 +903,10 @@ const versions = ref<any[]>([]);
 // Fetch models when brand changes
 let isInitialBrandLoad = true;
 watch(
-    () => form.value.brand_id,
+    () => form.brand_id,
     async (brandId) => {
         if (!isInitialBrandLoad) {
-            form.value.model_id = 'all';
+            form.model_id = 'all';
             versions.value = [];
         }
         isInitialBrandLoad = false;
@@ -950,7 +924,7 @@ watch(
 
 // Fetch versions when model changes
 watch(
-    () => form.value.model_id,
+    () => form.model_id,
     async (modelId) => {
         versions.value = [];
 
@@ -998,7 +972,7 @@ const searchCities = (query: string) => {
 };
 
 const selectCity = (city: any) => {
-    form.value.city = city.zip_code + ' ' + city.code;
+    form.city = city.zip_code + ' ' + city.code;
     showCities.value = false;
 };
 
@@ -1010,14 +984,20 @@ const handleCityBlur = () => {
 
 const onYearChange = (values: number[] | undefined) => {
     if (!values) return;
-    form.value.min_year = values[0];
-    form.value.max_year = values[1];
+    form.min_year = values[0];
+    form.max_year = values[1];
+    yearRange.value = [...values];
 };
 
 const onPriceChange = (values: number[] | undefined) => {
     if (!values) return;
-    form.value.min_price = values[0];
-    form.value.max_price = values[1];
+    form.min_price = values[0];
+    form.max_price = values[1];
+    priceRange.value = [...values];
+};
+
+const updateFilter = (key: keyof typeof form, value: any) => {
+    (form[key] as any) = value;
 };
 
 // ── Apply filters (debounced) ───────────────────────────────────
@@ -1027,7 +1007,8 @@ const applyFilters = () => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
         const q: Record<string, any> = {};
-        const v = form.value;
+        const v = form;
+        console.log('Applying filters:', v);
 
         if (v.brand_id && v.brand_id !== 'all') q.brand_id = v.brand_id;
         if (v.model_id && v.model_id !== 'all') q.model_id = v.model_id;
@@ -1037,10 +1018,10 @@ const applyFilters = () => {
         if (v.max_year < currentYear) q.max_year = v.max_year;
         if (v.max_mileage && v.max_mileage !== 'all')
             q.max_mileage = v.max_mileage;
-        if (v.fuel_types.length) q.fuel_types = v.fuel_types;
-        if (v.body_types.length) q.body_types = v.body_types;
+        if (v.fuel_types.length) q.fuel_types = [...v.fuel_types];
+        if (v.body_types.length) q.body_types = [...v.body_types];
         if (v.transmission_types.length)
-            q.transmission_types = v.transmission_types;
+            q.transmission_types = [...v.transmission_types];
         if (v.exterior_color_id && v.exterior_color_id !== 'all')
             q.exterior_color_id = v.exterior_color_id;
         if (v.euro_norm_id && v.euro_norm_id !== 'all')
@@ -1063,11 +1044,11 @@ const applyFilters = () => {
 };
 
 // Reactive: auto-apply when form changes
-watch(
-    () => form.value,
-    () => applyFilters(),
-    { deep: true },
-);
+watch(form, () => applyFilters(), { deep: true });
+
+watch(form, () => {
+    console.log('Form changed:', form);
+});
 
 const resetFilters = () => {
     clearTimeout(timeoutId);

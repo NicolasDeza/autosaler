@@ -33,7 +33,7 @@ withDefaults(defineProps<Props>(), {
             <div class="flex items-center gap-2">
                 <div
                     v-if="isActive"
-                    class="h-2 w-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"
+                    class="h-2 w-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"
                 />
                 <Label
                     class="cursor-pointer text-sm font-semibold text-slate-200 transition-colors group-hover:text-white"
