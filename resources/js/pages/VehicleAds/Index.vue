@@ -334,6 +334,15 @@ const updateFilter = (key: keyof typeof form, value: any) => {
 };
 
 // ── Apply filters (debounced) ───────────────────────────────────
+// ── Helper: Smooth Scroll to Top ─────────────────────────────
+const scrollToTop = () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+    });
+};
+
+// ── Apply filters (debounced) ───────────────────────────────────
 let timeoutId: ReturnType<typeof setTimeout>;
 
 const getFilterParams = () => {
@@ -371,27 +380,28 @@ const getFilterParams = () => {
     return q;
 };
 
-const applyFilters = (resetPage = true) => {
+const applyFilters = (scroll = false) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
         const q = getFilterParams();
-        if (resetPage) {
-            delete q.page;
+        if (scroll) {
+            scrollToTop();
         }
         router.get(vehiclesRoutes.index.url(), q, {
             preserveState: true,
             replace: true,
-            preserveScroll: false,
+            preserveScroll: true,
         });
     }, 400);
 };
 
 const handlePageChange = (p: number) => {
     const q = { ...getFilterParams(), page: p };
+    scrollToTop();
     router.get(vehiclesRoutes.index.url(), q, {
         preserveState: true,
         replace: true,
-        preserveScroll: false,
+        preserveScroll: true,
     });
 };
 
@@ -400,12 +410,13 @@ watch(form, () => applyFilters(true), { deep: true });
 
 const resetFilters = () => {
     clearTimeout(timeoutId);
+    scrollToTop();
     router.get(
         vehiclesRoutes.index.url(),
         {},
         {
             preserveState: false,
-            preserveScroll: false,
+            preserveScroll: true,
         },
     );
 };
