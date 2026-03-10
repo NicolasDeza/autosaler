@@ -84,7 +84,7 @@
                             label="Emplacement"
                             :is-active="!!form.city"
                         >
-                            <div class="relative space-y-3">
+                            <div class="relative z-50 space-y-3">
                                 <div class="relative h-10 w-full">
                                     <MapPin
                                         :size="14"

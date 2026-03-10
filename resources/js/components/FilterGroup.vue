@@ -47,7 +47,7 @@ withDefaults(defineProps<Props>(), {
         </CollapsibleTrigger>
         <CollapsibleContent
             force-mount
-            class="overflow-hidden transition-all data-[state=closed]:hidden"
+            class="transition-all data-[state=closed]:hidden"
         >
             <div class="pt-1">
                 <slot />
