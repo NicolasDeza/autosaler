@@ -1,14 +1,14 @@
 <?php
 
+use App\Http\Controllers\CitySearchController;
+use App\Http\Controllers\DealerDashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SubscriptionInquiryController;
 use App\Http\Controllers\VehicleAdController;
 use App\Http\Controllers\VehicleModelController;
 use App\Http\Controllers\VehicleVersionController;
-use App\Http\Controllers\DealerDashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -22,10 +22,10 @@ Route::prefix('legal')->name('legal.')->group(function () {
 });
 Route::get('/vehicle-models', [VehicleModelController::class, 'index'])->name('vehicle-models.index');
 Route::get('/vehicle-versions', [VehicleVersionController::class, 'index'])->name('vehicle-versions.index');
+Route::get('/cities/search', CitySearchController::class)->name('cities.search');
 
 Route::get('/vehicles', [VehicleAdController::class, 'index'])->name('vehicles.index');
 Route::get('/vehicles/{vehicleAd}', [VehicleAdController::class, 'show'])->name('vehicles.show')->whereNumber('vehicleAd');
-
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {

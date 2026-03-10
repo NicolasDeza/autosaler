@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Search, Car, MapPin, Settings2, ChevronDown } from 'lucide-vue-next';
-import { ref, computed, watch } from 'vue';
+import { router, Link } from '@inertiajs/vue3';
 import axios from 'axios';
-import { router } from '@inertiajs/vue3';
+import { Search, Car, MapPin, Settings2, ChevronDown } from 'lucide-vue-next';
+import { computed, ref, watch } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -21,7 +21,7 @@ import { Slider } from '@/components/ui/slider';
 import { useTranslation } from '@/composables/useTranslation';
 import vehiclesRoutes from '@/routes/vehicles';
 
-const props = defineProps<{
+defineProps<{
     brands?: any[];
 }>();
 
@@ -44,6 +44,49 @@ const filters = ref<FilterState>({
 });
 
 const models = ref<any[]>([]);
+const cities = ref<any[]>([]);
+const showCities = ref(false);
+const isSearchingCities = ref(false);
+
+let citySearchTimeout: number | undefined;
+
+const searchCities = (query: string) => {
+    if (!query || query.length < 2) {
+        cities.value = [];
+        showCities.value = false;
+        return;
+    }
+
+    isSearchingCities.value = true;
+    showCities.value = true;
+
+    // Annuler la requête précédente si elle existe
+    if (citySearchTimeout) clearTimeout(citySearchTimeout);
+
+    citySearchTimeout = window.setTimeout(async () => {
+        try {
+            const { data } = await axios.get('/cities/search', {
+                params: { query },
+            });
+            cities.value = data;
+        } catch (error) {
+            console.error('Error fetching cities:', error);
+        } finally {
+            isSearchingCities.value = false;
+        }
+    }, 300);
+};
+
+const selectCity = (city: any) => {
+    filters.value.city = city.zip_code + ' ' + city.code;
+    showCities.value = false;
+};
+
+const handleCityBlur = () => {
+    setTimeout(() => {
+        showCities.value = false;
+    }, 200);
+};
 
 const formatPrice = (val: number) =>
     val >= 100000 ? '100 000€+' : `${val.toLocaleString('fr-FR')}€`;
@@ -83,7 +126,7 @@ watch(
     },
 );
 
-const submitSearch = () => {
+const searchQuery = computed(() => {
     const q: Record<string, any> = {};
 
     if (filters.value.brand && filters.value.brand !== 'all')
@@ -96,8 +139,13 @@ const submitSearch = () => {
         q.max_price = filters.value.priceRange[1];
     if (filters.value.year && filters.value.year !== 'all')
         q.min_year = filters.value.year;
+    if (filters.value.city) q.city = filters.value.city;
 
-    router.get(vehiclesRoutes.index.url(), q);
+    return q;
+});
+
+const submitSearch = () => {
+    router.get(vehiclesRoutes.index.url(), searchQuery.value);
 };
 
 // Select de l'année 1ère immatriculation
@@ -301,7 +349,7 @@ const years = computed(() => {
                                 </Select>
                             </div>
 
-                            <div class="w-full lg:flex-1">
+                            <div class="relative w-full lg:flex-1">
                                 <div class="relative h-10">
                                     <MapPin
                                         :size="14"
@@ -315,7 +363,48 @@ const years = computed(() => {
                                             )
                                         "
                                         class="h-full border-border bg-card! pl-9"
+                                        @input="searchCities(filters.city)"
+                                        @focus="
+                                            filters.city.length >= 2
+                                                ? (showCities = true)
+                                                : null
+                                        "
+                                        @blur="handleCityBlur"
                                     />
+                                </div>
+                                <div
+                                    v-if="
+                                        showCities &&
+                                        (cities.length > 0 || isSearchingCities)
+                                    "
+                                    class="absolute top-full left-0 z-50 mt-1 w-full animate-in overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-md fade-in-80"
+                                >
+                                    <div class="max-h-60 overflow-y-auto p-1">
+                                        <div
+                                            v-for="city in cities"
+                                            :key="city.id"
+                                            class="flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm outline-none select-none hover:bg-accent hover:text-accent-foreground"
+                                            @click="selectCity(city)"
+                                        >
+                                            <span
+                                                class="mr-2 font-medium text-foreground"
+                                                >{{ city.zip_code }}</span
+                                            >
+                                            <span
+                                                class="text-muted-foreground"
+                                                >{{ city.code }}</span
+                                            >
+                                        </div>
+                                        <div
+                                            v-if="
+                                                cities.length === 0 &&
+                                                isSearchingCities
+                                            "
+                                            class="p-2 text-center text-sm text-muted-foreground"
+                                        >
+                                            Recherche...
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -334,13 +423,14 @@ const years = computed(() => {
                     </form>
 
                     <div class="mt-3 flex justify-center">
-                        <a
-                            href="/vehicles"
+                        <Link
+                            :href="vehiclesRoutes.index.url()"
+                            :data="searchQuery"
                             class="flex items-center gap-1.5 text-xs font-bold text-muted-foreground underline transition-colors hover:text-destructive"
                         >
                             <Settings2 :size="14" />
                             {{ __('homeFilter.more_criteria') }}
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
