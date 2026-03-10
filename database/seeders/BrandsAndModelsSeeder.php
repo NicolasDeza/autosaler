@@ -14,7 +14,7 @@ class BrandsAndModelsSeeder extends Seeder
      */
     public function run(): void
     {
-        $jsonPath = database_path('seeders/brands_models_final.json');
+        $jsonPath = database_path('seeders/brands_models_filtered.json');
 
         if (! file_exists($jsonPath)) {
             $this->command->error("JSON file not found at: {$jsonPath}");

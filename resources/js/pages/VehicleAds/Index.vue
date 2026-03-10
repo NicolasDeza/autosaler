@@ -223,7 +223,7 @@
                                     >État</Label
                                 >
                                 <ChevronDown
-                                    class="h-4 w-4 text-slate-400 transition-transform duration-200 [[data-state=open]_&]:rotate-180"
+                                    class="h-4 w-4 text-slate-400 transition-transform duration-200 in-data-[state=open]:rotate-180"
                                 />
                             </CollapsibleTrigger>
                             <CollapsibleContent
@@ -236,10 +236,9 @@
                                             id="chk-non-damaged"
                                             :checked="form.is_damaged === false"
                                             @update:checked="
-                                                (v) =>
-                                                    (form.is_damaged = v
-                                                        ? false
-                                                        : null)
+                                                form.is_damaged = $event
+                                                    ? false
+                                                    : null
                                             "
                                         />
                                         <label
@@ -255,10 +254,9 @@
                                                 form.has_accident === false
                                             "
                                             @update:checked="
-                                                (v) =>
-                                                    (form.has_accident = v
-                                                        ? false
-                                                        : null)
+                                                form.has_accident = $event
+                                                    ? false
+                                                    : null
                                             "
                                         />
                                         <label
@@ -275,9 +273,8 @@
                                                 true
                                             "
                                             @update:checked="
-                                                (v) =>
-                                                    (form.complete_maintenance_book =
-                                                        v ? true : null)
+                                                form.complete_maintenance_book =
+                                                    $event ? true : null
                                             "
                                         />
                                         <label
@@ -291,10 +288,9 @@
                                             id="chk-non-smoker"
                                             :checked="form.non_smoker === true"
                                             @update:checked="
-                                                (v) =>
-                                                    (form.non_smoker = v
-                                                        ? true
-                                                        : null)
+                                                form.non_smoker = $event
+                                                    ? true
+                                                    : null
                                             "
                                         />
                                         <label
@@ -467,24 +463,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
 import { Head, router, Deferred } from '@inertiajs/vue3';
 import axios from 'axios';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Slider } from '@/components/ui/slider';
-import { Skeleton } from '@/components/ui/skeleton';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import {
     ChevronRight,
     ChevronLeft,
@@ -492,6 +472,28 @@ import {
     Car as CarIcon,
     Search,
 } from 'lucide-vue-next';
+import { ChevronDown } from 'lucide-vue-next';
+import { ref, computed, watch } from 'vue';
+import { defineComponent, h } from 'vue';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from '@/components/ui/collapsible';
+import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Slider } from '@/components/ui/slider';
+import AppLayout from '@/layouts/AppLayout.vue';
 import vehiclesRoutes from '@/routes/vehicles';
 
 // ── Reusable filter sub-components ──────────────────────────────
@@ -518,7 +520,7 @@ const FilterSelect = defineComponent({
                     Select,
                     {
                         modelValue: props.modelValue,
-                        'onUpdate:modelValue': (v: string) =>
+                        'onUpdate:modelValue': (v: any) =>
                             emit('update:modelValue', v),
                         disabled: props.disabled,
                     },
@@ -592,7 +594,7 @@ const FilterSearchSelect = defineComponent({
                     Select,
                     {
                         modelValue: props.modelValue,
-                        'onUpdate:modelValue': (v: string) => {
+                        'onUpdate:modelValue': (v: any) => {
                             emit('update:modelValue', v);
                         },
                         disabled: props.disabled,
@@ -771,14 +773,6 @@ const FilterCheckboxGroup = defineComponent({
     },
 });
 
-import { defineComponent, h } from 'vue';
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from '@/components/ui/collapsible';
-import { ChevronDown } from 'lucide-vue-next';
-
 // ── Static option arrays ────────────────────────────────────────
 const doorOptions = [
     { id: '2', label: '2' },
@@ -906,12 +900,14 @@ watch(
     { immediate: true },
 );
 
-const onYearChange = (values: number[]) => {
+const onYearChange = (values: number[] | undefined) => {
+    if (!values) return;
     form.value.min_year = values[0];
     form.value.max_year = values[1];
 };
 
-const onPriceChange = (values: number[]) => {
+const onPriceChange = (values: number[] | undefined) => {
+    if (!values) return;
     form.value.min_price = values[0];
     form.value.max_price = values[1];
 };
