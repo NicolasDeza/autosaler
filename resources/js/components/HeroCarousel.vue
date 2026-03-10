@@ -105,7 +105,7 @@ onUnmounted(() => {
 
 <template>
 <div
-    class="absolute inset-0 overflow-hidden bg-neutral-950"
+    class="absolute inset-0 overflow-hidden bg-background"
     role="region"
     aria-roledescription="carousel"
     :aria-label="__('hero.carousel_label')"

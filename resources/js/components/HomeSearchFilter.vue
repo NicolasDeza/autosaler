@@ -69,18 +69,18 @@ const years = computed(() => {
 </script>
 
 <template>
-  <section class="relative w-full pb-8 sm:pb-12">
+  <section class="relative w-full  pb-8 sm:pb-12">
     <div class="max-w-6xl mx-auto px-6">
 
       <div class="relative -mt-24 sm:-mt-40 z-30">
-        <div class="bg-white/95 backdrop-blur-md rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-100 p-3 sm:p-4">
+        <div class="bg-card/95 backdrop-blur-md rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-border p-3 sm:p-4">
 
           <div class="flex items-center px-2 mb-2">
             <div class="flex items-center gap-2">
-              <div class="p-2 bg-red-50 rounded-lg">
-                <Car :size="20" class="text-red-500" />
+              <div class="p-2 bg-destructive/10 rounded-lg">
+                <Car :size="20" class="text-destructive" />
               </div>
-              <h2 class="text-sm font-bold text-gray-800 uppercase tracking-wider">
+              <h2 class="text-sm font-bold text-foreground uppercase tracking-wider">
                 {{ __("homeFilter.title") }}
               </h2>
             </div>
@@ -92,7 +92,7 @@ const years = computed(() => {
             <div class="flex flex-col lg:flex-row gap-3">
               <div class="w-full lg:flex-1">
                 <Select v-model="filters.brand">
-                  <SelectTrigger class="bg-white! border-gray-200 w-full h-10! text-gray-900 cursor-pointer">
+                  <SelectTrigger class="bg-card! border-border w-full h-10! text-foreground cursor-pointer">
                     <SelectValue :placeholder="__('homeFilter.brand_placeholder')" />
                   </SelectTrigger>
                   <SelectContent>
@@ -107,7 +107,7 @@ const years = computed(() => {
 
               <div class="w-full lg:flex-1">
                 <Select v-model="filters.model" :disabled="isModelDisabled">
-                  <SelectTrigger class="bg-white! border-gray-200 w-full h-10! text-gray-900 cursor-pointer" :class="{ 'opacity-50 cursor-not-allowed!': isModelDisabled }">
+                  <SelectTrigger class="bg-card! border-border w-full h-10! text-foreground cursor-pointer" :class="{ 'opacity-50 cursor-not-allowed!': isModelDisabled }">
                     <SelectValue :placeholder="__('homeFilter.model_placeholder')" />
                   </SelectTrigger>
                   <SelectContent>
@@ -123,7 +123,7 @@ const years = computed(() => {
                   <PopoverTrigger as-child>
                     <button
                       type="button"
-                      class="bg-white! border-gray-200 w-full h-10 rounded-md border shadow-xs px-3 flex items-center justify-between text-sm transition-colors hover:bg-gray-50 cursor-pointer"
+                      class="bg-card! border-border w-full h-10 rounded-md border shadow-xs px-3 flex items-center justify-between text-sm transition-colors hover:bg-muted cursor-pointer"
                       :class="hasCustomRange ? 'text-foreground' : 'text-muted-foreground'"
                     >
                       <span :class="{ 'font-medium': hasCustomRange }">{{ priceLabel }}</span>
@@ -133,8 +133,8 @@ const years = computed(() => {
                   <PopoverContent class="w-80 p-4" align="start">
                     <div class="flex flex-col gap-3">
                       <div class="flex items-center justify-between">
-                        <span class="text-sm font-semibold text-gray-800">Budget</span>
-                        <span class="text-xs text-gray-500">{{ formatPrice(filters.priceRange[0]) }} – {{ formatPrice(filters.priceRange[1]) }}</span>
+                        <span class="text-sm font-semibold text-foreground">Budget</span>
+                        <span class="text-xs text-muted-foreground">{{ formatPrice(filters.priceRange[0]) }} – {{ formatPrice(filters.priceRange[1]) }}</span>
                       </div>
                       <Slider
                         v-model="filters.priceRange"
@@ -143,7 +143,7 @@ const years = computed(() => {
                         :step="500"
                         class="w-full"
                       />
-                      <div class="flex justify-between text-[11px] text-gray-400">
+                      <div class="flex justify-between text-[11px] text-muted-foreground">
                         <span>0€</span>
                         <span>100 000€+</span>
                       </div>
@@ -157,7 +157,7 @@ const years = computed(() => {
             <div class="flex flex-col lg:flex-row gap-3">
               <div class="w-full lg:flex-1">
                 <Select v-model="filters.year">
-                  <SelectTrigger class="bg-white! border-gray-200 w-full h-10! text-gray-900 cursor-pointer">
+                  <SelectTrigger class="bg-card! border-border w-full h-10! text-foreground cursor-pointer">
                     <SelectValue :placeholder="__('homeFilter.year_placeholder')" />
                   </SelectTrigger>
                   <SelectContent>
@@ -171,11 +171,11 @@ const years = computed(() => {
 
               <div class="w-full lg:flex-1">
                 <div class="relative h-10">
-                  <MapPin :size="14" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
+                  <MapPin :size="14" class="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-10" />
                   <Input
                     v-model="filters.city"
                     :placeholder="__('homeFilter.location_placeholder')"
-                    class="pl-9 bg-white! border-gray-200 h-full"
+                    class="pl-9 bg-card! border-border h-full"
                   />
                 </div>
               </div>
@@ -183,7 +183,7 @@ const years = computed(() => {
               <div class="w-full lg:flex-1">
                 <Button
                   type="submit"
-                  class="w-full h-10 px-6 bg-red-500 hover:bg-red-600 text-white font-bold transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                  class="w-full h-10 px-6 bg-red-500 hover:bg-red-600 hover:scale-105 text-destructive-foreground font-bold transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Search :size="18" />
                   <span class="text-sm uppercase">{{ __("homeFilter.search_button") }}</span>
@@ -194,7 +194,7 @@ const years = computed(() => {
           </form>
 
           <div class="flex justify-center mt-3">
-            <a href="/vehicles" class="flex items-center gap-1.5 text-xs font-bold text-gray-400 underline hover:text-red-500 transition-colors">
+            <a href="/vehicles" class="flex items-center gap-1.5 text-xs font-bold text-muted-foreground underline hover:text-destructive transition-colors">
               <Settings2 :size="14" />
               {{ __("homeFilter.more_criteria") }}
             </a>
