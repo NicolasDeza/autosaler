@@ -43,140 +43,162 @@
 
                     <div class="space-y-6">
                         <!-- Marque -->
-                        <FilterSearchSelect
+                        <FilterGroup
                             label="Marque"
-                            v-model="form.brand_id"
-                            :options="brands ?? []"
-                            option-label="name"
-                            placeholder="Toutes les marques"
-                            searchable
-                        />
+                            :is-active="form.brand_id !== 'all'"
+                        >
+                            <FilterSearchSelect
+                                v-model="form.brand_id"
+                                :options="brands ?? []"
+                                option-label="name"
+                                placeholder="Toutes les marques"
+                                searchable
+                            />
+                        </FilterGroup>
 
                         <!-- Modèle -->
-                        <FilterSelect
+                        <FilterGroup
                             label="Modèle"
-                            v-model="form.model_id"
-                            :options="models"
-                            option-label="name"
-                            placeholder="Tous les modèles"
+                            :is-active="form.model_id !== 'all'"
                             :disabled="
                                 !form.brand_id ||
                                 form.brand_id === 'all' ||
                                 !models.length
                             "
-                        />
+                        >
+                            <FilterSelect
+                                v-model="form.model_id"
+                                :options="models"
+                                option-label="name"
+                                placeholder="Tous les modèles"
+                                :disabled="
+                                    !form.brand_id ||
+                                    form.brand_id === 'all' ||
+                                    !models.length
+                                "
+                            />
+                        </FilterGroup>
 
                         <!-- Ville / CP -->
-                        <div class="relative space-y-3">
-                            <Label class="text-sm font-semibold text-slate-200"
-                                >Emplacement</Label
-                            >
-                            <div class="relative h-10 w-full">
-                                <MapPin
-                                    :size="14"
-                                    class="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-slate-400"
-                                />
-                                <Input
-                                    v-model="form.city"
-                                    placeholder="Localisation"
-                                    class="h-full w-full border-slate-700 bg-slate-800 pl-9 text-white placeholder-slate-400"
-                                    @input="searchCities(form.city)"
-                                    @focus="
-                                        form.city.length >= 2
-                                            ? (showCities = true)
-                                            : null
-                                    "
-                                    @blur="handleCityBlur"
-                                />
-                            </div>
-                            <div
-                                v-if="
-                                    showCities &&
-                                    (cities.length > 0 || isSearchingCities)
-                                "
-                                class="absolute top-full left-0 z-50 mt-1 w-full animate-in overflow-hidden rounded-md border border-slate-700 bg-slate-800 text-white shadow-md fade-in-80"
-                            >
-                                <div class="max-h-60 overflow-y-auto p-1">
-                                    <div
-                                        v-for="city in cities"
-                                        :key="city.id"
-                                        class="flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm outline-none select-none hover:bg-slate-700 hover:text-white"
-                                        @click="selectCity(city)"
-                                    >
-                                        <span
-                                            class="mr-2 font-medium text-white"
-                                            >{{ city.zip_code }}</span
-                                        >
-                                        <span class="text-slate-300">{{
-                                            city.code
-                                        }}</span>
-                                    </div>
-                                    <div
-                                        v-if="
-                                            cities.length === 0 &&
-                                            isSearchingCities
+                        <FilterGroup
+                            label="Emplacement"
+                            :is-active="!!form.city"
+                        >
+                            <div class="relative space-y-3">
+                                <div class="relative h-10 w-full">
+                                    <MapPin
+                                        :size="14"
+                                        class="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-slate-400"
+                                    />
+                                    <Input
+                                        v-model="form.city"
+                                        placeholder="Localisation"
+                                        class="h-full w-full border-slate-700 bg-slate-800 pl-9 text-white placeholder-slate-400"
+                                        @input="searchCities(form.city)"
+                                        @focus="
+                                            form.city.length >= 2
+                                                ? (showCities = true)
+                                                : null
                                         "
-                                        class="p-2 text-center text-sm text-slate-400"
-                                    >
-                                        Recherche...
+                                        @blur="handleCityBlur"
+                                    />
+                                </div>
+                                <div
+                                    v-if="
+                                        showCities &&
+                                        (cities.length > 0 || isSearchingCities)
+                                    "
+                                    class="absolute top-full left-0 z-50 mt-1 w-full animate-in overflow-hidden rounded-md border border-slate-700 bg-slate-800 text-white shadow-md fade-in-80"
+                                >
+                                    <div class="max-h-60 overflow-y-auto p-1">
+                                        <div
+                                            v-for="city in cities"
+                                            :key="city.id"
+                                            class="flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm outline-none select-none hover:bg-slate-700 hover:text-white"
+                                            @click="selectCity(city)"
+                                        >
+                                            <span
+                                                class="mr-2 font-medium text-white"
+                                                >{{ city.zip_code }}</span
+                                            >
+                                            <span class="text-slate-300">{{
+                                                city.code
+                                            }}</span>
+                                        </div>
+                                        <div
+                                            v-if="
+                                                cities.length === 0 &&
+                                                isSearchingCities
+                                            "
+                                            class="p-2 text-center text-sm text-slate-400"
+                                        >
+                                            Recherche...
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </FilterGroup>
 
                         <!-- Prix -->
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between">
-                                <Label
-                                    class="text-sm font-semibold text-slate-200"
-                                    >Prix (€)</Label
-                                >
-                                <span class="text-xs text-slate-400">
-                                    {{ form.min_price?.toLocaleString() }} -
-                                    {{
-                                        form.max_price >= 200000
-                                            ? '200k+'
-                                            : form.max_price?.toLocaleString()
-                                    }}
-                                </span>
+                        <FilterGroup
+                            label="Prix"
+                            :is-active="
+                                form.min_price > 0 || form.max_price < 200000
+                            "
+                        >
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-slate-400">
+                                        {{ form.min_price?.toLocaleString() }} -
+                                        {{
+                                            form.max_price >= 200000
+                                                ? '200k+'
+                                                : form.max_price?.toLocaleString()
+                                        }}
+                                    </span>
+                                </div>
+                                <Slider
+                                    v-model="priceRange"
+                                    :max="200000"
+                                    :min="0"
+                                    :step="1000"
+                                    class="py-4"
+                                    @update:modelValue="onPriceChange"
+                                />
                             </div>
-                            <Slider
-                                v-model="priceRange"
-                                :max="200000"
-                                :min="0"
-                                :step="1000"
-                                class="py-4"
-                                @update:modelValue="onPriceChange"
-                            />
-                        </div>
+                        </FilterGroup>
 
                         <!-- Année -->
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between">
-                                <Label
-                                    class="text-sm font-semibold text-slate-200"
-                                    >Année</Label
-                                >
-                                <span class="text-xs text-slate-400"
-                                    >{{ form.min_year }} -
-                                    {{ form.max_year }}</span
-                                >
+                        <FilterGroup
+                            label="Année"
+                            :is-active="
+                                form.min_year > 2000 ||
+                                form.max_year < currentYear
+                            "
+                        >
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-slate-400"
+                                        >{{ form.min_year }} -
+                                        {{ form.max_year }}</span
+                                    >
+                                </div>
+                                <Slider
+                                    v-model="yearRange"
+                                    :max="currentYear"
+                                    :min="2000"
+                                    :step="1"
+                                    class="py-4"
+                                    @update:modelValue="onYearChange"
+                                />
                             </div>
-                            <Slider
-                                v-model="yearRange"
-                                :max="currentYear"
-                                :min="2000"
-                                :step="1"
-                                class="py-4"
-                                @update:modelValue="onYearChange"
-                            />
-                        </div>
+                        </FilterGroup>
 
                         <!-- Kilométrage -->
-                        <div class="space-y-3">
-                            <Label class="text-sm font-semibold text-slate-200"
-                                >Kilométrage</Label
-                            >
+                        <FilterGroup
+                            label="Kilométrage"
+                            :is-active="form.max_mileage !== 'all'"
+                        >
                             <Select v-model="form.max_mileage">
                                 <SelectTrigger
                                     class="w-full border-slate-700 bg-slate-800 text-white"
@@ -209,157 +231,175 @@
                                     >
                                 </SelectContent>
                             </Select>
-                        </div>
+                        </FilterGroup>
 
                         <!-- Carburant -->
-                        <FilterCheckboxGroup
+                        <FilterGroup
                             label="Carburant"
-                            :options="fuelTypes ?? []"
-                            option-label="code"
-                            v-model="form.fuel_types"
-                        />
+                            :is-active="form.fuel_types.length > 0"
+                        >
+                            <FilterCheckboxGroup
+                                :options="fuelTypes ?? []"
+                                option-label="code"
+                                v-model="form.fuel_types"
+                            />
+                        </FilterGroup>
 
                         <!-- Type de carrosserie -->
-                        <FilterCheckboxGroup
+                        <FilterGroup
                             label="Carrosserie"
-                            :options="bodyTypes ?? []"
-                            option-label="code"
-                            v-model="form.body_types"
-                        />
+                            :is-active="form.body_types.length > 0"
+                        >
+                            <FilterCheckboxGroup
+                                :options="bodyTypes ?? []"
+                                option-label="code"
+                                v-model="form.body_types"
+                            />
+                        </FilterGroup>
 
                         <!-- Transmission -->
-                        <FilterCheckboxGroup
+                        <FilterGroup
                             label="Transmission"
-                            :options="transmissionTypes ?? []"
-                            option-label="code"
-                            v-model="form.transmission_types"
-                        />
+                            :is-active="form.transmission_types.length > 0"
+                        >
+                            <FilterCheckboxGroup
+                                :options="transmissionTypes ?? []"
+                                option-label="code"
+                                v-model="form.transmission_types"
+                            />
+                        </FilterGroup>
 
                         <!-- Couleur extérieure -->
-                        <FilterSelect
+                        <FilterGroup
                             label="Couleur extérieure"
-                            v-model="form.exterior_color_id"
-                            :options="exteriorColors ?? []"
-                            option-label="code"
-                            placeholder="Toutes"
-                        />
+                            :is-active="form.exterior_color_id !== 'all'"
+                        >
+                            <FilterSelect
+                                v-model="form.exterior_color_id"
+                                :options="exteriorColors ?? []"
+                                option-label="code"
+                                placeholder="Toutes"
+                            />
+                        </FilterGroup>
 
                         <!-- Norme Euro -->
-                        <FilterSelect
+                        <FilterGroup
                             label="Norme Euro"
-                            v-model="form.euro_norm_id"
-                            :options="euroNorms ?? []"
-                            option-label="code"
-                            placeholder="Toutes"
-                        />
+                            :is-active="form.euro_norm_id !== 'all'"
+                        >
+                            <FilterSelect
+                                v-model="form.euro_norm_id"
+                                :options="euroNorms ?? []"
+                                option-label="code"
+                                placeholder="Toutes"
+                            />
+                        </FilterGroup>
 
                         <!-- Portes -->
-                        <FilterSelect
+                        <FilterGroup
                             label="Portes"
-                            v-model="form.doors"
-                            :options="doorOptions"
-                            option-label="label"
-                            placeholder="Peu importe"
-                        />
+                            :is-active="form.doors !== 'all'"
+                        >
+                            <FilterSelect
+                                v-model="form.doors"
+                                :options="doorOptions"
+                                option-label="label"
+                                placeholder="Peu importe"
+                            />
+                        </FilterGroup>
 
                         <!-- Sièges -->
-                        <FilterSelect
+                        <FilterGroup
                             label="Sièges"
-                            v-model="form.seats"
-                            :options="seatOptions"
-                            option-label="label"
-                            placeholder="Peu importe"
-                        />
+                            :is-active="form.seats !== 'all'"
+                        >
+                            <FilterSelect
+                                v-model="form.seats"
+                                :options="seatOptions"
+                                option-label="label"
+                                placeholder="Peu importe"
+                            />
+                        </FilterGroup>
 
                         <!-- Booleans -->
-                        <Collapsible class="space-y-3">
-                            <CollapsibleTrigger
-                                class="flex w-full items-center justify-between"
-                            >
-                                <Label
-                                    class="cursor-pointer text-sm font-semibold text-slate-200"
-                                    >État</Label
-                                >
-                                <ChevronDown
-                                    class="h-4 w-4 text-slate-400 transition-transform duration-200 in-data-[state=open]:rotate-180"
-                                />
-                            </CollapsibleTrigger>
-                            <CollapsibleContent
-                                forceMount
-                                class="data-[state=closed]:hidden"
-                            >
-                                <div class="space-y-2 pt-1">
-                                    <div class="flex items-center space-x-2">
-                                        <Checkbox
-                                            id="chk-non-damaged"
-                                            :checked="form.is_damaged === false"
-                                            @update:checked="
-                                                form.is_damaged = $event
-                                                    ? false
-                                                    : null
-                                            "
-                                        />
-                                        <label
-                                            for="chk-non-damaged"
-                                            class="cursor-pointer text-sm text-slate-300"
-                                            >Non endommagé</label
-                                        >
-                                    </div>
-                                    <div class="flex items-center space-x-2">
-                                        <Checkbox
-                                            id="chk-no-accident"
-                                            :checked="
-                                                form.has_accident === false
-                                            "
-                                            @update:checked="
-                                                form.has_accident = $event
-                                                    ? false
-                                                    : null
-                                            "
-                                        />
-                                        <label
-                                            for="chk-no-accident"
-                                            class="cursor-pointer text-sm text-slate-300"
-                                            >Pas d'accident</label
-                                        >
-                                    </div>
-                                    <div class="flex items-center space-x-2">
-                                        <Checkbox
-                                            id="chk-maintenance"
-                                            :checked="
-                                                form.complete_maintenance_book ===
-                                                true
-                                            "
-                                            @update:checked="
-                                                form.complete_maintenance_book =
-                                                    $event ? true : null
-                                            "
-                                        />
-                                        <label
-                                            for="chk-maintenance"
-                                            class="cursor-pointer text-sm text-slate-300"
-                                            >Carnet entretien complet</label
-                                        >
-                                    </div>
-                                    <div class="flex items-center space-x-2">
-                                        <Checkbox
-                                            id="chk-non-smoker"
-                                            :checked="form.non_smoker === true"
-                                            @update:checked="
-                                                form.non_smoker = $event
-                                                    ? true
-                                                    : null
-                                            "
-                                        />
-                                        <label
-                                            for="chk-non-smoker"
-                                            class="cursor-pointer text-sm text-slate-300"
-                                            >Non fumeur</label
-                                        >
-                                    </div>
+                        <FilterGroup
+                            label="État"
+                            :is-active="
+                                form.is_damaged !== null ||
+                                form.has_accident !== null ||
+                                form.complete_maintenance_book !== null ||
+                                form.non_smoker !== null
+                            "
+                        >
+                            <div class="space-y-2 pt-1">
+                                <div class="flex items-center space-x-2">
+                                    <Checkbox
+                                        id="chk-non-damaged"
+                                        :checked="form.is_damaged === false"
+                                        @update:checked="
+                                            form.is_damaged = $event
+                                                ? false
+                                                : null
+                                        "
+                                    />
+                                    <label
+                                        for="chk-non-damaged"
+                                        class="cursor-pointer text-sm text-slate-300"
+                                        >Non endommagé</label
+                                    >
                                 </div>
-                            </CollapsibleContent>
-                        </Collapsible>
+                                <div class="flex items-center space-x-2">
+                                    <Checkbox
+                                        id="chk-no-accident"
+                                        :checked="form.has_accident === false"
+                                        @update:checked="
+                                            form.has_accident = $event
+                                                ? false
+                                                : null
+                                        "
+                                    />
+                                    <label
+                                        for="chk-no-accident"
+                                        class="cursor-pointer text-sm text-slate-300"
+                                        >Pas d'accident</label
+                                    >
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <Checkbox
+                                        id="chk-maintenance"
+                                        :checked="
+                                            form.complete_maintenance_book ===
+                                            true
+                                        "
+                                        @update:checked="
+                                            form.complete_maintenance_book =
+                                                $event ? true : null
+                                        "
+                                    />
+                                    <label
+                                        for="chk-maintenance"
+                                        class="cursor-pointer text-sm text-slate-300"
+                                        >Carnet entretien complet</label
+                                    >
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <Checkbox
+                                        id="chk-non-smoker"
+                                        :checked="form.non_smoker === true"
+                                        @update:checked="
+                                            form.non_smoker = $event
+                                                ? true
+                                                : null
+                                        "
+                                    />
+                                    <label
+                                        for="chk-non-smoker"
+                                        class="cursor-pointer text-sm text-slate-300"
+                                        >Non fumeur</label
+                                    >
+                                </div>
+                            </div>
+                        </FilterGroup>
                     </div>
                 </Deferred>
             </aside>
@@ -531,17 +571,12 @@ import {
     Search,
     MapPin,
 } from 'lucide-vue-next';
-import { ChevronDown } from 'lucide-vue-next';
 import { ref, computed, watch } from 'vue';
 import { defineComponent, h } from 'vue';
+import FilterGroup from '@/components/FilterGroup.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from '@/components/ui/collapsible';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -571,11 +606,13 @@ const FilterSelect = defineComponent({
     setup(props, { emit }) {
         return () =>
             h('div', { class: 'space-y-3' }, [
-                h(
-                    Label,
-                    { class: 'text-sm font-semibold text-slate-200' },
-                    () => props.label,
-                ),
+                props.label
+                    ? h(
+                          Label,
+                          { class: 'text-sm font-semibold text-slate-200' },
+                          () => props.label,
+                      )
+                    : null,
                 h(
                     Select,
                     {
@@ -645,11 +682,13 @@ const FilterSearchSelect = defineComponent({
 
         return () =>
             h('div', { class: 'space-y-3' }, [
-                h(
-                    Label,
-                    { class: 'text-sm font-semibold text-slate-200' },
-                    () => props.label,
-                ),
+                props.label
+                    ? h(
+                          Label,
+                          { class: 'text-sm font-semibold text-slate-200' },
+                          () => props.label,
+                      )
+                    : null,
                 h(
                     Select,
                     {
@@ -762,74 +801,38 @@ const FilterCheckboxGroup = defineComponent({
             emit('update:modelValue', current);
         };
 
-        const activeCount = computed(() => props.modelValue.length);
-
         return () =>
-            h(Collapsible, { class: 'space-y-3' }, () => [
-                h(
-                    CollapsibleTrigger,
-                    { class: 'flex w-full items-center justify-between' },
-                    () => [
-                        h('span', { class: 'flex items-center gap-2' }, [
-                            h(
-                                Label,
-                                {
-                                    class: 'text-sm font-semibold text-slate-200 cursor-pointer',
-                                },
-                                () => props.label,
-                            ),
-                            activeCount.value > 0
-                                ? h(
-                                      'span',
-                                      {
-                                          class: 'rounded-full bg-blue-500 px-1.5 py-0.5 text-[10px] font-bold leading-none text-white',
-                                      },
-                                      String(activeCount.value),
-                                  )
-                                : null,
-                        ]),
-                        h(ChevronDown, {
-                            class: 'h-4 w-4 text-slate-400 transition-transform duration-200 [[data-state=open]_&]:rotate-180',
-                        }),
-                    ],
-                ),
-                h(
-                    CollapsibleContent,
-                    { forceMount: true, class: 'data-[state=closed]:hidden' },
-                    () =>
-                        h(
-                            'div',
-                            { class: 'space-y-2 pt-2' },
-                            props.options.map((o: any) =>
-                                h(
-                                    'div',
-                                    {
-                                        key: o.id,
-                                        class: 'flex items-center space-x-2',
-                                    },
-                                    [
-                                        h(Checkbox, {
-                                            id: `${props.label}-${o.id}`,
-                                            checked: props.modelValue.includes(
-                                                String(o.id),
-                                            ),
-                                            'onUpdate:checked': (v: boolean) =>
-                                                toggle(String(o.id), v),
-                                        }),
-                                        h(
-                                            'label',
-                                            {
-                                                for: `${props.label}-${o.id}`,
-                                                class: 'cursor-pointer text-sm text-slate-300',
-                                            },
-                                            o[props.optionLabel],
-                                        ),
-                                    ],
+            h(
+                'div',
+                { class: 'space-y-2 pt-2' },
+                props.options.map((o: any) =>
+                    h(
+                        'div',
+                        {
+                            key: o.id,
+                            class: 'flex items-center space-x-2',
+                        },
+                        [
+                            h(Checkbox, {
+                                id: `${props.label}-${o.id}`,
+                                checked: props.modelValue.includes(
+                                    String(o.id),
                                 ),
+                                'onUpdate:checked': (v: boolean) =>
+                                    toggle(String(o.id), v),
+                            }),
+                            h(
+                                'label',
+                                {
+                                    for: `${props.label}-${o.id}`,
+                                    class: 'cursor-pointer text-sm text-slate-300',
+                                },
+                                o[props.optionLabel],
                             ),
-                        ),
+                        ],
+                    ),
                 ),
-            ]);
+            );
     },
 });
 
