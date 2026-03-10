@@ -248,28 +248,50 @@ const activeFilters = computed(() => {
 </script>
 
 <template>
-    <div v-if="activeFilters.length > 0" class="flex flex-wrap gap-2">
-        <Badge
-            v-for="filter in activeFilters"
-            :key="filter.key"
-            variant="secondary"
-            class="flex items-center gap-1 rounded-full px-3 py-1 text-xs"
-        >
-            {{ filter.label }}
-            <button
-                @click="filter.onRemove"
-                class="ml-1 cursor-pointer rounded-full p-0.5 transition-colors hover:bg-slate-300"
+    <Transition
+        enter-from-class="opacity-0 max-h-0 -translate-y-2"
+        enter-active-class="transition-all duration-400 ease-in-out"
+        enter-to-class="opacity-100 max-h-[500px] translate-y-0"
+        leave-from-class="opacity-100 max-h-[500px] translate-y-0"
+        leave-active-class="transition-all duration-400 ease-in-out"
+        leave-to-class="opacity-0 max-h-0 -translate-y-2"
+    >
+        <div v-if="activeFilters.length > 0" class="overflow-hidden">
+            <TransitionGroup
+                tag="div"
+                class="flex flex-wrap gap-2 py-1"
+                enter-from-class="opacity-0 scale-90"
+                enter-active-class="transition-all duration-300 ease-out"
+                enter-to-class="opacity-100 scale-100"
+                leave-from-class="opacity-100 scale-100"
+                leave-active-class="transition-all duration-300 ease-in absolute"
+                leave-to-class="opacity-0 scale-90"
+                move-class="transition-transform duration-300"
             >
-                <X class="h-3 w-3" />
-            </button>
-        </Badge>
-        <Button
-            variant="ghost"
-            size="sm"
-            class="h-7 px-2 text-xs text-slate-500 hover:text-slate-900"
-            @click="emit('resetAll')"
-        >
-            Tout effacer
-        </Button>
-    </div>
+                <Badge
+                    v-for="filter in activeFilters"
+                    :key="filter.key"
+                    variant="secondary"
+                    class="flex items-center gap-1 rounded-full px-3 py-1 text-xs transition-colors"
+                >
+                    {{ filter.label }}
+                    <button
+                        @click="filter.onRemove"
+                        class="ml-1 cursor-pointer rounded-full p-0.5 transition-colors hover:bg-slate-300"
+                    >
+                        <X class="h-3 w-3" />
+                    </button>
+                </Badge>
+                <Button
+                    key="reset-button"
+                    variant="ghost"
+                    size="sm"
+                    class="h-7 px-2 text-xs text-slate-500 hover:text-slate-900"
+                    @click="emit('resetAll')"
+                >
+                    Tout effacer
+                </Button>
+            </TransitionGroup>
+        </div>
+    </Transition>
 </template>

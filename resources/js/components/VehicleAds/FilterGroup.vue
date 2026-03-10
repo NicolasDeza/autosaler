@@ -45,13 +45,42 @@ withDefaults(defineProps<Props>(), {
                 class="h-4 w-4 text-slate-400 transition-transform duration-200 group-data-[state=open]:rotate-180"
             />
         </CollapsibleTrigger>
-        <CollapsibleContent
-            force-mount
-            class="transition-all data-[state=closed]:hidden"
-        >
+        <CollapsibleContent class="collapsible-content rounded-md">
             <div class="pt-1">
                 <slot />
             </div>
         </CollapsibleContent>
     </Collapsible>
 </template>
+
+<style scoped>
+.collapsible-content {
+    overflow: hidden;
+}
+
+.collapsible-content[data-state='open'] {
+    animation: slideDown 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.collapsible-content[data-state='closed'] {
+    animation: slideUp 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideDown {
+    from {
+        height: 0;
+    }
+    to {
+        height: var(--reka-collapsible-content-height);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        height: var(--reka-collapsible-content-height);
+    }
+    to {
+        height: 0;
+    }
+}
+</style>

@@ -49,130 +49,157 @@
                     />
                 </div>
                 <!-- Vehicles List -->
-                <div
-                    class="relative flex flex-col gap-4 transition-opacity duration-300"
-                    :class="{ 'pointer-events-none opacity-50': isProcessing }"
+                <Transition
+                    mode="out-in"
+                    enter-from-class="opacity-0 translate-y-2"
+                    enter-active-class="transition-all duration-300 ease-out"
+                    enter-to-class="opacity-100 translate-y-0"
+                    leave-from-class="opacity-100 translate-y-0"
+                    leave-active-class="transition-all duration-300 ease-in"
+                    leave-to-class="opacity-0 -translate-y-2"
                 >
-                    <TransitionGroup
-                        name="list"
-                        tag="div"
-                        class="flex flex-col gap-4"
+                    <!-- Vehicles List -->
+                    <div
+                        v-if="ads.data.length"
+                        key="results-list"
+                        class="relative flex flex-col gap-4 transition-opacity duration-300"
+                        :class="{
+                            'pointer-events-none opacity-50': isProcessing,
+                        }"
                     >
-                        <Card
-                            v-for="ad in ads.data"
-                            :key="ad.id"
-                            class="relative cursor-pointer border-2 border-transparent bg-slate-300 p-4 transition-all duration-300 hover:border-blue-500 hover:shadow-lg"
-                            @click="
-                                () =>
-                                    router.visit(vehiclesRoutes.show.url(ad.id))
-                            "
+                        <TransitionGroup
+                            name="list"
+                            tag="div"
+                            class="flex flex-col gap-4"
                         >
-                            <div class="absolute top-4 right-4">
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    class="h-8 w-8 rounded bg-white"
-                                    ><Star class="h-4 w-4"
-                                /></Button>
-                            </div>
+                            <Card
+                                v-for="ad in ads.data"
+                                :key="ad.id"
+                                class="relative cursor-pointer border-2 border-transparent bg-slate-300 p-4 transition-all duration-300 hover:border-blue-500 hover:shadow-lg"
+                                @click="
+                                    () =>
+                                        router.visit(
+                                            vehiclesRoutes.show.url(ad.id),
+                                        )
+                                "
+                            >
+                                <div class="absolute top-4 right-4">
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        class="h-8 w-8 rounded bg-white"
+                                        ><Star class="h-4 w-4"
+                                    /></Button>
+                                </div>
 
-                            <div class="flex flex-col gap-2">
-                                <h4 class="text-lg font-bold">
-                                    {{ ad.brand?.name }} {{ ad.model?.name }}
-                                </h4>
-                                <p
-                                    class="text-sm font-semibold text-gray-700 uppercase"
-                                >
-                                    {{ ad.vehicle_version?.name || '' }}
-                                </p>
+                                <div class="flex flex-col gap-2">
+                                    <h4 class="text-lg font-bold">
+                                        {{ ad.brand?.name }}
+                                        {{ ad.model?.name }}
+                                    </h4>
+                                    <p
+                                        class="text-sm font-semibold text-gray-700 uppercase"
+                                    >
+                                        {{ ad.vehicle_version?.name || '' }}
+                                    </p>
 
-                                <div
-                                    class="mt-2 flex flex-col gap-4 md:flex-row"
-                                >
                                     <div
-                                        class="h-48 w-full shrink-0 rounded bg-white md:h-32 md:w-48"
-                                    ></div>
-
-                                    <div
-                                        class="flex w-full flex-col justify-between gap-4 py-1 md:gap-0"
+                                        class="mt-2 flex flex-col gap-4 md:flex-row"
                                     >
                                         <div
-                                            class="self-start rounded bg-white px-4 py-1 text-lg font-bold shadow-sm"
-                                        >
-                                            € {{ ad.price }}
-                                        </div>
+                                            class="h-48 w-full shrink-0 rounded bg-white md:h-32 md:w-48"
+                                        ></div>
 
                                         <div
-                                            class="mt-auto flex flex-wrap gap-2"
+                                            class="flex w-full flex-col justify-between gap-4 py-1 md:gap-0"
                                         >
                                             <div
-                                                class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
+                                                class="self-start rounded bg-white px-4 py-1 text-lg font-bold shadow-sm"
                                             >
-                                                {{
-                                                    ad.first_registration_date?.substring(
-                                                        0,
-                                                        4,
-                                                    ) || 'N/A'
-                                                }}
+                                                € {{ ad.price }}
                                             </div>
+
                                             <div
-                                                class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
+                                                class="mt-auto flex flex-wrap gap-2"
                                             >
-                                                {{
-                                                    ad.mileage
-                                                        ? ad.mileage.toLocaleString()
-                                                        : '0'
-                                                }}
-                                                km
-                                            </div>
-                                            <div
-                                                v-if="ad.fuel_type"
-                                                class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
-                                            >
-                                                {{ ad.fuel_type.code }}
-                                            </div>
-                                            <div
-                                                v-if="ad.transmission_type"
-                                                class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
-                                            >
-                                                {{ ad.transmission_type.code }}
-                                            </div>
-                                            <div
-                                                v-if="ad.body_type"
-                                                class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
-                                            >
-                                                {{ ad.body_type.code }}
+                                                <div
+                                                    class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
+                                                >
+                                                    {{
+                                                        ad.first_registration_date?.substring(
+                                                            0,
+                                                            4,
+                                                        ) || 'N/A'
+                                                    }}
+                                                </div>
+                                                <div
+                                                    class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
+                                                >
+                                                    {{
+                                                        ad.mileage
+                                                            ? ad.mileage.toLocaleString()
+                                                            : '0'
+                                                    }}
+                                                    km
+                                                </div>
+                                                <div
+                                                    v-if="ad.fuel_type"
+                                                    class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
+                                                >
+                                                    {{ ad.fuel_type.code }}
+                                                </div>
+                                                <div
+                                                    v-if="ad.transmission_type"
+                                                    class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
+                                                >
+                                                    {{
+                                                        ad.transmission_type
+                                                            .code
+                                                    }}
+                                                </div>
+                                                <div
+                                                    v-if="ad.body_type"
+                                                    class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
+                                                >
+                                                    {{ ad.body_type.code }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div
-                                    class="mt-4 text-xs font-semibold text-gray-600"
-                                >
-                                    Premium auto SRL<br />
-                                    1330 Rixensart
+                                    <div
+                                        class="mt-4 text-xs font-semibold text-gray-600"
+                                    >
+                                        Premium auto SRL<br />
+                                        1330 Rixensart
+                                    </div>
                                 </div>
-                            </div>
-                        </Card>
-                    </TransitionGroup>
-                </div>
+                            </Card>
+                        </TransitionGroup>
+                    </div>
 
-                <div
-                    v-if="!ads.data.length"
-                    class="rounded-lg bg-slate-200 py-12 text-center"
-                >
-                    <CarIcon class="mx-auto mb-4 h-12 w-12 text-slate-400" />
-                    <h3 class="text-lg font-bold text-slate-700">
-                        Aucun véhicule trouvé
-                    </h3>
-                    <p class="text-slate-500">
-                        Essayez de modifier vos critères de recherche.
-                    </p>
-                    <Button variant="outline" class="mt-4" @click="resetFilters"
-                        >Réinitialiser les filtres</Button
+                    <div
+                        v-else
+                        key="no-results"
+                        class="rounded-lg bg-slate-200 py-12 text-center"
                     >
-                </div>
+                        <CarIcon
+                            class="mx-auto mb-4 h-12 w-12 text-slate-400"
+                        />
+                        <h3 class="text-lg font-bold text-slate-700">
+                            Aucun véhicule trouvé
+                        </h3>
+                        <p class="text-slate-500">
+                            Essayez de modifier vos critères de recherche.
+                        </p>
+                        <Button
+                            variant="outline"
+                            class="mt-4"
+                            @click="resetFilters"
+                            >Réinitialiser les filtres</Button
+                        >
+                    </div>
+                </Transition>
 
                 <!-- Pagination -->
                 <AppPagination
