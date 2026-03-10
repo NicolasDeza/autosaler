@@ -130,7 +130,8 @@ class VehicleAdController extends Controller
             });
         }
 
-        $ads = $query->paginate(15);
+        $perPage = (int) $request->get('per_page', 15);
+        $ads = $query->paginate($perPage)->withQueryString();
 
         return Inertia::render('VehicleAds/Index', [
             'ads' => $ads,
@@ -147,7 +148,7 @@ class VehicleAdController extends Controller
                 'exterior_color_id', 'euro_norm_id',
                 'doors', 'seats',
                 'is_damaged', 'has_accident', 'complete_maintenance_book', 'non_smoker',
-                'city',
+                'city', 'per_page',
             ]),
         ]);
     }

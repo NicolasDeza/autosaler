@@ -175,7 +175,7 @@
                                 <Slider
                                     v-model="yearRange"
                                     :max="currentYear"
-                                    :min="2000"
+                                    :min="1980"
                                     :step="1"
                                     class="py-4"
                                     @update:modelValue="onYearChange"
@@ -526,37 +526,11 @@
                 </div>
 
                 <!-- Pagination -->
-                <div
-                    v-if="ads.data.length"
-                    class="mt-4 flex items-center justify-between rounded-lg bg-slate-300 p-2 px-4 text-sm font-semibold"
-                >
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        class="gap-1 bg-transparent hover:bg-slate-400"
-                    >
-                        <ChevronLeft class="h-4 w-4" /> Précédent
-                    </Button>
-                    <div class="flex gap-2">
-                        <span
-                            v-for="i in 5"
-                            :key="i"
-                            class="flex h-8 w-8 cursor-pointer items-center justify-center rounded transition hover:bg-slate-400"
-                            :class="{
-                                'bg-blue-500 text-white hover:bg-blue-600':
-                                    i === 1,
-                            }"
-                            >{{ i }}</span
-                        >
-                    </div>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        class="gap-1 bg-transparent hover:bg-slate-400"
-                    >
-                        Suivant <ChevronRight class="h-4 w-4" />
-                    </Button>
-                </div>
+                <AppPagination
+                    :pagination="ads"
+                    v-model:per-page="form.per_page"
+                    @update:page="handlePageChange"
+                />
             </main>
         </div>
     </AppLayout>
@@ -565,17 +539,11 @@
 <script setup lang="ts">
 import { Head, router, Deferred } from '@inertiajs/vue3';
 import axios from 'axios';
-import {
-    ChevronRight,
-    ChevronLeft,
-    Star,
-    Car as CarIcon,
-    Search,
-    MapPin,
-} from 'lucide-vue-next';
+import { Star, Car as CarIcon, Search, MapPin } from 'lucide-vue-next';
 import { ref, computed, watch, reactive } from 'vue';
 import { defineComponent, h } from 'vue';
 import ActiveFilters from '@/components/ActiveFilters.vue';
+import AppPagination from '@/components/AppPagination.vue';
 import FilterCheckboxGroup from '@/components/FilterCheckboxGroup.vue';
 import FilterGroup from '@/components/FilterGroup.vue';
 import { Button } from '@/components/ui/button';
@@ -802,6 +770,12 @@ const seatOptions = [
 // ── Props ───────────────────────────────────────────────────────
 interface PaginationData {
     data: any[];
+    total: number;
+    current_page: number;
+    last_page: number;
+    from: number;
+    to: number;
+    per_page: number;
     [key: string]: any;
 }
 
@@ -865,6 +839,7 @@ const form = reactive({
                 : null
             : null,
     city: f.city ? String(f.city) : '',
+    per_page: f.per_page ? String(f.per_page) : '15',
 });
 
 const yearRange = ref([form.min_year, form.max_year]);
@@ -1003,44 +978,56 @@ const updateFilter = (key: keyof typeof form, value: any) => {
 // ── Apply filters (debounced) ───────────────────────────────────
 let timeoutId: ReturnType<typeof setTimeout>;
 
+const getFilterParams = () => {
+    const q: Record<string, any> = {};
+    const v = form;
+
+    if (v.brand_id && v.brand_id !== 'all') q.brand_id = v.brand_id;
+    if (v.model_id && v.model_id !== 'all') q.model_id = v.model_id;
+    if (v.min_price > 0) q.min_price = v.min_price;
+    if (v.max_price < 200000) q.max_price = v.max_price;
+    if (v.min_year > 1980) q.min_year = v.min_year;
+    if (v.max_year < currentYear) q.max_year = v.max_year;
+    if (v.max_mileage && v.max_mileage !== 'all') q.max_mileage = v.max_mileage;
+    if (v.fuel_types.length) q.fuel_types = [...v.fuel_types];
+    if (v.body_types.length) q.body_types = [...v.body_types];
+    if (v.transmission_types.length)
+        q.transmission_types = [...v.transmission_types];
+    if (v.exterior_color_id && v.exterior_color_id !== 'all')
+        q.exterior_color_id = v.exterior_color_id;
+    if (v.euro_norm_id && v.euro_norm_id !== 'all')
+        q.euro_norm_id = v.euro_norm_id;
+    if (v.doors && v.doors !== 'all') q.doors = v.doors;
+    if (v.seats && v.seats !== 'all') q.seats = v.seats;
+    if (v.is_damaged === false) q.is_damaged = '0';
+    if (v.has_accident === false) q.has_accident = '0';
+    if (v.complete_maintenance_book === true) q.complete_maintenance_book = '1';
+    if (v.non_smoker === true) q.non_smoker = '1';
+    if (v.city) q.city = v.city;
+    if (v.per_page && v.per_page !== '15') q.per_page = v.per_page;
+
+    return q;
+};
+
 const applyFilters = () => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
-        const q: Record<string, any> = {};
-        const v = form;
-        console.log('Applying filters:', v);
-
-        if (v.brand_id && v.brand_id !== 'all') q.brand_id = v.brand_id;
-        if (v.model_id && v.model_id !== 'all') q.model_id = v.model_id;
-        if (v.min_price > 0) q.min_price = v.min_price;
-        if (v.max_price < 200000) q.max_price = v.max_price;
-        if (v.min_year > 2000) q.min_year = v.min_year;
-        if (v.max_year < currentYear) q.max_year = v.max_year;
-        if (v.max_mileage && v.max_mileage !== 'all')
-            q.max_mileage = v.max_mileage;
-        if (v.fuel_types.length) q.fuel_types = [...v.fuel_types];
-        if (v.body_types.length) q.body_types = [...v.body_types];
-        if (v.transmission_types.length)
-            q.transmission_types = [...v.transmission_types];
-        if (v.exterior_color_id && v.exterior_color_id !== 'all')
-            q.exterior_color_id = v.exterior_color_id;
-        if (v.euro_norm_id && v.euro_norm_id !== 'all')
-            q.euro_norm_id = v.euro_norm_id;
-        if (v.doors && v.doors !== 'all') q.doors = v.doors;
-        if (v.seats && v.seats !== 'all') q.seats = v.seats;
-        if (v.is_damaged === false) q.is_damaged = '0';
-        if (v.has_accident === false) q.has_accident = '0';
-        if (v.complete_maintenance_book === true)
-            q.complete_maintenance_book = '1';
-        if (v.non_smoker === true) q.non_smoker = '1';
-        if (v.city) q.city = v.city;
-
+        const q = getFilterParams();
         router.get(vehiclesRoutes.index.url(), q, {
             preserveState: true,
             replace: true,
             preserveScroll: true,
         });
     }, 400);
+};
+
+const handlePageChange = (page: number) => {
+    const q = { ...getFilterParams(), page };
+    router.get(vehiclesRoutes.index.url(), q, {
+        preserveState: true,
+        replace: true,
+        preserveScroll: true,
+    });
 };
 
 // Reactive: auto-apply when form changes
