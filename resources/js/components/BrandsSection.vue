@@ -59,10 +59,10 @@ const brands = [
   <section class="w-full py-8 sm:py-12">
     <div class="max-w-360 mx-auto px-6">
       <div class="text-center mb-8">
-        <h2 class="text-3xl font-extrabold text-gray-800 uppercase tracking-wide">
-          {{ __('brands.title_prefix') }} <span class="text-red-600">{{ __('brands.title_highlight') }}</span>
+        <h2 class="text-3xl font-extrabold text-foreground uppercase tracking-wide">
+          {{ __('brands.title_prefix') }} <span class="text-red-500">{{ __('brands.title_highlight') }}</span>
         </h2>
-        <p class="text-base text-gray-500 mt-4">{{ __('brands.subtitle') }}</p>
+        <p class="text-base text-muted-foreground mt-4">{{ __('brands.subtitle') }}</p>
       </div>
 
       <Carousel
@@ -83,7 +83,7 @@ const brands = [
                   class="max-w-full max-h-full object-contain"
                 />
               </div>
-              <span class="text-base font-medium text-gray-600 group-hover:text-gray-900 transition-colors group-hover:underline">
+              <span class="text-base font-medium text-muted-foreground group-hover:text-foreground transition-colors group-hover:underline">
                 {{ brand.name }}
               </span>
             </div>

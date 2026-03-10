@@ -70,21 +70,21 @@ function closeModal() {
 </script>
 
 <template>
-  <section class="w-full pt-8 sm:pt-12 pb-16 sm:pb-24 bg-white">
+  <section class="w-full pt-8 sm:pt-12 pb-16 sm:pb-24">
     <div class="max-w-5xl mx-auto px-6">
 
       <div class="text-center mb-16">
-        <h2 class="text-3xl font-[1000] text-slate-900 tracking-tight uppercase ">
+        <h2 class="text-3xl font-[1000] text-foreground tracking-tight uppercase ">
           {{ __('pricing.title_prefix') }}
           <span class="text-red-600 ">{{ __('pricing.title_highlight') }}</span>
         </h2>
-        <p class="text-slate-500 mt-4 max-w-lg mx-auto font-medium">
+        <p class="text-muted-foreground mt-4 max-w-lg mx-auto font-medium">
           {{ __('pricing.subtitle') }}
         </p>
       </div>
 
       <div class="flex justify-center mb-10">
-        <div class="bg-slate-50 border border-slate-200 rounded-lg px-5 py-2.5 text-sm text-slate-600 flex items-center gap-3 shadow-sm">
+        <div class="bg-muted border border-border rounded-lg px-5 py-2.5 text-sm text-muted-foreground flex items-center gap-3 shadow-sm">
           <span class="bg-red-500 text-white font-black uppercase text-[9px] px-2 py-0.5 rounded-md tracking-widest">
             Pro
           </span>
@@ -93,29 +93,29 @@ function closeModal() {
       </div>
 
       <div class="max-w-2xl mx-auto relative">
-        <div class="bg-slate-100/80 p-1.5 rounded-lg grid grid-cols-2 sm:grid-cols-4 gap-1 mb-8 border border-slate-200/50">
+        <div class="bg-muted/80 p-1.5 rounded-lg grid grid-cols-2 sm:grid-cols-4 gap-1 mb-8 border border-border/50">
           <button
             v-for="plan in plans"
             :key="plan"
             @click="selected = plan"
             class="flex-1 py-3 px-2 rounded-xl text-sm font-bold transition-all duration-300 relative cursor-pointer"
             :class="selected === plan
-              ? 'bg-white text-slate-900 shadow-md scale-[1.02]'
-              : 'text-slate-500 hover:text-slate-800 hover:bg-white/40'"
+              ? 'bg-card text-foreground shadow-md scale-[1.02]'
+              : 'text-muted-foreground hover:text-foreground hover:bg-card/40'"
           >
             {{ plan }}
             <span class="hidden sm:inline-block ml-1 opacity-60 font-medium">{{ __('pricing.listings') }}</span>
           </button>
         </div>
 
-        <Card class="relative z-10 overflow-hidden rounded-lg bg-white border-slate-200 p-8 md:p-12 transition-all duration-500">
+        <Card class="relative z-10 overflow-hidden rounded-lg bg-card border-border p-8 md:p-12 transition-all duration-500">
 
           <div class="flex justify-center mb-8">
             <div class="h-6 flex items-center">
               <span v-if="selected >= 50" class="bg-red-50 text-red-600 text-[10px] font-black uppercase px-4 py-1.5 rounded-full border border-red-100 animate-pulse">
                 {{ __('pricing.badge_premium') }}
               </span>
-              <span v-else class="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em]">
+              <span v-else class="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em]">
                 {{ __('pricing.badge_flexible') }}
               </span>
             </div>
@@ -126,25 +126,25 @@ function closeModal() {
               <div class="flex flex-col items-center sm:items-start flex-1">
                 <div class="flex items-start gap-1">
                   <transition name="price-pop" mode="out-in">
-                    <span :key="price" class="text-6xl font-[1000] text-slate-900 tracking-tighter tabular-nums">
+                    <span :key="price" class="text-6xl font-[1000] text-foreground tracking-tighter tabular-nums">
                       {{ price }}
                     </span>
                   </transition>
                   <span class="text-2xl font-bold text-red-600 mt-3">€</span>
                 </div>
-                <p class="text-slate-400 font-bold text-xs uppercase tracking-tight mt-1">
+                <p class="text-muted-foreground font-bold text-xs uppercase tracking-tight mt-1">
                   par {{ __('pricing.month') }} — {{ __('pricing.no_commitment') }}
                 </p>
               </div>
 
-              <div class="hidden sm:block w-px h-20 bg-linear-to-b from-transparent via-slate-200 to-transparent"></div>
+              <div class="hidden sm:block w-px h-20 bg-linear-to-b from-transparent via-border to-transparent"></div>
 
               <div class="space-y-4 flex-1">
                 <div v-for="feature in ['photos', 'stats']" :key="feature" class="flex items-center gap-3 group">
                   <div class="shrink-0 bg-emerald-100 text-emerald-600 rounded-full p-1 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
                     <Check :size="14" stroke-width="4" />
                   </div>
-                  <span class="text-slate-700 text-sm font-bold group-hover:text-slate-900 transition-colors">
+                  <span class="text-card-foreground text-sm font-bold group-hover:text-foreground transition-colors">
                     {{ __(`pricing.feature_${feature}`) }}
                   </span>
                 </div>
