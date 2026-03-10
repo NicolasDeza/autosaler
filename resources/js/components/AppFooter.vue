@@ -16,7 +16,7 @@
                         class="flex flex-col items-center gap-6 sm:col-span-2 sm:items-start"
                     >
                         <Link
-                            :href="dashboard()"
+                            :href="home().url"
                             class="flex w-fit items-center gap-x-2"
                         >
                             <AppLogoLg />
@@ -124,7 +124,7 @@ import { Facebook } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
-import { admin_dashboard, dashboard } from '@/routes';
+import { admin_dashboard, home } from '@/routes';
 import { notices, privacy, cookies } from '@/routes/legal';
 import type { NavItem } from '@/types';
 import AppLogoLg from './AppLogoLg.vue';
@@ -138,7 +138,7 @@ const menuItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
         {
             title: __('nav.home'),
-            href: dashboard(),
+            href: home().url,
         },
     ];
 
