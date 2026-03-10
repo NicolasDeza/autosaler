@@ -39,7 +39,9 @@ const toggle = (id: string, checked: boolean | string) => {
             <Checkbox
                 :id="`${prefix}-${option.id}`"
                 :checked="isChecked(String(option.id))"
-                @update:modelValue="(v) => toggle(String(option.id), v)"
+                @update:modelValue="
+                    (v: boolean | string) => toggle(String(option.id), v)
+                "
             />
 
             <Label

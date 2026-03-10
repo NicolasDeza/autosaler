@@ -187,17 +187,17 @@ const activeFilters = computed(() => {
     }
 
     // Booleans
-    if (v.is_damaged === false) {
+    if (v.is_damaged === true) {
         filters.push({
             key: 'is_damaged',
-            label: 'Non endommagé',
+            label: 'Véhicule endommagé',
             onRemove: () => emit('updateFilter', 'is_damaged', null),
         });
     }
-    if (v.has_accident === false) {
+    if (v.has_accident === true) {
         filters.push({
             key: 'has_accident',
-            label: "Pas d'accident",
+            label: 'Accidenté',
             onRemove: () => emit('updateFilter', 'has_accident', null),
         });
     }
