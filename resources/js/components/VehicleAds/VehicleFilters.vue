@@ -581,6 +581,7 @@ watch(
                     <FilterCheckboxGroup
                         v-model="form.fuel_types"
                         :options="props.fuelTypes ?? []"
+                        label="fuel"
                     />
                 </FilterGroup>
 
@@ -589,6 +590,7 @@ watch(
                     <FilterCheckboxGroup
                         v-model="form.body_types"
                         :options="props.bodyTypes ?? []"
+                        label="body"
                     />
                 </FilterGroup>
 
@@ -600,6 +602,7 @@ watch(
                     <FilterCheckboxGroup
                         v-model="form.transmission_types"
                         :options="props.transmissionTypes ?? []"
+                        label="transmission"
                     />
                 </FilterGroup>
 
@@ -608,7 +611,7 @@ watch(
                     <FilterSelect
                         v-model="form.exterior_color_id"
                         :options="props.exteriorColors ?? []"
-                        option-label="name"
+                        option-label="code"
                         placeholder="Toutes les couleurs"
                     />
                 </FilterGroup>
@@ -618,7 +621,7 @@ watch(
                     <FilterSelect
                         v-model="form.euro_norm_id"
                         :options="props.euroNorms ?? []"
-                        option-label="name"
+                        option-label="code"
                         placeholder="Peu importe"
                     />
                 </FilterGroup>

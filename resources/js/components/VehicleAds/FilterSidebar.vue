@@ -82,9 +82,11 @@ const handleUpdateModels = (models: any[]) => {
 
     <!-- Desktop Sidebar -->
     <aside
-        class="sticky top-20 hidden h-fit w-full shrink-0 space-y-0 rounded-lg bg-slate-900 p-6 text-white md:block md:w-1/4 lg:w-1/4"
+        class="sticky top-24 hidden h-fit w-full shrink-0 rounded-lg bg-slate-900 p-6 text-white md:block md:w-1/4 lg:w-1/4"
     >
-        <div class="mb-6 flex items-center justify-between">
+        <div
+            class="mb-6 flex items-center justify-between border-b border-slate-800 pb-4"
+        >
             <h3 class="text-xl font-bold">Filtres</h3>
             <Button
                 variant="ghost"
@@ -95,16 +97,45 @@ const handleUpdateModels = (models: any[]) => {
             >
         </div>
 
-        <VehicleFilters
-            v-model:form="form"
-            :brands="brands"
-            :fuel-types="fuelTypes"
-            :body-types="bodyTypes"
-            :transmission-types="transmissionTypes"
-            :exterior-colors="exteriorColors"
-            :euro-norms="euroNorms"
-            :models="models"
-            @update:models="handleUpdateModels"
-        />
+        <div
+            class="custom-scrollbar max-h-[calc(100vh-14rem)] overflow-y-auto pr-2"
+        >
+            <VehicleFilters
+                v-model:form="form"
+                :brands="brands"
+                :fuel-types="fuelTypes"
+                :body-types="bodyTypes"
+                :transmission-types="transmissionTypes"
+                :exterior-colors="exteriorColors"
+                :euro-norms="euroNorms"
+                :models="models"
+                @update:models="handleUpdateModels"
+            />
+        </div>
     </aside>
 </template>
+
+<style scoped>
+.custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #334155; /* slate-700 */
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #475569; /* slate-600 */
+}
+
+/* Firefox */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #334155 transparent;
+}
+</style>
