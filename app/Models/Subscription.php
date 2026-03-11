@@ -23,11 +23,11 @@ class Subscription extends Model
     protected function casts(): array
     {
         return [
-            'starts_at'     => 'datetime',
-            'ends_at'       => 'datetime',
+            'starts_at' => 'datetime',
+            'ends_at' => 'datetime',
             'trial_ends_at' => 'datetime',
-            'cancelled_at'  => 'datetime',
-            'auto_renew'    => 'boolean',
+            'cancelled_at' => 'datetime',
+            'auto_renew' => 'boolean',
         ];
     }
 

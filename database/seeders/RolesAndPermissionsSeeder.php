@@ -3,13 +3,12 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
-
     public function run(): void
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
@@ -40,14 +39,13 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $adminRole->syncPermissions([
             'post_ads',
-            'view_admin_dashboard'
+            'view_admin_dashboard',
         ]);
 
         $dealerRole->syncPermissions([
             'post_ads',
-            'view_dealer_dashboard'
+            'view_dealer_dashboard',
         ]);
-
 
         $this->command->info('Roles, Permissions, and Groups seeded successfully.');
     }

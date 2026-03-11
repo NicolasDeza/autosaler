@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('subscription_id')
-                  ->constrained('subscriptions')
-                  ->cascadeOnDelete();
+                ->constrained('subscriptions')
+                ->cascadeOnDelete();
 
             $table->foreignId('user_id')
-                  ->constrained('users')
-                  ->cascadeOnDelete();
+                ->constrained('users')
+                ->cascadeOnDelete();
 
             $table->unsignedInteger('listings_used')->default(0);
             $table->unsignedInteger('feature_used')->default(0);

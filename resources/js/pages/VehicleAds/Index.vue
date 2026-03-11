@@ -88,7 +88,8 @@
                                         variant="ghost"
                                         size="icon"
                                         class="h-8 w-8 rounded bg-card"
-                                        ><Star class="h-4 w-4 text-muted-foreground"
+                                        ><Star
+                                            class="h-4 w-4 text-muted-foreground"
                                     /></Button>
                                 </div>
 
@@ -116,7 +117,7 @@
                                             class="flex w-full min-w-0 flex-col justify-between gap-4 py-1 md:gap-0"
                                         >
                                             <div
-                                                class="self-start rounded bg-muted px-4 py-1 text-lg font-bold text-foreground shadow-sm"
+                                                class="self-start text-2xl font-bold text-foreground"
                                             >
                                                 € {{ ad.price }}
                                             </div>
@@ -124,8 +125,9 @@
                                             <div
                                                 class="mt-auto flex flex-wrap gap-2"
                                             >
-                                                <div
-                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
+                                                <Badge
+                                                    variant="secondary"
+                                                    class="font-semibold shadow-none"
                                                 >
                                                     {{
                                                         ad.first_registration_date?.substring(
@@ -133,9 +135,10 @@
                                                             4,
                                                         ) || 'N/A'
                                                     }}
-                                                </div>
-                                                <div
-                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
+                                                </Badge>
+                                                <Badge
+                                                    variant="secondary"
+                                                    class="font-semibold shadow-none"
                                                 >
                                                     {{
                                                         ad.mileage
@@ -143,28 +146,31 @@
                                                             : '0'
                                                     }}
                                                     km
-                                                </div>
-                                                <div
+                                                </Badge>
+                                                <Badge
                                                     v-if="ad.fuel_type"
-                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
+                                                    variant="secondary"
+                                                    class="font-semibold shadow-none"
                                                 >
                                                     {{ ad.fuel_type.code }}
-                                                </div>
-                                                <div
+                                                </Badge>
+                                                <Badge
                                                     v-if="ad.transmission_type"
-                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
+                                                    variant="secondary"
+                                                    class="font-semibold shadow-none"
                                                 >
                                                     {{
                                                         ad.transmission_type
                                                             .code
                                                     }}
-                                                </div>
-                                                <div
+                                                </Badge>
+                                                <Badge
                                                     v-if="ad.body_type"
-                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
+                                                    variant="secondary"
+                                                    class="font-semibold shadow-none"
                                                 >
                                                     {{ ad.body_type.code }}
-                                                </div>
+                                                </Badge>
                                             </div>
                                         </div>
                                     </div>
@@ -221,6 +227,7 @@ import { router, Head } from '@inertiajs/vue3';
 import { Star, Car as CarIcon } from 'lucide-vue-next';
 import { ref, watch, onUnmounted } from 'vue';
 import AppPagination from '@/components/AppPagination.vue';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import ActiveFilters from '@/components/VehicleAds/ActiveFilters.vue';

@@ -15,8 +15,7 @@ return [
     'cookie_policy' => 'Politique de cookies',
 
     // footer
-    'footer_description' =>
-        'Plateforme d’achat et de vente de véhicules d’occasion en toute confiance.',
+    'footer_description' => 'Plateforme d’achat et de vente de véhicules d’occasion en toute confiance.',
     'all_rights_reserved' => 'Tous droits réservés.',
     'made_by' => 'Site réalisé par',
 ];

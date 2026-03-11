@@ -1,6 +1,5 @@
 <?php
 
-
 return [
     'page_title' => 'Settings',
     'page_description' => 'Manage your profile and account settings',
@@ -10,7 +9,7 @@ return [
     'menu_2fa' => 'Two-factor Auth',
     'menu_appearance' => 'Appearance',
 
-    //profile page
+    // profile page
     'profile_title' => 'Profile information',
     'profile_description' => 'Update your names and email address',
     'profile_first_name' => 'First name',
@@ -34,7 +33,7 @@ return [
     'profile_delete_modal_cancel' => 'Cancel',
     'profile_delete_modal_confirm' => 'Delete account',
 
-    //password page
+    // password page
     'password_title' => 'Update password',
     'password_description' => 'Ensure your account is using a long, random password to stay secure',
     'password_current' => 'Current password',
@@ -43,7 +42,7 @@ return [
     'password_save' => 'Save password',
     'password_updated' => 'Saved.',
 
-    //2fa page
+    // 2fa page
     'two_factor_title' => 'Two-Factor Authentication Settings',
     'two_factor_description' => 'Manage your two-factor authentication settings',
     'two_factor_disable' => 'Disable',
@@ -53,6 +52,5 @@ return [
     'two_factor_continue_setup' => 'Continue setup',
     'twa_factor_disable_description' => 'When you enable two-factor authentication, you will be prompted for a secure pin during login. This pin can be retrieved from a TOTP-supported application on your phone.',
     'twa_factor_enable_description' => 'With two-factor authentication enabled, you will be prompted for a secure, random pin during login, which you can retrieve from the TOTP-supported application on your phone.',
-
 
 ];

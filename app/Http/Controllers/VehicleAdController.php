@@ -39,7 +39,7 @@ class VehicleAdController extends Controller
             'transmissionType',
             'features',
             'user.company.city',
-        ])->where('status', 'active')->latest();
+        ])->where('status', 'active');
 
         // ── Relation filters ────────────────────────────────────
         if ($request->filled('brand_id') && $request->brand_id !== 'all') {
@@ -131,7 +131,7 @@ class VehicleAdController extends Controller
         }
 
         $perPage = (int) $request->get('per_page', 15);
-        $ads = $query->paginate($perPage)->withQueryString();
+        $ads = $query->latest()->paginate($perPage)->withQueryString();
 
         return Inertia::render('VehicleAds/Index', [
             'ads' => $ads,
