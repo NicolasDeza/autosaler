@@ -24,10 +24,14 @@
             <main class="flex min-w-0 flex-1 flex-col gap-6">
                 <!-- Filters Summary and Result Count -->
                 <div class="flex flex-col gap-4">
-                    <div class="flex items-end justify-between">
+                    <div
+                        class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end"
+                    >
                         <h2 class="text-2xl font-bold text-foreground">
                             {{ ads.total }} véhicules trouvés
                         </h2>
+
+                        <SortSelect v-model="form.sort" />
                     </div>
 
                     <ActiveFilters
@@ -232,6 +236,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import ActiveFilters from '@/components/VehicleAds/ActiveFilters.vue';
 import FilterSidebar from '@/components/VehicleAds/FilterSidebar.vue';
+import SortSelect from '@/components/VehicleAds/SortSelect.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import vehiclesRoutes from '@/routes/vehicles';
 
@@ -290,6 +295,7 @@ interface FilterForm {
     city: string;
     city_id: string;
     per_page: string;
+    sort: string;
 }
 
 const form = ref<FilterForm>({
@@ -341,6 +347,7 @@ const form = ref<FilterForm>({
     city: f.city ? String(f.city) : '',
     city_id: f.city_id ? String(f.city_id) : '',
     per_page: f.per_page ? String(f.per_page) : '15',
+    sort: f.sort ? String(f.sort) : 'latest',
 });
 
 const models = ref<any[]>([]);
@@ -415,6 +422,7 @@ const getFilterParams = () => {
     if (v.city) q.city = v.city;
     if (v.city_id) q.city_id = v.city_id;
     if (v.per_page && v.per_page !== '15') q.per_page = v.per_page;
+    if (v.sort && v.sort !== 'latest') q.sort = v.sort;
 
     return q;
 };

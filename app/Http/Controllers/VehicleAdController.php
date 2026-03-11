@@ -130,8 +130,27 @@ class VehicleAdController extends Controller
             });
         }
 
+        // ── Sorting ─────────────────────────────────────────────
+        $sort = $request->get('sort', 'latest');
+
+        switch ($sort) {
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'latest':
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+
         $perPage = (int) $request->get('per_page', 15);
-        $ads = $query->latest()->paginate($perPage)->withQueryString();
+        $ads = $query->paginate($perPage)->withQueryString();
 
         return Inertia::render('VehicleAds/Index', [
             'ads' => $ads,
@@ -152,7 +171,7 @@ class VehicleAdController extends Controller
                 'doors', 'seats',
                 'is_damaged', 'has_accident', 'complete_maintenance_book', 'non_smoker',
                 'city_id', 'per_page',
-            ]),
+            ]) + ['sort' => $request->get('sort', 'latest')],
         ]);
     }
 
