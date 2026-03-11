@@ -167,7 +167,7 @@ onUnmounted(() => {
   <button
       @click="prev"
       :aria-label="__('hero.prev_slide')"
-      class="absolute top-1/2 left-4 z-20 hidden h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-black/25 text-white/60 backdrop-blur-sm transition-all duration-300 hover:border-red-500 hover:bg-red-500 hover:text-white md:left-6 md:flex"
+      class="absolute top-1/2 left-4 z-20 hidden h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-black/25 text-white/60 backdrop-blur-sm transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white md:left-6 md:flex"
   >
       <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -178,7 +178,7 @@ onUnmounted(() => {
   <button
       @click="next"
       :aria-label="__('hero.next_slide')"
-      class="absolute top-1/2 right-4 z-20 hidden h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-black/25 text-white/60 backdrop-blur-sm transition-all duration-300 hover:border-red-500 hover:bg-red-500 hover:text-white md:right-6 md:flex"
+      class="absolute top-1/2 right-4 z-20 hidden h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-black/25 text-white/60 backdrop-blur-sm transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white md:right-6 md:flex"
   >
       <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -190,7 +190,7 @@ onUnmounted(() => {
       @click="togglePause"
       :aria-label="paused ? __('hero.play') : __('hero.pause')"
       :aria-pressed="paused"
-      class="absolute right-4 bottom-8 z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-black/25 text-white/60 backdrop-blur-sm transition-all duration-300 hover:border-red-500 hover:bg-red-500 hover:text-white md:right-6"
+      class="absolute right-4 bottom-8 z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-black/25 text-white/60 backdrop-blur-sm transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white md:right-6"
   >
       <svg v-if="!paused" class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <rect x="6" y="4" width="4" height="16" rx="1"/>

@@ -60,9 +60,9 @@ const brands = [
     <div class="max-w-360 mx-auto px-6">
       <div class="text-center mb-8">
         <h2 class="text-3xl font-extrabold text-foreground uppercase tracking-wide">
-          {{ __('brands.title_prefix') }} <span class="text-red-500">{{ __('brands.title_highlight') }}</span>
+          {{ __('brands.title_prefix') }} <span class="text-primary">{{ __('brands.title_highlight') }}</span>
         </h2>
-        <p class="text-base text-muted-foreground mt-4">{{ __('brands.subtitle') }}</p>
+        <p class="text-base text-muted-foreground mt-4 font-medium">{{ __('brands.subtitle') }}</p>
       </div>
 
       <Carousel

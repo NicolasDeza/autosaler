@@ -167,8 +167,8 @@ const years = computed(() => {
                 >
                     <div class="mb-2 flex items-center px-2">
                         <div class="flex items-center gap-2">
-                            <div class="rounded-lg bg-destructive/10 p-2">
-                                <Car :size="20" class="text-destructive" />
+                            <div class="rounded-lg bg-primary/10 p-2">
+                                <Car :size="20" class="text-primary" />
                             </div>
                             <h2
                                 class="text-sm font-bold tracking-wider text-foreground uppercase"
@@ -252,20 +252,9 @@ const years = computed(() => {
                                     <PopoverTrigger as-child>
                                         <button
                                             type="button"
-                                            class="flex h-10 w-full cursor-pointer items-center justify-between rounded-md border border-border bg-card! px-3 text-sm shadow-xs transition-colors hover:bg-muted"
-                                            :class="
-                                                hasCustomRange
-                                                    ? 'text-foreground'
-                                                    : 'text-muted-foreground'
-                                            "
+                                            class="flex h-10 w-full cursor-pointer items-center justify-between rounded-md border border-border bg-card! px-3 text-sm text-foreground shadow-xs transition-colors hover:bg-muted"
                                         >
-                                            <span
-                                                :class="{
-                                                    'font-medium':
-                                                        hasCustomRange,
-                                                }"
-                                                >{{ priceLabel }}</span
-                                            >
+                                            <span>{{ priceLabel }}</span>
                                             <ChevronDown
                                                 class="size-4 shrink-0 opacity-50"
                                             />
@@ -362,7 +351,7 @@ const years = computed(() => {
                                                 'homeFilter.location_placeholder',
                                             )
                                         "
-                                        class="h-full border-border bg-card! pl-9"
+                                        class="h-full border-border bg-card! pl-9 text-foreground placeholder:text-foreground"
                                         @input="searchCities(filters.city)"
                                         @focus="
                                             filters.city.length >= 2
@@ -423,11 +412,11 @@ const years = computed(() => {
                         </div>
                     </form>
 
-                    <div class="mt-3 flex justify-center">
+                    <div class="mt-3 flex justify-center px-2">
                         <Link
                             :href="vehiclesRoutes.index.url()"
                             :data="searchQuery"
-                            class="flex items-center gap-1.5 text-xs font-bold text-muted-foreground underline transition-colors hover:text-primary"
+                            class="flex items-center justify-center gap-1.5 text-xs font-bold text-muted-foreground underline transition-colors hover:text-primary"
                         >
                             <Settings2 :size="14" />
                             {{ __('homeFilter.more_criteria') }}

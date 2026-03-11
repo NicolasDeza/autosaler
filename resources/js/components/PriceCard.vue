@@ -82,7 +82,7 @@ function closeModal() {
                     class="text-3xl font-[1000] tracking-tight text-foreground uppercase"
                 >
                     {{ __('pricing.title_prefix') }}
-                    <span class="text-red-600">{{
+                    <span class="text-primary">{{
                         __('pricing.title_highlight')
                     }}</span>
                 </h2>
@@ -98,7 +98,7 @@ function closeModal() {
                     class="flex items-center gap-3 rounded-lg border border-border bg-muted px-5 py-2.5 text-sm text-muted-foreground shadow-sm"
                 >
                     <span
-                        class="rounded-md bg-red-500 px-2 py-0.5 text-[9px] font-black tracking-widest text-white uppercase"
+                        class="rounded-md bg-primary px-2 py-0.5 text-[9px] font-black tracking-widest text-white uppercase"
                     >
                         Pro
                     </span>
@@ -116,7 +116,7 @@ function closeModal() {
                         v-for="plan in plans"
                         :key="plan"
                         @click="selected = plan"
-                        class="relative flex-1 cursor-pointer rounded-xl px-2 py-3 text-sm font-bold transition-all duration-300"
+                        class="relative flex-1 cursor-pointer rounded-lg px-2 py-3 text-sm font-bold transition-all duration-300"
                         :class="
                             selected === plan
                                 ? 'scale-[1.02] bg-card text-foreground shadow-md'
@@ -138,7 +138,7 @@ function closeModal() {
                         <div class="flex h-6 items-center">
                             <span
                                 v-if="selected >= 50"
-                                class="animate-pulse rounded-full border border-red-100 bg-red-50 px-4 py-1.5 text-[10px] font-black text-red-600 uppercase"
+                                class="animate-pulse rounded-full border border-red-100 bg-red-50 px-4 py-1.5 text-[10px] font-black text-primary uppercase"
                             >
                                 {{ __('pricing.badge_premium') }}
                             </span>
@@ -168,7 +168,7 @@ function closeModal() {
                                         </span>
                                     </transition>
                                     <span
-                                        class="mt-3 text-2xl font-bold text-red-600"
+                                        class="mt-3 text-2xl font-bold text-primary"
                                         >€</span
                                     >
                                 </div>
@@ -206,7 +206,7 @@ function closeModal() {
 
                         <Button
                             @click="openModal"
-                            class="h-12 w-full cursor-pointer rounded-lg bg-red-500 text-base font-black text-white transition-all duration-300 hover:scale-[1.06] hover:bg-red-600"
+                            class="h-12 w-full cursor-pointer rounded-lg bg-primary text-base font-black text-white "
                         >
                             {{ __('pricing.cta_paid') }}
                         </Button>
@@ -243,7 +243,7 @@ function closeModal() {
                             />
                             <p
                                 v-if="form.errors.company_name"
-                                class="text-sm text-red-500"
+                                class="text-sm text-primary"
                             >
                                 {{ form.errors.company_name }}
                             </p>
@@ -259,7 +259,7 @@ function closeModal() {
                             />
                             <p
                                 v-if="form.errors.contact_name"
-                                class="text-sm text-red-500"
+                                class="text-sm text-primary"
                             >
                                 {{ form.errors.contact_name }}
                             </p>
@@ -279,7 +279,7 @@ function closeModal() {
                             />
                             <p
                                 v-if="form.errors.email"
-                                class="text-sm text-red-500"
+                                class="text-sm text-primary"
                             >
                                 {{ form.errors.email }}
                             </p>
@@ -296,7 +296,7 @@ function closeModal() {
                             />
                             <p
                                 v-if="form.errors.phone"
-                                class="text-sm text-red-500"
+                                class="text-sm text-primary"
                             >
                                 {{ form.errors.phone }}
                             </p>
@@ -316,7 +316,7 @@ function closeModal() {
                         />
                         <p
                             v-if="form.errors.message"
-                            class="text-sm text-red-500"
+                            class="text-sm text-primary"
                         >
                             {{ form.errors.message }}
                         </p>
@@ -334,7 +334,7 @@ function closeModal() {
                         <Button
                             type="submit"
                             :disabled="form.processing"
-                            class="cursor-pointer bg-red-500 text-white hover:bg-red-600"
+                            class="cursor-pointer bg-primary text-white"
                         >
                             <Send :size="16" class="mr-2" />
                             {{

@@ -3,6 +3,7 @@ import { Link } from '@inertiajs/vue3';
 import { Fuel, Gauge, Calendar, ImageOff, Star } from 'lucide-vue-next';
 import { show } from '@/actions/App/Http/Controllers/VehicleAdController';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslation } from '@/composables/useTranslation';
 
@@ -49,7 +50,7 @@ const formatDate = (date: string | null) => {
                     class="text-3xl font-extrabold tracking-wide text-foreground uppercase"
                 >
                     {{ __('recentVehicles.title_prefix') }}
-                    <span class="text-red-500">{{
+                    <span class="text-primary">{{
                         __('recentVehicles.title_highlight')
                     }}</span>
                 </h2>
@@ -57,7 +58,7 @@ const formatDate = (date: string | null) => {
 
             <div
                 v-if="vehicles.length"
-                class="grid grid-cols-2 gap-4 lg:grid-cols-4"
+                class="grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-4"
             >
                 <Link
                     v-for="vehicle in vehicles"
@@ -66,60 +67,60 @@ const formatDate = (date: string | null) => {
                     class="group block"
                 >
                     <Card
-                        class="h-full cursor-pointer gap-0 overflow-hidden border-border bg-card p-0 transition-all duration-200 group-hover:shadow-lg group-hover:border-primary/20"
+                        class="h-full cursor-pointer gap-0 overflow-hidden rounded-lg border-border bg-card p-0 transition-all duration-200 group-hover:shadow-xl md:rounded-xl"
                     >
                         <!-- Image placeholder -->
                         <div
-                            class="flex aspect-4/3 items-center justify-center bg-muted"
+                            class="flex aspect-4/3 items-center justify-center bg-muted md:aspect-video"
                         >
-                            <ImageOff :size="40" class="text-muted-foreground/40" />
+                            <ImageOff class="size-10 text-muted-foreground/30 md:size-12" />
                         </div>
 
-                        <CardContent class="flex flex-col gap-2 p-3">
+                        <CardContent class="flex min-h-57.5 flex-col gap-1.5 p-3 md:min-h-45 md:gap-2 md:p-3">
                             <!-- Titre : Marque + Modèle -->
                             <h3
-                                class="truncate text-base font-bold text-card-foreground"
+                                class="line-clamp-2 h-10 text-base font-bold leading-tight text-card-foreground md:h-[2.6rem] md:text-lg"
                             >
                                 {{ vehicle.brand?.name ?? '' }}
                                 {{ vehicle.model?.name ?? '' }}
                             </h3>
 
                             <!-- Prix -->
-                            <span class="text-lg font-extrabold text-primary">
+                            <span class="block h-7 text-lg font-extrabold leading-tight text-primary md:h-8 md:text-xl">
                                 {{ formatPrice(vehicle.price) }}
                             </span>
 
                             <!-- Infos : date, km, carburant -->
                             <div
-                                class="flex items-center gap-3 text-xs text-muted-foreground"
+                                class="flex h-14 flex-col gap-1 text-xs text-muted-foreground md:h-6 md:flex-row md:flex-wrap md:gap-2"
                             >
-                                <span class="flex items-center gap-1">
-                                    <Calendar :size="12" />
-                                    {{
+                                <span class="flex items-center gap-1 md:gap-1.5">
+                                    <Calendar class="size-3 shrink-0 md:size-3.5" />
+                                    <span>{{
                                         formatDate(
                                             vehicle.first_registration_date,
                                         )
-                                    }}
+                                    }}</span>
                                 </span>
-                                <span class="flex items-center gap-1">
-                                    <Gauge :size="12" />
-                                    {{ formatMileage(vehicle.mileage) }}
+                                <span class="flex items-center gap-1 md:gap-1.5">
+                                    <Gauge class="size-3 shrink-0 md:size-3.5" />
+                                    <span>{{ formatMileage(vehicle.mileage) }}</span>
                                 </span>
                                 <span
                                     v-if="vehicle.fuel_type"
-                                    class="flex items-center gap-1"
+                                    class="flex items-center gap-1 md:gap-1.5"
                                 >
-                                    <Fuel :size="12" />
-                                    {{ vehicle.fuel_type.code }}
+                                    <Fuel class="size-3 shrink-0 md:size-3.5" />
+                                    <span>{{ vehicle.fuel_type.code }}</span>
                                 </span>
                             </div>
 
                             <!-- Badges -->
-                            <div class="mt-1 flex gap-1.5">
+                            <div class="flex h-auto items-start gap-1.5 md:h-[1.3rem] md:gap-2">
                                 <Badge
                                     v-if="vehicle.transmission_type"
                                     variant="secondary"
-                                    class="border-border bg-secondary text-secondary-foreground px-1.5 py-0 text-[10px]"
+                                    class="border-border bg-secondary px-1.5 py-1 text-[10px] font-medium text-secondary-foreground md:px-2 md:py-0.5 md:text-[11px]"
                                 >
                                     {{ vehicle.transmission_type.code }}
                                 </Badge>
@@ -127,9 +128,9 @@ const formatDate = (date: string | null) => {
 
                             <!-- Favoris -->
                             <div
-                                class="mt-auto flex items-center justify-between border-t border-border pt-2"
+                                class="mt-auto flex items-center justify-between border-t border-border pt-2 md:pt-2"
                             >
-                                <span class="truncate text-xs text-muted-foreground">
+                                <span class="truncate text-xs font-medium text-muted-foreground">
                                     {{
                                         vehicle.user?.company?.name ??
                                         __('recentVehicles.private_seller')
@@ -137,9 +138,10 @@ const formatDate = (date: string | null) => {
                                 </span>
                                 <button
                                     @click.prevent
-                                    class="cursor-pointer rounded-md border border-border p-1.5 text-muted-foreground/60 transition-colors duration-200 hover:border-destructive hover:bg-destructive/10 hover:text-destructive"
+                                    class="cursor-pointer rounded-md border border-border p-1.5 text-muted-foreground/70 transition-all duration-200 hover:border-primary hover:bg-primary/10 hover:text-primary md:p-2"
+                                    :aria-label="__('recentVehicles.add_to_favorites')"
                                 >
-                                    <Star :size="16" />
+                                    <Star class="size-4 md:size-4.5" />
                                 </button>
                             </div>
                         </CardContent>
@@ -152,11 +154,12 @@ const formatDate = (date: string | null) => {
             </div>
 
             <div class="mt-8 flex justify-center">
-                <button
-                    class="cursor-pointer rounded-md border-2 border-destructive bg-card px-6 py-2.5 text-base font-semibold text-destructive transition-all duration-200 hover:scale-105 hover:bg-destructive hover:text-destructive-foreground"
+                <Button
+                    size="lg"
+                    class="cursor-pointer px-4 py-4 text-base font-semibold"
                 >
-                    {{ __('recentVehicles.search_button') }}
-                </button>
+                    {{ __("recentVehicles.search_button") }}
+                </Button>
             </div>
         </div>
     </section>
