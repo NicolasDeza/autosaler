@@ -40,14 +40,16 @@ const handleUpdateModels = (models: any[]) => {
             <SheetTrigger as-child>
                 <Button
                     size="lg"
-                    class="h-14 w-14 rounded-full bg-blue-600 shadow-lg transition-transform hover:scale-110 hover:bg-blue-700 active:scale-95"
+                    class="dark group h-14 w-14 rounded-full bg-background shadow-lg transition-transform hover:scale-110 hover:ring-2 hover:ring-red-500 active:scale-95"
                 >
-                    <Filter class="h-6 w-6 text-white" />
+                    <Filter
+                        class="h-6 w-6 text-red-500 transition-transform group-hover:scale-110"
+                    />
                 </Button>
             </SheetTrigger>
             <SheetContent
                 side="left"
-                class="w-[85vw] border-slate-800 bg-slate-900 p-0 text-white sm:max-w-md"
+                class="dark w-[85vw] p-0 text-white sm:max-w-md"
             >
                 <SheetHeader
                     class="border-b border-slate-800 p-6 pb-4 text-left"

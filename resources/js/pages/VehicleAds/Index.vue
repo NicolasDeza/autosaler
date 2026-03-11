@@ -21,7 +21,7 @@
             />
 
             <!-- Main Content -->
-            <main class="flex flex-1 flex-col gap-6">
+            <main class="flex min-w-0 flex-1 flex-col gap-6">
                 <!-- Filters Summary and Result Count -->
                 <div class="flex flex-col gap-4">
                     <div class="flex items-end justify-between">
@@ -62,7 +62,7 @@
                     <div
                         v-if="ads.data.length"
                         key="results-list"
-                        class="relative flex flex-col gap-4 transition-opacity duration-300"
+                        class="relative flex w-full min-w-0 flex-col gap-4 transition-opacity duration-300"
                         :class="{
                             'pointer-events-none opacity-50': isProcessing,
                         }"
@@ -70,12 +70,12 @@
                         <TransitionGroup
                             name="list"
                             tag="div"
-                            class="flex flex-col gap-4"
+                            class="flex w-full flex-col gap-4"
                         >
                             <Card
                                 v-for="ad in ads.data"
                                 :key="ad.id"
-                                class="relative cursor-pointer border-2 border-transparent bg-slate-300 p-4 transition-all duration-300 hover:border-blue-500 hover:shadow-lg"
+                                class="relative cursor-pointer overflow-hidden border-2 border-transparent bg-slate-300 p-4 transition-all duration-300 hover:border-blue-500 hover:shadow-lg"
                                 @click="
                                     () =>
                                         router.visit(
@@ -92,8 +92,10 @@
                                     /></Button>
                                 </div>
 
-                                <div class="flex flex-col gap-2">
-                                    <h4 class="text-lg font-bold">
+                                <div class="flex min-w-0 flex-col gap-2">
+                                    <h4
+                                        class="text-lg font-bold wrap-break-word sm:truncate"
+                                    >
                                         {{ ad.brand?.name }}
                                         {{ ad.model?.name }}
                                     </h4>
@@ -111,7 +113,7 @@
                                         ></div>
 
                                         <div
-                                            class="flex w-full flex-col justify-between gap-4 py-1 md:gap-0"
+                                            class="flex w-full min-w-0 flex-col justify-between gap-4 py-1 md:gap-0"
                                         >
                                             <div
                                                 class="self-start rounded bg-white px-4 py-1 text-lg font-bold shadow-sm"

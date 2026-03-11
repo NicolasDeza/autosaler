@@ -57,21 +57,27 @@ const internalPerPage = computed({
         class="mt-4 flex flex-col items-center justify-between gap-4 rounded-lg bg-slate-100 p-4 shadow-sm md:flex-row"
     >
         <!-- Per Page Selector & Info -->
-        <div class="flex items-center gap-4">
-            <span class="text-sm font-medium text-slate-600"> Afficher </span>
-            <Select v-model="internalPerPage">
-                <SelectTrigger class="w-20 bg-white">
-                    <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="10">10</SelectItem>
-                    <SelectItem value="15">15</SelectItem>
-                    <SelectItem value="25">25</SelectItem>
-                    <SelectItem value="50">50</SelectItem>
-                    <SelectItem value="100">100</SelectItem>
-                </SelectContent>
-            </Select>
-            <span class="text-xs text-slate-500">
+        <div
+            class="flex flex-wrap items-center justify-center gap-4 md:justify-start"
+        >
+            <div class="flex items-center gap-2">
+                <span class="text-sm font-medium text-slate-600">
+                    Afficher
+                </span>
+                <Select v-model="internalPerPage">
+                    <SelectTrigger class="w-20 bg-white">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="10">10</SelectItem>
+                        <SelectItem value="15">15</SelectItem>
+                        <SelectItem value="25">25</SelectItem>
+                        <SelectItem value="50">50</SelectItem>
+                        <SelectItem value="100">100</SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
+            <span class="text-center text-xs text-slate-500 md:text-left">
                 Affichage de {{ pagination.from }} à {{ pagination.to }} sur
                 {{ pagination.total }} {{ resourceLabel }}
             </span>
