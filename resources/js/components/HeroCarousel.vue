@@ -2,6 +2,7 @@
 import hero1 from '@assets/images/hero.jpg';
 import hero2 from '@assets/images/hero2.jpg';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/composables/useTranslation';
 
 const { __ } = useTranslation();
@@ -155,11 +156,9 @@ onUnmounted(() => {
 
       <!-- CTA -->
       <div class="flex justify-center">
-          <button
-              class="group inline-flex cursor-pointer items-center gap-3 rounded bg-red-500 px-8 py-3.5 font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-red-600"
-          >
+          <Button size="lg" class="group inline-flex cursor-pointer items-center gap-3 px-8 py-7 text-base font-bold md:text-lg">
               {{ slides[current].cta }}
-          </button>
+          </Button>
       </div>
     </div>
   </div>

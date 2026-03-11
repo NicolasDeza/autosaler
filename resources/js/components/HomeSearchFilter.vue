@@ -411,10 +411,11 @@ const years = computed(() => {
                             <div class="w-full lg:flex-1">
                                 <Button
                                     type="submit"
-                                    class="flex h-10 w-full cursor-pointer items-center justify-center gap-2 bg-red-500 px-6 font-bold text-destructive-foreground transition-all hover:scale-105 hover:bg-red-600 active:scale-95"
+                                    size="lg"
+                                    class="flex w-full cursor-pointer items-center justify-center gap-2 px-10 py-4 text-base font-bold uppercase"
                                 >
                                     <Search :size="18" />
-                                    <span class="text-sm uppercase">{{
+                                    <span>{{
                                         __('homeFilter.search_button')
                                     }}</span>
                                 </Button>
@@ -426,7 +427,7 @@ const years = computed(() => {
                         <Link
                             :href="vehiclesRoutes.index.url()"
                             :data="searchQuery"
-                            class="flex items-center gap-1.5 text-xs font-bold text-muted-foreground underline transition-colors hover:text-destructive"
+                            class="flex items-center gap-1.5 text-xs font-bold text-muted-foreground underline transition-colors hover:text-primary"
                         >
                             <Settings2 :size="14" />
                             {{ __('homeFilter.more_criteria') }}
