@@ -42,17 +42,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
 import { Download, Printer, Plus } from 'lucide-vue-next';
-import { create as vehicleCreate } from '@/routes/vehicles';
+import { ref, watch, onMounted } from 'vue';
 import DealerOverviewTab from '@/components/dealer/DealerOverviewTab.vue';
 import DealerVehiclesTab from '@/components/dealer/DealerVehiclesTab.vue';
-import type { BreadcrumbItem } from '@/types';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import AppLayout from '@/layouts/AppLayout.vue';
 import dealer_dashboard from '@/routes/dealer_dashboard'; // Adjust the import based on wayfinder output
+import { create as vehicleCreate } from '@/routes/vehicles';
+import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -69,7 +69,7 @@ interface Props {
     ads: any;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 
 const activeTab = ref('overview');
 

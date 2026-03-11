@@ -151,7 +151,7 @@ class VehicleAdController extends Controller
                 'interior_color_id', 'interior_type_id',
                 'doors', 'seats',
                 'is_damaged', 'has_accident', 'complete_maintenance_book', 'non_smoker',
-                'city', 'city_id', 'per_page',
+                'city_id', 'per_page',
             ]),
         ]);
     }

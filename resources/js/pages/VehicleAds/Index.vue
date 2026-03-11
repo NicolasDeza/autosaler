@@ -219,7 +219,7 @@
 <script setup lang="ts">
 import { router, Head } from '@inertiajs/vue3';
 import { Star, Car as CarIcon } from 'lucide-vue-next';
-import { ref, watch, reactive, onUnmounted } from 'vue';
+import { ref, watch, onUnmounted } from 'vue';
 import AppPagination from '@/components/AppPagination.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -259,7 +259,33 @@ const f = props.filters || {};
 const toArr = (v: any): string[] =>
     v ? (Array.isArray(v) ? v.map(String) : [String(v)]) : [];
 
-const form = reactive({
+interface FilterForm {
+    brand_id: string;
+    model_id: string;
+    min_price: number;
+    max_price: number;
+    min_year: number;
+    max_year: number;
+    max_mileage: string;
+    fuel_types: string[];
+    body_types: string[];
+    transmission_types: string[];
+    exterior_color_id: string;
+    euro_norm_id: string;
+    interior_color_id: string;
+    interior_type_id: string;
+    doors: string;
+    seats: string;
+    is_damaged: boolean | null;
+    has_accident: boolean | null;
+    complete_maintenance_book: boolean | null;
+    non_smoker: boolean | null;
+    city: string;
+    city_id: string;
+    per_page: string;
+}
+
+const form = ref<FilterForm>({
     brand_id: f.brand_id ? String(f.brand_id) : 'all',
     model_id: f.model_id ? String(f.model_id) : 'all',
     min_price: f.min_price ? Number(f.min_price) : 0,
@@ -324,18 +350,18 @@ onUnmounted(() => {
 
 const onYearChange = (values: number[] | undefined) => {
     if (!values) return;
-    form.min_year = values[0];
-    form.max_year = values[1];
+    form.value.min_year = values[0];
+    form.value.max_year = values[1];
 };
 
 const onPriceChange = (values: number[] | undefined) => {
     if (!values) return;
-    form.min_price = values[0];
-    form.max_price = values[1];
+    form.value.min_price = values[0];
+    form.value.max_price = values[1];
 };
 
-const updateFilter = (key: keyof typeof form, value: any) => {
-    (form[key] as any) = value;
+const updateFilter = (key: string, value: any) => {
+    (form.value as any)[key] = value;
 };
 
 // ── Apply filters (debounced) ───────────────────────────────────
@@ -352,7 +378,7 @@ let timeoutId: ReturnType<typeof setTimeout>;
 
 const getFilterParams = () => {
     const q: Record<string, any> = {};
-    const v = form;
+    const v = form.value;
 
     if (v.brand_id && v.brand_id !== 'all') q.brand_id = v.brand_id;
     if (v.model_id && v.model_id !== 'all') q.model_id = v.model_id;
