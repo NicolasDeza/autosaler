@@ -67,7 +67,7 @@ const formatDate = (date: string | null) => {
                     class="group block"
                 >
                     <Card
-                        class="h-full cursor-pointer gap-0 overflow-hidden rounded-lg border-border bg-card p-0 transition-all duration-200 group-hover:shadow-xl md:rounded-xl"
+                        class="h-full cursor-pointer gap-0 overflow-hidden rounded-lg border border-border bg-card p-0 transition-all duration-200 group-hover:border-primary/30 group-hover:shadow-xl md:rounded-xl"
                     >
                         <!-- Image placeholder -->
                         <div

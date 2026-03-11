@@ -156,8 +156,11 @@ onUnmounted(() => {
 
       <!-- CTA -->
       <div class="flex justify-center">
-          <Button size="lg" class="group inline-flex cursor-pointer items-center gap-3 px-8 py-7 text-base font-bold md:text-lg">
-              {{ slides[current].cta }}
+          <Button size="lg" class="group relative inline-flex cursor-pointer items-center overflow-hidden px-8 py-7 text-base font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_40px_rgba(220,38,38,0.55)] md:text-lg">
+              <!-- Diagonal sweep -->
+              <span class="absolute inset-0 -translate-x-full -skew-x-12 bg-white/15 transition-transform duration-500 group-hover:translate-x-full" />
+              <!-- Text avec tracking expansion -->
+              <span class="relative z-10 transition-all duration-300 group-hover:tracking-widest">{{ slides[current].cta }}</span>
           </Button>
       </div>
     </div>
