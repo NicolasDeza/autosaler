@@ -12,12 +12,14 @@ interface Props {
     isActive?: boolean;
     defaultOpen?: boolean;
     disabled?: boolean;
+    overflowVisible?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
     isActive: false,
     defaultOpen: false,
     disabled: false,
+    overflowVisible: false,
 });
 </script>
 
@@ -45,7 +47,10 @@ withDefaults(defineProps<Props>(), {
                 class="h-4 w-4 text-slate-400 transition-transform duration-200 group-data-[state=open]:rotate-180"
             />
         </CollapsibleTrigger>
-        <CollapsibleContent class="collapsible-content rounded-md">
+        <CollapsibleContent
+            class="collapsible-content rounded-md"
+            :class="{ '!overflow-visible': overflowVisible }"
+        >
             <div class="pt-1">
                 <slot />
             </div>
