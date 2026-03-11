@@ -395,10 +395,6 @@
 
 <script setup lang="ts">
 import { Head, router } from '@inertiajs/vue3';
-import { edit as vehicleEdit } from '@/routes/vehicles';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import {
     CheckCircle,
     AlertTriangle,
@@ -408,6 +404,10 @@ import {
     Phone,
     Mail,
 } from 'lucide-vue-next';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { edit as vehicleEdit } from '@/routes/vehicles';
 
 defineProps<{
     ad: any;

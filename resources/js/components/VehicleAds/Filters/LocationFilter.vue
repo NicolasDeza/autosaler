@@ -5,19 +5,28 @@ import { ref, watch } from 'vue';
 import { Input } from '@/components/ui/input';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 
-const form = defineModel<any>('form', { required: true });
+const city = defineModel<string>('city');
+const cityId = defineModel<string | number>('cityId');
 
 const cities = ref<any[]>([]);
 const showCities = ref(false);
 const isSearchingCities = ref(false);
-const searchTerm = ref(form.value.city || '');
+const searchTerm = ref(city.value || '');
 
 watch(
-    () => form.value.city,
+    () => city.value,
     (newVal) => {
         searchTerm.value = newVal || '';
     },
 );
+
+// If the user clears the search term manually, we clear the filter too
+watch(searchTerm, (newVal) => {
+    if (!newVal && (city.value || cityId.value)) {
+        city.value = '';
+        cityId.value = '';
+    }
+});
 
 let citySearchTimeout: number | undefined;
 
@@ -47,10 +56,11 @@ const searchCities = (query: string) => {
     }, 300);
 };
 
-const selectCity = (city: any) => {
-    const value = city.zip_code + ' ' + city.code;
+const selectCity = (selectedCity: any) => {
+    const value = selectedCity.zip_code + ' ' + selectedCity.code;
     searchTerm.value = value;
-    form.value.city = value;
+    city.value = value;
+    cityId.value = selectedCity.id;
     showCities.value = false;
 };
 
@@ -64,7 +74,7 @@ const handleCityBlur = () => {
 <template>
     <FilterGroup
         label="Emplacement"
-        :is-active="!!form.city"
+        :is-active="!!city"
         class="relative z-50"
         overflow-visible
     >

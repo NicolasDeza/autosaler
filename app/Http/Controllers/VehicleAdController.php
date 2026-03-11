@@ -38,6 +38,7 @@ class VehicleAdController extends Controller
             'euroNorm',
             'transmissionType',
             'features',
+            'user.company.city',
         ])->where('status', 'active')->latest();
 
         // ── Relation filters ────────────────────────────────────
@@ -123,18 +124,9 @@ class VehicleAdController extends Controller
             $query->where('non_smoker', $request->non_smoker === '1');
         }
 
-        if ($request->filled('city')) {
-            $query->whereHas('user.company.city', function ($q) use ($request) {
-                $q->where('code', 'LIKE', '%'.$request->city.'%')
-                    ->orWhere('zip_code', 'LIKE', '%'.$request->city.'%');
-
-                $tokens = explode(' ', $request->city);
-                if (count($tokens) > 1) {
-                    $q->orWhere(function ($sq) use ($tokens) {
-                        $sq->where('zip_code', 'LIKE', '%'.$tokens[0].'%')
-                            ->where('code', 'LIKE', '%'.implode(' ', array_slice($tokens, 1)).'%');
-                    });
-                }
+        if ($request->filled('city_id')) {
+            $query->whereHas('user.company', function ($q) use ($request) {
+                $q->where('city_id', $request->city_id);
             });
         }
 
@@ -159,7 +151,7 @@ class VehicleAdController extends Controller
                 'interior_color_id', 'interior_type_id',
                 'doors', 'seats',
                 'is_damaged', 'has_accident', 'complete_maintenance_book', 'non_smoker',
-                'city', 'per_page',
+                'city', 'city_id', 'per_page',
             ]),
         ]);
     }

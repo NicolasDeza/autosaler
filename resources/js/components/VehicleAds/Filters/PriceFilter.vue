@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import { Slider } from '@/components/ui/slider';
+import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 
 const form = defineModel<any>('form', { required: true });
 

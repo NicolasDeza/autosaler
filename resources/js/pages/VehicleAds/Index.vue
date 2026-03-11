@@ -170,10 +170,12 @@
                                     </div>
 
                                     <div
+                                        v-if="ad.user?.company"
                                         class="mt-4 text-xs font-semibold text-gray-600"
                                     >
-                                        Premium auto SRL<br />
-                                        1330 Rixensart
+                                        {{ ad.user.company.name }}<br />
+                                        {{ ad.user.company.city?.zip_code }}
+                                        {{ ad.user.company.city?.code }}
                                     </div>
                                 </div>
                             </Card>
@@ -304,6 +306,7 @@ const form = reactive({
                 : null
             : null,
     city: f.city ? String(f.city) : '',
+    city_id: f.city_id ? String(f.city_id) : '',
     per_page: f.per_page ? String(f.per_page) : '15',
 });
 
@@ -377,6 +380,7 @@ const getFilterParams = () => {
     if (v.complete_maintenance_book === true) q.complete_maintenance_book = '1';
     if (v.non_smoker === true) q.non_smoker = '1';
     if (v.city) q.city = v.city;
+    if (v.city_id) q.city_id = v.city_id;
     if (v.per_page && v.per_page !== '15') q.per_page = v.per_page;
 
     return q;

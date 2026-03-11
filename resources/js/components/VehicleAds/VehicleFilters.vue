@@ -113,7 +113,10 @@ watch(
                 <VersionFilter v-model:form="form" :versions="versions" />
 
                 <!-- Emplacement -->
-                <LocationFilter v-model:form="form" />
+                <LocationFilter
+                    v-model:city="form.city"
+                    v-model:cityId="form.city_id"
+                />
 
                 <!-- Prix -->
                 <PriceFilter v-model:form="form" />
