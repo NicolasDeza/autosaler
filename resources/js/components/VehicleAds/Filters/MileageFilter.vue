@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import {
     Select,
     SelectContent,
@@ -7,6 +6,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 
 const form = defineModel<any>('form', { required: true });
 </script>

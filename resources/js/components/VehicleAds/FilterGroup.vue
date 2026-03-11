@@ -49,7 +49,7 @@ withDefaults(defineProps<Props>(), {
         </CollapsibleTrigger>
         <CollapsibleContent
             class="collapsible-content rounded-md"
-            :class="{ '!overflow-visible': overflowVisible }"
+            :class="{ 'overflow-visible!': overflowVisible }"
         >
             <div class="pt-1">
                 <slot />

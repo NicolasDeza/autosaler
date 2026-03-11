@@ -97,7 +97,7 @@ const handleCityBlur = () => {
             <!-- City Suggestions -->
             <div
                 v-if="showCities && (cities.length > 0 || isSearchingCities)"
-                class="absolute top-full left-0 z-[100] mt-1 w-full animate-in overflow-hidden rounded-md border border-slate-700 bg-slate-800 text-white shadow-xl fade-in-80"
+                class="absolute top-full left-0 z-100 mt-1 w-full animate-in overflow-hidden rounded-md border border-slate-700 bg-slate-800 text-white shadow-xl fade-in-80"
             >
                 <div class="max-h-60 overflow-y-auto p-1">
                     <div
