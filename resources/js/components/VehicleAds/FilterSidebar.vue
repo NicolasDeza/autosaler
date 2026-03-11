@@ -20,6 +20,7 @@ defineProps<{
     euroNorms?: any[];
     interiorColors?: any[];
     interiorTypes?: any[];
+    features?: any[];
     models: any[];
 }>();
 
@@ -47,12 +48,9 @@ const handleUpdateModels = (models: any[]) => {
                     />
                 </Button>
             </SheetTrigger>
-            <SheetContent
-                side="left"
-                class="w-[85vw] bg-card p-0 sm:max-w-md"
-            >
+            <SheetContent side="left" class="w-[85vw] bg-card p-0 sm:max-w-md">
                 <SheetHeader
-                    class="dark bg-background border-b border-border p-6 pb-4 text-left"
+                    class="dark border-b border-border bg-background p-6 pb-4 text-left"
                 >
                     <div class="flex items-center justify-between">
                         <SheetTitle class="text-xl font-bold text-foreground"
@@ -67,7 +65,9 @@ const handleUpdateModels = (models: any[]) => {
                         >
                     </div>
                 </SheetHeader>
-                <div class="h-[calc(100vh-80px)] overflow-y-auto bg-card p-6 pt-2 text-card-foreground">
+                <div
+                    class="h-[calc(100vh-80px)] overflow-y-auto bg-card p-6 pt-2 text-card-foreground"
+                >
                     <VehicleFilters
                         v-model:form="form"
                         :brands="brands"
@@ -78,6 +78,7 @@ const handleUpdateModels = (models: any[]) => {
                         :euro-norms="euroNorms"
                         :interior-colors="interiorColors"
                         :interior-types="interiorTypes"
+                        :features="features"
                         :models="models"
                         @update:models="handleUpdateModels"
                     />
@@ -91,13 +92,13 @@ const handleUpdateModels = (models: any[]) => {
         class="sticky top-24 hidden h-fit w-full shrink-0 overflow-hidden rounded-lg bg-card shadow-lg md:block md:w-1/4 lg:w-1/4"
     >
         <div
-            class="dark bg-background flex items-center justify-between border-b border-border p-6 pb-4"
+            class="dark flex items-center justify-between border-b border-border bg-background p-6 pb-4"
         >
             <h3 class="text-xl font-bold text-foreground">Filtres</h3>
             <Button
                 variant="ghost"
                 size="sm"
-                class="text-xs text-foreground/60 hover:text-foreground cursor-pointer"
+                class="cursor-pointer text-xs text-foreground/60 hover:text-foreground"
                 @click="emit('resetFilters')"
                 >Réinitialiser</Button
             >
@@ -116,6 +117,7 @@ const handleUpdateModels = (models: any[]) => {
                 :euro-norms="euroNorms"
                 :interior-colors="interiorColors"
                 :interior-types="interiorTypes"
+                :features="features"
                 :models="models"
                 @update:models="handleUpdateModels"
             />

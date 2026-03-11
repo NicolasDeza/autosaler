@@ -21,6 +21,8 @@ import SeatsFilter from './Filters/SeatsFilter.vue';
 import StatusFilter from './Filters/StatusFilter.vue';
 import TransmissionFilter from './Filters/TransmissionFilter.vue';
 import VersionFilter from './Filters/VersionFilter.vue';
+import PowerFilter from './Filters/PowerFilter.vue';
+import FeaturesFilter from './Filters/FeaturesFilter.vue';
 import YearFilter from './Filters/YearFilter.vue';
 
 defineProps<{
@@ -32,6 +34,7 @@ defineProps<{
     euroNorms?: any[];
     interiorColors?: any[];
     interiorTypes?: any[];
+    features?: any[];
     models: any[];
 }>();
 
@@ -91,6 +94,7 @@ watch(
                 'transmissionTypes',
                 'exteriorColors',
                 'euroNorms',
+                'features',
             ]"
         >
             <template #fallback>
@@ -163,6 +167,9 @@ watch(
                     :euro-norms="euroNorms ?? []"
                 />
 
+                <!-- Puissance -->
+                <PowerFilter v-model:form="form" />
+
                 <!-- Doors & Seats -->
                 <div class="grid grid-cols-2 gap-4">
                     <DoorsFilter v-model:form="form" />
@@ -171,6 +178,12 @@ watch(
 
                 <!-- Status Checkboxes -->
                 <StatusFilter v-model:form="form" />
+
+                <!-- Equipements -->
+                <FeaturesFilter
+                    v-model:form="form"
+                    :features="features ?? []"
+                />
             </div>
         </Deferred>
     </div>

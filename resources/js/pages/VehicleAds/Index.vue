@@ -17,6 +17,7 @@
                 :euro-norms="euroNorms"
                 :interior-colors="interiorColors"
                 :interior-types="interiorTypes"
+                :features="features"
                 @reset-filters="resetFilters"
             />
 
@@ -44,6 +45,7 @@
                         :euro-norms="euroNorms"
                         :interior-colors="interiorColors"
                         :interior-types="interiorTypes"
+                        :features="features"
                         :models="models"
                         :current-year="currentYear"
                         @reset-all="resetFilters"
@@ -262,6 +264,7 @@ const props = defineProps<{
     euroNorms?: any[];
     interiorColors?: any[];
     interiorTypes?: any[];
+    features?: any[];
     filters?: Record<string, any>;
 }>();
 
@@ -296,6 +299,11 @@ interface FilterForm {
     city_id: string;
     per_page: string;
     sort: string;
+    version: string;
+    min_power: string;
+    max_power: string;
+    power_unit: 'kw' | 'ch';
+    features: string[];
 }
 
 const form = ref<FilterForm>({
@@ -348,6 +356,11 @@ const form = ref<FilterForm>({
     city_id: f.city_id ? String(f.city_id) : '',
     per_page: f.per_page ? String(f.per_page) : '15',
     sort: f.sort ? String(f.sort) : 'latest',
+    version: f.version ? String(f.version) : '',
+    min_power: f.min_power ? String(f.min_power) : '',
+    max_power: f.max_power ? String(f.max_power) : '',
+    power_unit: f.power_unit || 'ch',
+    features: toArr(f.features),
 });
 
 const models = ref<any[]>([]);
@@ -423,6 +436,11 @@ const getFilterParams = () => {
     if (v.city_id) q.city_id = v.city_id;
     if (v.per_page && v.per_page !== '15') q.per_page = v.per_page;
     if (v.sort && v.sort !== 'latest') q.sort = v.sort;
+    if (v.version) q.version = v.version;
+    if (v.min_power) q.min_power = v.min_power;
+    if (v.max_power) q.max_power = v.max_power;
+    if (v.power_unit && v.power_unit !== 'ch') q.power_unit = v.power_unit;
+    if (v.features.length) q.features = [...v.features];
 
     return q;
 };
