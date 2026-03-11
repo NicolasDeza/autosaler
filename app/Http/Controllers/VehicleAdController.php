@@ -39,7 +39,7 @@ class VehicleAdController extends Controller
             'transmissionType',
             'features',
             'user.company.city',
-        ])->where('status', 'active')->latest();
+        ])->where('status', 'active');
 
         // ── Relation filters ────────────────────────────────────
         if ($request->filled('brand_id') && $request->brand_id !== 'all') {
@@ -130,6 +130,45 @@ class VehicleAdController extends Controller
             });
         }
 
+        if ($request->filled('version')) {
+            $query->where('vehicle_version_name', 'like', '%'.$request->version.'%');
+        }
+
+        if ($request->filled('min_power')) {
+            $query->where('power_kw', '>=', $request->min_power);
+        }
+
+        if ($request->filled('max_power')) {
+            $query->where('power_kw', '<=', $request->max_power);
+        }
+
+        if ($request->filled('features') && is_array($request->features)) {
+            foreach ($request->features as $featureId) {
+                $query->whereHas('features', function ($q) use ($featureId) {
+                    $q->where('features.id', $featureId);
+                });
+            }
+        }
+
+        // ── Sorting ─────────────────────────────────────────────
+        $sort = $request->get('sort', 'latest');
+
+        switch ($sort) {
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'latest':
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+
         $perPage = (int) $request->get('per_page', 15);
         $ads = $query->paginate($perPage)->withQueryString();
 
@@ -143,6 +182,7 @@ class VehicleAdController extends Controller
             'euroNorms' => Inertia::defer(fn () => EuroNorm::orderBy('code')->get(['id', 'code']), 'filters')->once(),
             'interiorColors' => Inertia::defer(fn () => InteriorColor::orderBy('code')->get(['id', 'code']), 'filters')->once(),
             'interiorTypes' => Inertia::defer(fn () => InteriorType::orderBy('code')->get(['id', 'code']), 'filters')->once(),
+            'features' => Inertia::defer(fn () => Feature::orderBy('key')->get(['id', 'key']), 'filters')->once(),
             'filters' => $request->only([
                 'brand_id', 'model_id', 'min_price', 'max_price',
                 'min_year', 'max_year', 'max_mileage',
@@ -152,7 +192,8 @@ class VehicleAdController extends Controller
                 'doors', 'seats',
                 'is_damaged', 'has_accident', 'complete_maintenance_book', 'non_smoker',
                 'city_id', 'per_page',
-            ]),
+                'version', 'min_power', 'max_power', 'power_unit', 'features',
+            ]) + ['sort' => $request->get('sort', 'latest')],
         ]);
     }
 

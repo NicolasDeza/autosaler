@@ -17,7 +17,7 @@ class VehicleAdSeeder extends Seeder
 
         if ($dealers->isEmpty()) {
             $this->command->warn('No users with the dealer role found. Creating 3 default dealers.');
-            
+
             $dealers = User::factory()->count(3)->create()->each(function ($user) {
                 $user->assignRole('dealer');
             });

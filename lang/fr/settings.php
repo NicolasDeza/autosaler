@@ -1,6 +1,5 @@
 <?php
 
-
 return [
     'page_title' => 'Paramètres',
     'page_description' => 'Gérer votre profil et les paramètres de votre compte',
@@ -10,7 +9,7 @@ return [
     'menu_2fa' => 'Authentification à double facteur',
     'menu_appearance' => 'Apparence',
 
-    //profile page
+    // profile page
     'profile_title' => 'Informations du profil',
     'profile_description' => 'Mettre à jour vos noms et votre adresse e-mail',
     'profile_first_name' => 'Prénom',
@@ -34,7 +33,7 @@ return [
     'profile_delete_modal_cancel' => 'Annuler',
     'profile_delete_modal_confirm' => 'Supprimer le compte',
 
-    //password page
+    // password page
     'password_title' => 'Mettre à jour le mot de passe',
     'password_description' => 'Assurez-vous que votre compte utilise un mot de passe long et aléatoire pour rester sécurisé',
     'password_current' => 'Mot de passe actuel',
@@ -43,7 +42,7 @@ return [
     'password_save' => 'Enregistrer le mot de passe',
     'password_updated' => 'Enregistré.',
 
-    //2fa page
+    // 2fa page
     'two_factor_title' => 'Paramètres d\'authentification à double facteur',
     'two_factor_description' => 'Gérer vos paramètres d\'authentification à double facteur',
     'two_factor_disable' => 'Désactiver',
@@ -53,6 +52,5 @@ return [
     'two_factor_continue_setup' => 'Continuer la configuration',
     'twa_factor_disable_description' => 'Lorsque vous activez l\'authentification à double facteur, un code sécurisé vous sera demandé lors de la connexion. Ce code peut être récupéré à partir d\'une application compatible TOTP sur votre téléphone.',
     'twa_factor_enable_description' => 'Avec l\'authentification à double facteur activée, un code sécurisé et aléatoire vous sera demandé lors de la connexion, que vous pourrez récupérer depuis l\'application compatible TOTP sur votre téléphone.',
-
 
 ];

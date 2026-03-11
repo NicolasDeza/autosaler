@@ -14,6 +14,7 @@ const props = defineProps<{
     euroNorms?: any[];
     interiorColors?: any[];
     interiorTypes?: any[];
+    features?: any[];
     models?: any[];
     currentYear: number;
 }>();
@@ -240,6 +241,70 @@ const activeFilters = computed(() => {
             key: 'non_smoker',
             label: 'Non fumeur',
             onRemove: () => emit('updateFilter', 'non_smoker', null),
+        });
+    }
+
+    // Version Name
+    if (v.version) {
+        filters.push({
+            key: 'version',
+            label: `Version: ${v.version}`,
+            onRemove: () => emit('updateFilter', 'version', ''),
+        });
+    }
+
+    // Power
+    if (v.min_power || v.max_power) {
+        const factor = 1.35962;
+        let label = 'Puissance: ';
+        const isCh = v.power_unit === 'ch';
+        const unitLabel = isCh ? 'ch' : 'kW';
+
+        const minVal = isCh
+            ? v.min_power
+                ? Math.round(Number(v.min_power) * factor)
+                : null
+            : v.min_power;
+        const maxVal = isCh
+            ? v.max_power
+                ? Math.round(Number(v.max_power) * factor)
+                : null
+            : v.max_power;
+
+        if (minVal && maxVal) {
+            label += `${minVal} - ${maxVal} ${unitLabel}`;
+        } else if (minVal) {
+            label += `min ${minVal} ${unitLabel}`;
+        } else if (maxVal) {
+            label += `max ${maxVal} ${unitLabel}`;
+        }
+
+        filters.push({
+            key: 'power',
+            label: label,
+            onRemove: () => {
+                emit('updateFilter', 'min_power', '');
+                emit('updateFilter', 'max_power', '');
+            },
+        });
+    }
+
+    // Features
+    if (Array.isArray(v.features) && v.features.length > 0) {
+        v.features.forEach((id: string) => {
+            const feature = props.features?.find(
+                (f: any) => String(f.id) === String(id),
+            );
+            filters.push({
+                key: `feature_${id}`,
+                label: `Equip.: ${feature?.key || id}`,
+                onRemove: () => {
+                    const newValue = v.features.filter(
+                        (f: string) => String(f) !== String(id),
+                    );
+                    emit('updateFilter', 'features', newValue);
+                },
+            });
         });
     }
 

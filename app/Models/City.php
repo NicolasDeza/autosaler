@@ -12,15 +12,13 @@ class City extends Model
         'zip_code',
     ];
 
-
     public function country()
-   {
-    return $this->belongsTo(Country::class);
-   }
+    {
+        return $this->belongsTo(Country::class);
+    }
 
-
-   public function companies()
-  {
-    return $this->hasMany(Company::class);
-  }
+    public function companies()
+    {
+        return $this->hasMany(Company::class);
+    }
 }

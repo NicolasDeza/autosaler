@@ -17,6 +17,7 @@
                 :euro-norms="euroNorms"
                 :interior-colors="interiorColors"
                 :interior-types="interiorTypes"
+                :features="features"
                 @reset-filters="resetFilters"
             />
 
@@ -24,10 +25,14 @@
             <main class="flex min-w-0 flex-1 flex-col gap-6">
                 <!-- Filters Summary and Result Count -->
                 <div class="flex flex-col gap-4">
-                    <div class="flex items-end justify-between">
+                    <div
+                        class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end"
+                    >
                         <h2 class="text-2xl font-bold text-foreground">
                             {{ ads.total }} véhicules trouvés
                         </h2>
+
+                        <SortSelect v-model="form.sort" />
                     </div>
 
                     <ActiveFilters
@@ -40,6 +45,7 @@
                         :euro-norms="euroNorms"
                         :interior-colors="interiorColors"
                         :interior-types="interiorTypes"
+                        :features="features"
                         :models="models"
                         :current-year="currentYear"
                         @reset-all="resetFilters"
@@ -88,7 +94,8 @@
                                         variant="ghost"
                                         size="icon"
                                         class="h-8 w-8 rounded bg-card"
-                                        ><Star class="h-4 w-4 text-muted-foreground"
+                                        ><Star
+                                            class="h-4 w-4 text-muted-foreground"
                                     /></Button>
                                 </div>
 
@@ -116,7 +123,7 @@
                                             class="flex w-full min-w-0 flex-col justify-between gap-4 py-1 md:gap-0"
                                         >
                                             <div
-                                                class="self-start rounded bg-muted px-4 py-1 text-lg font-bold text-foreground shadow-sm"
+                                                class="self-start text-2xl font-bold text-foreground"
                                             >
                                                 € {{ ad.price }}
                                             </div>
@@ -124,8 +131,9 @@
                                             <div
                                                 class="mt-auto flex flex-wrap gap-2"
                                             >
-                                                <div
-                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
+                                                <Badge
+                                                    variant="secondary"
+                                                    class="font-semibold shadow-none"
                                                 >
                                                     {{
                                                         ad.first_registration_date?.substring(
@@ -133,9 +141,10 @@
                                                             4,
                                                         ) || 'N/A'
                                                     }}
-                                                </div>
-                                                <div
-                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
+                                                </Badge>
+                                                <Badge
+                                                    variant="secondary"
+                                                    class="font-semibold shadow-none"
                                                 >
                                                     {{
                                                         ad.mileage
@@ -143,28 +152,31 @@
                                                             : '0'
                                                     }}
                                                     km
-                                                </div>
-                                                <div
+                                                </Badge>
+                                                <Badge
                                                     v-if="ad.fuel_type"
-                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
+                                                    variant="secondary"
+                                                    class="font-semibold shadow-none"
                                                 >
                                                     {{ ad.fuel_type.code }}
-                                                </div>
-                                                <div
+                                                </Badge>
+                                                <Badge
                                                     v-if="ad.transmission_type"
-                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
+                                                    variant="secondary"
+                                                    class="font-semibold shadow-none"
                                                 >
                                                     {{
                                                         ad.transmission_type
                                                             .code
                                                     }}
-                                                </div>
-                                                <div
+                                                </Badge>
+                                                <Badge
                                                     v-if="ad.body_type"
-                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
+                                                    variant="secondary"
+                                                    class="font-semibold shadow-none"
                                                 >
                                                     {{ ad.body_type.code }}
-                                                </div>
+                                                </Badge>
                                             </div>
                                         </div>
                                     </div>
@@ -221,10 +233,12 @@ import { router, Head } from '@inertiajs/vue3';
 import { Star, Car as CarIcon } from 'lucide-vue-next';
 import { ref, watch, onUnmounted } from 'vue';
 import AppPagination from '@/components/AppPagination.vue';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import ActiveFilters from '@/components/VehicleAds/ActiveFilters.vue';
 import FilterSidebar from '@/components/VehicleAds/FilterSidebar.vue';
+import SortSelect from '@/components/VehicleAds/SortSelect.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import vehiclesRoutes from '@/routes/vehicles';
 
@@ -250,6 +264,7 @@ const props = defineProps<{
     euroNorms?: any[];
     interiorColors?: any[];
     interiorTypes?: any[];
+    features?: any[];
     filters?: Record<string, any>;
 }>();
 
@@ -283,6 +298,12 @@ interface FilterForm {
     city: string;
     city_id: string;
     per_page: string;
+    sort: string;
+    version: string;
+    min_power: string;
+    max_power: string;
+    power_unit: 'kw' | 'ch';
+    features: string[];
 }
 
 const form = ref<FilterForm>({
@@ -334,6 +355,12 @@ const form = ref<FilterForm>({
     city: f.city ? String(f.city) : '',
     city_id: f.city_id ? String(f.city_id) : '',
     per_page: f.per_page ? String(f.per_page) : '15',
+    sort: f.sort ? String(f.sort) : 'latest',
+    version: f.version ? String(f.version) : '',
+    min_power: f.min_power ? String(f.min_power) : '',
+    max_power: f.max_power ? String(f.max_power) : '',
+    power_unit: f.power_unit || 'ch',
+    features: toArr(f.features),
 });
 
 const models = ref<any[]>([]);
@@ -408,6 +435,12 @@ const getFilterParams = () => {
     if (v.city) q.city = v.city;
     if (v.city_id) q.city_id = v.city_id;
     if (v.per_page && v.per_page !== '15') q.per_page = v.per_page;
+    if (v.sort && v.sort !== 'latest') q.sort = v.sort;
+    if (v.version) q.version = v.version;
+    if (v.min_power) q.min_power = v.min_power;
+    if (v.max_power) q.max_power = v.max_power;
+    if (v.power_unit && v.power_unit !== 'ch') q.power_unit = v.power_unit;
+    if (v.features.length) q.features = [...v.features];
 
     return q;
 };
