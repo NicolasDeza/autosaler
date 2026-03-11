@@ -257,17 +257,26 @@ const activeFilters = computed(() => {
     if (v.min_power || v.max_power) {
         const factor = 1.35962;
         let label = 'Puissance: ';
+        const isCh = v.power_unit === 'ch';
+        const unitLabel = isCh ? 'ch' : 'kW';
 
-        if (v.power_unit === 'ch') {
-            const minCh = v.min_power
+        const minVal = isCh
+            ? v.min_power
                 ? Math.round(Number(v.min_power) * factor)
-                : '0';
-            const maxCh = v.max_power
+                : null
+            : v.min_power;
+        const maxVal = isCh
+            ? v.max_power
                 ? Math.round(Number(v.max_power) * factor)
-                : 'max';
-            label += `${minCh} ch - ${maxCh} ch`;
-        } else {
-            label += `${v.min_power || '0'} kW - ${v.max_power || 'max'} kW`;
+                : null
+            : v.max_power;
+
+        if (minVal && maxVal) {
+            label += `${minVal} - ${maxVal} ${unitLabel}`;
+        } else if (minVal) {
+            label += `min ${minVal} ${unitLabel}`;
+        } else if (maxVal) {
+            label += `max ${maxVal} ${unitLabel}`;
         }
 
         filters.push({
