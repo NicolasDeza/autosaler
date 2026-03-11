@@ -321,7 +321,16 @@ class VehicleAdController extends Controller
 
         $vehicleAd->delete();
 
-        return redirect()->route('dealer_dashboard')
+        $previousUrl = url()->previous();
+        $adId = (string) $vehicleAd->id;
+
+        // If we're deleting from the ad's own pages, go back to the dashboard
+        if (str_contains($previousUrl, "/vehicles/{$adId}")) {
+            return redirect()->route('dealer_dashboard.index')
+                ->with('success', 'Annonce supprimée avec succès.');
+        }
+
+        return redirect()->back(fallback: route('dealer_dashboard.index'))
             ->with('success', 'Annonce supprimée avec succès.');
     }
 }

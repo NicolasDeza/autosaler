@@ -287,6 +287,7 @@ const toggleStatus = (ad: any, checked: boolean) => {
                                                     "
                                                     method="delete"
                                                     as="button"
+                                                    preserve-scroll
                                                     class="w-full cursor-pointer"
                                                 >
                                                     Supprimer
