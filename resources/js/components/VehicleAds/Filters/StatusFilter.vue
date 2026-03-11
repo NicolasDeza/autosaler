@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
+import { computed } from 'vue';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { computed } from 'vue';
+import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 
 const form = defineModel<any>('form', { required: true });
 
@@ -23,12 +23,12 @@ const isStatusActive = computed(
                     id="chk-damaged"
                     :checked="form.is_damaged === true"
                     @update:checked="
-                        (val) => (form.is_damaged = val ? true : null)
+                        (val: boolean | string) => (form.is_damaged = val ? true : null)
                     "
                 />
                 <Label
                     for="chk-damaged"
-                    class="cursor-pointer text-sm text-slate-300"
+                    class="cursor-pointer text-sm text-foreground"
                     >Véhicule endommagé</Label
                 >
             </div>
@@ -37,12 +37,12 @@ const isStatusActive = computed(
                     id="chk-accident"
                     :checked="form.has_accident === true"
                     @update:checked="
-                        (val) => (form.has_accident = val ? true : null)
+                        (val: boolean | string) => (form.has_accident = val ? true : null)
                     "
                 />
                 <Label
                     for="chk-accident"
-                    class="cursor-pointer text-sm text-slate-300"
+                    class="cursor-pointer text-sm text-foreground"
                     >Accidenté</Label
                 >
             </div>
@@ -51,13 +51,13 @@ const isStatusActive = computed(
                     id="chk-maintenance"
                     :checked="form.complete_maintenance_book === true"
                     @update:checked="
-                        (val) =>
+                        (val: boolean | string) =>
                             (form.complete_maintenance_book = val ? true : null)
                     "
                 />
                 <Label
                     for="chk-maintenance"
-                    class="cursor-pointer text-sm text-slate-300"
+                    class="cursor-pointer text-sm text-foreground"
                     >Carnet entretien complet</Label
                 >
             </div>
@@ -66,12 +66,12 @@ const isStatusActive = computed(
                     id="chk-non-smoker"
                     :checked="form.non_smoker === true"
                     @update:checked="
-                        (val) => (form.non_smoker = val ? true : null)
+                        (val: boolean | string) => (form.non_smoker = val ? true : null)
                     "
                 />
                 <Label
                     for="chk-non-smoker"
-                    class="cursor-pointer text-sm text-slate-300"
+                    class="cursor-pointer text-sm text-foreground"
                     >Non fumeur</Label
                 >
             </div>

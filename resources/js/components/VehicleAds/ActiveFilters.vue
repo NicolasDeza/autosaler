@@ -277,7 +277,7 @@ const activeFilters = computed(() => {
                     {{ filter.label }}
                     <button
                         @click="filter.onRemove"
-                        class="ml-1 cursor-pointer rounded-full p-0.5 transition-colors hover:bg-slate-300"
+                        class="ml-1 cursor-pointer rounded-full p-0.5 transition-colors hover:bg-muted"
                     >
                         <X class="h-3 w-3" />
                     </button>
@@ -286,7 +286,7 @@ const activeFilters = computed(() => {
                     key="reset-button"
                     variant="ghost"
                     size="sm"
-                    class="h-7 px-2 text-xs text-slate-500 hover:text-slate-900"
+                    class="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
                     @click="emit('resetAll')"
                 >
                     Tout effacer

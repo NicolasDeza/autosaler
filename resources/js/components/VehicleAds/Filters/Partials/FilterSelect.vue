@@ -22,7 +22,7 @@ const emit = defineEmits(['update:modelValue']);
 
 <template>
     <div class="space-y-3">
-        <Label v-if="label" class="text-sm font-semibold text-slate-200">{{
+        <Label v-if="label" class="text-sm font-semibold text-foreground">{{
             label
         }}</Label>
         <Select
@@ -31,11 +31,11 @@ const emit = defineEmits(['update:modelValue']);
             :disabled="disabled"
         >
             <SelectTrigger
-                class="w-full border-slate-700 bg-slate-800 text-white disabled:opacity-50"
+                class="w-full border-input bg-background text-foreground disabled:opacity-50"
             >
                 <SelectValue :placeholder="placeholder || 'Tous'" />
             </SelectTrigger>
-            <SelectContent class="border-slate-700 bg-slate-800 text-white">
+            <SelectContent class="border-border bg-popover text-popover-foreground">
                 <SelectItem value="all">{{ placeholder || 'Tous' }}</SelectItem>
                 <SelectItem
                     v-for="o in options || []"

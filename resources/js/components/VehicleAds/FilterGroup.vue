@@ -30,21 +30,21 @@ withDefaults(defineProps<Props>(), {
         class="space-y-3"
     >
         <CollapsibleTrigger
-            class="group flex w-full items-center justify-between disabled:cursor-not-allowed disabled:opacity-50"
+            class="group flex w-full items-center justify-between rounded-md px-2 py-1.5 transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-50"
         >
             <div class="flex items-center gap-2">
                 <div
                     v-if="isActive"
-                    class="h-2 w-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"
+                    class="h-2 w-2 rounded-full bg-destructive shadow-[0_0_8px_rgba(59,130,246,0.5)]"
                 />
                 <Label
-                    class="cursor-pointer text-sm font-semibold text-slate-200 transition-colors group-hover:text-white"
+                    class="cursor-pointer text-sm font-semibold text-foreground"
                 >
                     {{ label }}
                 </Label>
             </div>
             <ChevronDown
-                class="h-4 w-4 text-slate-400 transition-transform duration-200 group-data-[state=open]:rotate-180"
+                class="h-4 w-4 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180"
             />
         </CollapsibleTrigger>
         <CollapsibleContent

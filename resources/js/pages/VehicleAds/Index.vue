@@ -25,7 +25,7 @@
                 <!-- Filters Summary and Result Count -->
                 <div class="flex flex-col gap-4">
                     <div class="flex items-end justify-between">
-                        <h2 class="text-2xl font-bold text-slate-900">
+                        <h2 class="text-2xl font-bold text-foreground">
                             {{ ads.total }} véhicules trouvés
                         </h2>
                     </div>
@@ -75,7 +75,7 @@
                             <Card
                                 v-for="ad in ads.data"
                                 :key="ad.id"
-                                class="relative cursor-pointer overflow-hidden border-2 border-transparent bg-slate-300 p-4 transition-all duration-300 hover:border-blue-500 hover:shadow-lg"
+                                class="relative cursor-pointer overflow-hidden border-2 border-transparent bg-card p-4 transition-all duration-300 hover:border-primary hover:shadow-lg"
                                 @click="
                                     () =>
                                         router.visit(
@@ -87,8 +87,8 @@
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        class="h-8 w-8 rounded bg-white"
-                                        ><Star class="h-4 w-4"
+                                        class="h-8 w-8 rounded bg-card"
+                                        ><Star class="h-4 w-4 text-muted-foreground"
                                     /></Button>
                                 </div>
 
@@ -100,7 +100,7 @@
                                         {{ ad.model?.name }}
                                     </h4>
                                     <p
-                                        class="text-sm font-semibold text-gray-700 uppercase"
+                                        class="text-sm font-semibold text-muted-foreground uppercase"
                                     >
                                         {{ ad.vehicle_version?.name || '' }}
                                     </p>
@@ -109,14 +109,14 @@
                                         class="mt-2 flex flex-col gap-4 md:flex-row"
                                     >
                                         <div
-                                            class="h-48 w-full shrink-0 rounded bg-white md:h-32 md:w-48"
+                                            class="h-48 w-full shrink-0 rounded bg-muted md:h-32 md:w-48"
                                         ></div>
 
                                         <div
                                             class="flex w-full min-w-0 flex-col justify-between gap-4 py-1 md:gap-0"
                                         >
                                             <div
-                                                class="self-start rounded bg-white px-4 py-1 text-lg font-bold shadow-sm"
+                                                class="self-start rounded bg-muted px-4 py-1 text-lg font-bold text-foreground shadow-sm"
                                             >
                                                 € {{ ad.price }}
                                             </div>
@@ -125,7 +125,7 @@
                                                 class="mt-auto flex flex-wrap gap-2"
                                             >
                                                 <div
-                                                    class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
+                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
                                                 >
                                                     {{
                                                         ad.first_registration_date?.substring(
@@ -135,7 +135,7 @@
                                                     }}
                                                 </div>
                                                 <div
-                                                    class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
+                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
                                                 >
                                                     {{
                                                         ad.mileage
@@ -146,13 +146,13 @@
                                                 </div>
                                                 <div
                                                     v-if="ad.fuel_type"
-                                                    class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
+                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
                                                 >
                                                     {{ ad.fuel_type.code }}
                                                 </div>
                                                 <div
                                                     v-if="ad.transmission_type"
-                                                    class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
+                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
                                                 >
                                                     {{
                                                         ad.transmission_type
@@ -161,7 +161,7 @@
                                                 </div>
                                                 <div
                                                     v-if="ad.body_type"
-                                                    class="flex h-7 items-center rounded bg-white px-3 text-xs font-semibold text-gray-700 shadow-sm"
+                                                    class="flex h-7 items-center rounded bg-muted px-3 text-xs font-semibold text-muted-foreground shadow-sm"
                                                 >
                                                     {{ ad.body_type.code }}
                                                 </div>
@@ -171,7 +171,7 @@
 
                                     <div
                                         v-if="ad.user?.company"
-                                        class="mt-4 text-xs font-semibold text-gray-600"
+                                        class="mt-4 text-xs font-semibold text-muted-foreground"
                                     >
                                         {{ ad.user.company.name }}<br />
                                         {{ ad.user.company.city?.zip_code }}
@@ -185,15 +185,15 @@
                     <div
                         v-else
                         key="no-results"
-                        class="rounded-lg bg-slate-200 py-12 text-center"
+                        class="rounded-lg bg-muted py-12 text-center"
                     >
                         <CarIcon
-                            class="mx-auto mb-4 h-12 w-12 text-slate-400"
+                            class="mx-auto mb-4 h-12 w-12 text-muted-foreground"
                         />
-                        <h3 class="text-lg font-bold text-slate-700">
+                        <h3 class="text-lg font-bold text-foreground">
                             Aucun véhicule trouvé
                         </h3>
-                        <p class="text-slate-500">
+                        <p class="text-muted-foreground">
                             Essayez de modifier vos critères de recherche.
                         </p>
                         <Button

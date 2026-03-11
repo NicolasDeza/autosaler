@@ -82,12 +82,12 @@ const handleCityBlur = () => {
             <div class="relative h-10 w-full">
                 <MapPin
                     :size="14"
-                    class="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-slate-400"
+                    class="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-muted-foreground"
                 />
                 <Input
                     v-model="searchTerm"
                     placeholder="Localisation"
-                    class="h-full w-full border-slate-700 bg-slate-800 pl-9 text-white placeholder-slate-400"
+                    class="h-full w-full border-input bg-background pl-9 text-foreground placeholder-muted-foreground"
                     @input="searchCities(searchTerm)"
                     @focus="searchTerm.length >= 2 ? (showCities = true) : null"
                     @blur="handleCityBlur"
@@ -97,23 +97,23 @@ const handleCityBlur = () => {
             <!-- City Suggestions -->
             <div
                 v-if="showCities && (cities.length > 0 || isSearchingCities)"
-                class="absolute top-full left-0 z-100 mt-1 w-full animate-in overflow-hidden rounded-md border border-slate-700 bg-slate-800 text-white shadow-xl fade-in-80"
+                class="absolute top-full left-0 z-100 mt-1 w-full animate-in overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-xl fade-in-80"
             >
                 <div class="max-h-60 overflow-y-auto p-1">
                     <div
                         v-for="city in cities"
                         :key="city.id"
-                        class="flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm outline-none select-none hover:bg-slate-700 hover:text-white"
+                        class="flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm outline-none select-none hover:bg-accent hover:text-accent-foreground"
                         @click="selectCity(city)"
                     >
-                        <span class="mr-2 font-medium text-white">{{
+                        <span class="mr-2 font-medium text-popover-foreground">{{
                             city.zip_code
                         }}</span>
-                        <span class="text-slate-300">{{ city.code }}</span>
+                        <span class="text-muted-foreground">{{ city.code }}</span>
                     </div>
                     <div
                         v-if="cities.length === 0 && isSearchingCities"
-                        class="p-2 text-center text-sm text-slate-400"
+                        class="p-2 text-center text-sm text-muted-foreground"
                     >
                         Recherche...
                     </div>

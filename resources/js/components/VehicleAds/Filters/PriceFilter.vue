@@ -30,7 +30,7 @@ watch(
     >
         <div class="space-y-3">
             <div class="flex items-center justify-between">
-                <span class="text-xs text-slate-400">
+                <span class="text-xs text-muted-foreground">
                     {{ form.min_price?.toLocaleString() }} -
                     {{
                         form.max_price >= 200000

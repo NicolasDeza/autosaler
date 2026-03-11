@@ -49,25 +49,25 @@ const handleUpdateModels = (models: any[]) => {
             </SheetTrigger>
             <SheetContent
                 side="left"
-                class="dark w-[85vw] p-0 text-white sm:max-w-md"
+                class="w-[85vw] bg-card p-0 sm:max-w-md"
             >
                 <SheetHeader
-                    class="border-b border-slate-800 p-6 pb-4 text-left"
+                    class="dark bg-background border-b border-border p-6 pb-4 text-left"
                 >
                     <div class="flex items-center justify-between">
-                        <SheetTitle class="text-xl font-bold text-white"
+                        <SheetTitle class="text-xl font-bold text-foreground"
                             >Filtres</SheetTitle
                         >
                         <Button
                             variant="ghost"
                             size="sm"
-                            class="text-xs text-slate-400 hover:text-white"
+                            class="text-xs text-foreground/60 hover:text-foreground"
                             @click="emit('resetFilters')"
                             >Réinitialiser</Button
                         >
                     </div>
                 </SheetHeader>
-                <div class="h-[calc(100vh-80px)] overflow-y-auto p-6 pt-2">
+                <div class="h-[calc(100vh-80px)] overflow-y-auto bg-card p-6 pt-2 text-card-foreground">
                     <VehicleFilters
                         v-model:form="form"
                         :brands="brands"
@@ -88,23 +88,23 @@ const handleUpdateModels = (models: any[]) => {
 
     <!-- Desktop Sidebar -->
     <aside
-        class="sticky top-24 hidden h-fit w-full shrink-0 rounded-lg bg-slate-900 p-6 text-white md:block md:w-1/4 lg:w-1/4"
+        class="sticky top-24 hidden h-fit w-full shrink-0 overflow-hidden rounded-lg bg-card shadow-lg md:block md:w-1/4 lg:w-1/4"
     >
         <div
-            class="mb-6 flex items-center justify-between border-b border-slate-800 pb-4"
+            class="dark bg-background flex items-center justify-between border-b border-border p-6 pb-4"
         >
-            <h3 class="text-xl font-bold">Filtres</h3>
+            <h3 class="text-xl font-bold text-foreground">Filtres</h3>
             <Button
                 variant="ghost"
                 size="sm"
-                class="text-xs text-slate-400 hover:text-white"
+                class="text-xs text-foreground/60 hover:text-foreground cursor-pointer"
                 @click="emit('resetFilters')"
                 >Réinitialiser</Button
             >
         </div>
 
         <div
-            class="custom-scrollbar max-h-[calc(100vh-14rem)] overflow-y-auto pr-2"
+            class="custom-scrollbar max-h-[calc(100vh-14rem)] overflow-y-auto bg-card p-6 pr-2 text-card-foreground"
         >
             <VehicleFilters
                 v-model:form="form"
@@ -133,17 +133,17 @@ const handleUpdateModels = (models: any[]) => {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #334155; /* slate-700 */
+    background: hsl(var(--muted-foreground) / 0.3);
     border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #475569; /* slate-600 */
+    background: hsl(var(--muted-foreground) / 0.5);
 }
 
 /* Firefox */
 .custom-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: #334155 transparent;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
 }
 </style>

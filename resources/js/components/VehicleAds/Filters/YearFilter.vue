@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import { Slider } from '@/components/ui/slider';
+import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 
 const form = defineModel<any>('form', { required: true });
 
@@ -31,7 +31,7 @@ watch(
     >
         <div class="space-y-3">
             <div class="flex items-center justify-between">
-                <span class="text-xs text-slate-400">
+                <span class="text-xs text-muted-foreground">
                     {{ form.min_year }} - {{ form.max_year }}
                 </span>
             </div>

@@ -10,11 +10,11 @@
                     </h1>
                     <!-- <h2
                         v-if="ad.vehicle_version"
-                        class="mt-1 text-xl font-bold text-gray-700 uppercase"
+                        class="mt-1 text-xl font-bold text-muted-foreground uppercase"
                     >
                         {{ ad.vehicle_version.name }}
                     </h2> -->
-                    <h2 class="mt-1 text-xl font-bold text-gray-700 uppercase">
+                    <h2 class="mt-1 text-xl font-bold text-muted-foreground uppercase">
                         {{ ad.vehicle_version_name }}
                     </h2>
                 </div>
@@ -45,7 +45,7 @@
                         <div class="grid grid-cols-2 gap-y-6 sm:grid-cols-3">
                             <div class="flex flex-col gap-1">
                                 <span
-                                    class="text-xs font-bold text-gray-500 uppercase"
+                                    class="text-xs font-bold text-muted-foreground uppercase"
                                     >Kilométrage</span
                                 >
                                 <span class="font-semibold"
@@ -54,7 +54,7 @@
                             </div>
                             <div class="flex flex-col gap-1">
                                 <span
-                                    class="text-xs font-bold text-gray-500 uppercase"
+                                    class="text-xs font-bold text-muted-foreground uppercase"
                                     >1ère immatriculation</span
                                 >
                                 <span class="font-semibold">{{
@@ -65,7 +65,7 @@
                             </div>
                             <div class="flex flex-col gap-1" v-if="ad.power_kw">
                                 <span
-                                    class="text-xs font-bold text-gray-500 uppercase"
+                                    class="text-xs font-bold text-muted-foreground uppercase"
                                     >Puissance</span
                                 >
                                 <span class="font-semibold"
@@ -77,7 +77,7 @@
                                 v-if="ad.fuel_type"
                             >
                                 <span
-                                    class="text-xs font-bold text-gray-500 uppercase"
+                                    class="text-xs font-bold text-muted-foreground uppercase"
                                     >Carburant</span
                                 >
                                 <span class="font-semibold">{{
@@ -89,7 +89,7 @@
                                 v-if="ad.transmission_type"
                             >
                                 <span
-                                    class="text-xs font-bold text-gray-500 uppercase"
+                                    class="text-xs font-bold text-muted-foreground uppercase"
                                     >Boîte de vitesse</span
                                 >
                                 <span class="font-semibold">{{
@@ -101,7 +101,7 @@
                                 v-if="ad.body_type"
                             >
                                 <span
-                                    class="text-xs font-bold text-gray-500 uppercase"
+                                    class="text-xs font-bold text-muted-foreground uppercase"
                                     >Carrosserie</span
                                 >
                                 <span class="font-semibold">{{
@@ -120,7 +120,7 @@
                             <table class="w-full text-sm">
                                 <tbody>
                                     <tr class="border-b">
-                                        <td class="py-2 text-gray-500">
+                                        <td class="py-2 text-muted-foreground">
                                             Cylindrée
                                         </td>
                                         <td class="py-2 text-right font-medium">
@@ -129,7 +129,7 @@
                                         </td>
                                     </tr>
                                     <tr class="border-b">
-                                        <td class="py-2 text-gray-500">
+                                        <td class="py-2 text-muted-foreground">
                                             Cylindres
                                         </td>
                                         <td class="py-2 text-right font-medium">
@@ -137,7 +137,7 @@
                                         </td>
                                     </tr>
                                     <tr class="border-b">
-                                        <td class="py-2 text-gray-500">
+                                        <td class="py-2 text-muted-foreground">
                                             Vitesses
                                         </td>
                                         <td class="py-2 text-right font-medium">
@@ -145,7 +145,7 @@
                                         </td>
                                     </tr>
                                     <tr class="border-b">
-                                        <td class="py-2 text-gray-500">
+                                        <td class="py-2 text-muted-foreground">
                                             Poids
                                         </td>
                                         <td class="py-2 text-right font-medium">
@@ -153,7 +153,7 @@
                                         </td>
                                     </tr>
                                     <tr class="border-b">
-                                        <td class="py-2 text-gray-500">
+                                        <td class="py-2 text-muted-foreground">
                                             Portes / Sièges
                                         </td>
                                         <td class="py-2 text-right font-medium">
@@ -166,7 +166,7 @@
                             <table class="w-full text-sm">
                                 <tbody>
                                     <tr class="border-b">
-                                        <td class="py-2 text-gray-500">
+                                        <td class="py-2 text-muted-foreground">
                                             Norme Euro
                                         </td>
                                         <td class="py-2 text-right font-medium">
@@ -174,7 +174,7 @@
                                         </td>
                                     </tr>
                                     <tr class="border-b">
-                                        <td class="py-2 text-gray-500">
+                                        <td class="py-2 text-muted-foreground">
                                             CO2 / Conso
                                         </td>
                                         <td class="py-2 text-right font-medium">
@@ -184,7 +184,7 @@
                                         </td>
                                     </tr>
                                     <tr class="border-b">
-                                        <td class="py-2 text-gray-500">
+                                        <td class="py-2 text-muted-foreground">
                                             Couleur ext.
                                         </td>
                                         <td class="py-2 text-right font-medium">
@@ -198,7 +198,7 @@
                                         </td>
                                     </tr>
                                     <tr class="border-b">
-                                        <td class="py-2 text-gray-500">
+                                        <td class="py-2 text-muted-foreground">
                                             Intérieur
                                         </td>
                                         <td class="py-2 text-right font-medium">
@@ -209,7 +209,7 @@
                                         </td>
                                     </tr>
                                     <tr class="border-b">
-                                        <td class="py-2 text-gray-500">
+                                        <td class="py-2 text-muted-foreground">
                                             Propriétaires préc.
                                         </td>
                                         <td class="py-2 text-right font-medium">
@@ -268,7 +268,7 @@
                                 :class="
                                     ad.complete_maintenance_book
                                         ? 'text-green-600'
-                                        : 'text-gray-400'
+                                        : 'text-muted-foreground/50'
                                 "
                             >
                                 <CheckCircle class="h-4 w-4" /> Carnet complet
@@ -278,7 +278,7 @@
                                 :class="
                                     ad.non_smoker
                                         ? 'text-green-600'
-                                        : 'text-gray-400'
+                                        : 'text-muted-foreground/50'
                                 "
                             >
                                 <CheckCircle class="h-4 w-4" /> Non-fumeur
@@ -288,7 +288,7 @@
                                 :class="
                                     ad.technical_inspection_status
                                         ? 'text-green-600'
-                                        : 'text-gray-400'
+                                        : 'text-muted-foreground/50'
                                 "
                             >
                                 <CheckCircle class="h-4 w-4" /> CT valide
@@ -301,7 +301,7 @@
                         class="rounded-lg border bg-white p-6 shadow-sm"
                     >
                         <h3 class="mb-4 text-lg font-bold">Description</h3>
-                        <p class="whitespace-pre-wrap text-gray-700">
+                        <p class="whitespace-pre-wrap text-foreground">
                             {{ ad.description }}
                         </p>
                     </div>

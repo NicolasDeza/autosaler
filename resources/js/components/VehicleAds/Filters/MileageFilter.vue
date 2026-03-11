@@ -15,11 +15,11 @@ const form = defineModel<any>('form', { required: true });
     <FilterGroup label="Kilométrage" :is-active="form.max_mileage !== 'all'">
         <Select v-model="form.max_mileage">
             <SelectTrigger
-                class="w-full border-slate-700 bg-slate-800 text-white"
+                class="w-full border-input bg-background text-foreground"
             >
                 <SelectValue placeholder="Peu importe" />
             </SelectTrigger>
-            <SelectContent class="border-slate-700 bg-slate-800 text-white">
+            <SelectContent class="border-border bg-popover text-popover-foreground">
                 <SelectItem value="all">Peu importe</SelectItem>
                 <SelectItem value="10000">10 000 km</SelectItem>
                 <SelectItem value="25000">25 000 km</SelectItem>

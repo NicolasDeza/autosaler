@@ -27,7 +27,7 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Autosaler" />
+    <Head title="Véhicules d'occasion et neufs" />
 
     <AppLayout>
         <template #full-width>

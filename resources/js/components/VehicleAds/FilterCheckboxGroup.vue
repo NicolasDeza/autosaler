@@ -46,7 +46,7 @@ const toggle = (id: string, checked: boolean | string) => {
 
             <Label
                 :for="`${prefix}-${option.id}`"
-                class="cursor-pointer text-sm text-slate-300"
+                class="cursor-pointer text-sm text-foreground"
             >
                 {{ option[labelName] }}
             </Label>

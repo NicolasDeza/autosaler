@@ -96,8 +96,8 @@ watch(
             <template #fallback>
                 <div class="space-y-6">
                     <div v-for="i in 6" :key="i" class="space-y-3">
-                        <Skeleton class="h-4 w-24 bg-slate-700" />
-                        <Skeleton class="h-10 w-full rounded-md bg-slate-800" />
+                        <Skeleton class="h-4 w-24 bg-muted" />
+                        <Skeleton class="h-10 w-full rounded-md bg-muted/50" />
                     </div>
                 </div>
             </template>
