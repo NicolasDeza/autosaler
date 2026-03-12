@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Gauge } from 'lucide-vue-next';
 import {
     Select,
     SelectContent,
@@ -12,7 +13,7 @@ const form = defineModel<any>('form', { required: true });
 </script>
 
 <template>
-    <FilterGroup label="Kilométrage" :is-active="form.max_mileage !== 'all'">
+    <FilterGroup label="Kilométrage" :icon="Gauge" :is-active="form.max_mileage !== 'all'">
         <Select v-model="form.max_mileage">
             <SelectTrigger
                 class="w-full border-input bg-background text-foreground"

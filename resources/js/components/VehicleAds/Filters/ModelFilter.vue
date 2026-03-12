@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { CarFront } from 'lucide-vue-next';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import FilterSelect from './Partials/FilterSelect.vue';
 import { computed } from 'vue';
@@ -22,6 +23,7 @@ const isDisabled = computed(
 <template>
     <FilterGroup
         label="Modèle"
+        :icon="CarFront"
         :is-active="isModelActive"
         :disabled="isDisabled"
     >

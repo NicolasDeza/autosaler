@@ -54,7 +54,7 @@ const internalPerPage = computed({
 <template>
     <div
         v-if="pagination.data.length"
-        class="mt-4 flex flex-col items-center justify-between gap-4 rounded-lg bg-slate-100 p-4 shadow-sm md:flex-row"
+        class="mt-4 flex flex-col items-center justify-between gap-4 rounded-lg bg-card p-4 shadow-sm md:flex-row"
     >
         <!-- Per Page Selector & Info -->
         <div
@@ -65,7 +65,7 @@ const internalPerPage = computed({
                     Afficher
                 </span>
                 <Select v-model="internalPerPage">
-                    <SelectTrigger class="w-20 bg-white">
+                <SelectTrigger class="w-20 cursor-pointer bg-white">
                         <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -79,7 +79,7 @@ const internalPerPage = computed({
             </div>
             <span class="text-center text-xs text-slate-500 md:text-left">
                 Affichage de {{ pagination.from }} à {{ pagination.to }} sur
-                {{ pagination.total }} {{ resourceLabel }}
+                <span class="font-semibold text-primary">{{ pagination.total }}</span> {{ resourceLabel }}
             </span>
         </div>
 
@@ -96,8 +96,8 @@ const internalPerPage = computed({
                 v-slot="{ items }"
                 class="flex items-center gap-1"
             >
-                <PaginationFirst />
-                <PaginationPrevious />
+                <PaginationFirst class="cursor-pointer" />
+                <PaginationPrevious class="cursor-pointer" />
 
                 <template v-for="(item, index) in items">
                     <PaginationItem
@@ -105,7 +105,7 @@ const internalPerPage = computed({
                         :key="index"
                         :value="item.value"
                         :is-active="item.value === pagination.current_page"
-                        class="h-9 w-9 p-0"
+                        class="h-9 w-9 cursor-pointer p-0"
                     >
                         {{ item.value }}
                     </PaginationItem>
@@ -116,14 +116,14 @@ const internalPerPage = computed({
                     />
                 </template>
 
-                <PaginationNext />
-                <PaginationLast />
+                <PaginationNext class="cursor-pointer" />
+                <PaginationLast class="cursor-pointer" />
             </PaginationContent>
         </Pagination>
 
         <!-- Page Indicator -->
         <div class="text-sm font-medium text-slate-600">
-            Page {{ pagination.current_page }} sur {{ pagination.last_page }}
+            Page <span class="font-bold text-primary">{{ pagination.current_page }}</span> sur {{ pagination.last_page }}
         </div>
     </div>
 </template>

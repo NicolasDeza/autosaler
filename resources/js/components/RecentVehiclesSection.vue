@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { Fuel, Gauge, Calendar, ImageOff, Star } from 'lucide-vue-next';
+import { Fuel, Gauge, Calendar, ImageOff, Star, Cog } from 'lucide-vue-next';
 import { show } from '@/actions/App/Http/Controllers/VehicleAdController';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslation } from '@/composables/useTranslation';
@@ -86,13 +85,16 @@ const formatDate = (date: string | null) => {
                             </h3>
 
                             <!-- Prix -->
-                            <span class="block h-7 text-lg font-extrabold leading-tight text-primary md:h-8 md:text-xl">
-                                {{ formatPrice(vehicle.price) }}
-                            </span>
+                            <div class="flex flex-col">
+                                <span class="block h-7 text-lg font-extrabold leading-tight text-primary md:h-8 md:text-xl">
+                                    {{ formatPrice(vehicle.price) }}
+                                </span>
+                                <span class="text-[10px] font-medium tracking-wider text-muted-foreground/60 uppercase">TVAC</span>
+                            </div>
 
-                            <!-- Infos : date, km, carburant -->
+                            <!-- Infos : date, km, carburant, boîte -->
                             <div
-                                class="flex h-14 flex-col gap-1 text-xs text-muted-foreground md:h-6 md:flex-row md:flex-wrap md:gap-2"
+                                class="flex h-18 flex-col gap-1 text-xs text-muted-foreground md:h-auto md:flex-row md:flex-wrap md:gap-2"
                             >
                                 <span class="flex items-center gap-1 md:gap-1.5">
                                     <Calendar class="size-3 shrink-0 md:size-3.5" />
@@ -113,17 +115,13 @@ const formatDate = (date: string | null) => {
                                     <Fuel class="size-3 shrink-0 md:size-3.5" />
                                     <span>{{ vehicle.fuel_type.code }}</span>
                                 </span>
-                            </div>
-
-                            <!-- Badges -->
-                            <div class="flex h-auto items-start gap-1.5 md:h-[1.3rem] md:gap-2">
-                                <Badge
+                                <span
                                     v-if="vehicle.transmission_type"
-                                    variant="secondary"
-                                    class="border-border bg-secondary px-1.5 py-1 text-[10px] font-medium text-secondary-foreground md:px-2 md:py-0.5 md:text-[11px]"
+                                    class="flex items-center gap-1 md:gap-1.5"
                                 >
-                                    {{ vehicle.transmission_type.code }}
-                                </Badge>
+                                    <Cog class="size-3 shrink-0 md:size-3.5" />
+                                    <span>{{ vehicle.transmission_type.code }}</span>
+                                </span>
                             </div>
 
                             <!-- Favoris -->

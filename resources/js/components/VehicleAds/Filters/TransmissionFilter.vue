@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Cog } from 'lucide-vue-next';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import FilterCheckboxGroup from '@/components/VehicleAds/FilterCheckboxGroup.vue';
 
@@ -12,6 +13,7 @@ const form = defineModel<any>('form', { required: true });
 <template>
     <FilterGroup
         label="Boîte de vitesse"
+        :icon="Cog"
         :is-active="form.transmission_types.length > 0"
     >
         <FilterCheckboxGroup

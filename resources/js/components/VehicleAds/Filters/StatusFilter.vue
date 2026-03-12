@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ClipboardList } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -16,7 +17,7 @@ const isStatusActive = computed(
 </script>
 
 <template>
-    <FilterGroup label="État & Historique" :is-active="isStatusActive">
+    <FilterGroup label="État & Historique" :icon="ClipboardList" :is-active="isStatusActive">
         <div class="space-y-4 pt-2">
             <div class="flex items-center space-x-2">
                 <Checkbox

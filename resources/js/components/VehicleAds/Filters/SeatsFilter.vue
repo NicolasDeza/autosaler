@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Users } from 'lucide-vue-next';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import FilterSelect from './Partials/FilterSelect.vue';
 
@@ -14,7 +15,7 @@ const form = defineModel<any>('form', { required: true });
 </script>
 
 <template>
-    <FilterGroup label="Sièges" :is-active="form.seats !== 'all'">
+    <FilterGroup label="Sièges" :icon="Users" :is-active="form.seats !== 'all'">
         <FilterSelect
             v-model="form.seats"
             :options="seatOptions"

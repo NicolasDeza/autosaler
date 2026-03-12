@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { BadgeEuro } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { Slider } from '@/components/ui/slider';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
@@ -26,6 +27,7 @@ watch(
 <template>
     <FilterGroup
         label="Prix"
+        :icon="BadgeEuro"
         :is-active="form.min_price > 0 || form.max_price < 200000"
     >
         <div class="space-y-3">

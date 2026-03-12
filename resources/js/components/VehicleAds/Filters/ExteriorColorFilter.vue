@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Palette } from 'lucide-vue-next';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import FilterSelect from './Partials/FilterSelect.vue';
 
@@ -12,6 +13,7 @@ const form = defineModel<any>('form', { required: true });
 <template>
     <FilterGroup
         label="Couleur extérieur"
+        :icon="Palette"
         :is-active="form.exterior_color_id !== 'all'"
     >
         <FilterSelect

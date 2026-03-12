@@ -6,7 +6,6 @@ import {
     Home,
     LayoutGrid,
     Menu,
-    Search,
     Shield,
     Car,
 } from 'lucide-vue-next';
@@ -256,16 +255,6 @@ const rightNavItems: NavItem[] = [
 
                 <div class="ml-auto flex items-center space-x-2">
                     <div class="relative flex items-center space-x-1">
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            class="group h-9 w-9 cursor-pointer"
-                        >
-                            <Search
-                                class="size-5 opacity-80 group-hover:opacity-100"
-                            />
-                        </Button>
-
                         <div class="hidden space-x-1 lg:flex">
                             <template
                                 v-for="item in rightNavItems"

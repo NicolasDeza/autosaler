@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ChevronDown } from 'lucide-vue-next';
+import type { Component } from 'vue';
 import {
     Collapsible,
     CollapsibleContent,
@@ -9,6 +10,7 @@ import { Label } from '@/components/ui/label';
 
 interface Props {
     label: string;
+    icon?: Component;
     isActive?: boolean;
     defaultOpen?: boolean;
     disabled?: boolean;
@@ -33,6 +35,7 @@ withDefaults(defineProps<Props>(), {
             class="group flex w-full items-center justify-between rounded-md px-2 py-1.5 transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-50"
         >
             <div class="flex items-center gap-2">
+                <component :is="icon" v-if="icon" class="h-4 w-4 shrink-0 text-foreground" />
                 <div
                     v-if="isActive"
                     class="h-2 w-2 rounded-full bg-destructive shadow-[0_0_8px_rgba(59,130,246,0.5)]"

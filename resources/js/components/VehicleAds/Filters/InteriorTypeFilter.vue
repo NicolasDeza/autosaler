@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Sofa } from 'lucide-vue-next';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import FilterSelect from './Partials/FilterSelect.vue';
 
@@ -12,6 +13,7 @@ const form = defineModel<any>('form', { required: true });
 <template>
     <FilterGroup
         label="Matériaux intérieur"
+        :icon="Sofa"
         :is-active="form.interior_type_id !== 'all'"
     >
         <FilterSelect

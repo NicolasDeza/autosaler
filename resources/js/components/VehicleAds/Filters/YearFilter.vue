@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Calendar } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { Slider } from '@/components/ui/slider';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
@@ -27,6 +28,7 @@ watch(
 <template>
     <FilterGroup
         label="1ère immatriculation"
+        :icon="Calendar"
         :is-active="form.min_year > 1980 || form.max_year < currentYear"
     >
         <div class="space-y-3">

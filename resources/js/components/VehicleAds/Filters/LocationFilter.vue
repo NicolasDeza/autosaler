@@ -74,6 +74,7 @@ const handleCityBlur = () => {
 <template>
     <FilterGroup
         label="Emplacement"
+        :icon="MapPin"
         :is-active="!!city"
         class="relative z-50"
         overflow-visible

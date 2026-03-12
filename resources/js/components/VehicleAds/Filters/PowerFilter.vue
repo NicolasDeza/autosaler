@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Zap } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import { Input } from '@/components/ui/input';
@@ -83,6 +84,7 @@ watch(() => form.value.power_unit, updateDisplayValues);
 <template>
     <FilterGroup
         label="Puissance"
+        :icon="Zap"
         :is-active="!!form.min_power || !!form.max_power"
     >
         <div class="space-y-4 pt-2">

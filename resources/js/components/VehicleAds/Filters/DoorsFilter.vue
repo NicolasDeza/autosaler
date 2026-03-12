@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { DoorOpen } from 'lucide-vue-next';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import FilterSelect from './Partials/FilterSelect.vue';
 
@@ -13,7 +14,7 @@ const form = defineModel<any>('form', { required: true });
 </script>
 
 <template>
-    <FilterGroup label="Portes" :is-active="form.doors !== 'all'">
+    <FilterGroup label="Portes" :icon="DoorOpen" :is-active="form.doors !== 'all'">
         <FilterSelect
             v-model="form.doors"
             :options="doorOptions"

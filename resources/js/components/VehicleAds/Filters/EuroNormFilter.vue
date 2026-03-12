@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Leaf } from 'lucide-vue-next';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import FilterSelect from './Partials/FilterSelect.vue';
 
@@ -10,7 +11,7 @@ const form = defineModel<any>('form', { required: true });
 </script>
 
 <template>
-    <FilterGroup label="Norme Euro" :is-active="form.euro_norm_id !== 'all'">
+    <FilterGroup label="Norme Euro" :icon="Leaf" :is-active="form.euro_norm_id !== 'all'">
         <FilterSelect
             v-model="form.euro_norm_id"
             :options="euroNorms"
