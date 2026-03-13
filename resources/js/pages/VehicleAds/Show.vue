@@ -30,15 +30,26 @@
                                 </h2>
                             </div>
                             <div class="flex flex-col sm:items-end">
-                                <div class="text-3xl font-bold text-primary">
-                                    {{
-                                        Number(ad.price).toLocaleString('fr-FR')
-                                    }}
-                                    €
-                                </div>
-                                <span class="text-xs text-muted-foreground"
-                                    >TVAC</span
+                                <div
+                                    class="inline-flex self-start bg-primary py-1 pr-4 pl-6 text-white shadow-sm [clip-path:polygon(10%_0,100%_0,100%_100%,0_100%)] sm:self-auto sm:py-1.5 sm:pr-5 sm:pl-7"
                                 >
+                                    <div class="flex items-end gap-2">
+                                        <span
+                                            class="text-lg font-black tracking-tight sm:text-2xl"
+                                        >
+                                            €{{
+                                                Number(ad.price).toLocaleString(
+                                                    'fr-FR',
+                                                )
+                                            }}
+                                        </span>
+                                        <span
+                                            class="pb-0.5 text-[9px] font-semibold tracking-[0.18em] text-white/80 uppercase sm:text-[10px]"
+                                        >
+                                            TVAC
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
