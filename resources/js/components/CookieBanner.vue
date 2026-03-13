@@ -37,7 +37,7 @@ function handleSaveCustom() {
     >
         <div
             v-if="!hasDecided"
-            class="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] backdrop-blur-md"
+            class="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] backdrop-blur-md print:hidden"
             role="dialog"
             aria-labelledby="cookie-banner-title"
             aria-modal="false"

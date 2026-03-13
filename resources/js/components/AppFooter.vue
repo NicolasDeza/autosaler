@@ -1,5 +1,5 @@
 <template>
-    <div class="dark text-foreground">
+    <div class="dark text-foreground print:hidden">
         <!-- Accent top bar -->
         <div
             class="h-px bg-linear-to-r from-transparent via-red-500 to-transparent"

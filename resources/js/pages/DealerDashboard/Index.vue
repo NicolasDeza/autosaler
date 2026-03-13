@@ -23,11 +23,11 @@
                         >
                     </p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <Button variant="outline" size="sm">
+                <div class="flex items-center gap-2 print:hidden">
+                    <Button variant="outline" size="sm" @click="exportToCSV">
                         <Download class="mr-2 h-4 w-4" /> Enregistrer en CSV
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" @click="printList">
                         <Printer class="mr-2 h-4 w-4" /> Liste imprimée
                     </Button>
                     <Button as-child size="sm">
@@ -39,17 +39,18 @@
                 </div>
             </div>
 
-            <Card class="pb-0">
+            <Card class="pb-0 print:border-none print:shadow-none">
                 <CardHeader class="border-b border-border/50 pb-3">
                     <div class="flex items-center justify-between">
                         <div>
                             <CardTitle>Liste des véhicules</CardTitle>
-                            <CardDescription>
+                            <CardDescription class="print:hidden">
                                 Gérez vos annonces et surveillez leurs
                                 performances
                             </CardDescription>
                         </div>
                         <VehiclesSearchHeader
+                            class="print:hidden"
                             :search="filters.search || ''"
                             :show-filters="showFilters"
                             :active-filters-count="activeFiltersCount"
@@ -60,6 +61,7 @@
                 </CardHeader>
                 <CardContent class="p-0">
                     <VehiclesFilterPanel
+                        class="print:hidden"
                         :open="showFilters"
                         :filters="filters"
                         :brands="brands"
@@ -82,7 +84,7 @@
                         resource-label="véhicules"
                         @update:page="handlePageChange"
                         @update:per-page="handlePerPageChange"
-                        class="rounded-t-none border-t border-border/50 bg-transparent shadow-none"
+                        class="rounded-t-none border-t border-border/50 bg-transparent shadow-none print:hidden"
                     />
                 </CardContent>
             </Card>
@@ -258,4 +260,89 @@ const handlePerPageChange = (pp: string) => {
         { preserveState: true },
     );
 };
+
+const exportToCSV = () => {
+    if (!props.ads?.data?.length) return;
+
+    const escapeCSV = (val: any) => {
+        if (val === null || val === undefined) return '';
+        const str = String(val);
+        if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+            return `"${str.replace(/"/g, '""')}"`;
+        }
+        return str;
+    };
+
+    const headers = [
+        'ID',
+        'Date',
+        'Marque',
+        'Modèle',
+        'Version',
+        'Prix',
+        'Vues',
+        'Contacts',
+        'Favoris',
+        'Statut',
+    ];
+
+    const rows = props.ads.data.map((ad: any) => [
+        ad.id,
+        ad.created_at ? new Date(ad.created_at).toLocaleDateString() : 'N/A',
+        escapeCSV(ad.brand?.name),
+        escapeCSV(ad.model?.name),
+        escapeCSV(ad.vehicle_version_name),
+        ad.price,
+        ad.stat?.views_count || 0,
+        ad.stat?.contact_count || 0,
+        ad.stat?.fav_count || 0,
+        ad.status,
+    ]);
+
+    const csvContent = [
+        '\uFEFF' + headers.join(','),
+        ...rows.map((row: any[]) => row.join(',')),
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute(
+        'download',
+        `mon_stock_${new Date().toISOString().split('T')[0]}.csv`,
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
+const printList = () => {
+    window.print();
+};
 </script>
+
+<style>
+@media print {
+    /* Indispensable pour régler les marges du papier */
+    @page {
+        margin: 1cm;
+        size: auto;
+    }
+    /* Force le noir sur blanc pour économiser l'encre et garantir la lisibilité */
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    /* Sécurité pour tous les textes importants */
+    h1,
+    h2,
+    h3,
+    p,
+    span,
+    td,
+    th {
+        color: black !important;
+    }
+}
+</style>

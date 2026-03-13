@@ -39,11 +39,11 @@ const handleStatusChange = (checked: boolean) => {
 
 <template>
     <TableRow>
-        <TableCell><Checkbox /></TableCell>
+        <TableCell class="print:hidden"><Checkbox /></TableCell>
         <TableCell>
             <div class="flex items-center gap-3">
                 <div
-                    class="flex h-10 w-12 items-center justify-center rounded bg-muted"
+                    class="flex h-10 w-12 items-center justify-center rounded bg-muted print:hidden"
                 >
                     <ImageIcon class="h-5 w-5 text-muted-foreground" />
                 </div>
@@ -90,10 +90,14 @@ const handleStatusChange = (checked: boolean) => {
                 <Switch
                     :model-value="ad.status === 'active'"
                     @update:model-value="handleStatusChange"
+                    class="print:hidden"
                 />
+                <span class="hidden print:inline text-xs capitalize">{{
+                    ad.status
+                }}</span>
             </div>
         </TableCell>
-        <TableCell>
+        <TableCell class="print:hidden">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon" class="h-8 w-8 p-0">
@@ -134,4 +138,5 @@ const handleStatusChange = (checked: boolean) => {
             </DropdownMenu>
         </TableCell>
     </TableRow>
+
 </template>

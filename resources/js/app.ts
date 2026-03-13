@@ -7,7 +7,6 @@ import 'flag-icons/css/flag-icons.min.css';
 import 'vue-sonner/style.css';
 import { Toaster } from '@/components/ui/sonner';
 import { loadTranslations } from '@/composables/useTranslation';
-import { initializeTheme } from './composables/useAppearance';
 import type { ExtendedPageProps } from './types/inertia';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
@@ -40,6 +39,3 @@ createInertiaApp({
         color: '#4B5563',
     },
 });
-
-// This will set light / dark mode on page load...
-initializeTheme();

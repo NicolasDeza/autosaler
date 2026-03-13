@@ -46,7 +46,9 @@ const getSortIcon = (column: string) => {
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead class="w-[50px]"><Checkbox /></TableHead>
+                    <TableHead class="w-[50px] print:hidden"
+                        ><Checkbox
+                    /></TableHead>
                     <TableHead
                         class="w-[150px] cursor-pointer hover:bg-muted/50"
                         @click="toggleSort('id')"
@@ -129,9 +131,10 @@ const getSortIcon = (column: string) => {
                             />
                         </div>
                     </TableHead>
-                    <TableHead class="w-[50px]"></TableHead>
+                    <TableHead class="w-[50px] print:hidden"></TableHead>
                 </TableRow>
             </TableHeader>
+
             <TableBody>
                 <template v-if="ads && ads.data && ads.data.length > 0">
                     <VehiclesTableRow
