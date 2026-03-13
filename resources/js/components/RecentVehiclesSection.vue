@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { router, Link, usePage } from '@inertiajs/vue3';
 import { Fuel, Gauge, Calendar, ImageOff, Star, Cog } from 'lucide-vue-next';
+import { ref } from 'vue';
 import { show } from '@/actions/App/Http/Controllers/VehicleAdController';
+import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslation } from '@/composables/useTranslation';
+import vehiclesRoutes from '@/routes/vehicles';
 
 const { __ } = useTranslation();
 
@@ -20,6 +23,7 @@ interface Vehicle {
     fuel_type: { id: number; code: string } | null;
     transmission_type: { id: number; code: string } | null;
     user: { company: { name: string } | null } | null;
+    is_favorited?: boolean;
 }
 
 defineProps<{
@@ -40,6 +44,23 @@ const formatDate = (date: string | null) => {
         month: '2-digit',
         year: 'numeric',
     });
+};
+
+const showLoginModal = ref(false);
+const page = usePage();
+
+const toggleFavorite = (adId: number) => {
+    if (!page.props.auth?.user) {
+        showLoginModal.value = true;
+        return;
+    }
+    router.post(
+        vehiclesRoutes.favorite.url({ vehicleAd: adId }),
+        {},
+        {
+            preserveScroll: true,
+        },
+    );
 };
 </script>
 
@@ -177,13 +198,24 @@ const formatDate = (date: string | null) => {
                                     }}
                                 </span>
                                 <button
-                                    @click.prevent
-                                    class="cursor-pointer rounded-md border border-border p-1.5 text-muted-foreground/70 transition-all duration-200 hover:border-primary hover:bg-primary/10 hover:text-primary md:p-2"
+                                    @click.prevent="toggleFavorite(vehicle.id)"
+                                    class="cursor-pointer rounded-md border border-border p-1.5 transition-all duration-200 hover:border-primary hover:bg-primary/10 hover:text-primary md:p-2"
+                                    :class="
+                                        vehicle.is_favorited
+                                            ? 'fill-primary text-primary'
+                                            : 'text-muted-foreground/70'
+                                    "
                                     :aria-label="
                                         __('recentVehicles.add_to_favorites')
                                     "
                                 >
-                                    <Star class="size-4 md:size-4.5" />
+                                    <Star
+                                        class="size-4 md:size-4.5"
+                                        :class="{
+                                            'fill-primary':
+                                                vehicle.is_favorited,
+                                        }"
+                                    />
                                 </button>
                             </div>
                         </CardContent>
@@ -205,4 +237,10 @@ const formatDate = (date: string | null) => {
             </div>
         </div>
     </section>
+
+    <LoginRequiredModal
+        v-model:open="showLoginModal"
+        title="Coup de cœur ?"
+        description="Connectez-vous pour enregistrer ce véhicule dans vos favoris et le retrouver à tout moment."
+    />
 </template>

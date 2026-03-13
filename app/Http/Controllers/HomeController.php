@@ -15,6 +15,9 @@ class HomeController extends Controller
         $recentVehicles = VehicleAd::query()
             ->where('status', 'active')
             ->with(['brand', 'model', 'fuelType', 'transmissionType', 'user.company'])
+            ->when(auth()->check(), function ($q) {
+                $q->withExists(['favoredByUsers as is_favorited' => fn ($query) => $query->where('user_id', auth()->id())]);
+            })
             ->latest()
             ->limit(8)
             ->get();
