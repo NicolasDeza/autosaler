@@ -6,6 +6,7 @@ use App\Models\VehicleAd;
 use App\Models\VehicleBrand;
 use App\Models\VehicleModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -13,6 +14,8 @@ class DealerDashboardController extends Controller
 {
     public function index(Request $request): Response
     {
+        Gate::authorize('view', [self::class]);
+
         $query = VehicleAd::with(['brand', 'model', 'vehicleVersion', 'stat'])
             ->where('user_id', auth()->id());
 

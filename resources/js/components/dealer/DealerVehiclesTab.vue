@@ -10,8 +10,8 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import dealer_dashboard from '@/routes/dealer_dashboard';
-import { update_status as vehicleUpdateStatus } from '@/routes/vehicles';
+import dealer from '@/routes/dealer';
+import vehicles from '@/routes/vehicles';
 import VehiclesFilterPanel from './vehicles/VehiclesFilterPanel.vue';
 import VehiclesSearchHeader from './vehicles/VehiclesSearchHeader.vue';
 import VehiclesTable from './vehicles/VehiclesTable.vue';
@@ -55,7 +55,7 @@ const activeFiltersCount = computed(() => {
 
 const updateFilters = (newFilters: any) => {
     router.get(
-        dealer_dashboard.index.url({
+        dealer.dashboard.url({
             query: {
                 page: 1,
                 per_page: props.ads.per_page,
@@ -75,7 +75,7 @@ const debouncedSearch = useDebounceFn((search: string) => {
 
 const resetFilters = () => {
     router.get(
-        dealer_dashboard.index.url({
+        dealer.dashboard.url({
             query: {
                 page: 1,
                 per_page: props.ads.per_page,
@@ -112,7 +112,7 @@ const handleSort = (column: string) => {
 const handleStatusChange = (ad: any, checked: boolean) => {
     const newStatus = checked ? 'active' : 'draft';
     router.patch(
-        vehicleUpdateStatus.url(ad.id),
+        vehicles.update_status.url(ad.id),
         { status: newStatus },
         {
             preserveScroll: true,
@@ -123,7 +123,7 @@ const handleStatusChange = (ad: any, checked: boolean) => {
 
 const handlePageChange = (p: number) => {
     router.get(
-        dealer_dashboard.index.url({
+        dealer.dashboard.url({
             query: {
                 ...props.filters,
                 page: p,
@@ -137,7 +137,7 @@ const handlePageChange = (p: number) => {
 
 const handlePerPageChange = (pp: string) => {
     router.get(
-        dealer_dashboard.index.url({
+        dealer.dashboard.url({
             query: {
                 ...props.filters,
                 page: 1,
