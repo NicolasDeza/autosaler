@@ -51,6 +51,7 @@ class HandleInertiaRequests extends Middleware
                     )
                     : null,
             ],
+            'canRegister' => \Laravel\Fortify\Features::enabled(\Laravel\Fortify\Features::registration()),
             'locale' => fn() => session('locale', app()->getLocale()),
             // 'translations' => fn() => $this->getTranslations(),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',

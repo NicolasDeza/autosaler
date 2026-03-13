@@ -23,7 +23,6 @@ class HomeController extends Controller
             ->get();
 
         return Inertia::render('Home/Index', [
-            'canRegister' => Features::enabled(Features::registration()),
             'recentVehicles' => $recentVehicles,
             'brands' => Inertia::defer(fn () => VehicleBrand::orderBy('name')->get(['id', 'name']))->once(),
         ]);
