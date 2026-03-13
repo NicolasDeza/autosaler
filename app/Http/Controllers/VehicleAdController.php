@@ -39,7 +39,11 @@ class VehicleAdController extends Controller
             'transmissionType',
             'features',
             'user.company.city',
-        ])->where('status', 'active');
+        ])
+            ->where('status', 'active')
+            ->when(auth()->check(), function ($q) {
+                $q->withExists(['favoredByUsers as is_favorited' => fn ($query) => $query->where('user_id', auth()->id())]);
+            });
 
         // ── Relation filters ────────────────────────────────────
         if ($request->filled('brand_id') && $request->brand_id !== 'all') {
@@ -254,6 +258,10 @@ class VehicleAdController extends Controller
             'user.company.city', 'user.company.country',
         ]);
 
+        if (auth()->check()) {
+            $vehicleAd->is_favorited = auth()->user()->favoriteVehicleAds()->where('vehicle_ad_id', $vehicleAd->id)->exists();
+        }
+
         return Inertia::render('VehicleAds/Show', [
             'ad' => $vehicleAd,
         ]);
@@ -322,7 +330,40 @@ class VehicleAdController extends Controller
 
         $vehicleAd->delete();
 
-        return redirect()->route('dealer_dashboard')
+        $previousUrl = url()->previous();
+        $adId = (string) $vehicleAd->id;
+
+        // If we're deleting from the ad's own pages, go back to the dashboard
+        if (str_contains($previousUrl, "/vehicles/{$adId}")) {
+            return redirect()->route('dealer_dashboard.index')
+                ->with('success', 'Annonce supprimée avec succès.');
+        }
+
+        return redirect()->back(fallback: route('dealer_dashboard.index'))
             ->with('success', 'Annonce supprimée avec succès.');
+    }
+
+    /**
+     * Toggle favorite status for a vehicle.
+     */
+    public function toggleFavorite(Request $request, VehicleAd $vehicleAd)
+    {
+        $user = $request->user();
+        $result = $user->favoriteVehicleAds()->toggle($vehicleAd->id);
+
+        $attached = ! empty($result['attached']);
+
+        // Update stats
+        $stat = $vehicleAd->stat()->firstOrCreate([
+            'vehicle_ad_id' => $vehicleAd->id,
+        ]);
+
+        if ($attached) {
+    $stat->increment('fav_count');
+} else {
+    $stat->decrement('fav_count');
+}
+
+        return back()->with('success', $attached ? 'Véhicule ajouté aux favoris.' : 'Véhicule retiré des favoris.');
     }
 }

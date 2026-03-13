@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { SlidersHorizontal } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { Button } from '@/components/ui/button';
 import {
     Sheet,
     SheetContent,
@@ -20,7 +21,7 @@ defineProps<{
     interiorColors?: any[];
     interiorTypes?: any[];
     features?: any[];
-    models: any[];
+    models?: any[];
 }>();
 
 const form = defineModel<any>('form', { required: true });
@@ -54,12 +55,17 @@ const handleUpdateModels = (models: any[]) => {
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2.5">
                             <SlidersHorizontal class="h-4 w-4 text-primary" />
-                            <SheetTitle class="text-xl font-bold text-foreground">Filtres</SheetTitle>
+                            <SheetTitle
+                                class="text-xl font-bold text-foreground"
+                                >Filtres</SheetTitle
+                            >
                         </div>
                         <button
                             class="cursor-pointer rounded-md border border-primary/40 px-2.5 py-1 text-xs font-medium text-primary transition-colors duration-200 hover:border-[hsl(356.95,95.9%,57.72%)] hover:bg-[hsl(356.95,95.9%,57.72%)] hover:text-white"
                             @click="emit('resetFilters')"
-                        >Réinitialiser</button>
+                        >
+                            Réinitialiser
+                        </button>
                     </div>
                 </SheetHeader>
                 <div
@@ -93,12 +99,16 @@ const handleUpdateModels = (models: any[]) => {
         >
             <div class="flex items-center gap-2.5">
                 <SlidersHorizontal class="h-4 w-4 text-primary" />
-                <h3 class="text-base font-bold tracking-wide text-white">Filtres</h3>
+                <h3 class="text-base font-bold tracking-wide text-white">
+                    Filtres
+                </h3>
             </div>
             <button
-                class="cursor-pointer rounded-md border border-primary/40 px-2.5 py-1 text-xs font-medium text-primary transition-colors duration-200 hover:bg-[hsl(356.95,95.9%,57.72%)] hover:border-[hsl(356.95,95.9%,57.72%)] hover:text-white"
+                class="cursor-pointer rounded-md border border-primary/40 px-2.5 py-1 text-xs font-medium text-primary transition-colors duration-200 hover:border-[hsl(356.95,95.9%,57.72%)] hover:bg-[hsl(356.95,95.9%,57.72%)] hover:text-white"
                 @click="emit('resetFilters')"
-            >Réinitialiser</button>
+            >
+                Réinitialiser
+            </button>
         </div>
         <div class="h-px bg-border" />
 

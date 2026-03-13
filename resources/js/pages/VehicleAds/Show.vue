@@ -19,15 +19,35 @@
                         <div
                             class="flex flex-col gap-4 p-1 sm:flex-row sm:items-start sm:justify-between sm:p-2"
                         >
-                            <div>
-                                <h1 class="text-2xl font-bold sm:text-3xl">
-                                    {{ ad.brand?.name }} {{ ad.model?.name }}
-                                </h1>
-                                <h2
-                                    class="mt-1 text-sm font-bold tracking-wider text-muted-foreground/80 uppercase"
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                                    <h1 class="text-2xl font-bold sm:text-3xl">
+                                        {{ ad.brand?.name }}
+                                        {{ ad.model?.name }}
+                                    </h1>
+                                    <h2
+                                        class="mt-1 text-sm font-bold tracking-wider text-muted-foreground/80 uppercase"
+                                    >
+                                        {{ ad.vehicle_version_name }}
+                                    </h2>
+                                </div>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    class="size-10 shrink-0 cursor-pointer rounded-full border bg-background transition-all hover:bg-primary/10 hover:text-primary"
+                                    :class="{
+                                        'border-primary/20 fill-primary text-primary':
+                                            ad.is_favorited,
+                                    }"
+                                    @click="toggleFavorite"
                                 >
-                                    {{ ad.vehicle_version_name }}
-                                </h2>
+                                    <Star
+                                        class="size-5"
+                                        :class="{
+                                            'fill-primary': ad.is_favorited,
+                                        }"
+                                    />
+                                </Button>
                             </div>
                             <div class="flex flex-col sm:items-end">
                                 <div
@@ -592,13 +612,26 @@ import {
     Cog,
     Truck,
     ChevronLeft,
+    Star,
 } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { edit as vehicleEdit, index as vehiclesIndex } from '@/routes/vehicles';
+import {
+    edit as vehicleEdit,
+    index as vehiclesIndex,
+    favorite as vehicleFavorite,
+} from '@/routes/vehicles';
 
-defineProps<{
+const props = defineProps<{
     ad: any;
 }>();
+
+const toggleFavorite = () => {
+    router.post(
+        vehicleFavorite.url({ vehicleAd: props.ad.id }),
+        {},
+        { preserveScroll: true },
+    );
+};
 </script>
