@@ -44,27 +44,23 @@ class DealerDashboardController extends Controller
 
         $dealerId = auth()->id();
 
-        $brands = VehicleBrand::whereIn('id', function ($q) use ($dealerId) {
-            $q->select('brand_id')
-                ->from((new VehicleAd)->getTable())
-                ->where('user_id', $dealerId);
-        })->orderBy('name')->get(['id', 'name']);
-
-        $models = VehicleModel::whereIn('id', function ($q) use ($dealerId, $request) {
-            $q->select('model_id')
-                ->from((new VehicleAd)->getTable())
-                ->where('user_id', $dealerId);
-
-            if ($request->filled('brand_id')) {
-                $q->where('brand_id', $request->brand_id);
-            }
-        })->orderBy('name')->get(['id', 'name', 'brand_id']);
-
         return Inertia::render('DealerDashboard/Index', [
             'ads' => $ads,
             'filters' => $request->only(['search', 'sort', 'per_page', 'brand_id', 'model_id', 'status', 'date_from', 'date_to']),
-            'brands' => $brands,
-            'models' => $models,
+            'brands' => Inertia::defer(fn () => VehicleBrand::whereIn('id', function ($q) use ($dealerId) {
+                $q->select('brand_id')
+                    ->from((new VehicleAd)->getTable())
+                    ->where('user_id', $dealerId);
+            })->orderBy('name')->get(['id', 'name']), 'filters'),
+            'models' => Inertia::defer(fn () => VehicleModel::whereIn('id', function ($q) use ($dealerId, $request) {
+                $q->select('model_id')
+                    ->from((new VehicleAd)->getTable())
+                    ->where('user_id', $dealerId);
+
+                if ($request->filled('brand_id')) {
+                    $q->where('brand_id', $request->brand_id);
+                }
+            })->orderBy('name')->get(['id', 'name', 'brand_id']), 'filters'),
         ]);
     }
 }
