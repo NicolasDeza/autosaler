@@ -69,8 +69,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface Props {
     ads: any;
     filters: any;
-    brands: any[];
-    models: any[];
+    brands?: any[];
+    models?: any[];
 }
 
 defineProps<Props>();

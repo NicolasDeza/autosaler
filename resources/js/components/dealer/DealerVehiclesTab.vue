@@ -34,7 +34,9 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const currentSort = ref(props.filters.sort || 'latest');
+const currentSort = ref(
+    typeof props.filters.sort === 'string' ? props.filters.sort : 'latest',
+);
 const showFilters = ref(
     props.filters.brand_id !== undefined ||
         props.filters.model_id !== undefined ||

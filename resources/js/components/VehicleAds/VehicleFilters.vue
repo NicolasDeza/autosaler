@@ -10,19 +10,19 @@ import BrandFilter from './Filters/BrandFilter.vue';
 import DoorsFilter from './Filters/DoorsFilter.vue';
 import EuroNormFilter from './Filters/EuroNormFilter.vue';
 import ExteriorColorFilter from './Filters/ExteriorColorFilter.vue';
+import FeaturesFilter from './Filters/FeaturesFilter.vue';
 import FuelFilter from './Filters/FuelFilter.vue';
 import InteriorColorFilter from './Filters/InteriorColorFilter.vue';
 import InteriorTypeFilter from './Filters/InteriorTypeFilter.vue';
 import LocationFilter from './Filters/LocationFilter.vue';
 import MileageFilter from './Filters/MileageFilter.vue';
 import ModelFilter from './Filters/ModelFilter.vue';
+import PowerFilter from './Filters/PowerFilter.vue';
 import PriceFilter from './Filters/PriceFilter.vue';
 import SeatsFilter from './Filters/SeatsFilter.vue';
 import StatusFilter from './Filters/StatusFilter.vue';
 import TransmissionFilter from './Filters/TransmissionFilter.vue';
 import VersionFilter from './Filters/VersionFilter.vue';
-import PowerFilter from './Filters/PowerFilter.vue';
-import FeaturesFilter from './Filters/FeaturesFilter.vue';
 import YearFilter from './Filters/YearFilter.vue';
 
 defineProps<{
@@ -35,7 +35,7 @@ defineProps<{
     interiorColors?: any[];
     interiorTypes?: any[];
     features?: any[];
-    models: any[];
+    models?: any[];
 }>();
 
 const form = defineModel<any>('form', { required: true });
@@ -111,7 +111,7 @@ watch(
                 <BrandFilter v-model:form="form" :brands="brands ?? []" />
 
                 <!-- Modèle -->
-                <ModelFilter v-model:form="form" :models="models" />
+                <ModelFilter v-model:form="form" :models="models ?? []" />
 
                 <!-- Version -->
                 <VersionFilter v-model:form="form" :versions="versions" />

@@ -78,77 +78,160 @@
                             tag="div"
                             class="flex w-full flex-col gap-4"
                         >
-                         <Card
-                              v-for="ad in ads.data"
-                              :key="ad.id"
-                              class="group relative cursor-pointer overflow-hidden border border-border bg-card p-0 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-xl"
-                              @click="() => router.visit(vehiclesRoutes.show.url(ad.id))"
-                              >
-      <div class="flex flex-col md:flex-row">
+                            <Card
+                                v-for="ad in ads.data"
+                                :key="ad.id"
+                                class="group relative cursor-pointer overflow-hidden border border-border bg-card p-0 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-xl"
+                                @click="
+                                    () =>
+                                        router.visit(
+                                            vehiclesRoutes.show.url(ad.id),
+                                        )
+                                "
+                            >
+                                <div class="flex flex-col md:flex-row">
+                                    <div
+                                        class="relative h-56 w-full shrink-0 overflow-hidden bg-muted md:h-auto md:w-72"
+                                    >
+                                        <div
+                                            class="flex h-full w-full items-center justify-center bg-muted transition-transform duration-500 group-hover:scale-105"
+                                        >
+                                            <CarIcon
+                                                class="size-16 text-muted-foreground/20"
+                                            />
+                                        </div>
+                                    </div>
 
-        <div class="relative h-56 w-full shrink-0 overflow-hidden bg-muted md:h-auto md:w-72">
-            <div class="flex h-full w-full items-center justify-center bg-muted transition-transform duration-500 group-hover:scale-105">
-                <CarIcon class="size-16 text-muted-foreground/20" />
-            </div>
-        </div>
+                                    <div
+                                        class="flex flex-1 flex-col justify-between p-6"
+                                    >
+                                        <div
+                                            class="flex items-start justify-between gap-4"
+                                        >
+                                            <div class="min-w-0">
+                                                <h4
+                                                    class="truncate text-xl font-black tracking-tight text-foreground uppercase"
+                                                >
+                                                    {{ ad.brand?.name }}
+                                                    {{ ad.model?.name }}
+                                                </h4>
+                                                <p
+                                                    v-if="
+                                                        ad.vehicle_version?.name
+                                                    "
+                                                    class="mt-0.5 text-xs font-bold tracking-wider text-muted-foreground/80 uppercase"
+                                                >
+                                                    {{
+                                                        ad.vehicle_version.name
+                                                    }}
+                                                </p>
+                                            </div>
 
-        <div class="flex flex-1 flex-col justify-between p-6">
+                                            <div class="shrink-0 text-right">
+                                                <span
+                                                    class="text-2xl font-black tracking-tighter text-primary"
+                                                >
+                                                    {{
+                                                        Number(
+                                                            ad.price,
+                                                        ).toLocaleString(
+                                                            'fr-FR',
+                                                        )
+                                                    }}
+                                                    €
+                                                </span>
+                                                <span
+                                                    class="block text-[10px] font-medium tracking-wider text-muted-foreground/60 uppercase"
+                                                    >TVAC</span
+                                                >
+                                            </div>
+                                        </div>
 
-            <div class="flex items-start justify-between gap-4">
-                <div class="min-w-0">
-                    <h4 class="truncate text-xl font-black tracking-tight text-foreground uppercase">
-                        {{ ad.brand?.name }} {{ ad.model?.name }}
-                    </h4>
-                    <p v-if="ad.vehicle_version?.name" class="mt-0.5 text-xs font-bold tracking-wider text-muted-foreground/80 uppercase">
-                        {{ ad.vehicle_version.name }}
-                    </p>
-                </div>
+                                        <div
+                                            class="mt-6 -ml-4 flex flex-wrap items-center gap-y-3 sm:mt-12 md:flex-nowrap md:gap-y-0"
+                                        >
+                                            <div
+                                                class="flex items-center gap-2 border-r border-border px-4 text-sm font-medium text-foreground/70"
+                                            >
+                                                <Calendar
+                                                    class="size-4 shrink-0 text-primary/60"
+                                                />
+                                                {{
+                                                    ad.first_registration_date?.substring(
+                                                        0,
+                                                        4,
+                                                    ) || 'N/A'
+                                                }}
+                                            </div>
+                                            <div
+                                                class="flex items-center gap-2 border-r border-border px-4 text-sm font-medium text-foreground/70"
+                                            >
+                                                <Gauge
+                                                    class="size-4 shrink-0 text-primary/60"
+                                                />
+                                                {{
+                                                    ad.mileage?.toLocaleString(
+                                                        'fr-FR',
+                                                    )
+                                                }}
+                                                km
+                                            </div>
+                                            <div
+                                                v-if="ad.fuel_type"
+                                                class="flex items-center gap-2 border-r border-border px-4 text-sm font-medium text-foreground/70"
+                                            >
+                                                <Fuel
+                                                    class="size-4 shrink-0 text-primary/60"
+                                                />
+                                                {{ ad.fuel_type.code }}
+                                            </div>
+                                            <div
+                                                v-if="ad.transmission_type"
+                                                class="flex items-center gap-2 px-4 text-sm font-medium text-foreground/70"
+                                            >
+                                                <Cog
+                                                    class="size-4 shrink-0 text-primary/60"
+                                                />
+                                                {{ ad.transmission_type.code }}
+                                            </div>
+                                        </div>
 
-                <div class="shrink-0 text-right">
-                    <span class="text-2xl font-black tracking-tighter text-primary">
-                        {{ Number(ad.price).toLocaleString('fr-FR') }} €
-                    </span>
-                    <span class="block text-[10px] font-medium tracking-wider text-muted-foreground/60 uppercase">TVAC</span>
-                </div>
-            </div>
+                                        <div
+                                            class="mt-5 flex items-center justify-between border-t border-border pt-4"
+                                        >
+                                            <div class="text-sm leading-tight">
+                                                <span
+                                                    class="block font-bold text-foreground"
+                                                    >{{
+                                                        ad.user?.company
+                                                            ?.name ?? '—'
+                                                    }}</span
+                                                >
+                                                <span
+                                                    class="text-muted-foreground"
+                                                    >{{
+                                                        ad.user?.company?.city
+                                                            ?.zip_code
+                                                    }}
+                                                    {{
+                                                        ad.user?.company?.city
+                                                            ?.code
+                                                    }}</span
+                                                >
+                                            </div>
 
-            <div class="-ml-4 mt-6 sm:mt-12 flex flex-wrap items-center gap-y-3 md:flex-nowrap md:gap-y-0">
-                <div class="flex items-center gap-2 border-r border-border px-4 text-sm font-medium text-foreground/70">
-                    <Calendar class="size-4 shrink-0 text-primary/60" />
-                    {{ ad.first_registration_date?.substring(0, 4) || 'N/A' }}
-                </div>
-                <div class="flex items-center gap-2 border-r border-border px-4 text-sm font-medium text-foreground/70">
-                    <Gauge class="size-4 shrink-0 text-primary/60" />
-                    {{ ad.mileage?.toLocaleString('fr-FR') }} km
-                </div>
-                <div v-if="ad.fuel_type" class="flex items-center gap-2 border-r border-border px-4 text-sm font-medium text-foreground/70">
-                    <Fuel class="size-4 shrink-0 text-primary/60" />
-                    {{ ad.fuel_type.code }}
-                </div>
-                <div v-if="ad.transmission_type" class="flex items-center gap-2 px-4 text-sm font-medium text-foreground/70">
-                    <Cog class="size-4 shrink-0 text-primary/60" />
-                    {{ ad.transmission_type.code }}
-                </div>
-            </div>
-
-            <div class="mt-5 flex items-center justify-between border-t border-border pt-4">
-                <div class="text-sm leading-tight">
-                    <span class="block font-bold text-foreground">{{ ad.user?.company?.name ?? '—' }}</span>
-                    <span class="text-muted-foreground">{{ ad.user?.company?.city?.zip_code }} {{ ad.user?.company?.city?.code }}</span>
-                </div>
-
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    class="size-9 rounded-md border border-border bg-background transition-all hover:bg-primary/10 hover:text-primary cursor-pointer"
-                    @click.stop="() => {}"
-                >
-                    <Star class="size-4" />
-                </Button>
-            </div>
-        </div>
-    </div>
-</Card>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                class="size-9 cursor-pointer rounded-md border border-border bg-background transition-all hover:bg-primary/10 hover:text-primary"
+                                                @click.stop="() => {}"
+                                            >
+                                                <Star class="size-4" />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Card>
                         </TransitionGroup>
                     </div>
 
@@ -188,7 +271,14 @@
 
 <script setup lang="ts">
 import { router, Head } from '@inertiajs/vue3';
-import { Star, Gauge, Fuel, Calendar, Cog, Car as CarIcon,} from 'lucide-vue-next';
+import {
+    Star,
+    Gauge,
+    Fuel,
+    Calendar,
+    Cog,
+    Car as CarIcon,
+} from 'lucide-vue-next';
 import { ref, watch, onUnmounted } from 'vue';
 import AppPagination from '@/components/AppPagination.vue';
 import { Button } from '@/components/ui/button';
@@ -312,7 +402,7 @@ const form = ref<FilterForm>({
     city: f.city ? String(f.city) : '',
     city_id: f.city_id ? String(f.city_id) : '',
     per_page: f.per_page ? String(f.per_page) : '15',
-    sort: f.sort ? String(f.sort) : 'latest',
+    sort: typeof f.sort === 'string' ? f.sort : 'latest',
     version: f.version ? String(f.version) : '',
     min_power: f.min_power ? String(f.min_power) : '',
     max_power: f.max_power ? String(f.max_power) : '',
