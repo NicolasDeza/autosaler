@@ -98,3 +98,7 @@ Route::post('/locale', function (\Illuminate\Http\Request $request) {
 });
 
 require __DIR__.'/settings.php';
+
+Route::fallback(function () {
+    return Inertia::render('Errors/404', ['status' => 404]);
+});
