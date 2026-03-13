@@ -2,108 +2,144 @@
     <Head :title="`${ad.brand?.name} ${ad.model?.name}`" />
 
     <AppLayout>
-        <div class="mx-auto w-full max-w-5xl space-y-8 p-4 md:p-8">
-            <div class="flex items-start justify-between">
-                <div>
-                    <h1 class="text-3xl font-bold">
-                        {{ ad.brand?.name }} {{ ad.model?.name }}
-                    </h1>
-                    <!-- <h2
-                        v-if="ad.vehicle_version"
-                        class="mt-1 text-xl font-bold text-muted-foreground uppercase"
-                    >
-                        {{ ad.vehicle_version.name }}
-                    </h2> -->
-                    <h2 class="mt-1 text-xl font-bold text-muted-foreground uppercase">
-                        {{ ad.vehicle_version_name }}
-                    </h2>
-                </div>
-                <div class="text-3xl font-bold text-blue-600">
-                    € {{ ad.price }}
-                </div>
-            </div>
-
-            <!-- Image Gallery Mock -->
-            <div class="space-y-4">
-                <div class="aspect-video w-full rounded-lg bg-slate-300"></div>
-                <div class="flex gap-4 overflow-x-auto">
-                    <div
-                        v-for="i in 6"
-                        :key="i"
-                        class="h-20 w-32 shrink-0 rounded bg-slate-200"
-                    ></div>
-                </div>
-            </div>
+        <div class="mx-auto w-full max-w-7xl space-y-8 p-4 md:p-8">
+            <button
+                class="flex cursor-pointer items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                @click="router.visit(vehiclesIndex.url())"
+            >
+                <ChevronLeft class="h-4 w-4" />
+                Retour aux annonces
+            </button>
 
             <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
                 <div class="col-span-1 space-y-8 md:col-span-2">
+                    <div
+                        class="flex flex-col gap-4 rounded-lg border bg-card p-5 shadow-sm sm:flex-row sm:items-start sm:justify-between sm:p-6"
+                    >
+                        <div>
+                            <h1 class="text-2xl font-bold sm:text-3xl">
+                                {{ ad.brand?.name }} {{ ad.model?.name }}
+                            </h1>
+                            <h2
+                                class="mt-1 text-sm font-bold tracking-wider text-muted-foreground/80 uppercase"
+                            >
+                                {{ ad.vehicle_version_name }}
+                            </h2>
+                        </div>
+                        <div class="flex flex-col sm:items-end">
+                            <div class="text-3xl font-bold text-primary">
+                                € {{ ad.price }}
+                            </div>
+                            <span class="text-xs text-muted-foreground"
+                                >TVAC</span
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Image Gallery -->
+                    <div class="space-y-3">
+                        <div
+                            class="aspect-video w-full rounded-lg bg-muted"
+                        ></div>
+                        <div class="flex gap-3 overflow-x-auto">
+                            <div
+                                v-for="i in 6"
+                                :key="i"
+                                class="h-16 w-24 shrink-0 rounded bg-muted/60"
+                            ></div>
+                        </div>
+                    </div>
+
                     <!-- Characteristics Grid -->
-                    <div class="rounded-lg border bg-white p-6 shadow-sm">
-                        <h3 class="mb-6 border-b pb-2 text-xl font-bold">
+                    <div class="rounded-lg border bg-card p-6 shadow-sm">
+                        <h3 class="mb-6 text-xl font-bold">
                             Caractéristiques principales
                         </h3>
                         <div class="grid grid-cols-2 gap-y-6 sm:grid-cols-3">
-                            <div class="flex flex-col gap-1">
-                                <span
-                                    class="text-xs font-bold text-muted-foreground uppercase"
-                                    >Kilométrage</span
-                                >
+                            <div class="flex flex-col gap-1.5">
+                                <div class="flex items-center gap-1.5">
+                                    <Gauge class="h-3.5 w-3.5 text-primary" />
+                                    <span
+                                        class="text-xs font-bold text-muted-foreground uppercase"
+                                        >Kilométrage</span
+                                    >
+                                </div>
                                 <span class="font-semibold"
                                     >{{ ad.mileage.toLocaleString() }} km</span
                                 >
                             </div>
-                            <div class="flex flex-col gap-1">
-                                <span
-                                    class="text-xs font-bold text-muted-foreground uppercase"
-                                    >1ère immatriculation</span
-                                >
+                            <div class="flex flex-col gap-1.5">
+                                <div class="flex items-center gap-1.5">
+                                    <Calendar
+                                        class="h-3.5 w-3.5 text-primary"
+                                    />
+                                    <span
+                                        class="text-xs font-bold text-muted-foreground uppercase"
+                                        >1ère immatriculation</span
+                                    >
+                                </div>
                                 <span class="font-semibold">{{
                                     new Date(
                                         ad.first_registration_date,
                                     ).toLocaleDateString()
                                 }}</span>
                             </div>
-                            <div class="flex flex-col gap-1" v-if="ad.power_kw">
-                                <span
-                                    class="text-xs font-bold text-muted-foreground uppercase"
-                                    >Puissance</span
-                                >
+                            <div
+                                class="flex flex-col gap-1.5"
+                                v-if="ad.power_kw"
+                            >
+                                <div class="flex items-center gap-1.5">
+                                    <Zap class="h-3.5 w-3.5 text-primary" />
+                                    <span
+                                        class="text-xs font-bold text-muted-foreground uppercase"
+                                        >Puissance</span
+                                    >
+                                </div>
                                 <span class="font-semibold"
                                     >{{ ad.power_kw }} kW</span
                                 >
                             </div>
                             <div
-                                class="flex flex-col gap-1"
+                                class="flex flex-col gap-1.5"
                                 v-if="ad.fuel_type"
                             >
-                                <span
-                                    class="text-xs font-bold text-muted-foreground uppercase"
-                                    >Carburant</span
-                                >
+                                <div class="flex items-center gap-1.5">
+                                    <Fuel class="h-3.5 w-3.5 text-primary" />
+                                    <span
+                                        class="text-xs font-bold text-muted-foreground uppercase"
+                                        >Carburant</span
+                                    >
+                                </div>
                                 <span class="font-semibold">{{
                                     ad.fuel_type?.code
                                 }}</span>
                             </div>
                             <div
-                                class="flex flex-col gap-1"
+                                class="flex flex-col gap-1.5"
                                 v-if="ad.transmission_type"
                             >
-                                <span
-                                    class="text-xs font-bold text-muted-foreground uppercase"
-                                    >Boîte de vitesse</span
-                                >
+                                <div class="flex items-center gap-1.5">
+                                    <Cog class="h-3.5 w-3.5 text-primary" />
+                                    <span
+                                        class="text-xs font-bold text-muted-foreground uppercase"
+                                        >Boîte de vitesse</span
+                                    >
+                                </div>
                                 <span class="font-semibold">{{
                                     ad.transmission_type?.code
                                 }}</span>
                             </div>
                             <div
-                                class="flex flex-col gap-1"
+                                class="flex flex-col gap-1.5"
                                 v-if="ad.body_type"
                             >
-                                <span
-                                    class="text-xs font-bold text-muted-foreground uppercase"
-                                    >Carrosserie</span
-                                >
+                                <div class="flex items-center gap-1.5">
+                                    <Truck class="h-3.5 w-3.5 text-primary" />
+                                    <span
+                                        class="text-xs font-bold text-muted-foreground uppercase"
+                                        >Carrosserie</span
+                                    >
+                                </div>
                                 <span class="font-semibold">{{
                                     ad.body_type?.code
                                 }}</span>
@@ -112,127 +148,144 @@
                     </div>
 
                     <!-- Additional details -->
-                    <div class="rounded-lg border bg-white p-6 shadow-sm">
-                        <h3 class="mb-6 border-b pb-2 text-lg font-bold">
+                    <div class="rounded-lg border bg-card p-6 shadow-sm">
+                        <h3 class="mb-6 text-lg font-bold">
                             Informations techniques & Esthétique
                         </h3>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                            <table class="w-full text-sm">
-                                <tbody>
-                                    <tr class="border-b">
-                                        <td class="py-2 text-muted-foreground">
-                                            Cylindrée
-                                        </td>
-                                        <td class="py-2 text-right font-medium">
-                                            {{ ad.engine_displacement ?? '-' }}
-                                            cm³
-                                        </td>
-                                    </tr>
-                                    <tr class="border-b">
-                                        <td class="py-2 text-muted-foreground">
-                                            Cylindres
-                                        </td>
-                                        <td class="py-2 text-right font-medium">
-                                            {{ ad.cylinder_count ?? '-' }}
-                                        </td>
-                                    </tr>
-                                    <tr class="border-b">
-                                        <td class="py-2 text-muted-foreground">
-                                            Vitesses
-                                        </td>
-                                        <td class="py-2 text-right font-medium">
-                                            {{ ad.gear_count ?? '-' }}
-                                        </td>
-                                    </tr>
-                                    <tr class="border-b">
-                                        <td class="py-2 text-muted-foreground">
-                                            Poids
-                                        </td>
-                                        <td class="py-2 text-right font-medium">
-                                            {{ ad.weight_kg ?? '-' }} kg
-                                        </td>
-                                    </tr>
-                                    <tr class="border-b">
-                                        <td class="py-2 text-muted-foreground">
-                                            Portes / Sièges
-                                        </td>
-                                        <td class="py-2 text-right font-medium">
-                                            {{ ad.doors ?? '-' }} /
-                                            {{ ad.seats ?? '-' }}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table class="w-full text-sm">
-                                <tbody>
-                                    <tr class="border-b">
-                                        <td class="py-2 text-muted-foreground">
-                                            Norme Euro
-                                        </td>
-                                        <td class="py-2 text-right font-medium">
-                                            {{ ad.euro_norm?.code ?? '-' }}
-                                        </td>
-                                    </tr>
-                                    <tr class="border-b">
-                                        <td class="py-2 text-muted-foreground">
-                                            CO2 / Conso
-                                        </td>
-                                        <td class="py-2 text-right font-medium">
-                                            {{ ad.co2_emission ?? '-' }} g/km /
-                                            {{ ad.fuel_consumption_avg ?? '-' }}
-                                            L
-                                        </td>
-                                    </tr>
-                                    <tr class="border-b">
-                                        <td class="py-2 text-muted-foreground">
-                                            Couleur ext.
-                                        </td>
-                                        <td class="py-2 text-right font-medium">
-                                            {{ ad.exterior_color?.code ?? '-' }}
-                                            <span
-                                                v-if="
-                                                    ad.exterior_color_metalised
-                                                "
-                                                >(Métallisé)</span
-                                            >
-                                        </td>
-                                    </tr>
-                                    <tr class="border-b">
-                                        <td class="py-2 text-muted-foreground">
-                                            Intérieur
-                                        </td>
-                                        <td class="py-2 text-right font-medium">
-                                            {{
-                                                ad.interior_color?.code ?? '-'
-                                            }},
-                                            {{ ad.interior_type?.code ?? '-' }}
-                                        </td>
-                                    </tr>
-                                    <tr class="border-b">
-                                        <td class="py-2 text-muted-foreground">
-                                            Propriétaires préc.
-                                        </td>
-                                        <td class="py-2 text-right font-medium">
-                                            {{ ad.previous_owner ?? '-' }}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="text-sm">
+                                <div
+                                    class="flex items-center justify-between border-b py-2.5"
+                                >
+                                    <span class="text-muted-foreground"
+                                        >Cylindrée</span
+                                    >
+                                    <span class="font-medium"
+                                        >{{
+                                            ad.engine_displacement ?? '-'
+                                        }}
+                                        cm³</span
+                                    >
+                                </div>
+                                <div
+                                    class="flex items-center justify-between border-b py-2.5"
+                                >
+                                    <span class="text-muted-foreground"
+                                        >Cylindres</span
+                                    >
+                                    <span class="font-medium">{{
+                                        ad.cylinder_count ?? '-'
+                                    }}</span>
+                                </div>
+                                <div
+                                    class="flex items-center justify-between border-b py-2.5"
+                                >
+                                    <span class="text-muted-foreground"
+                                        >Vitesses</span
+                                    >
+                                    <span class="font-medium">{{
+                                        ad.gear_count ?? '-'
+                                    }}</span>
+                                </div>
+                                <div
+                                    class="flex items-center justify-between border-b py-2.5"
+                                >
+                                    <span class="text-muted-foreground"
+                                        >Poids</span
+                                    >
+                                    <span class="font-medium"
+                                        >{{ ad.weight_kg ?? '-' }} kg</span
+                                    >
+                                </div>
+                                <div
+                                    class="flex items-center justify-between py-2.5"
+                                >
+                                    <span class="text-muted-foreground"
+                                        >Portes / Sièges</span
+                                    >
+                                    <span class="font-medium"
+                                        >{{ ad.doors ?? '-' }} /
+                                        {{ ad.seats ?? '-' }}</span
+                                    >
+                                </div>
+                            </div>
+                            <div class="text-sm">
+                                <div
+                                    class="flex items-center justify-between border-b py-2.5"
+                                >
+                                    <span class="text-muted-foreground"
+                                        >Norme Euro</span
+                                    >
+                                    <span class="font-medium">{{
+                                        ad.euro_norm?.code ?? '-'
+                                    }}</span>
+                                </div>
+                                <div
+                                    class="flex items-center justify-between border-b py-2.5"
+                                >
+                                    <span class="text-muted-foreground"
+                                        >CO2 / Conso</span
+                                    >
+                                    <span class="font-medium"
+                                        >{{ ad.co2_emission ?? '-' }} g/km /
+                                        {{ ad.fuel_consumption_avg ?? '-' }}
+                                        L</span
+                                    >
+                                </div>
+                                <div
+                                    class="flex items-center justify-between border-b py-2.5"
+                                >
+                                    <span class="text-muted-foreground"
+                                        >Couleur ext.</span
+                                    >
+                                    <span class="font-medium"
+                                        >{{ ad.exterior_color?.code ?? '-'
+                                        }}<span
+                                            v-if="ad.exterior_color_metalised"
+                                        >
+                                            (Métallisé)</span
+                                        ></span
+                                    >
+                                </div>
+                                <div
+                                    class="flex items-center justify-between border-b py-2.5"
+                                >
+                                    <span class="text-muted-foreground"
+                                        >Intérieur</span
+                                    >
+                                    <span class="font-medium"
+                                        >{{ ad.interior_color?.code ?? '-' }},
+                                        {{
+                                            ad.interior_type?.code ?? '-'
+                                        }}</span
+                                    >
+                                </div>
+                                <div
+                                    class="flex items-center justify-between py-2.5"
+                                >
+                                    <span class="text-muted-foreground"
+                                        >Propriétaires préc.</span
+                                    >
+                                    <span class="font-medium">{{
+                                        ad.previous_owner ?? '-'
+                                    }}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- State & History -->
-                    <div class="rounded-lg border bg-white p-6 shadow-sm">
-                        <h3 class="mb-6 border-b pb-2 text-lg font-bold">
+                    <div class="rounded-lg border bg-card p-6 shadow-sm">
+                        <h3 class="mb-6 text-lg font-bold">
                             État & Historique
                         </h3>
-                        <div class="grid grid-cols-2 gap-y-3 sm:grid-cols-3">
-                            <div
-                                class="flex items-center gap-2 text-sm"
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold"
                                 :class="
                                     ad.is_damaged
-                                        ? 'text-red-500'
-                                        : 'text-green-600'
+                                        ? 'border-red-200 bg-red-50 text-red-600 dark:border-red-800 dark:bg-red-950/40 dark:text-red-400'
+                                        : 'border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950/40 dark:text-green-400'
                                 "
                             >
                                 <component
@@ -241,16 +294,16 @@
                                             ? AlertTriangle
                                             : CheckCircle
                                     "
-                                    class="h-4 w-4"
+                                    class="h-3.5 w-3.5"
                                 />
                                 Endommagé: {{ ad.is_damaged ? 'Oui' : 'Non' }}
-                            </div>
-                            <div
-                                class="flex items-center gap-2 text-sm"
+                            </span>
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold"
                                 :class="
                                     ad.has_accident
-                                        ? 'text-red-500'
-                                        : 'text-green-600'
+                                        ? 'border-red-200 bg-red-50 text-red-600 dark:border-red-800 dark:bg-red-950/40 dark:text-red-400'
+                                        : 'border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950/40 dark:text-green-400'
                                 "
                             >
                                 <component
@@ -259,46 +312,47 @@
                                             ? AlertTriangle
                                             : CheckCircle
                                     "
-                                    class="h-4 w-4"
+                                    class="h-3.5 w-3.5"
                                 />
                                 Accident: {{ ad.has_accident ? 'Oui' : 'Non' }}
-                            </div>
-                            <div
-                                class="flex items-center gap-2 text-sm"
+                            </span>
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold"
                                 :class="
                                     ad.complete_maintenance_book
-                                        ? 'text-green-600'
-                                        : 'text-muted-foreground/50'
+                                        ? 'border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950/40 dark:text-green-400'
+                                        : 'border-border bg-muted/50 text-muted-foreground/50'
                                 "
                             >
-                                <CheckCircle class="h-4 w-4" /> Carnet complet
-                            </div>
-                            <div
-                                class="flex items-center gap-2 text-sm"
+                                <CheckCircle class="h-3.5 w-3.5" /> Carnet
+                                complet
+                            </span>
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold"
                                 :class="
                                     ad.non_smoker
-                                        ? 'text-green-600'
-                                        : 'text-muted-foreground/50'
+                                        ? 'border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950/40 dark:text-green-400'
+                                        : 'border-border bg-muted/50 text-muted-foreground/50'
                                 "
                             >
-                                <CheckCircle class="h-4 w-4" /> Non-fumeur
-                            </div>
-                            <div
-                                class="flex items-center gap-2 text-sm"
+                                <CheckCircle class="h-3.5 w-3.5" /> Non-fumeur
+                            </span>
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold"
                                 :class="
                                     ad.technical_inspection_status
-                                        ? 'text-green-600'
-                                        : 'text-muted-foreground/50'
+                                        ? 'border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950/40 dark:text-green-400'
+                                        : 'border-border bg-muted/50 text-muted-foreground/50'
                                 "
                             >
-                                <CheckCircle class="h-4 w-4" /> CT valide
-                            </div>
+                                <CheckCircle class="h-3.5 w-3.5" /> CT valide
+                            </span>
                         </div>
                     </div>
 
                     <div
                         v-if="ad.description"
-                        class="rounded-lg border bg-white p-6 shadow-sm"
+                        class="rounded-lg border bg-card p-6 shadow-sm"
                     >
                         <h3 class="mb-4 text-lg font-bold">Description</h3>
                         <p class="whitespace-pre-wrap text-foreground">
@@ -308,77 +362,169 @@
                 </div>
 
                 <!-- Contact Sidebar -->
-                <div class="col-span-1 space-y-4">
-                    <Card class="p-6">
-                        <h3 class="mb-6 text-xl font-bold">Vendeur</h3>
-                        <div class="space-y-4 text-sm">
-                            <div
-                                class="flex items-center gap-2 text-lg font-bold"
-                            >
-                                <Building2 class="h-5 w-5 text-gray-400" />
-                                {{
-                                    ad.user?.company?.name ??
-                                    ad.user?.first_name +
-                                        ' ' +
-                                        ad.user?.last_name
-                                }}
-                            </div>
-                            <div
-                                v-if="ad.user?.company"
-                                class="flex items-start gap-2 text-gray-600"
-                            >
-                                <MapPin
-                                    class="mt-1 h-4 w-4 shrink-0 text-gray-400"
-                                />
-                                <div>
-                                    {{ ad.user.company.address }}<br />
-                                    {{ ad.user.company.city?.zip_code }}
-                                    {{ ad.user.company.city?.code }}<br />
-                                    {{ ad.user.company.country?.code }}
+                <div
+                    class="col-span-1 space-y-4 md:sticky md:top-24 md:self-start"
+                >
+                    <Card
+                        class="overflow-hidden border border-border bg-card p-0 shadow-sm"
+                    >
+                        <div
+                            class="border-b border-primary/20 bg-[hsl(216,27%,15%)] px-6 py-5"
+                        >
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="space-y-3">
+                                    <span
+                                        class="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-bold tracking-[0.22em] text-white/80 uppercase"
+                                    >
+                                        Vendeur
+                                    </span>
+                                    <div class="space-y-1">
+                                        <div
+                                            class="flex items-center gap-2 text-lg font-black tracking-tight text-white"
+                                        >
+                                            <span>
+                                                {{
+                                                    ad.user?.company?.name ??
+                                                    ad.user?.first_name +
+                                                        ' ' +
+                                                        ad.user?.last_name
+                                                }}
+                                            </span>
+                                        </div>
+                                        <p
+                                            v-if="ad.user?.company?.city"
+                                            class="text-sm text-white/65"
+                                        >
+                                            {{ ad.user.company.city?.zip_code }}
+                                            {{ ad.user.company.city?.code }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="hidden rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[11px] font-semibold tracking-wide text-white/75 uppercase sm:inline-flex"
+                                >
+                                    Pro
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="space-y-5 p-6 text-sm">
+                            <div
+                                v-if="ad.user?.company"
+                                class="flex items-start gap-3"
+                            >
+                                <MapPin
+                                    class="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground"
+                                />
+                                <div
+                                    class="space-y-1 leading-relaxed text-foreground"
+                                >
+                                    <p class="font-medium text-foreground">
+                                        Adresse du garage
+                                    </p>
+                                    <p>{{ ad.user.company.address }}</p>
+                                    <p>
+                                        {{ ad.user.company.city?.zip_code }}
+                                        {{ ad.user.company.city?.code }}
+                                    </p>
+                                    <p>
+                                        {{ ad.user.company.country?.code }}
+                                    </p>
+                                </div>
+                            </div>
+
                             <div
                                 v-if="
                                     ad.user?.company?.phone ||
                                     ad.user?.company?.email
                                 "
-                                class="mt-2 space-y-2 text-gray-600"
+                                class="space-y-3"
                             >
-                                <div
+                                <a
                                     v-if="ad.user.company.phone"
-                                    class="flex items-center gap-2"
+                                    :href="`tel:${ad.user.company.phone}`"
+                                    class="group flex items-start gap-3 text-foreground transition-colors hover:text-foreground/80"
                                 >
                                     <Phone
-                                        class="h-4 w-4 shrink-0 text-gray-400"
+                                        class="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground"
                                     />
-                                    {{ ad.user.company.phone }}
-                                </div>
-                                <div
+                                    <div class="space-y-1 leading-relaxed">
+                                        <p
+                                            class="text-xs font-bold tracking-wide text-muted-foreground uppercase"
+                                        >
+                                            Téléphone
+                                        </p>
+                                        <p
+                                            class="font-semibold text-foreground"
+                                        >
+                                            {{ ad.user.company.phone }}
+                                        </p>
+                                    </div>
+                                </a>
+
+                                <a
                                     v-if="ad.user.company.email"
-                                    class="flex items-center gap-2"
+                                    :href="`mailto:${ad.user.company.email}`"
+                                    class="group flex items-start gap-3 text-foreground transition-colors hover:text-foreground/80"
                                 >
                                     <Mail
-                                        class="h-4 w-4 shrink-0 text-gray-400"
+                                        class="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground"
                                     />
-                                    {{ ad.user.company.email }}
-                                </div>
+                                    <div
+                                        class="min-w-0 space-y-1 leading-relaxed"
+                                    >
+                                        <p
+                                            class="text-xs font-bold tracking-wide text-muted-foreground uppercase"
+                                        >
+                                            Email
+                                        </p>
+                                        <p
+                                            class="truncate font-semibold text-foreground"
+                                        >
+                                            {{ ad.user.company.email }}
+                                        </p>
+                                    </div>
+                                </a>
                             </div>
-                            <Button class="w-full font-bold"
-                                >Contacter le vendeur</Button
-                            >
+
+                            <div class="space-y-3 border-t border-border pt-5">
+                                <Button
+                                    class="h-11 w-full cursor-pointer rounded-xl font-bold shadow-sm"
+                                >
+                                    Contacter le vendeur
+                                </Button>
+                                <a
+                                    v-if="ad.user?.company?.phone"
+                                    :href="`https://wa.me/${ad.user.company.phone?.replace(/\D/g, '')}`"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-green-600 bg-white px-4 text-sm font-bold text-green-600 transition-all duration-200 hover:bg-green-50"
+                                >
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        class="h-4 w-4 fill-current"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                                        />
+                                    </svg>
+                                    WhatsApp
+                                </a>
+                            </div>
                         </div>
                     </Card>
 
                     <Card v-if="$page.props.auth?.user" class="p-6">
                         <h3
-                            class="mb-4 text-sm font-bold text-gray-500 uppercase"
+                            class="mb-4 text-sm font-bold text-muted-foreground uppercase"
                         >
                             Actions
                         </h3>
                         <div class="flex flex-col gap-2">
                             <Button
                                 variant="outline"
-                                class="flex w-full justify-start gap-2"
+                                class="flex w-full cursor-pointer justify-start gap-2"
                                 @click="
                                     () => router.visit(vehicleEdit.url(ad.id))
                                 "
@@ -399,15 +545,21 @@ import {
     CheckCircle,
     AlertTriangle,
     Edit,
-    Building2,
     MapPin,
     Phone,
     Mail,
+    Gauge,
+    Calendar,
+    Zap,
+    Fuel,
+    Cog,
+    Truck,
+    ChevronLeft,
 } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { edit as vehicleEdit } from '@/routes/vehicles';
+import { edit as vehicleEdit, index as vehiclesIndex } from '@/routes/vehicles';
 
 defineProps<{
     ad: any;
