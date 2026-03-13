@@ -154,6 +154,12 @@ class VehicleAdController extends Controller
             }
         }
 
+        if ($request->boolean('favorites_only') && auth()->check()) {
+            $query->whereHas('favoredByUsers', function ($q) {
+                $q->where('user_id', auth()->id());
+            });
+        }
+
         // ── Sorting ─────────────────────────────────────────────
         $sort = $request->input('sort', 'latest');
 
@@ -197,6 +203,7 @@ class VehicleAdController extends Controller
                 'is_damaged', 'has_accident', 'complete_maintenance_book', 'non_smoker',
                 'city_id', 'per_page',
                 'version', 'min_power', 'max_power', 'power_unit', 'features',
+                'favorites_only',
             ]) + ['sort' => $request->input('sort', 'latest')],
         ]);
     }
@@ -359,10 +366,10 @@ class VehicleAdController extends Controller
         ]);
 
         if ($attached) {
-    $stat->increment('fav_count');
-} else {
-    $stat->decrement('fav_count');
-}
+            $stat->increment('fav_count');
+        } else {
+            $stat->decrement('fav_count');
+        }
 
         return back()->with('success', $attached ? 'Véhicule ajouté aux favoris.' : 'Véhicule retiré des favoris.');
     }

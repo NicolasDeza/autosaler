@@ -32,7 +32,30 @@
                             {{ ads.total }} véhicules trouvés
                         </h2>
 
-                        <SortSelect v-model="form.sort" />
+                        <div class="flex items-center gap-2">
+                            <Button
+                                v-if="$page.props.auth?.user"
+                                variant="outline"
+                                size="sm"
+                                class="h-10 gap-2 border-border"
+                                :class="{
+                                    'border-primary bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary':
+                                        form.favorites_only,
+                                }"
+                                @click="
+                                    form.favorites_only = !form.favorites_only
+                                "
+                            >
+                                <Star
+                                    class="size-4"
+                                    :class="{
+                                        'fill-primary': form.favorites_only,
+                                    }"
+                                />
+                                <span class="hidden sm:inline">Favoris</span>
+                            </Button>
+                            <SortSelect v-model="form.sort" />
+                        </div>
                     </div>
 
                     <ActiveFilters
@@ -363,6 +386,7 @@ interface FilterForm {
     max_power: string;
     power_unit: 'kw' | 'ch';
     features: string[];
+    favorites_only: boolean;
 }
 
 const form = ref<FilterForm>({
@@ -420,6 +444,7 @@ const form = ref<FilterForm>({
     max_power: f.max_power ? String(f.max_power) : '',
     power_unit: f.power_unit || 'ch',
     features: toArr(f.features),
+    favorites_only: f.favorites_only === '1' || f.favorites_only === true,
 });
 
 const models = ref<any[]>([]);
@@ -500,6 +525,7 @@ const getFilterParams = () => {
     if (v.max_power) q.max_power = v.max_power;
     if (v.power_unit && v.power_unit !== 'ch') q.power_unit = v.power_unit;
     if (v.features.length) q.features = [...v.features];
+    if (v.favorites_only) q.favorites_only = '1';
 
     return q;
 };

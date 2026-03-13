@@ -244,6 +244,15 @@ const activeFilters = computed(() => {
         });
     }
 
+    // Favorites
+    if (v.favorites_only === true) {
+        filters.push({
+            key: 'favorites_only',
+            label: 'Favoris uniquement',
+            onRemove: () => emit('updateFilter', 'favorites_only', false),
+        });
+    }
+
     // Version Name
     if (v.version) {
         filters.push({
