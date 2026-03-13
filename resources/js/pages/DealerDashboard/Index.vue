@@ -34,7 +34,12 @@
                     <DealerOverviewTab :ads="ads" />
                 </TabsContent>
                 <TabsContent value="vehicles" class="space-y-4">
-                    <DealerVehiclesTab :ads="ads" />
+                    <DealerVehiclesTab
+                        :ads="ads"
+                        :filters="filters"
+                        :brands="brands"
+                        :models="models"
+                    />
                 </TabsContent>
             </Tabs>
         </div>
@@ -67,6 +72,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface Props {
     ads: any;
+    filters: any;
+    brands: any[];
+    models: any[];
 }
 
 defineProps<Props>();

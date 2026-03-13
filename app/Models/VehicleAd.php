@@ -195,4 +195,38 @@ class VehicleAd extends Model
             'user_id',
         );
     }
+
+    /**
+     * Scope for searching vehicles.
+     */
+    public function scopeSearch($query, ?string $search)
+    {
+        return $query->when($search, function ($q) use ($search) {
+            $q->where(function ($sub) use ($search) {
+                $sub->where('id', 'like', "%{$search}%")
+                    ->orWhere('vehicle_version_name', 'like', "%{$search}%")
+                    ->orWhereHas('brand', fn ($b) => $b->where('name', 'like', "%{$search}%"))
+                    ->orWhereHas('model', fn ($m) => $m->where('name', 'like', "%{$search}%"));
+            });
+        });
+    }
+
+    /**
+     * Scope for sorting vehicles.
+     */
+    public function scopeSort($query, ?string $sort = 'latest')
+    {
+        return match ($sort) {
+            'price_asc' => $query->orderBy('price', 'asc'),
+            'price_desc' => $query->orderBy('price', 'desc'),
+            'id_asc' => $query->orderBy('id', 'asc'),
+            'id_desc' => $query->orderBy('id', 'desc'),
+            'oldest' => $query->orderBy('created_at', 'asc'),
+            'views_desc' => $query->withAggregate('stat', 'views_count')->orderBy('stat_views_count', 'desc'),
+            'contacts_desc' => $query->withAggregate('stat', 'contact_count')->orderBy('stat_contact_count', 'desc'),
+            'favs_desc' => $query->withAggregate('stat', 'fav_count')->orderBy('stat_fav_count', 'desc'),
+            'latest' => $query->orderBy('created_at', 'desc'),
+            default => $query->orderBy('created_at', 'desc'),
+        };
+    }
 }
