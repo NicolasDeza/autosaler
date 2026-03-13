@@ -247,7 +247,8 @@ class VehicleAdController extends Controller
         Gate::authorize('view', $vehicleAd);
 
         $vehicleAd->load([
-            'brand', 'model', 'vehicleVersion', 'stat', 'features',
+            'brand', 'model', 'vehicleVersion', 'stat',
+            'features' => fn ($query) => $query->orderBy('key'),
             'exteriorColor', 'interiorColor', 'interiorType',
             'fuelType', 'bodyType', 'euroNorm', 'transmissionType',
             'user.company.city', 'user.company.country',

@@ -375,6 +375,27 @@
                     </div>
 
                     <div
+                        v-if="ad.features?.length"
+                        class="rounded-lg border bg-card p-6 shadow-sm"
+                    >
+                        <h3 class="mb-6 text-lg font-bold">
+                            Equipements & options
+                        </h3>
+                        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <div
+                                v-for="feature in ad.features"
+                                :key="feature.id"
+                                class="flex items-start gap-2.5 text-sm text-foreground"
+                            >
+                                <CheckCircle
+                                    class="mt-0.5 h-4 w-4 shrink-0 text-green-600"
+                                />
+                                <span>{{ feature.key }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
                         v-if="ad.description"
                         class="rounded-lg border bg-card p-6 shadow-sm"
                     >

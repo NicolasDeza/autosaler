@@ -12,6 +12,8 @@ interface Vehicle {
     price: string;
     mileage: number;
     first_registration_date: string | null;
+    vehicle_version_name?: string | null;
+    vehicle_version?: { name: string } | null;
     brand: { id: number; name: string } | null;
     model: { id: number; name: string } | null;
     fuel_type: { id: number; code: string } | null;

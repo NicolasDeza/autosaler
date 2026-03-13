@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             ExteriorColorsSeeder::class,
             TransmissionTypesSeeder::class,
             BrandsAndModelsSeeder::class,
+            FeatureSeeder::class,
             VehicleAdSeeder::class,
         ]);
     }

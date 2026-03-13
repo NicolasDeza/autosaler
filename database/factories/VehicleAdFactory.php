@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\BodyType;
 use App\Models\EuroNorm;
 use App\Models\ExteriorColor;
+use App\Models\Feature;
 use App\Models\FuelType;
 use App\Models\InteriorColor;
 use App\Models\InteriorType;
@@ -21,6 +22,20 @@ use Illuminate\Support\Str;
  */
 class VehicleAdFactory extends Factory
 {
+    public function configure(): static
+    {
+        return $this->afterCreating(function ($vehicleAd): void {
+            $featureIds = Feature::query()
+                ->inRandomOrder()
+                ->limit(fake()->numberBetween(6, 16))
+                ->pluck('id');
+
+            if ($featureIds->isNotEmpty()) {
+                $vehicleAd->features()->sync($featureIds);
+            }
+        });
+    }
+
     public function definition(): array
     {
         $brand = VehicleBrand::inRandomOrder()->first() ?? VehicleBrand::firstOrCreate(['name' => 'Volkswagen']);
@@ -36,7 +51,7 @@ class VehicleAdFactory extends Factory
 
         $engines = ['1.0 TSI 110ch', '1.5 TSI 130ch', '1.5 TSI 150ch', '2.0 TDI 150ch', '2.0 TDI 200ch', 'Hybrid 204ch', 'Electric 204ch'];
         $trims = ['Life', 'Style', 'R-Line', 'Business', 'Performance', 'Executive', 'Lounge'];
-        
+
         $randomEngine = fake()->randomElement($engines);
         $randomTrim = fake()->randomElement($trims);
         $versionName = "{$randomEngine} {$randomTrim}";
