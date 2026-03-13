@@ -124,8 +124,11 @@ import { Facebook } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
-import { admin_dashboard, home } from '@/routes';
+import { home } from '@/routes';
+import admin from '@/routes/admin';
+import dealer from '@/routes/dealer';
 import { notices, privacy, cookies } from '@/routes/legal';
+import vehicles from '@/routes/vehicles';
 import type { NavItem } from '@/types';
 import AppLogoLg from './AppLogoLg.vue';
 
@@ -140,12 +143,23 @@ const menuItems = computed<NavItem[]>(() => {
             title: __('nav.home'),
             href: home().url,
         },
+        {
+            title: 'Véhicules',
+            href: vehicles.index().url,
+        },
     ];
+
+    if (can('view_dealer_dashboard')) {
+        items.push({
+            title: __('nav.dealer_panel'),
+            href: dealer.dashboard().url,
+        });
+    }
 
     if (can('view_admin_dashboard')) {
         items.push({
             title: __('nav.admin_panel'),
-            href: admin_dashboard(),
+            href: admin.dashboard().url,
         });
     }
 

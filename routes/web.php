@@ -27,27 +27,24 @@ Route::get('/cities/search', CitySearchController::class)->name('cities.search')
 Route::get('/vehicles', [VehicleAdController::class, 'index'])->name('vehicles.index');
 Route::get('/vehicles/{vehicleAd}', [VehicleAdController::class, 'show'])->name('vehicles.show')->whereNumber('vehicleAd');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
-
-    Route::get('/vehicles/create', [VehicleAdController::class, 'create'])->name('vehicles.create');
-    Route::post('/vehicles', [VehicleAdController::class, 'store'])->name('vehicles.store');
-    Route::get('/vehicles/{vehicleAd}/edit', [VehicleAdController::class, 'edit'])->name('vehicles.edit');
-    Route::put('/vehicles/{vehicleAd}', [VehicleAdController::class, 'update'])->name('vehicles.update');
-    Route::patch('/vehicles/{vehicleAd}/status', [VehicleAdController::class, 'updateStatus'])->name('vehicles.update_status');
-    Route::delete('/vehicles/{vehicleAd}', [VehicleAdController::class, 'destroy'])->name('vehicles.destroy');
-
-    Route::middleware('permission:view_admin_dashboard')->group(function () {
-        Route::get('/admin/dashboard', function () {
-            return Inertia::render('AdminDashboard');
-        })->name('admin_dashboard');
+Route::middleware(['auth', 'verified', 'role:admin|dealer'])->group(function () {
+    Route::prefix('vehicles')->name('vehicles.')->group(function () {
+        Route::get('/create', [VehicleAdController::class, 'create'])->name('create');
+        Route::post('/', [VehicleAdController::class, 'store'])->name('store');
+        Route::get('/{vehicleAd}/edit', [VehicleAdController::class, 'edit'])->name('edit');
+        Route::put('/{vehicleAd}', [VehicleAdController::class, 'update'])->name('update');
+        Route::patch('/{vehicleAd}/status', [VehicleAdController::class, 'updateStatus'])->name('update_status');
+        Route::delete('/{vehicleAd}', [VehicleAdController::class, 'destroy'])->name('destroy');
     });
 
-    Route::middleware('permission:view_dealer_dashboard')->prefix('dealer')->name('dealer_dashboard.')->group(function () {
-        Route::get('/dashboard', [DealerDashboardController::class, 'index'])
-            ->name('index');
+    Route::middleware('permission:view_admin_dashboard')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', function () {
+            return Inertia::render('AdminDashboard');
+        })->name('dashboard');
+    });
+
+    Route::middleware('permission:view_dealer_dashboard')->prefix('dealer')->name('dealer.')->group(function () {
+        Route::get('/dashboard', [DealerDashboardController::class, 'index'])->name('dashboard');
     });
 
     // Route::middleware('role:admin')->group(function () {

@@ -4,7 +4,6 @@ import {
     // BookOpen,
     // Folder,
     Home,
-    LayoutGrid,
     Menu,
     Search,
     Shield,
@@ -45,8 +44,9 @@ import { getInitials } from '@/composables/useInitials';
 import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
 import { toUrl } from '@/lib/utils';
-import { admin_dashboard, dashboard, login, register } from '@/routes';
-import dealer_dashboard from '@/routes/dealer_dashboard';
+import { login, register } from '@/routes';
+import admin from '@/routes/admin';
+import dealer from '@/routes/dealer';
 import vehicles from '@/routes/vehicles';
 
 import type { BreadcrumbItem, NavItem } from '@/types';
@@ -81,28 +81,28 @@ const mainNavItems = computed<NavItem[]>(() => {
         },
         {
             title: 'Véhicules',
-            href: vehicles.index(),
+            href: vehicles.index().url,
             icon: Car,
         },
-        {
-            title: __('nav.nav_dashboard'),
-            href: dashboard(),
-            icon: LayoutGrid,
-        },
+        // {
+        //     title: __('nav.nav_dashboard'),
+        //     href: dashboard(),
+        //     icon: LayoutGrid,
+        // },
     ];
-
-    if (can('view_admin_dashboard')) {
-        items.push({
-            title: __('nav.admin_panel'),
-            href: admin_dashboard(),
-            icon: Shield,
-        });
-    }
 
     if (can('view_dealer_dashboard')) {
         items.push({
             title: __('nav.dealer_panel'),
-            href: dealer_dashboard.index(),
+            href: dealer.dashboard().url,
+            icon: Shield,
+        });
+    }
+
+    if (can('view_admin_dashboard')) {
+        items.push({
+            title: __('nav.admin_panel'),
+            href: admin.dashboard().url,
             icon: Shield,
         });
     }

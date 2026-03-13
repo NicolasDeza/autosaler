@@ -15,7 +15,7 @@
                         <Printer class="mr-2 h-4 w-4" /> Liste imprimée
                     </Button>
                     <Button as-child size="sm">
-                        <Link :href="vehicleCreate().url">
+                        <Link :href="vehicles.create().url">
                             <Plus class="mr-2 h-4 w-4" />
                             Créer une annonce
                         </Link>
@@ -55,18 +55,14 @@ import DealerVehiclesTab from '@/components/dealer/DealerVehiclesTab.vue';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/layouts/AppLayout.vue';
-import dealer_dashboard from '@/routes/dealer_dashboard'; // Adjust the import based on wayfinder output
-import { create as vehicleCreate } from '@/routes/vehicles';
+import dealer from '@/routes/dealer'; // Adjust the import based on wayfinder output
+import vehicles from '@/routes/vehicles';
 import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dealer Dashboard',
-        href: dealer_dashboard.index
-            ? dealer_dashboard.index.url()
-            : (dealer_dashboard as any).url
-              ? (dealer_dashboard as any).url()
-              : '/dealer/dashboard',
+        href: dealer.dashboard().url,
     },
 ];
 
