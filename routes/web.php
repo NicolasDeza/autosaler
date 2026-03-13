@@ -28,6 +28,8 @@ Route::get('/vehicles', [VehicleAdController::class, 'index'])->name('vehicles.i
 Route::get('/vehicles/{vehicleAd}', [VehicleAdController::class, 'show'])->name('vehicles.show')->whereNumber('vehicleAd');
 
 Route::middleware(['auth', 'verified', 'role:admin|dealer'])->group(function () {
+    Route::post('/vehicles/{vehicleAd}/favorite', [VehicleAdController::class, 'toggleFavorite'])->name('vehicles.favorite');
+    
     Route::prefix('vehicles')->name('vehicles.')->group(function () {
         Route::get('/create', [VehicleAdController::class, 'create'])->name('create');
         Route::post('/', [VehicleAdController::class, 'store'])->name('store');

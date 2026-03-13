@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Eye, Heart, MessageCircle, Car } from 'lucide-vue-next';
+import { Eye, Star, MessageCircle, Car } from 'lucide-vue-next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface Props {
@@ -69,7 +69,7 @@ const totalFavs =
                 class="flex flex-row items-center justify-between space-y-0 pb-2"
             >
                 <CardTitle class="text-sm font-medium"> Favoris </CardTitle>
-                <Heart class="h-4 w-4 text-muted-foreground" />
+                <Star class="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
                 <div class="text-2xl font-bold">{{ totalFavs }}</div>

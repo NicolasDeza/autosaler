@@ -5,7 +5,7 @@ import {
     ArrowDown,
     Eye,
     MessageCircle,
-    Heart,
+    Star,
 } from 'lucide-vue-next';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -101,7 +101,7 @@ const getSortIcon = (column: string) => {
                         @click="toggleSort('favs')"
                     >
                         <div class="flex items-center justify-center gap-2">
-                            <Heart class="h-4 w-4" />
+                            <Star class="h-4 w-4" />
                             <component
                                 :is="getSortIcon('favs')"
                                 class="h-4 w-4"
