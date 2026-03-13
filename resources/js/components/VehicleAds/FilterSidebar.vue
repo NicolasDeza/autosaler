@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SlidersHorizontal } from 'lucide-vue-next';
+import { RotateCcw, SlidersHorizontal, Star } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import {
@@ -60,12 +60,35 @@ const handleUpdateModels = (models: any[]) => {
                                 >Filtres</SheetTitle
                             >
                         </div>
-                        <button
-                            class="cursor-pointer rounded-md border border-primary/40 px-2.5 py-1 text-xs font-medium text-primary transition-colors duration-200 hover:border-[hsl(356.95,95.9%,57.72%)] hover:bg-[hsl(356.95,95.9%,57.72%)] hover:text-white"
-                            @click="emit('resetFilters')"
-                        >
-                            Réinitialiser
-                        </button>
+                        <div class="flex items-center gap-2">
+                            <Button
+                                v-if="$page.props.auth?.user"
+                                size="icon"
+                                class="group h-7 w-7 cursor-pointer rounded-md bg-transparent text-primary transition-colors duration-200 hover:bg-primary/80 hover:text-white"
+                                :class="{
+                                    'bg-primary/20': form.favorites_only,
+                                }"
+                                @click="
+                                    form.favorites_only = !form.favorites_only
+                                "
+                            >
+                                <Star
+                                    class="h-4 w-4 group-hover:fill-white group-hover:text-white"
+                                    :class="{
+                                        'fill-primary': form.favorites_only,
+                                    }"
+                                />
+                            </Button>
+                            <Button
+                                size="icon"
+                                class="group h-7 w-7 cursor-pointer rounded-md bg-transparent text-primary transition-colors duration-200 hover:bg-primary/80 hover:text-white"
+                                @click="emit('resetFilters')"
+                            >
+                                <RotateCcw
+                                    class="h-4 w-4 group-hover:text-white"
+                                />
+                            </Button>
+                        </div>
                     </div>
                 </SheetHeader>
                 <div
@@ -103,12 +126,31 @@ const handleUpdateModels = (models: any[]) => {
                     Filtres
                 </h3>
             </div>
-            <button
-                class="cursor-pointer rounded-md border border-primary/40 px-2.5 py-1 text-xs font-medium text-primary transition-colors duration-200 hover:border-[hsl(356.95,95.9%,57.72%)] hover:bg-[hsl(356.95,95.9%,57.72%)] hover:text-white"
-                @click="emit('resetFilters')"
-            >
-                Réinitialiser
-            </button>
+            <div class="flex items-center gap-2">
+                <Button
+                    v-if="$page.props.auth?.user"
+                    size="icon"
+                    class="group h-7 w-7 cursor-pointer rounded-md bg-transparent text-primary transition-colors duration-200 hover:bg-primary/80 hover:text-white"
+                    :class="{
+                        'bg-primary/20': form.favorites_only,
+                    }"
+                    @click="form.favorites_only = !form.favorites_only"
+                >
+                    <Star
+                        class="h-4 w-4 group-hover:fill-white group-hover:text-white"
+                        :class="{
+                            'fill-primary': form.favorites_only,
+                        }"
+                    />
+                </Button>
+                <Button
+                    size="icon"
+                    class="group h-7 w-7 cursor-pointer rounded-md bg-transparent text-primary transition-colors duration-200 hover:bg-primary/80 hover:text-white"
+                    @click="emit('resetFilters')"
+                >
+                    <RotateCcw class="h-4 w-4 group-hover:text-white" />
+                </Button>
+            </div>
         </div>
         <div class="h-px bg-border" />
 

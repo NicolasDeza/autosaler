@@ -32,30 +32,7 @@
                             {{ ads.total }} véhicules trouvés
                         </h2>
 
-                        <div class="flex items-center gap-2">
-                            <Button
-                                v-if="$page.props.auth?.user"
-                                variant="outline"
-                                size="sm"
-                                class="h-10 gap-2 border-border"
-                                :class="{
-                                    'border-primary bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary':
-                                        form.favorites_only,
-                                }"
-                                @click="
-                                    form.favorites_only = !form.favorites_only
-                                "
-                            >
-                                <Star
-                                    class="size-4"
-                                    :class="{
-                                        'fill-primary': form.favorites_only,
-                                    }"
-                                />
-                                <span class="hidden sm:inline">Favoris</span>
-                            </Button>
-                            <SortSelect v-model="form.sort" />
-                        </div>
+                        <SortSelect v-model="form.sort" />
                     </div>
 
                     <ActiveFilters
