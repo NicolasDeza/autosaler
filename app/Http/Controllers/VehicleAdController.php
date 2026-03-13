@@ -151,7 +151,7 @@ class VehicleAdController extends Controller
         }
 
         // ── Sorting ─────────────────────────────────────────────
-        $sort = $request->get('sort', 'latest');
+        $sort = $request->input('sort', 'latest');
 
         switch ($sort) {
             case 'price_asc':
@@ -169,7 +169,7 @@ class VehicleAdController extends Controller
                 break;
         }
 
-        $perPage = (int) $request->get('per_page', 15);
+        $perPage = $request->integer('per_page', 15);
         $ads = $query->paginate($perPage)->withQueryString();
 
         return Inertia::render('VehicleAds/Index', [
@@ -193,7 +193,7 @@ class VehicleAdController extends Controller
                 'is_damaged', 'has_accident', 'complete_maintenance_book', 'non_smoker',
                 'city_id', 'per_page',
                 'version', 'min_power', 'max_power', 'power_unit', 'features',
-            ]) + ['sort' => $request->get('sort', 'latest')],
+            ]) + ['sort' => $request->input('sort', 'latest')],
         ]);
     }
 
