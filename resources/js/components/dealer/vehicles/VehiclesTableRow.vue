@@ -46,32 +46,31 @@ const handleStatusChange = (checked: boolean) => {
         <TableCell>
             <div class="flex items-center gap-3">
                 <div
-                    class="flex h-10 w-12 items-center justify-center rounded bg-muted print:hidden"
+                    class="flex h-10 w-12 shrink-0 items-center justify-center rounded bg-muted print:hidden"
                 >
                     <ImageIcon class="h-5 w-5 text-muted-foreground" />
                 </div>
-                <div>
-                    <div class="font-medium">#{{ ad.id }}</div>
-                    <div
-                        class="flex items-center gap-1 text-xs text-muted-foreground"
-                    >
-                        <Clock class="h-3 w-3" />
-                        {{
-                            ad.created_at
-                                ? new Date(ad.created_at).toLocaleDateString()
-                                : 'N/A'
-                        }}
+                <div class="min-w-0">
+                    <div class="font-medium truncate">
+                        {{ ad.brand?.name }}
+                        {{ ad.model?.name }}
+                    </div>
+                    <div class="line-clamp-1 text-xs text-muted-foreground">
+                        {{ ad.vehicle_version_name }}
                     </div>
                 </div>
             </div>
         </TableCell>
         <TableCell>
-            <div class="font-medium">
-                {{ ad.brand?.name }}
-                {{ ad.model?.name }}
-            </div>
-            <div class="line-clamp-1 text-xs text-muted-foreground">
-                {{ ad.vehicle_version_name }}
+            <div
+                class="flex items-center gap-1 text-xs text-muted-foreground"
+            >
+                <Clock class="h-3 w-3" />
+                {{
+                    ad.created_at
+                        ? new Date(ad.created_at).toLocaleDateString()
+                        : 'N/A'
+                }}
             </div>
         </TableCell>
         <TableCell>

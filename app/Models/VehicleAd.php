@@ -221,11 +221,11 @@ class VehicleAd extends Model
             'price_desc' => $query->orderBy('price', 'desc'),
             'id_asc' => $query->orderBy('id', 'asc'),
             'id_desc' => $query->orderBy('id', 'desc'),
-            'oldest' => $query->orderBy('created_at', 'asc'),
+            'oldest', 'created_at_asc', 'date_asc' => $query->orderBy('created_at', 'asc'),
+            'latest', 'created_at_desc', 'date_desc' => $query->orderBy('created_at', 'desc'),
             'views_desc' => $query->withAggregate('stat', 'views_count')->orderBy('stat_views_count', 'desc'),
             'contacts_desc' => $query->withAggregate('stat', 'contact_count')->orderBy('stat_contact_count', 'desc'),
             'favs_desc' => $query->withAggregate('stat', 'fav_count')->orderBy('stat_fav_count', 'desc'),
-            'latest' => $query->orderBy('created_at', 'desc'),
             default => $query->orderBy('created_at', 'desc'),
         };
     }

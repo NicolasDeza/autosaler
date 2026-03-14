@@ -10,4 +10,5 @@ return [
     'open_menu' => 'Ouvrir le menu',
     'view_ad' => "Voir l'annonce",
     'filters' => 'Filtres',
+    'date' => 'Date',
 ];

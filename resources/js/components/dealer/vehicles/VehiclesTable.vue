@@ -34,10 +34,16 @@ const toggleSort = (column: string) => {
 };
 
 const getSortIcon = (column: string) => {
-    if (props.currentSort === column + '_asc') {
+    if (
+        props.currentSort === column + '_asc' ||
+        (column === 'created_at' && props.currentSort === 'oldest')
+    ) {
         return ArrowUp;
     }
-    if (props.currentSort === column + '_desc') {
+    if (
+        props.currentSort === column + '_desc' ||
+        (column === 'created_at' && props.currentSort === 'latest')
+    ) {
         return ArrowDown;
     }
     return ArrowUpDown;
@@ -52,19 +58,19 @@ const getSortIcon = (column: string) => {
                     <TableHead class="w-[50px] print:hidden"
                         ><Checkbox
                     /></TableHead>
+                    <TableHead>{{ __('dealer.vehicle') }}</TableHead>
                     <TableHead
-                        class="w-[150px] cursor-pointer hover:bg-muted/50"
-                        @click="toggleSort('id')"
+                        class="w-[120px] cursor-pointer hover:bg-muted/50"
+                        @click="toggleSort('created_at')"
                     >
                         <div class="flex items-center gap-2">
-                            {{ __('dealer.reference_number') }}
+                            {{ __('ui.date') }}
                             <component
-                                :is="getSortIcon('id')"
+                                :is="getSortIcon('created_at')"
                                 class="h-4 w-4"
                             />
                         </div>
                     </TableHead>
-                    <TableHead>{{ __('dealer.vehicle') }}</TableHead>
                     <TableHead
                         class="cursor-pointer hover:bg-muted/50"
                         @click="toggleSort('price')"
@@ -113,26 +119,8 @@ const getSortIcon = (column: string) => {
                             />
                         </div>
                     </TableHead>
-                    <TableHead
-                        class="w-[100px] cursor-pointer hover:bg-muted/50"
-                        @click="toggleSort('latest')"
-                    >
-                        <div class="flex items-center gap-2">
-                            {{ __('dealer.status') }}
-                            <component
-                                :is="
-                                    currentSort === 'latest' ||
-                                    currentSort === 'oldest'
-                                        ? getSortIcon(
-                                              currentSort === 'latest'
-                                                  ? 'latest'
-                                                  : 'oldest',
-                                          )
-                                        : ArrowUpDown
-                                "
-                                class="h-4 w-4"
-                            />
-                        </div>
+                    <TableHead class="w-[100px]">
+                        {{ __('dealer.status') }}
                     </TableHead>
                     <TableHead class="w-[50px] print:hidden"></TableHead>
                 </TableRow>
