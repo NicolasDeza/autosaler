@@ -92,7 +92,7 @@ const mainNavItems = computed<NavItem[]>(() => {
 
     if (can('view_dealer_dashboard')) {
         items.push({
-            title: __('nav.dealer_panel'),
+            title: __('nav.dealer_dashboard'),
             href: dealer.dashboard().url,
             icon: Shield,
         });
@@ -100,7 +100,7 @@ const mainNavItems = computed<NavItem[]>(() => {
 
     if (can('view_admin_dashboard')) {
         items.push({
-            title: __('nav.admin_panel'),
+            title: __('nav.admin_dashboard'),
             href: admin.dashboard().url,
             icon: Shield,
         });

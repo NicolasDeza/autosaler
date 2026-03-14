@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Switch } from '@/components/ui/switch';
 import { TableCell, TableRow } from '@/components/ui/table';
+import { useTranslation } from '@/composables/useTranslation';
 import {
     show as vehicleShow,
     edit as vehicleEdit,
@@ -24,6 +25,8 @@ interface Props {
 
 defineProps<Props>();
 const emit = defineEmits(['status-change']);
+
+const { __ } = useTranslation();
 
 const formatPrice = (price: number) => {
     return new Intl.NumberFormat('fr-FR', {
@@ -101,18 +104,18 @@ const handleStatusChange = (checked: boolean) => {
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon" class="h-8 w-8 p-0">
-                        <span class="sr-only">Ouvrir le menu</span>
+                        <span class="sr-only">{{ __('ui.open_menu') }}</span>
                         <MoreHorizontal class="h-4 w-4" />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                    <DropdownMenuLabel>{{ __('ui.actions') }}</DropdownMenuLabel>
                     <DropdownMenuItem asChild>
                         <Link
                             :href="vehicleShow.url(ad.id)"
                             class="w-full cursor-pointer"
                         >
-                            Voir l'annonce
+                            {{ __('ui.view_ad') }}
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
@@ -120,7 +123,7 @@ const handleStatusChange = (checked: boolean) => {
                             :href="vehicleEdit.url(ad.id)"
                             class="w-full cursor-pointer"
                         >
-                            Modifier
+                            {{ __('ui.edit') }}
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild class="text-destructive">
@@ -131,7 +134,7 @@ const handleStatusChange = (checked: boolean) => {
                             preserve-scroll
                             class="w-full cursor-pointer"
                         >
-                            Supprimer
+                            {{ __('ui.delete') }}
                         </Link>
                     </DropdownMenuItem>
                 </DropdownMenuContent>

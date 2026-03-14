@@ -10,6 +10,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from '@/components/ui/pagination';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-vue-next';
 import {
     Select,
     SelectContent,
@@ -17,6 +18,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { useTranslation } from '@/composables/useTranslation';
 
 interface LaravelPagination {
     data: any[];
@@ -45,6 +47,8 @@ const emit = defineEmits<{
     (e: 'update:page', value: number): void;
 }>();
 
+const { __ } = useTranslation();
+
 const internalPerPage = computed({
     get: () => String(props.perPage),
     set: (val) => emit('update:perPage', val),
@@ -62,7 +66,7 @@ const internalPerPage = computed({
         >
             <div class="flex items-center gap-2">
                 <span class="text-sm font-medium text-slate-600">
-                    Afficher
+                    {{ __('pagination.show') }}
                 </span>
                 <Select v-model="internalPerPage">
                 <SelectTrigger class="w-20 cursor-pointer bg-white">
@@ -78,7 +82,7 @@ const internalPerPage = computed({
                 </Select>
             </div>
             <span class="text-center text-xs text-slate-500 md:text-left">
-                Affichage de {{ pagination.from }} à {{ pagination.to }} sur
+                {{ __('pagination.show') }} {{ __('pagination.from') }} {{ pagination.from }} {{ __('pagination.to') }} {{ pagination.to }} {{ __('pagination.of') }}
                 <span class="font-semibold text-primary">{{ pagination.total }}</span> {{ resourceLabel }}
             </span>
         </div>
@@ -96,8 +100,14 @@ const internalPerPage = computed({
                 v-slot="{ items }"
                 class="flex items-center gap-1"
             >
-                <PaginationFirst class="cursor-pointer" />
-                <PaginationPrevious class="cursor-pointer" />
+                <PaginationFirst class="cursor-pointer">
+                    <ChevronsLeft class="size-4" />
+                    <span class="hidden sm:block">{{ __('pagination.first') }}</span>
+                </PaginationFirst>
+                <PaginationPrevious class="cursor-pointer">
+                    <ChevronLeft class="size-4" />
+                    <span class="hidden sm:block">{{ __('pagination.previous') }}</span>
+                </PaginationPrevious>
 
                 <template v-for="(item, index) in items">
                     <PaginationItem
@@ -116,14 +126,20 @@ const internalPerPage = computed({
                     />
                 </template>
 
-                <PaginationNext class="cursor-pointer" />
-                <PaginationLast class="cursor-pointer" />
+                <PaginationNext class="cursor-pointer">
+                    <span class="hidden sm:block">{{ __('pagination.next') }}</span>
+                    <ChevronRight class="size-4" />
+                </PaginationNext>
+                <PaginationLast class="cursor-pointer">
+                    <span class="hidden sm:block">{{ __('pagination.last') }}</span>
+                    <ChevronsRight class="size-4" />
+                </PaginationLast>
             </PaginationContent>
         </Pagination>
 
         <!-- Page Indicator -->
         <div class="text-sm font-medium text-slate-600">
-            Page <span class="font-bold text-primary">{{ pagination.current_page }}</span> sur {{ pagination.last_page }}
+            {{ __('pagination.page') }} <span class="font-bold text-primary">{{ pagination.current_page }}</span> {{ __('pagination.of') }} {{ pagination.last_page }}
         </div>
     </div>
 </template>

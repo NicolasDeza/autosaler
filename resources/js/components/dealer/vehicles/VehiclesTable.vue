@@ -16,6 +16,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { useTranslation } from '@/composables/useTranslation';
 import VehiclesTableRow from './VehiclesTableRow.vue';
 
 interface Props {
@@ -25,6 +26,8 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits(['sort', 'status-change']);
+
+const { __ } = useTranslation();
 
 const toggleSort = (column: string) => {
     emit('sort', column);
@@ -54,20 +57,20 @@ const getSortIcon = (column: string) => {
                         @click="toggleSort('id')"
                     >
                         <div class="flex items-center gap-2">
-                            Numéro de référence
+                            {{ __('dealer.reference_number') }}
                             <component
                                 :is="getSortIcon('id')"
                                 class="h-4 w-4"
                             />
                         </div>
                     </TableHead>
-                    <TableHead>Véhicule</TableHead>
+                    <TableHead>{{ __('dealer.vehicle') }}</TableHead>
                     <TableHead
                         class="cursor-pointer hover:bg-muted/50"
                         @click="toggleSort('price')"
                     >
                         <div class="flex items-center gap-2">
-                            Prix
+                            {{ __('dealer.price') }}
                             <component
                                 :is="getSortIcon('price')"
                                 class="h-4 w-4"
@@ -115,7 +118,7 @@ const getSortIcon = (column: string) => {
                         @click="toggleSort('latest')"
                     >
                         <div class="flex items-center gap-2">
-                            Statut
+                            {{ __('dealer.status') }}
                             <component
                                 :is="
                                     currentSort === 'latest' ||
@@ -149,7 +152,7 @@ const getSortIcon = (column: string) => {
                 <template v-else>
                     <TableRow>
                         <TableCell colspan="9" class="h-24 text-center">
-                            Aucun véhicule trouvé.
+                            {{ __('dealer.no_vehicles_found') }}
                         </TableCell>
                     </TableRow>
                 </template>

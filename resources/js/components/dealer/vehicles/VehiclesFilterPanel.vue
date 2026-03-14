@@ -12,6 +12,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { useTranslation } from '@/composables/useTranslation';
 
 interface Props {
     open: boolean;
@@ -28,6 +29,8 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits(['update:filters', 'reset']);
+
+const { __ } = useTranslation();
 
 const brandFilter = ref(props.filters.brand_id?.toString() || 'all');
 const modelFilter = ref(props.filters.model_id?.toString() || 'all');
@@ -78,20 +81,20 @@ const handleReset = () => {
                 class="grid grid-cols-1 gap-4 border-b border-border/50 bg-muted/30 p-4 md:grid-cols-3 lg:grid-cols-6"
             >
                 <div class="space-y-1.5">
-                    <Label class="text-xs">Marque</Label>
+                    <Label class="text-xs">{{ __('dealer.brand') }}</Label>
                     <Select v-model="brandFilter" :disabled="!brands">
                         <SelectTrigger class="h-8 text-xs">
                             <SelectValue
                                 :placeholder="
                                     !brands
-                                        ? 'Chargement...'
-                                        : 'Toutes les marques'
+                                        ? __('ui.loading')
+                                        : __('dealer.all_brands')
                                 "
                             />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="all"
-                                >Toutes les marques</SelectItem
+                                >{{ __('dealer.all_brands') }}</SelectItem
                             >
                             <SelectItem
                                 v-for="brand in brands"
@@ -104,20 +107,20 @@ const handleReset = () => {
                     </Select>
                 </div>
                 <div class="space-y-1.5">
-                    <Label class="text-xs">Modèle</Label>
+                    <Label class="text-xs">{{ __('dealer.model') }}</Label>
                     <Select v-model="modelFilter" :disabled="!models">
                         <SelectTrigger class="h-8 text-xs">
                             <SelectValue
                                 :placeholder="
                                     !models
-                                        ? 'Chargement...'
-                                        : 'Tous les modèles'
+                                        ? __('ui.loading')
+                                        : __('dealer.all_models')
                                 "
                             />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="all"
-                                >Tous les modèles</SelectItem
+                                >{{ __('dealer.all_models') }}</SelectItem
                             >
                             <SelectItem
                                 v-for="model in models"
@@ -130,23 +133,23 @@ const handleReset = () => {
                     </Select>
                 </div>
                 <div class="space-y-1.5">
-                    <Label class="text-xs">Statut</Label>
+                    <Label class="text-xs">{{ __('dealer.status') }}</Label>
                     <Select v-model="statusFilter">
                         <SelectTrigger class="h-8 text-xs">
-                            <SelectValue placeholder="Tous les statuts" />
+                            <SelectValue :placeholder="__('dealer.all_statuses')" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="all"
-                                >Tous les statuts</SelectItem
+                                >{{ __('dealer.all_statuses') }}</SelectItem
                             >
-                            <SelectItem value="active">Actif</SelectItem>
-                            <SelectItem value="draft">Brouillon</SelectItem>
-                            <SelectItem value="sold">Vendu</SelectItem>
+                            <SelectItem value="active">{{ __('dealer.active_status') }}</SelectItem>
+                            <SelectItem value="draft">{{ __('dealer.draft_status') }}</SelectItem>
+                            <SelectItem value="sold">{{ __('dealer.sold_status') }}</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
                 <div class="space-y-1.5">
-                    <Label class="text-xs">Date du</Label>
+                    <Label class="text-xs">{{ __('dealer.from_date') }}</Label>
                     <Input
                         type="date"
                         v-model="dateFrom"
@@ -155,7 +158,7 @@ const handleReset = () => {
                     />
                 </div>
                 <div class="space-y-1.5">
-                    <Label class="text-xs">Au</Label>
+                    <Label class="text-xs">{{ __('dealer.to_date') }}</Label>
                     <Input
                         type="date"
                         v-model="dateTo"
@@ -171,7 +174,7 @@ const handleReset = () => {
                         @click="handleReset"
                     >
                         <RotateCcw class="mr-2 h-3.5 w-3.5" />
-                        Réinitialiser
+                        {{ __('ui.reset') }}
                     </Button>
                 </div>
             </div>

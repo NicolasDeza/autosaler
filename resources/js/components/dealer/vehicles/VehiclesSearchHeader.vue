@@ -3,6 +3,7 @@ import { Search, Filter } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useTranslation } from '@/composables/useTranslation';
 
 interface Props {
     search: string;
@@ -12,6 +13,8 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits(['update:search', 'update:showFilters']);
+
+const { __ } = useTranslation();
 
 const internalSearch = ref(props.search);
 
@@ -33,7 +36,7 @@ const handleSearch = () => {
             <Input
                 id="search"
                 type="text"
-                placeholder="Rechercher..."
+                :placeholder="__('ui.search')"
                 class="h-9 pl-10"
                 v-model="internalSearch"
                 @input="handleSearch"
@@ -51,7 +54,7 @@ const handleSearch = () => {
             :class="{ 'bg-muted': showFilters }"
         >
             <Filter class="mr-2 h-4 w-4" />
-            Filtres
+            {{ __('ui.filters') }}
             <template v-if="activeFiltersCount > 0">
                 <span
                     class="ml-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground"

@@ -6,7 +6,8 @@ return [
     'nav_admin_panel' => 'Admin Panel',
     // Menu
     'home' => 'Home',
-    'admin_panel' => 'Admin Panel',
+    'dealer_dashboard' => 'Dealer Dashboard',
+    'admin_dashboard' => 'Admin Dashboard',
 
     // legal
     'legal_notices' => 'Legal Notices',

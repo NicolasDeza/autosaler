@@ -1,5 +1,5 @@
 <template>
-    <Head title="Dealer Dashboard" />
+    <Head :title="__('dealer.dashboard_title')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div
@@ -7,16 +7,16 @@
         >
             <div class="mb-4 flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold tracking-tight">Mon stock</h1>
+                    <h1 class="text-3xl font-bold tracking-tight">{{ __('dealer.my_stock') }}</h1>
                     <p class="mt-1 text-sm text-muted-foreground">
-                        Total:
+                        {{ __('dealer.total') }}:
                         <span class="px-1 font-medium">{{ stats.total }}</span>
-                        · Actives:
+                        · {{ __('dealer.active') }}:
                         <span
                             class="px-1 font-medium text-green-600 dark:text-green-400"
                             >{{ stats.active }}</span
                         >
-                        · Brouillons:
+                        · {{ __('dealer.draft') }}:
                         <span
                             class="px-1 font-medium text-amber-600 dark:text-amber-400"
                             >{{ stats.draft }}</span
@@ -25,15 +25,15 @@
                 </div>
                 <div class="flex items-center gap-2 print:hidden">
                     <Button variant="outline" size="sm" @click="exportToCSV">
-                        <Download class="mr-2 h-4 w-4" /> Enregistrer en CSV
+                        <Download class="mr-2 h-4 w-4" /> {{ __('dealer.save_csv') }}
                     </Button>
                     <Button variant="outline" size="sm" @click="printList">
-                        <Printer class="mr-2 h-4 w-4" /> Liste imprimée
+                        <Printer class="mr-2 h-4 w-4" /> {{ __('dealer.print_list') }}
                     </Button>
                     <Button as-child size="sm">
                         <Link :href="vehicles.create().url">
                             <Plus class="mr-2 h-4 w-4" />
-                            Créer une annonce
+                            {{ __('dealer.create_ad') }}
                         </Link>
                     </Button>
                 </div>
@@ -43,10 +43,9 @@
                 <CardHeader class="border-b border-border/50 pb-3">
                     <div class="flex items-center justify-between">
                         <div>
-                            <CardTitle>Liste des véhicules</CardTitle>
+                            <CardTitle>{{ __('dealer.vehicle_list') }}</CardTitle>
                             <CardDescription class="print:hidden">
-                                Gérez vos annonces et surveillez leurs
-                                performances
+                                {{ __('dealer.manage_ads_description') }}
                             </CardDescription>
                         </div>
                         <VehiclesSearchHeader
@@ -81,7 +80,7 @@
                         v-if="ads"
                         :pagination="ads"
                         :per-page="ads.per_page"
-                        resource-label="véhicules"
+                        :resource-label="__('dealer.vehicles_label')"
                         @update:page="handlePageChange"
                         @update:per-page="handlePerPageChange"
                         class="rounded-t-none border-t border-border/50 bg-transparent shadow-none print:hidden"
@@ -110,6 +109,7 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { useTranslation } from '@/composables/useTranslation';
 import dealer from '@/routes/dealer';
 import vehicles from '@/routes/vehicles';
 import type { BreadcrumbItem } from '@/types';
@@ -137,9 +137,11 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const { __ } = useTranslation();
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dealer Dashboard',
+        title: __('dealer.dashboard_title'),
         href: dealer.dashboard().url,
     },
 ];
@@ -275,15 +277,15 @@ const exportToCSV = () => {
 
     const headers = [
         'ID',
-        'Date',
-        'Marque',
-        'Modèle',
+        __('dealer.from_date'),
+        __('dealer.brand'),
+        __('dealer.model'),
         'Version',
-        'Prix',
-        'Vues',
-        'Contacts',
-        'Favoris',
-        'Statut',
+        __('dealer.price'),
+        __('dealer.views'),
+        __('dealer.contacts'),
+        __('dealer.favorites'),
+        __('dealer.status'),
     ];
 
     const rows = props.ads.data.map((ad: any) => [
@@ -310,7 +312,7 @@ const exportToCSV = () => {
     link.setAttribute('href', url);
     link.setAttribute(
         'download',
-        `mon_stock_${new Date().toISOString().split('T')[0]}.csv`,
+        `${__('dealer.csv_filename')}_${new Date().toISOString().split('T')[0]}.csv`,
     );
     document.body.appendChild(link);
     link.click();
