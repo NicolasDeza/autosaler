@@ -92,7 +92,7 @@ const mainNavItems = computed<NavItem[]>(() => {
 
     if (can('view_dealer_dashboard')) {
         items.push({
-            title: __('nav.dealer_panel'),
+            title: __('nav.dealer_dashboard'),
             href: dealer.dashboard().url,
             icon: Shield,
         });
@@ -100,7 +100,7 @@ const mainNavItems = computed<NavItem[]>(() => {
 
     if (can('view_admin_dashboard')) {
         items.push({
-            title: __('nav.admin_panel'),
+            title: __('nav.admin_dashboard'),
             href: admin.dashboard().url,
             icon: Shield,
         });
@@ -124,7 +124,7 @@ const rightNavItems: NavItem[] = [
 </script>
 
 <template>
-    <header class="dark sticky top-0 z-50 text-foreground">
+    <header class="dark sticky top-0 z-50 text-foreground print:hidden">
         <div class="border-b border-sidebar-border/80 bg-background">
             <div class="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                 <!-- Mobile Menu -->

@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { usePage } from '@inertiajs/vue3';
 import { RotateCcw, SlidersHorizontal, Star } from 'lucide-vue-next';
 import { ref } from 'vue';
+import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import { Button } from '@/components/ui/button';
 import {
     Sheet,
@@ -28,9 +30,19 @@ const form = defineModel<any>('form', { required: true });
 
 const emit = defineEmits(['resetFilters', 'update:models']);
 const isOpen = ref(false);
+const showLoginModal = ref(false);
+const page = usePage();
 
 const handleUpdateModels = (models: any[]) => {
     emit('update:models', models);
+};
+
+const toggleFavoritesFilter = () => {
+    if (!page.props.auth?.user) {
+        showLoginModal.value = true;
+        return;
+    }
+    form.value.favorites_only = !form.value.favorites_only;
 };
 </script>
 
@@ -62,15 +74,12 @@ const handleUpdateModels = (models: any[]) => {
                         </div>
                         <div class="flex items-center gap-2">
                             <Button
-                                v-if="$page.props.auth?.user"
                                 size="icon"
                                 class="group h-7 w-7 cursor-pointer rounded-md bg-transparent text-primary transition-colors duration-200 hover:bg-primary/80 hover:text-white"
                                 :class="{
                                     'bg-primary/20': form.favorites_only,
                                 }"
-                                @click="
-                                    form.favorites_only = !form.favorites_only
-                                "
+                                @click="toggleFavoritesFilter"
                             >
                                 <Star
                                     class="h-4 w-4 group-hover:fill-white group-hover:text-white"
@@ -128,13 +137,12 @@ const handleUpdateModels = (models: any[]) => {
             </div>
             <div class="flex items-center gap-2">
                 <Button
-                    v-if="$page.props.auth?.user"
                     size="icon"
                     class="group h-7 w-7 cursor-pointer rounded-md bg-transparent text-primary transition-colors duration-200 hover:bg-primary/80 hover:text-white"
                     :class="{
                         'bg-primary/20': form.favorites_only,
                     }"
-                    @click="form.favorites_only = !form.favorites_only"
+                    @click="toggleFavoritesFilter"
                 >
                     <Star
                         class="h-4 w-4 group-hover:fill-white group-hover:text-white"
@@ -173,6 +181,12 @@ const handleUpdateModels = (models: any[]) => {
             />
         </div>
     </aside>
+
+    <LoginRequiredModal
+        v-model:open="showLoginModal"
+        title="Vos favoris"
+        description="Connectez-vous pour retrouver vos véhicules favoris sur tous vos appareils et ne manquer aucune opportunité."
+    />
 </template>
 
 <style scoped>

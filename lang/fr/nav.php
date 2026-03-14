@@ -7,7 +7,8 @@ return [
     'nav_admin_panel' => 'Panel d\'administration',
 
     'home' => 'Accueil',
-    'admin_panel' => 'Panel d\'administration',
+    'dealer_dashboard' => 'Tableau de bord',
+    'admin_dashboard' => 'Tableau de bord',
 
     // légal
     'legal_notices' => 'Mentions légales',

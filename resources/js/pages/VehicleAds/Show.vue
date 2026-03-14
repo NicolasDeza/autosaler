@@ -594,10 +594,16 @@
             </div>
         </div>
     </AppLayout>
+
+    <LoginRequiredModal
+        v-model:open="showLoginModal"
+        title="Ajouter aux favoris"
+        description="Connectez-vous pour enregistrer ce véhicule et être informé de toute baisse de prix."
+    />
 </template>
 
 <script setup lang="ts">
-import { Head, router } from '@inertiajs/vue3';
+import { Head, router, usePage } from '@inertiajs/vue3';
 import {
     CheckCircle,
     AlertTriangle,
@@ -614,6 +620,8 @@ import {
     ChevronLeft,
     Star,
 } from 'lucide-vue-next';
+import { ref } from 'vue';
+import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -627,7 +635,14 @@ const props = defineProps<{
     ad: any;
 }>();
 
+const showLoginModal = ref(false);
+const page = usePage();
+
 const toggleFavorite = () => {
+    if (!page.props.auth?.user) {
+        showLoginModal.value = true;
+        return;
+    }
     router.post(
         vehicleFavorite.url({ vehicleAd: props.ad.id }),
         {},

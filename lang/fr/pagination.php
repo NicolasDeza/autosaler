@@ -13,7 +13,13 @@ return [
     |
     */
 
-    'previous' => '&laquo; Précédent',
-    'next' => 'Suivant &raquo;',
-
+    'previous' => 'Précédent',
+    'next' => 'Suivant',
+    'show' => 'Afficher',
+    'from' => 'de',
+    'to' => 'à',
+    'of' => 'sur',
+    'page' => 'Page',
+    'first' => 'Premier',
+    'last' => 'Dernier',
 ];

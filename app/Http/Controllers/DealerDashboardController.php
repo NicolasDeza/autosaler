@@ -16,8 +16,10 @@ class DealerDashboardController extends Controller
     {
         Gate::authorize('view', [self::class]);
 
+        $dealerId = auth()->id();
+
         $query = VehicleAd::with(['brand', 'model', 'vehicleVersion', 'stat'])
-            ->where('user_id', auth()->id());
+            ->where('user_id', $dealerId);
 
         // Filters
         if ($request->filled('brand_id')) {
@@ -45,10 +47,15 @@ class DealerDashboardController extends Controller
             ->paginate($request->per_page ?? 10)
             ->withQueryString();
 
-        $dealerId = auth()->id();
+        $globalStats = [
+            'total' => VehicleAd::where('user_id', $dealerId)->count(),
+            'active' => VehicleAd::where('user_id', $dealerId)->where('status', 'active')->count(),
+            'draft' => VehicleAd::where('user_id', $dealerId)->where('status', 'draft')->count(),
+        ];
 
         return Inertia::render('DealerDashboard/Index', [
             'ads' => $ads,
+            'stats' => $globalStats,
             'filters' => $request->only(['search', 'sort', 'per_page', 'brand_id', 'model_id', 'status', 'date_from', 'date_to']),
             'brands' => Inertia::defer(fn () => VehicleBrand::whereIn('id', function ($q) use ($dealerId) {
                 $q->select('brand_id')

@@ -279,10 +279,16 @@
             </main>
         </div>
     </AppLayout>
+
+    <LoginRequiredModal
+        v-model:open="showLoginModal"
+        title="Coup de cœur ?"
+        description="Connectez-vous pour enregistrer ce véhicule dans vos favoris et le retrouver à tout moment."
+    />
 </template>
 
 <script setup lang="ts">
-import { router, Head } from '@inertiajs/vue3';
+import { router, Head, usePage } from '@inertiajs/vue3';
 import {
     Star,
     Gauge,
@@ -293,6 +299,7 @@ import {
 } from 'lucide-vue-next';
 import { ref, watch, onUnmounted } from 'vue';
 import AppPagination from '@/components/AppPagination.vue';
+import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import ActiveFilters from '@/components/VehicleAds/ActiveFilters.vue';
@@ -426,6 +433,8 @@ const form = ref<FilterForm>({
 
 const models = ref<any[]>([]);
 const isProcessing = ref(false);
+const showLoginModal = ref(false);
+const page = usePage();
 
 const startFinishListeners = [
     router.on('start', () => (isProcessing.value = true)),
@@ -549,6 +558,10 @@ const resetFilters = () => {
 };
 
 const toggleFavorite = (adId: number) => {
+    if (!page.props.auth?.user) {
+        showLoginModal.value = true;
+        return;
+    }
     router.post(
         vehiclesRoutes.favorite.url({ vehicleAd: adId }),
         {},

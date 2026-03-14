@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import {
+    ChevronLeft,
+    ChevronRight,
+    ChevronsLeft,
+    ChevronsRight,
+} from 'lucide-vue-next';
 import { computed } from 'vue';
 import {
     Pagination,
@@ -17,6 +23,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { useTranslation } from '@/composables/useTranslation';
 
 interface LaravelPagination {
     data: any[];
@@ -45,6 +52,8 @@ const emit = defineEmits<{
     (e: 'update:page', value: number): void;
 }>();
 
+const { __ } = useTranslation();
+
 const internalPerPage = computed({
     get: () => String(props.perPage),
     set: (val) => emit('update:perPage', val),
@@ -53,19 +62,23 @@ const internalPerPage = computed({
 
 <template>
     <div
-        v-if="pagination.data.length"
-        class="mt-4 flex flex-col items-center justify-between gap-4 rounded-lg bg-card p-4 shadow-sm md:flex-row"
+        v-if="pagination && pagination.data && pagination.data.length"
+        class="mt-6 flex flex-col items-center justify-between gap-6 rounded-xl border border-border/40 bg-card/60 p-5 backdrop-blur-sm md:flex-row"
     >
         <!-- Per Page Selector & Info -->
         <div
-            class="flex flex-wrap items-center justify-center gap-4 md:justify-start"
+            class="flex flex-wrap items-center justify-center gap-6 md:justify-start"
         >
-            <div class="flex items-center gap-2">
-                <span class="text-sm font-medium text-slate-600">
-                    Afficher
+            <div class="flex items-center gap-3">
+                <span
+                    class="text-xs font-bold tracking-wider text-muted-foreground/80 uppercase"
+                >
+                    {{ __('pagination.show') }}
                 </span>
                 <Select v-model="internalPerPage">
-                <SelectTrigger class="w-20 cursor-pointer bg-white">
+                    <SelectTrigger
+                        class="h-9 w-20 border-none bg-muted/50 text-sm font-semibold transition-all focus:bg-background focus:ring-1 focus:ring-primary/20"
+                    >
                         <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -77,10 +90,29 @@ const internalPerPage = computed({
                     </SelectContent>
                 </Select>
             </div>
-            <span class="text-center text-xs text-slate-500 md:text-left">
-                Affichage de {{ pagination.from }} à {{ pagination.to }} sur
-                <span class="font-semibold text-primary">{{ pagination.total }}</span> {{ resourceLabel }}
-            </span>
+
+            <div class="hidden h-8 w-px bg-border/40 md:block"></div>
+
+            <div class="text-[13px] font-medium text-muted-foreground/90">
+                <span class="font-bold text-foreground">{{
+                    pagination.from
+                }}</span>
+                <span class="mx-1 text-muted-foreground/60">{{
+                    __('pagination.to')
+                }}</span>
+                <span class="font-bold text-foreground">{{
+                    pagination.to
+                }}</span>
+                <span class="mx-1 text-muted-foreground/60">{{
+                    __('pagination.of')
+                }}</span>
+                <span class="font-extrabold text-primary">{{
+                    pagination.total
+                }}</span>
+                <span class="ml-1 font-medium capitalize">{{
+                    resourceLabel
+                }}</span>
+            </div>
         </div>
 
         <!-- Pagination Controls -->
@@ -94,36 +126,82 @@ const internalPerPage = computed({
         >
             <PaginationContent
                 v-slot="{ items }"
-                class="flex items-center gap-1"
+                class="flex items-center gap-1.5"
             >
-                <PaginationFirst class="cursor-pointer" />
-                <PaginationPrevious class="cursor-pointer" />
+                <PaginationFirst
+                    class="h-9 w-9 border-none bg-muted/40 transition-all hover:bg-muted/80 hover:text-primary active:scale-90"
+                >
+                    <ChevronsLeft class="h-4 w-4" />
+                </PaginationFirst>
 
-                <template v-for="(item, index) in items">
-                    <PaginationItem
-                        v-if="item.type === 'page'"
-                        :key="index"
-                        :value="item.value"
-                        :is-active="item.value === pagination.current_page"
-                        class="h-9 w-9 cursor-pointer p-0"
+                <PaginationPrevious
+                    class="h-9 gap-1.5 border-none bg-muted/40 px-3 transition-all hover:bg-muted/80 hover:text-primary active:scale-90"
+                >
+                    <ChevronLeft class="h-4 w-4" />
+                    <span
+                        class="hidden text-xs font-bold tracking-widest uppercase lg:block"
+                        >{{ __('pagination.previous') }}</span
                     >
-                        {{ item.value }}
-                    </PaginationItem>
-                    <PaginationEllipsis
-                        v-else
-                        :key="item.type"
-                        :index="index"
-                    />
-                </template>
+                </PaginationPrevious>
 
-                <PaginationNext class="cursor-pointer" />
-                <PaginationLast class="cursor-pointer" />
+                <div
+                    class="mx-1 flex flex-wrap items-center justify-center gap-1"
+                >
+                    <template v-for="(item, index) in items">
+                        <PaginationItem
+                            v-if="item.type === 'page'"
+                            :key="index"
+                            :value="item.value"
+                            :is-active="item.value === pagination.current_page"
+                            class="h-9 w-9 font-bold transition-all hover:bg-muted/80 active:scale-90"
+                            :class="{
+                                'bg-primary text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/90':
+                                    item.value === pagination.current_page,
+                                'bg-transparent text-muted-foreground':
+                                    item.value !== pagination.current_page,
+                            }"
+                        >
+                            {{ item.value }}
+                        </PaginationItem>
+                        <PaginationEllipsis
+                            v-else
+                            :key="item.type"
+                            :index="index"
+                            class="text-muted-foreground/40"
+                        />
+                    </template>
+                </div>
+
+                <PaginationNext
+                    class="h-9 gap-1.5 border-none bg-muted/40 px-3 transition-all hover:bg-muted/80 hover:text-primary active:scale-90"
+                >
+                    <span
+                        class="hidden text-xs font-bold tracking-widest uppercase lg:block"
+                        >{{ __('pagination.next') }}</span
+                    >
+                    <ChevronRight class="h-4 w-4" />
+                </PaginationNext>
+
+                <PaginationLast
+                    class="h-9 w-9 border-none bg-muted/40 transition-all hover:bg-muted/80 hover:text-primary active:scale-90"
+                >
+                    <ChevronsRight class="h-4 w-4" />
+                </PaginationLast>
             </PaginationContent>
         </Pagination>
 
         <!-- Page Indicator -->
-        <div class="text-sm font-medium text-slate-600">
-            Page <span class="font-bold text-primary">{{ pagination.current_page }}</span> sur {{ pagination.last_page }}
+        <div
+            class="hidden items-center gap-1 text-[11px] font-bold tracking-tighter text-muted-foreground/60 uppercase lg:flex"
+        >
+            {{ __('pagination.page') }}
+            <span class="text-sm font-black text-foreground">{{
+                pagination.current_page
+            }}</span>
+            <span class="mx-0.5">/</span>
+            <span class="text-sm font-medium text-muted-foreground/40">{{
+                pagination.last_page
+            }}</span>
         </div>
     </div>
 </template>

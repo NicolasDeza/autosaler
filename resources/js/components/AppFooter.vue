@@ -1,5 +1,5 @@
 <template>
-    <div class="dark text-foreground">
+    <div class="dark text-foreground print:hidden">
         <!-- Accent top bar -->
         <div
             class="h-px bg-linear-to-r from-transparent via-red-500 to-transparent"
@@ -151,14 +151,14 @@ const menuItems = computed<NavItem[]>(() => {
 
     if (can('view_dealer_dashboard')) {
         items.push({
-            title: __('nav.dealer_panel'),
+            title: __('nav.dealer_dashboard'),
             href: dealer.dashboard().url,
         });
     }
 
     if (can('view_admin_dashboard')) {
         items.push({
-            title: __('nav.admin_panel'),
+            title: __('nav.admin_dashboard'),
             href: admin.dashboard().url,
         });
     }

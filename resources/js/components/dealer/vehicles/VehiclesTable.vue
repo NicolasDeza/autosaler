@@ -16,6 +16,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { useTranslation } from '@/composables/useTranslation';
 import VehiclesTableRow from './VehiclesTableRow.vue';
 
 interface Props {
@@ -26,15 +27,23 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits(['sort', 'status-change']);
 
+const { __ } = useTranslation();
+
 const toggleSort = (column: string) => {
     emit('sort', column);
 };
 
 const getSortIcon = (column: string) => {
-    if (props.currentSort === column + '_asc') {
+    if (
+        props.currentSort === column + '_asc' ||
+        (column === 'created_at' && props.currentSort === 'oldest')
+    ) {
         return ArrowUp;
     }
-    if (props.currentSort === column + '_desc') {
+    if (
+        props.currentSort === column + '_desc' ||
+        (column === 'created_at' && props.currentSort === 'latest')
+    ) {
         return ArrowDown;
     }
     return ArrowUpDown;
@@ -42,96 +51,86 @@ const getSortIcon = (column: string) => {
 </script>
 
 <template>
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto md:overflow-visible">
         <Table>
-            <TableHeader>
-                <TableRow>
-                    <TableHead class="w-[50px]"><Checkbox /></TableHead>
+            <TableHeader class="hidden bg-secondary/5 md:table-header-group">
+                <TableRow class="border-b hover:bg-transparent">
+                    <TableHead class="w-[50px] py-4 print:hidden"
+                        ><Checkbox
+                    /></TableHead>
                     <TableHead
-                        class="w-[150px] cursor-pointer hover:bg-muted/50"
-                        @click="toggleSort('id')"
+                        class="py-4 text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase"
+                        >{{ __('dealer.vehicle') }}</TableHead
+                    >
+                    <TableHead
+                        class="w-[140px] cursor-pointer py-4 text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase transition-colors hover:text-primary"
+                        @click="toggleSort('created_at')"
                     >
                         <div class="flex items-center gap-2">
-                            Numéro de référence
+                            {{ __('ui.date') }}
                             <component
-                                :is="getSortIcon('id')"
-                                class="h-4 w-4"
+                                :is="getSortIcon('created_at')"
+                                class="h-3.5 w-3.5"
                             />
                         </div>
                     </TableHead>
-                    <TableHead>Véhicule</TableHead>
                     <TableHead
-                        class="cursor-pointer hover:bg-muted/50"
+                        class="cursor-pointer py-4 text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase transition-colors hover:text-primary"
                         @click="toggleSort('price')"
                     >
                         <div class="flex items-center gap-2">
-                            Prix
+                            {{ __('dealer.price') }}
                             <component
                                 :is="getSortIcon('price')"
-                                class="h-4 w-4"
+                                class="h-3.5 w-3.5"
                             />
                         </div>
                     </TableHead>
                     <TableHead
-                        class="cursor-pointer text-center hover:bg-muted/50"
+                        class="cursor-pointer py-4 text-center text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase transition-colors hover:text-primary"
                         @click="toggleSort('views')"
                     >
                         <div class="flex items-center justify-center gap-2">
-                            <Eye class="h-4 w-4" />
+                            <Eye class="h-3.5 w-3.5" />
                             <component
                                 :is="getSortIcon('views')"
-                                class="h-4 w-4"
+                                class="h-3.5 w-3.5"
                             />
                         </div>
                     </TableHead>
                     <TableHead
-                        class="cursor-pointer text-center hover:bg-muted/50"
+                        class="cursor-pointer py-4 text-center text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase transition-colors hover:text-primary"
                         @click="toggleSort('contacts')"
                     >
                         <div class="flex items-center justify-center gap-2">
-                            <MessageCircle class="h-4 w-4" />
+                            <MessageCircle class="h-3.5 w-3.5" />
                             <component
                                 :is="getSortIcon('contacts')"
-                                class="h-4 w-4"
+                                class="h-3.5 w-3.5"
                             />
                         </div>
                     </TableHead>
                     <TableHead
-                        class="cursor-pointer text-center hover:bg-muted/50"
+                        class="cursor-pointer py-4 text-center text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase transition-colors hover:text-primary"
                         @click="toggleSort('favs')"
                     >
                         <div class="flex items-center justify-center gap-2">
-                            <Star class="h-4 w-4" />
+                            <Star class="h-3.5 w-3.5" />
                             <component
                                 :is="getSortIcon('favs')"
-                                class="h-4 w-4"
+                                class="h-3.5 w-3.5"
                             />
                         </div>
                     </TableHead>
                     <TableHead
-                        class="w-[100px] cursor-pointer hover:bg-muted/50"
-                        @click="toggleSort('latest')"
+                        class="w-[120px] py-4 text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase"
                     >
-                        <div class="flex items-center gap-2">
-                            Statut
-                            <component
-                                :is="
-                                    currentSort === 'latest' ||
-                                    currentSort === 'oldest'
-                                        ? getSortIcon(
-                                              currentSort === 'latest'
-                                                  ? 'latest'
-                                                  : 'oldest',
-                                          )
-                                        : ArrowUpDown
-                                "
-                                class="h-4 w-4"
-                            />
-                        </div>
+                        {{ __('dealer.status') }}
                     </TableHead>
-                    <TableHead class="w-[50px]"></TableHead>
+                    <TableHead class="w-[60px] py-4 print:hidden"></TableHead>
                 </TableRow>
             </TableHeader>
+
             <TableBody>
                 <template v-if="ads && ads.data && ads.data.length > 0">
                     <VehiclesTableRow
@@ -146,7 +145,7 @@ const getSortIcon = (column: string) => {
                 <template v-else>
                     <TableRow>
                         <TableCell colspan="9" class="h-24 text-center">
-                            Aucun véhicule trouvé.
+                            {{ __('dealer.no_vehicles_found') }}
                         </TableCell>
                     </TableRow>
                 </template>

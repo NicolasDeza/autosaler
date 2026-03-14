@@ -15,12 +15,14 @@ class HomeController extends Controller
         $recentVehicles = VehicleAd::query()
             ->where('status', 'active')
             ->with(['brand', 'model', 'fuelType', 'transmissionType', 'user.company'])
+            ->when(auth()->check(), function ($q) {
+                $q->withExists(['favoredByUsers as is_favorited' => fn ($query) => $query->where('user_id', auth()->id())]);
+            })
             ->latest()
             ->limit(8)
             ->get();
 
         return Inertia::render('Home/Index', [
-            'canRegister' => Features::enabled(Features::registration()),
             'recentVehicles' => $recentVehicles,
             'brands' => Inertia::defer(fn () => VehicleBrand::orderBy('name')->get(['id', 'name']))->once(),
         ]);

@@ -22,7 +22,6 @@ interface Vehicle {
 }
 
 defineProps<{
-    canRegister: boolean;
     recentVehicles: Vehicle[];
     brands?: any[];
 }>();
