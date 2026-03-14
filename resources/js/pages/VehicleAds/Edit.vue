@@ -648,34 +648,51 @@
                         </CardDescription>
                     </CardHeader>
                     <CardContent class="p-6">
-                        <div
-                            class="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 lg:grid-cols-3"
-                        >
+                        <div class="space-y-6">
                             <div
-                                v-for="feature in features"
-                                :key="feature.id"
-                                class="flex items-start space-x-3 rounded-md border p-3 shadow-sm transition-colors hover:bg-muted"
+                                v-for="category in featureCategories"
+                                :key="category.id"
+                                class="space-y-3"
                             >
-                                <Checkbox
-                                    :id="`feature-${feature.id}`"
-                                    :checked="
-                                        form.features.includes(
-                                            String(feature.id),
-                                        )
-                                    "
-                                    @update:checked="
-                                        (checked: boolean) =>
-                                            toggleFeature(
-                                                String(feature.id),
-                                                checked,
-                                            )
-                                    "
-                                />
-                                <Label
-                                    :for="`feature-${feature.id}`"
-                                    class="flex-1 cursor-pointer text-sm leading-snug"
-                                    >{{ feature.key }}</Label
+                                <h3 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                                    {{ formatOptionLabel(category.code ?? category.key) }}
+                                </h3>
+                                <div
+                                    class="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 lg:grid-cols-3"
                                 >
+                                    <div
+                                        v-for="feature in category.features"
+                                        :key="feature.id"
+                                        class="flex items-start gap-3"
+                                    >
+                                        <Checkbox
+                                            :id="`feature-${feature.id}`"
+                                            :model-value="
+                                                isFeatureSelected(feature.id)
+                                            "
+                                            @update:model-value="
+                                                (
+                                                    checked:
+                                                        | boolean
+                                                        | 'indeterminate',
+                                                ) =>
+                                                    toggleFeature(
+                                                        String(feature.id),
+                                                        checked,
+                                                    )
+                                            "
+                                        />
+                                        <Label
+                                            :for="`feature-${feature.id}`"
+                                            class="flex-1 cursor-pointer text-sm leading-snug"
+                                            >{{
+                                                formatOptionLabel(
+                                                    feature.code ?? feature.key,
+                                                )
+                                            }}</Label
+                                        >
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <InputError
@@ -748,7 +765,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
+import { computed, nextTick, ref, watch, onMounted } from 'vue';
 import { Head, useForm, router } from '@inertiajs/vue3';
 import {
     show as vehicleShow,
@@ -779,6 +796,19 @@ import {
 import InputError from '@/components/InputError.vue';
 import DatePicker from '@/components/DatePicker.vue';
 
+type FeatureOption = {
+    id: number | string;
+    code?: string;
+    key?: string;
+};
+
+type FeatureCategoryOption = {
+    id: number | string;
+    code?: string;
+    key?: string;
+    features: FeatureOption[];
+};
+
 const props = defineProps<{
     ad: any;
     brands: any[];
@@ -789,11 +819,55 @@ const props = defineProps<{
     interiorColors: any[];
     interiorTypes: any[];
     euroNorms: any[];
-    features: any[];
+    featureCategories: FeatureCategoryOption[];
+    selectedFeatureIds: string[];
 }>();
 
 const formatDate = (date: any) => {
     return date ? new Date(date).toISOString().split('T')[0] : '';
+};
+
+const extractFeatureIds = (value: unknown): string[] => {
+    const source = Array.isArray(value)
+        ? value
+        : typeof value === 'object' &&
+            value !== null &&
+            Array.isArray((value as { data?: unknown[] }).data)
+          ? ((value as { data: unknown[] }).data ?? [])
+          : [];
+
+    return source
+        .map((item) => {
+            if (typeof item === 'string' || typeof item === 'number') {
+                return String(item);
+            }
+
+            if (item && typeof item === 'object') {
+                const feature = item as {
+                    id?: number | string;
+                    feature_id?: number | string;
+                    pivot?: { feature_id?: number | string };
+                };
+                const featureId =
+                    feature.id ?? feature.feature_id ?? feature.pivot?.feature_id;
+
+                if (featureId !== undefined && featureId !== null) {
+                    return String(featureId);
+                }
+            }
+
+            return null;
+        })
+        .filter((featureId): featureId is string => featureId !== null);
+};
+
+const getInitialFeatureIds = (): string[] => {
+    const source =
+        props.selectedFeatureIds?.length > 0
+            ? props.selectedFeatureIds
+            : extractFeatureIds(props.ad.features);
+
+    return Array.from(new Set(source.map((featureId) => String(featureId))));
 };
 
 const form = useForm({
@@ -842,20 +916,40 @@ const form = useForm({
     non_smoker: props.ad.non_smoker ?? false,
     technical_inspection_status: props.ad.technical_inspection_status ?? false,
     description: props.ad.description ?? '',
-    features: props.ad.features
-        ? props.ad.features.map((f: any) => String(f.id))
-        : ([] as string[]),
+    features: getInitialFeatureIds(),
 });
 
 const models = ref<any[]>([]);
 const versions = ref<any[]>([]);
+const featureSelectionReady = ref(false);
 
-const toggleFeature = (id: string, checked: boolean) => {
-    if (checked) {
+const normalizedSelectedFeatureIds = computed<string[]>(() =>
+    (form.features ?? []).map((featureId) => String(featureId)),
+);
+
+const isFeatureSelected = (featureId: number | string): boolean => {
+    return normalizedSelectedFeatureIds.value.includes(String(featureId));
+};
+
+const toggleFeature = (
+    id: string,
+    checked: boolean | 'indeterminate',
+): void => {
+    if (!featureSelectionReady.value) {
+        return;
+    }
+
+    if (checked === true) {
         if (!form.features.includes(id)) form.features.push(id);
     } else {
         form.features = form.features.filter((fId) => fId !== id);
     }
+};
+
+const formatOptionLabel = (value?: string): string => {
+    if (!value) return '';
+
+    return value.replace(/[_-]+/g, ' ').trim();
 };
 
 const loadModels = async (brandId: string) => {
@@ -874,7 +968,11 @@ const loadVersions = async (modelId: string) => {
     versions.value = data;
 };
 
-onMounted(() => {
+onMounted(async () => {
+    form.features = getInitialFeatureIds();
+    await nextTick();
+    featureSelectionReady.value = true;
+
     if (form.brand_id) loadModels(form.brand_id);
     if (form.model_id) loadVersions(form.model_id);
 });

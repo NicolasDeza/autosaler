@@ -649,34 +649,53 @@
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div
-                            class="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 lg:grid-cols-3"
-                        >
+                        <div class="space-y-6">
                             <div
-                                v-for="feature in features"
-                                :key="feature.id"
-                                class="flex items-start space-x-3 rounded-md border p-3 shadow-sm transition-colors hover:bg-muted"
+                                v-for="category in featureCategories"
+                                :key="category.id"
+                                class="space-y-3"
                             >
-                                <Checkbox
-                                    :id="`feature-${feature.id}`"
-                                    :checked="
-                                        form.features.includes(
-                                            String(feature.id),
-                                        )
-                                    "
-                                    @update:checked="
-                                        (checked: boolean) =>
-                                            toggleFeature(
-                                                String(feature.id),
-                                                checked,
-                                            )
-                                    "
-                                />
-                                <Label
-                                    :for="`feature-${feature.id}`"
-                                    class="flex-1 cursor-pointer text-sm leading-snug"
-                                    >{{ feature.key }}</Label
+                                <h3 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                                    {{ formatOptionLabel(category.code ?? category.key) }}
+                                </h3>
+                                <div
+                                    class="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 lg:grid-cols-3"
                                 >
+                                    <div
+                                        v-for="feature in category.features"
+                                        :key="feature.id"
+                                        class="flex items-start gap-3"
+                                    >
+                                        <Checkbox
+                                            :id="`feature-${feature.id}`"
+                                            :model-value="
+                                                form.features.includes(
+                                                    String(feature.id),
+                                                )
+                                            "
+                                            @update:model-value="
+                                                (
+                                                    checked:
+                                                        | boolean
+                                                        | 'indeterminate',
+                                                ) =>
+                                                    toggleFeature(
+                                                        String(feature.id),
+                                                        checked,
+                                                    )
+                                            "
+                                        />
+                                        <Label
+                                            :for="`feature-${feature.id}`"
+                                            class="flex-1 cursor-pointer text-sm leading-snug"
+                                            >{{
+                                                formatOptionLabel(
+                                                    feature.code ?? feature.key,
+                                                )
+                                            }}</Label
+                                        >
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <InputError
@@ -768,6 +787,19 @@ import {
     store as vehicleStore,
 } from '@/routes/vehicles';
 
+type FeatureOption = {
+    id: number | string;
+    code?: string;
+    key?: string;
+};
+
+type FeatureCategoryOption = {
+    id: number | string;
+    code?: string;
+    key?: string;
+    features: FeatureOption[];
+};
+
 defineProps<{
     brands: any[];
     fuelTypes: any[];
@@ -777,7 +809,7 @@ defineProps<{
     interiorColors: any[];
     interiorTypes: any[];
     euroNorms: any[];
-    features: any[];
+    featureCategories: FeatureCategoryOption[];
 }>();
 
 const form = useForm({
@@ -822,12 +854,18 @@ const form = useForm({
 const models = ref<any[]>([]);
 const versions = ref<any[]>([]);
 
-const toggleFeature = (id: string, checked: boolean) => {
-    if (checked) {
+const toggleFeature = (id: string, checked: boolean | 'indeterminate') => {
+    if (checked === true) {
         if (!form.features.includes(id)) form.features.push(id);
     } else {
         form.features = form.features.filter((fId) => fId !== id);
     }
+};
+
+const formatOptionLabel = (value?: string): string => {
+    if (!value) return '';
+
+    return value.replace(/[_-]+/g, ' ').trim();
 };
 
 watch(

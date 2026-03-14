@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('features', function (Blueprint $table) {
+        Schema::create('feature_categories', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('feature_category_id')
-                ->constrained('feature_categories')
-                ->cascadeOnDelete();
 
             $table->string('code')->unique();
             $table->integer('sort_order')->default(0);
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('features');
+        Schema::dropIfExists('feature_categories');
     }
 };

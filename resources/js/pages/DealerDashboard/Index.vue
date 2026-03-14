@@ -50,7 +50,7 @@
                     <Button
                         as-child
                         size="default"
-                        class="h-10 flex-1 bg-primary px-6 font-semibold shadow-md transition-all hover:shadow-lg hover:shadow-primary/20 active:scale-95 md:flex-none"
+                        class="h-10 flex-1 bg-primary px-6 font-semibold shadow-md transition-all  active:scale-95 md:flex-none"
                     >
                         <Link :href="vehicles.create().url">
                             <Plus class="mr-2 h-5 w-5" />

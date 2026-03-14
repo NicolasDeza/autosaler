@@ -397,16 +397,33 @@
                         <h3 class="mb-6 text-lg font-bold">
                             Equipements & options
                         </h3>
-                        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                        <div class="space-y-6">
                             <div
-                                v-for="feature in ad.features"
-                                :key="feature.id"
-                                class="flex items-start gap-2.5 text-sm text-foreground"
+                                v-for="category in groupedFeatures"
+                                :key="category.id"
+                                class="space-y-3"
                             >
-                                <CheckCircle
-                                    class="mt-0.5 h-4 w-4 shrink-0 text-green-600"
-                                />
-                                <span>{{ feature.key }}</span>
+                                <h4
+                                    class="text-sm font-semibold tracking-wide text-muted-foreground uppercase"
+                                >
+                                    {{ formatOptionLabel(category.code) }}
+                                </h4>
+                                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                    <div
+                                        v-for="feature in category.features"
+                                        :key="feature.id"
+                                        class="flex items-start gap-2.5 text-sm text-foreground"
+                                    >
+                                        <CheckCircle
+                                            class="mt-0.5 h-4 w-4 shrink-0 text-green-600"
+                                        />
+                                        <span>{{
+                                            formatOptionLabel(
+                                                feature.code ?? feature.key,
+                                            )
+                                        }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -568,7 +585,7 @@
                         </div>
                     </Card>
 
-                    <Card v-if="$page.props.auth?.user" class="p-6">
+                    <Card v-if="canEdit" class="p-6">
                         <h3
                             class="mb-4 text-sm font-bold text-muted-foreground uppercase"
                         >
@@ -616,7 +633,7 @@ import {
     ChevronLeft,
     Star,
 } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -629,10 +646,84 @@ import {
 
 const props = defineProps<{
     ad: any;
+    canEdit: boolean;
 }>();
+
+type FeatureCategory = {
+    id?: number | string;
+    code?: string;
+    key?: string;
+    sort_order?: number | null;
+};
+
+type FeatureOption = {
+    id: number | string;
+    code?: string;
+    key?: string;
+    sort_order?: number | null;
+    category?: FeatureCategory | null;
+};
+
+type GroupedFeature = {
+    id: string;
+    code: string;
+    sortOrder: number;
+    features: FeatureOption[];
+};
 
 const showLoginModal = ref(false);
 const page = usePage();
+
+const formatOptionLabel = (value?: string): string => {
+    if (!value) {
+        return '';
+    }
+
+    return value.replace(/[_-]+/g, ' ').trim();
+};
+
+const groupedFeatures = computed<GroupedFeature[]>(() => {
+    const groups = new Map<string, GroupedFeature>();
+    const features: FeatureOption[] = Array.isArray(props.ad?.features)
+        ? props.ad.features
+        : [];
+
+    for (const feature of features) {
+        const categoryCode = feature.category?.code ?? feature.category?.key ?? 'autres';
+        const categoryId = String(feature.category?.id ?? categoryCode);
+        const existingGroup = groups.get(categoryId);
+
+        if (existingGroup) {
+            existingGroup.features.push(feature);
+            continue;
+        }
+
+        groups.set(categoryId, {
+            id: categoryId,
+            code: categoryCode,
+            sortOrder: feature.category?.sort_order ?? Number.MAX_SAFE_INTEGER,
+            features: [feature],
+        });
+    }
+
+    return [...groups.values()]
+        .sort((a, b) => {
+            if (a.sortOrder !== b.sortOrder) {
+                return a.sortOrder - b.sortOrder;
+            }
+
+            return a.code.localeCompare(b.code, 'fr');
+        })
+        .map((group) => ({
+            ...group,
+            features: [...group.features].sort((a, b) => {
+                const left = a.code ?? a.key ?? '';
+                const right = b.code ?? b.key ?? '';
+
+                return left.localeCompare(right, 'fr');
+            }),
+        }));
+});
 
 const toggleFavorite = () => {
     if (!page.props.auth?.user) {

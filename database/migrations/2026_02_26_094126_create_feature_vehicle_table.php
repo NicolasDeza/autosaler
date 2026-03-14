@@ -10,25 +10,22 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('feature_vehicle', function (Blueprint $table) {
-            $table->id();
+{
+    Schema::create('feature_vehicle', function (Blueprint $table) {
 
-            $table->foreignId('vehicle_ad_id')
-                ->constrained('vehicle_ads')
-                ->cascadeOnDelete();
+        $table->foreignId('vehicle_ad_id')
+            ->constrained('vehicle_ads')
+            ->cascadeOnDelete();
 
-            $table->foreignId('feature_id')
-                ->constrained('features')
-                ->restrictOnDelete();
+        $table->foreignId('feature_id')
+            ->constrained('features')
+            ->cascadeOnDelete();
 
-            $table->timestamps();
+        $table->timestamps();
 
-            // INDEX Composite
-            $table->unique(['vehicle_ad_id', 'feature_id']);
-
-        });
-    }
+        $table->unique(['vehicle_ad_id', 'feature_id']);
+    });
+}
 
     /**
      * Reverse the migrations.

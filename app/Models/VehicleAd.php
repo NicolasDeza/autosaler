@@ -174,14 +174,14 @@ class VehicleAd extends Model
      * @return BelongsToMany<Feature, $this>
      */
     public function features(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Feature::class,
-            'feature_vehicle',
-            'vehicle_ad_id',
-            'feature_id',
-        );
-    }
+{
+    return $this->belongsToMany(
+        Feature::class,
+        'feature_vehicle',
+        'vehicle_ad_id',
+        'feature_id',
+    );
+}
 
     /**
      * @return BelongsToMany<User, $this>

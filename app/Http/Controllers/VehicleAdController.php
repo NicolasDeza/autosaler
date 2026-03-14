@@ -8,12 +8,14 @@ use App\Models\BodyType;
 use App\Models\EuroNorm;
 use App\Models\ExteriorColor;
 use App\Models\Feature;
+use App\Models\FeatureCategory;
 use App\Models\FuelType;
 use App\Models\InteriorColor;
 use App\Models\InteriorType;
 use App\Models\TransmissionType;
 use App\Models\VehicleAd;
 use App\Models\VehicleBrand;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -192,7 +194,7 @@ class VehicleAdController extends Controller
             'euroNorms' => Inertia::defer(fn () => EuroNorm::orderBy('code')->get(['id', 'code']), 'filters')->once(),
             'interiorColors' => Inertia::defer(fn () => InteriorColor::orderBy('code')->get(['id', 'code']), 'filters')->once(),
             'interiorTypes' => Inertia::defer(fn () => InteriorType::orderBy('code')->get(['id', 'code']), 'filters')->once(),
-            'features' => Inertia::defer(fn () => Feature::orderBy('key')->get(['id', 'key']), 'filters')->once(),
+            'features' => Inertia::defer(fn () => Feature::orderBy('code')->get(['id', 'code']), 'filters')->once(),
             'filters' => $request->only([
                 'brand_id', 'model_id', 'min_price', 'max_price',
                 'min_year', 'max_year', 'max_mileage',
@@ -224,7 +226,7 @@ class VehicleAdController extends Controller
             'interiorColors' => fn () => InteriorColor::orderBy('code')->get(['id', 'code']),
             'interiorTypes' => fn () => InteriorType::orderBy('code')->get(['id', 'code']),
             'euroNorms' => fn () => EuroNorm::orderBy('code')->get(['id', 'code']),
-            'features' => fn () => Feature::orderBy('key')->get(['id', 'key']),
+            'featureCategories' => fn () => $this->activeFeatureCategories(),
         ]);
     }
 
@@ -259,7 +261,11 @@ class VehicleAdController extends Controller
 
         $vehicleAd->load([
             'brand', 'model', 'vehicleVersion', 'stat',
-            'features' => fn ($query) => $query->orderBy('key'),
+            'features' => fn ($query) => $query
+                ->with(['category:id,code,sort_order'])
+                ->orderBy('feature_category_id')
+                ->orderBy('sort_order')
+                ->orderBy('code'),
             'exteriorColor', 'interiorColor', 'interiorType',
             'fuelType', 'bodyType', 'euroNorm', 'transmissionType',
             'user.company.city', 'user.company.country',
@@ -271,6 +277,7 @@ class VehicleAdController extends Controller
 
         return Inertia::render('VehicleAds/Show', [
             'ad' => $vehicleAd,
+            'canEdit' => auth()->check() && Gate::forUser(auth()->user())->allows('update', $vehicleAd),
         ]);
     }
 
@@ -280,6 +287,10 @@ class VehicleAdController extends Controller
     public function edit(VehicleAd $vehicleAd): Response
     {
         Gate::authorize('update', $vehicleAd);
+
+        $vehicleAd->load([
+            'features' => fn ($query) => $query->orderBy('code'),
+        ]);
 
         return Inertia::render('VehicleAds/Edit', [
             'ad' => $vehicleAd,
@@ -291,8 +302,26 @@ class VehicleAdController extends Controller
             'interiorColors' => fn () => InteriorColor::orderBy('code')->get(['id', 'code']),
             'interiorTypes' => fn () => InteriorType::orderBy('code')->get(['id', 'code']),
             'euroNorms' => fn () => EuroNorm::orderBy('code')->get(['id', 'code']),
-            'features' => fn () => Feature::orderBy('key')->get(['id', 'key']),
+            'featureCategories' => fn () => $this->activeFeatureCategories(),
+            'selectedFeatureIds' => fn () => $vehicleAd->features()
+                ->pluck('features.id')
+                ->map(fn (int $featureId): string => (string) $featureId)
+                ->values(),
         ]);
+    }
+
+    private function activeFeatureCategories(): EloquentCollection
+    {
+        return FeatureCategory::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderBy('code')
+            ->with(['features' => fn ($query) => $query
+                ->where('is_active', true)
+                ->orderBy('sort_order')
+                ->orderBy('code')
+                ->select(['id', 'feature_category_id', 'code'])])
+            ->get(['id', 'code']);
     }
 
     /**
