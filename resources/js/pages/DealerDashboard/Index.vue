@@ -3,40 +3,54 @@
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div
-            class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-6"
+            class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 md:p-6"
         >
-            <div class="mb-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div
+                class="mb-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
+            >
                 <div>
-                    <h1 class="text-4xl font-extrabold tracking-tight lg:text-5xl">
+                    <h1
+                        class="text-2xl font-extrabold tracking-tight md:text-4xl lg:text-5xl"
+                    >
                         {{ __('dealer.my_stock') }}
                     </h1>
                     <p class="mt-2 text-muted-foreground">
                         {{ __('dealer.manage_ads_description') }}
                     </p>
                 </div>
-                <div class="flex flex-wrap items-center gap-3 print:hidden">
+                <div class="flex flex-wrap items-center gap-2 print:hidden">
                     <Button
                         variant="outline"
-                        size="default"
-                        class="h-10 border-border/60 bg-background/50 backdrop-blur-sm transition-all hover:bg-background hover:shadow-sm"
+                        size="icon"
+                        class="group h-10 w-10 border-border/60 bg-background/50 backdrop-blur-sm transition-all hover:bg-background hover:shadow-sm md:w-auto md:px-4"
                         @click="exportToCSV"
+                        :title="__('dealer.save_csv')"
                     >
-                        <Download class="mr-2 h-4 w-4 text-muted-foreground" />
-                        {{ __('dealer.save_csv') }}
+                        <Download
+                            class="h-4 w-4 text-muted-foreground group-hover:text-primary md:mr-2"
+                        />
+                        <span class="hidden md:inline">{{
+                            __('dealer.save_csv')
+                        }}</span>
                     </Button>
                     <Button
                         variant="outline"
-                        size="default"
-                        class="h-10 border-border/60 bg-background/50 backdrop-blur-sm transition-all hover:bg-background hover:shadow-sm"
+                        size="icon"
+                        class="group h-10 w-10 border-border/60 bg-background/50 backdrop-blur-sm transition-all hover:bg-background hover:shadow-sm md:w-auto md:px-4"
                         @click="printList"
+                        :title="__('dealer.print_list')"
                     >
-                        <Printer class="mr-2 h-4 w-4 text-muted-foreground" />
-                        {{ __('dealer.print_list') }}
+                        <Printer
+                            class="h-4 w-4 text-muted-foreground group-hover:text-primary md:mr-2"
+                        />
+                        <span class="hidden md:inline">{{
+                            __('dealer.print_list')
+                        }}</span>
                     </Button>
                     <Button
                         as-child
                         size="default"
-                        class="h-10 bg-primary px-6 font-semibold shadow-md transition-all hover:shadow-lg hover:shadow-primary/20 active:scale-95"
+                        class="h-10 flex-1 bg-primary px-6 font-semibold shadow-md transition-all hover:shadow-lg hover:shadow-primary/20 active:scale-95 md:flex-none"
                     >
                         <Link :href="vehicles.create().url">
                             <Plus class="mr-2 h-5 w-5" />
@@ -46,74 +60,102 @@
                 </div>
             </div>
 
-            <div class="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-3">
                 <Card
-                    class="relative overflow-hidden border-none bg-gradient-to-br from-background to-muted/30 shadow-sm"
+                    class="relative overflow-hidden border-none bg-linear-to-br from-background to-muted/30 shadow-sm"
                 >
-                    <CardHeader class="flex flex-row items-center justify-between pb-2">
-                        <CardTitle class="text-sm font-medium">
+                    <CardHeader
+                        class="flex flex-row items-center justify-between p-3 pb-2 md:p-6 md:pb-2"
+                    >
+                        <CardTitle
+                            class="text-[10px] font-bold tracking-wider text-muted-foreground/80 uppercase md:text-sm md:tracking-normal md:text-foreground md:normal-case"
+                        >
                             {{ __('dealer.total') }}
                         </CardTitle>
                         <div
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary"
+                            class="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-primary md:h-8 md:w-8"
                         >
-                            <span class="text-xs font-bold">#</span>
+                            <span class="text-[10px] font-bold">#</span>
                         </div>
                     </CardHeader>
-                    <CardContent>
-                        <div class="text-3xl font-bold">{{ stats.total }}</div>
-                        <p class="mt-1 text-xs text-muted-foreground">
+                    <CardContent class="p-3 pt-0 md:p-6 md:pt-0">
+                        <div class="text-2xl font-bold md:text-3xl">
+                            {{ stats.total }}
+                        </div>
+                        <p
+                            class="mt-0.5 text-[10px] text-muted-foreground md:mt-1 md:text-xs"
+                        >
                             {{ __('dealer.vehicles_label') }}
                         </p>
                     </CardContent>
                 </Card>
 
                 <Card
-                    class="relative overflow-hidden border-none bg-gradient-to-br from-background to-green-500/5 shadow-sm"
+                    class="relative overflow-hidden border-none bg-linear-to-br from-background to-green-500/5 shadow-sm"
                 >
-                    <CardHeader class="flex flex-row items-center justify-between pb-2">
-                        <CardTitle class="text-sm font-medium">
+                    <CardHeader
+                        class="flex flex-row items-center justify-between p-3 pb-2 md:p-6 md:pb-2"
+                    >
+                        <CardTitle
+                            class="text-[10px] font-bold tracking-wider text-muted-foreground/80 uppercase md:text-sm md:tracking-normal md:text-foreground md:normal-case"
+                        >
                             {{ __('dealer.active') }}
                         </CardTitle>
                         <div
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-green-500/10 text-green-600 dark:text-green-400"
+                            class="flex h-6 w-6 items-center justify-center rounded-full bg-green-500/10 text-green-600 md:h-8 md:w-8 dark:text-green-400"
                         >
-                            <div class="h-2 w-2 rounded-full bg-current"></div>
+                            <div
+                                class="h-1.5 w-1.5 rounded-full bg-current md:h-2 md:w-2"
+                            ></div>
                         </div>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent class="p-3 pt-0 md:p-6 md:pt-0">
                         <div
-                            class="text-3xl font-bold text-green-600 dark:text-green-400"
+                            class="text-2xl font-bold text-green-600 md:text-3xl dark:text-green-400"
                         >
                             {{ stats.active }}
                         </div>
-                        <p class="mt-1 text-xs text-muted-foreground">
-                            {{ __('dealer.active_status_description') || __('dealer.active') }}
+                        <p
+                            class="mt-0.5 text-[10px] text-muted-foreground md:mt-1 md:text-xs"
+                        >
+                            {{
+                                __('dealer.active_status_description') ||
+                                __('dealer.active')
+                            }}
                         </p>
                     </CardContent>
                 </Card>
 
                 <Card
-                    class="relative overflow-hidden border-none bg-gradient-to-br from-background to-amber-500/5 shadow-sm sm:col-span-2 lg:col-span-1"
+                    class="relative col-span-2 overflow-hidden border-none bg-linear-to-br from-background to-amber-500/5 shadow-sm lg:col-span-1"
                 >
-                    <CardHeader class="flex flex-row items-center justify-between pb-2">
-                        <CardTitle class="text-sm font-medium">
+                    <CardHeader
+                        class="flex flex-row items-center justify-between p-3 pb-2 md:p-6 md:pb-2"
+                    >
+                        <CardTitle
+                            class="text-[10px] font-bold tracking-wider text-muted-foreground/80 uppercase md:text-sm md:tracking-normal md:text-foreground md:normal-case"
+                        >
                             {{ __('dealer.draft') }}
                         </CardTitle>
                         <div
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                            class="flex h-6 w-6 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 md:h-8 md:w-8 dark:text-amber-400"
                         >
-                            <Clock class="h-4 w-4" />
+                            <Clock class="h-3 w-3 md:h-4 md:w-4" />
                         </div>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent class="p-3 pt-0 md:p-6 md:pt-0">
                         <div
-                            class="text-3xl font-bold text-amber-600 dark:text-amber-400"
+                            class="text-2xl font-bold text-amber-600 md:text-3xl dark:text-amber-400"
                         >
                             {{ stats.draft }}
                         </div>
-                        <p class="mt-1 text-xs text-muted-foreground">
-                            {{ __('dealer.draft_status_description') || __('dealer.draft') }}
+                        <p
+                            class="mt-0.5 text-[10px] text-muted-foreground md:mt-1 md:text-xs"
+                        >
+                            {{
+                                __('dealer.draft_status_description') ||
+                                __('dealer.draft')
+                            }}
                         </p>
                     </CardContent>
                 </Card>
@@ -143,7 +185,7 @@
                 <CardContent class="p-0">
                     <VehiclesFilterPanel
                         class="print:hidden"
-                        :open="showFilters"
+                        v-model:open="showFilters"
                         :filters="filters"
                         :brands="brands"
                         :models="models"
@@ -246,6 +288,7 @@ const activeFiltersCount = computed(() => {
     if (props.filters.status) count++;
     if (props.filters.date_from) count++;
     if (props.filters.date_to) count++;
+    if (props.filters.search) count++;
     return count;
 });
 

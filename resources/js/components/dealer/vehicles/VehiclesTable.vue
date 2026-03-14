@@ -51,16 +51,19 @@ const getSortIcon = (column: string) => {
 </script>
 
 <template>
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto md:overflow-visible">
         <Table>
-            <TableHeader class="bg-muted/30">
-                <TableRow class="hover:bg-transparent border-b">
+            <TableHeader class="hidden bg-secondary/5 md:table-header-group">
+                <TableRow class="border-b hover:bg-transparent">
                     <TableHead class="w-[50px] py-4 print:hidden"
                         ><Checkbox
                     /></TableHead>
-                    <TableHead class="py-4 text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80">{{ __('dealer.vehicle') }}</TableHead>
                     <TableHead
-                        class="w-[140px] cursor-pointer py-4 text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80 transition-colors hover:text-primary"
+                        class="py-4 text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase"
+                        >{{ __('dealer.vehicle') }}</TableHead
+                    >
+                    <TableHead
+                        class="w-[140px] cursor-pointer py-4 text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase transition-colors hover:text-primary"
                         @click="toggleSort('created_at')"
                     >
                         <div class="flex items-center gap-2">
@@ -72,7 +75,7 @@ const getSortIcon = (column: string) => {
                         </div>
                     </TableHead>
                     <TableHead
-                        class="cursor-pointer py-4 text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80 transition-colors hover:text-primary"
+                        class="cursor-pointer py-4 text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase transition-colors hover:text-primary"
                         @click="toggleSort('price')"
                     >
                         <div class="flex items-center gap-2">
@@ -84,7 +87,7 @@ const getSortIcon = (column: string) => {
                         </div>
                     </TableHead>
                     <TableHead
-                        class="cursor-pointer py-4 text-center text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80 transition-colors hover:text-primary"
+                        class="cursor-pointer py-4 text-center text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase transition-colors hover:text-primary"
                         @click="toggleSort('views')"
                     >
                         <div class="flex items-center justify-center gap-2">
@@ -96,7 +99,7 @@ const getSortIcon = (column: string) => {
                         </div>
                     </TableHead>
                     <TableHead
-                        class="cursor-pointer py-4 text-center text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80 transition-colors hover:text-primary"
+                        class="cursor-pointer py-4 text-center text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase transition-colors hover:text-primary"
                         @click="toggleSort('contacts')"
                     >
                         <div class="flex items-center justify-center gap-2">
@@ -108,7 +111,7 @@ const getSortIcon = (column: string) => {
                         </div>
                     </TableHead>
                     <TableHead
-                        class="cursor-pointer py-4 text-center text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80 transition-colors hover:text-primary"
+                        class="cursor-pointer py-4 text-center text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase transition-colors hover:text-primary"
                         @click="toggleSort('favs')"
                     >
                         <div class="flex items-center justify-center gap-2">
@@ -119,7 +122,9 @@ const getSortIcon = (column: string) => {
                             />
                         </div>
                     </TableHead>
-                    <TableHead class="w-[120px] py-4 text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80">
+                    <TableHead
+                        class="w-[120px] py-4 text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase"
+                    >
                         {{ __('dealer.status') }}
                     </TableHead>
                     <TableHead class="w-[60px] py-4 print:hidden"></TableHead>
