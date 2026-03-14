@@ -738,14 +738,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
 import { Head, useForm, router } from '@inertiajs/vue3';
-import {
-    index as vehiclesIndex,
-    store as vehicleStore,
-} from '@/routes/vehicles';
 import axios from 'axios';
-import AppLayout from '@/layouts/AppLayout.vue';
+import { ref, watch } from 'vue';
+import DatePicker from '@/components/DatePicker.vue';
+import InputError from '@/components/InputError.vue';
+import { Button } from '@/components/ui/button';
 import {
     Card,
     CardHeader,
@@ -753,11 +751,9 @@ import {
     CardDescription,
     CardContent,
 } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
     Select,
     SelectContent,
@@ -765,8 +761,12 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import InputError from '@/components/InputError.vue';
-import DatePicker from '@/components/DatePicker.vue';
+import { Textarea } from '@/components/ui/textarea';
+import AppLayout from '@/layouts/AppLayout.vue';
+import {
+    index as vehiclesIndex,
+    store as vehicleStore,
+} from '@/routes/vehicles';
 
 const props = defineProps<{
     brands: any[];

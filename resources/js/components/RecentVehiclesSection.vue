@@ -178,7 +178,7 @@ const formatDate = (date: string | null) => {
                                 </span>
                                 <button
                                     @click.prevent
-                                    class="cursor-pointer rounded-md border border-border p-1.5 text-muted-foreground/70 transition-all duration-200 hover:border-primary hover:bg-primary/10 hover:text-primary md:p-2"
+                                    class="cursor-pointer rounded-md border border-border bg-background p-1.5 text-foreground/70 transition-all duration-200 hover:border-primary hover:bg-primary/10 hover:text-primary md:p-2"
                                     :aria-label="
                                         __('recentVehicles.add_to_favorites')
                                     "

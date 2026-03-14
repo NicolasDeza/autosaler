@@ -34,7 +34,7 @@
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    class="size-10 shrink-0 cursor-pointer rounded-full border bg-background transition-all hover:bg-primary/10 hover:text-primary"
+                                    class="size-10 shrink-0 cursor-pointer rounded-md border border-border bg-background transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
                                     :class="{
                                         'border-primary/20 fill-primary text-primary':
                                             ad.is_favorited,
