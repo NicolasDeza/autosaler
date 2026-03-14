@@ -31,4 +31,6 @@ return [
     'no_vehicles_found' => 'No vehicles found.',
     'csv_filename' => 'my_stock',
     'vehicles_label' => 'vehicles',
+    'active_status_description' => 'Visible on the marketplace',
+    'draft_status_description' => 'In preparation',
 ];

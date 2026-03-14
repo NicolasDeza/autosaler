@@ -5,45 +5,127 @@
         <div
             class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-6"
         >
-            <div class="mb-4 flex items-center justify-between">
+            <div class="mb-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold tracking-tight">{{ __('dealer.my_stock') }}</h1>
-                    <p class="mt-1 text-sm text-muted-foreground">
-                        {{ __('dealer.total') }}:
-                        <span class="px-1 font-medium">{{ stats.total }}</span>
-                        · {{ __('dealer.active') }}:
-                        <span
-                            class="px-1 font-medium text-green-600 dark:text-green-400"
-                            >{{ stats.active }}</span
-                        >
-                        · {{ __('dealer.draft') }}:
-                        <span
-                            class="px-1 font-medium text-amber-600 dark:text-amber-400"
-                            >{{ stats.draft }}</span
-                        >
+                    <h1 class="text-4xl font-extrabold tracking-tight lg:text-5xl">
+                        {{ __('dealer.my_stock') }}
+                    </h1>
+                    <p class="mt-2 text-muted-foreground">
+                        {{ __('dealer.manage_ads_description') }}
                     </p>
                 </div>
-                <div class="flex items-center gap-2 print:hidden">
-                    <Button variant="outline" size="sm" @click="exportToCSV">
-                        <Download class="mr-2 h-4 w-4" /> {{ __('dealer.save_csv') }}
+                <div class="flex flex-wrap items-center gap-3 print:hidden">
+                    <Button
+                        variant="outline"
+                        size="default"
+                        class="h-10 border-border/60 bg-background/50 backdrop-blur-sm transition-all hover:bg-background hover:shadow-sm"
+                        @click="exportToCSV"
+                    >
+                        <Download class="mr-2 h-4 w-4 text-muted-foreground" />
+                        {{ __('dealer.save_csv') }}
                     </Button>
-                    <Button variant="outline" size="sm" @click="printList">
-                        <Printer class="mr-2 h-4 w-4" /> {{ __('dealer.print_list') }}
+                    <Button
+                        variant="outline"
+                        size="default"
+                        class="h-10 border-border/60 bg-background/50 backdrop-blur-sm transition-all hover:bg-background hover:shadow-sm"
+                        @click="printList"
+                    >
+                        <Printer class="mr-2 h-4 w-4 text-muted-foreground" />
+                        {{ __('dealer.print_list') }}
                     </Button>
-                    <Button as-child size="sm">
+                    <Button
+                        as-child
+                        size="default"
+                        class="h-10 bg-primary px-6 font-semibold shadow-md transition-all hover:shadow-lg hover:shadow-primary/20 active:scale-95"
+                    >
                         <Link :href="vehicles.create().url">
-                            <Plus class="mr-2 h-4 w-4" />
+                            <Plus class="mr-2 h-5 w-5" />
                             {{ __('dealer.create_ad') }}
                         </Link>
                     </Button>
                 </div>
             </div>
 
-            <Card class="pb-0 print:border-none print:shadow-none">
+            <div class="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <Card
+                    class="relative overflow-hidden border-none bg-gradient-to-br from-background to-muted/30 shadow-sm"
+                >
+                    <CardHeader class="flex flex-row items-center justify-between pb-2">
+                        <CardTitle class="text-sm font-medium">
+                            {{ __('dealer.total') }}
+                        </CardTitle>
+                        <div
+                            class="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary"
+                        >
+                            <span class="text-xs font-bold">#</span>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <div class="text-3xl font-bold">{{ stats.total }}</div>
+                        <p class="mt-1 text-xs text-muted-foreground">
+                            {{ __('dealer.vehicles_label') }}
+                        </p>
+                    </CardContent>
+                </Card>
+
+                <Card
+                    class="relative overflow-hidden border-none bg-gradient-to-br from-background to-green-500/5 shadow-sm"
+                >
+                    <CardHeader class="flex flex-row items-center justify-between pb-2">
+                        <CardTitle class="text-sm font-medium">
+                            {{ __('dealer.active') }}
+                        </CardTitle>
+                        <div
+                            class="flex h-8 w-8 items-center justify-center rounded-full bg-green-500/10 text-green-600 dark:text-green-400"
+                        >
+                            <div class="h-2 w-2 rounded-full bg-current"></div>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <div
+                            class="text-3xl font-bold text-green-600 dark:text-green-400"
+                        >
+                            {{ stats.active }}
+                        </div>
+                        <p class="mt-1 text-xs text-muted-foreground">
+                            {{ __('dealer.active_status_description') || __('dealer.active') }}
+                        </p>
+                    </CardContent>
+                </Card>
+
+                <Card
+                    class="relative overflow-hidden border-none bg-gradient-to-br from-background to-amber-500/5 shadow-sm sm:col-span-2 lg:col-span-1"
+                >
+                    <CardHeader class="flex flex-row items-center justify-between pb-2">
+                        <CardTitle class="text-sm font-medium">
+                            {{ __('dealer.draft') }}
+                        </CardTitle>
+                        <div
+                            class="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                        >
+                            <Clock class="h-4 w-4" />
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <div
+                            class="text-3xl font-bold text-amber-600 dark:text-amber-400"
+                        >
+                            {{ stats.draft }}
+                        </div>
+                        <p class="mt-1 text-xs text-muted-foreground">
+                            {{ __('dealer.draft_status_description') || __('dealer.draft') }}
+                        </p>
+                    </CardContent>
+                </Card>
+            </div>
+
+            <Card class="gap-0 pb-0 print:border-none print:shadow-none">
                 <CardHeader class="border-b border-border/50 pb-3">
                     <div class="flex items-center justify-between">
                         <div>
-                            <CardTitle>{{ __('dealer.vehicle_list') }}</CardTitle>
+                            <CardTitle>{{
+                                __('dealer.vehicle_list')
+                            }}</CardTitle>
                             <CardDescription class="print:hidden">
                                 {{ __('dealer.manage_ads_description') }}
                             </CardDescription>
@@ -94,7 +176,7 @@
 <script setup lang="ts">
 import { Head, Link, router } from '@inertiajs/vue3';
 import { useDebounceFn } from '@vueuse/core';
-import { Download, Plus, Printer } from 'lucide-vue-next';
+import { Download, Plus, Printer, Clock } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import AppPagination from '@/components/AppPagination.vue';
 import VehiclesFilterPanel from '@/components/dealer/vehicles/VehiclesFilterPanel.vue';
@@ -108,8 +190,8 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import AppLayout from '@/layouts/AppLayout.vue';
 import { useTranslation } from '@/composables/useTranslation';
+import AppLayout from '@/layouts/AppLayout.vue';
 import dealer from '@/routes/dealer';
 import vehicles from '@/routes/vehicles';
 import type { BreadcrumbItem } from '@/types';

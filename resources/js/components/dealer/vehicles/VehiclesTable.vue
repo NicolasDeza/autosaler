@@ -53,76 +53,76 @@ const getSortIcon = (column: string) => {
 <template>
     <div class="overflow-x-auto">
         <Table>
-            <TableHeader>
-                <TableRow>
-                    <TableHead class="w-[50px] print:hidden"
+            <TableHeader class="bg-muted/30">
+                <TableRow class="hover:bg-transparent border-b">
+                    <TableHead class="w-[50px] py-4 print:hidden"
                         ><Checkbox
                     /></TableHead>
-                    <TableHead>{{ __('dealer.vehicle') }}</TableHead>
+                    <TableHead class="py-4 text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80">{{ __('dealer.vehicle') }}</TableHead>
                     <TableHead
-                        class="w-[120px] cursor-pointer hover:bg-muted/50"
+                        class="w-[140px] cursor-pointer py-4 text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80 transition-colors hover:text-primary"
                         @click="toggleSort('created_at')"
                     >
                         <div class="flex items-center gap-2">
                             {{ __('ui.date') }}
                             <component
                                 :is="getSortIcon('created_at')"
-                                class="h-4 w-4"
+                                class="h-3.5 w-3.5"
                             />
                         </div>
                     </TableHead>
                     <TableHead
-                        class="cursor-pointer hover:bg-muted/50"
+                        class="cursor-pointer py-4 text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80 transition-colors hover:text-primary"
                         @click="toggleSort('price')"
                     >
                         <div class="flex items-center gap-2">
                             {{ __('dealer.price') }}
                             <component
                                 :is="getSortIcon('price')"
-                                class="h-4 w-4"
+                                class="h-3.5 w-3.5"
                             />
                         </div>
                     </TableHead>
                     <TableHead
-                        class="cursor-pointer text-center hover:bg-muted/50"
+                        class="cursor-pointer py-4 text-center text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80 transition-colors hover:text-primary"
                         @click="toggleSort('views')"
                     >
                         <div class="flex items-center justify-center gap-2">
-                            <Eye class="h-4 w-4" />
+                            <Eye class="h-3.5 w-3.5" />
                             <component
                                 :is="getSortIcon('views')"
-                                class="h-4 w-4"
+                                class="h-3.5 w-3.5"
                             />
                         </div>
                     </TableHead>
                     <TableHead
-                        class="cursor-pointer text-center hover:bg-muted/50"
+                        class="cursor-pointer py-4 text-center text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80 transition-colors hover:text-primary"
                         @click="toggleSort('contacts')"
                     >
                         <div class="flex items-center justify-center gap-2">
-                            <MessageCircle class="h-4 w-4" />
+                            <MessageCircle class="h-3.5 w-3.5" />
                             <component
                                 :is="getSortIcon('contacts')"
-                                class="h-4 w-4"
+                                class="h-3.5 w-3.5"
                             />
                         </div>
                     </TableHead>
                     <TableHead
-                        class="cursor-pointer text-center hover:bg-muted/50"
+                        class="cursor-pointer py-4 text-center text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80 transition-colors hover:text-primary"
                         @click="toggleSort('favs')"
                     >
                         <div class="flex items-center justify-center gap-2">
-                            <Star class="h-4 w-4" />
+                            <Star class="h-3.5 w-3.5" />
                             <component
                                 :is="getSortIcon('favs')"
-                                class="h-4 w-4"
+                                class="h-3.5 w-3.5"
                             />
                         </div>
                     </TableHead>
-                    <TableHead class="w-[100px]">
+                    <TableHead class="w-[120px] py-4 text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80">
                         {{ __('dealer.status') }}
                     </TableHead>
-                    <TableHead class="w-[50px] print:hidden"></TableHead>
+                    <TableHead class="w-[60px] py-4 print:hidden"></TableHead>
                 </TableRow>
             </TableHeader>
 

@@ -78,12 +78,12 @@ const handleReset = () => {
     <Collapsible :open="open" class="w-full">
         <CollapsibleContent>
             <div
-                class="grid grid-cols-1 gap-4 border-b border-border/50 bg-muted/30 p-4 md:grid-cols-3 lg:grid-cols-6"
+                class="grid grid-cols-1 gap-6 border-b border-border/40 bg-muted/20 p-6 md:grid-cols-2 lg:grid-cols-6"
             >
-                <div class="space-y-1.5">
-                    <Label class="text-xs">{{ __('dealer.brand') }}</Label>
+                <div class="space-y-2">
+                    <Label class="text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80">{{ __('dealer.brand') }}</Label>
                     <Select v-model="brandFilter" :disabled="!brands">
-                        <SelectTrigger class="h-8 text-xs">
+                        <SelectTrigger class="h-10 text-sm ring-offset-background transition-all focus:ring-1 focus:ring-primary/20">
                             <SelectValue
                                 :placeholder="
                                     !brands
@@ -106,10 +106,10 @@ const handleReset = () => {
                         </SelectContent>
                     </Select>
                 </div>
-                <div class="space-y-1.5">
-                    <Label class="text-xs">{{ __('dealer.model') }}</Label>
+                <div class="space-y-2">
+                    <Label class="text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80">{{ __('dealer.model') }}</Label>
                     <Select v-model="modelFilter" :disabled="!models">
-                        <SelectTrigger class="h-8 text-xs">
+                        <SelectTrigger class="h-10 text-sm ring-offset-background transition-all focus:ring-1 focus:ring-primary/20">
                             <SelectValue
                                 :placeholder="
                                     !models
@@ -132,10 +132,10 @@ const handleReset = () => {
                         </SelectContent>
                     </Select>
                 </div>
-                <div class="space-y-1.5">
-                    <Label class="text-xs">{{ __('dealer.status') }}</Label>
+                <div class="space-y-2">
+                    <Label class="text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80">{{ __('dealer.status') }}</Label>
                     <Select v-model="statusFilter">
-                        <SelectTrigger class="h-8 text-xs">
+                        <SelectTrigger class="h-10 text-sm ring-offset-background transition-all focus:ring-1 focus:ring-primary/20">
                             <SelectValue :placeholder="__('dealer.all_statuses')" />
                         </SelectTrigger>
                         <SelectContent>
@@ -148,32 +148,32 @@ const handleReset = () => {
                         </SelectContent>
                     </Select>
                 </div>
-                <div class="space-y-1.5">
-                    <Label class="text-xs">{{ __('dealer.from_date') }}</Label>
+                <div class="space-y-2">
+                    <Label class="text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80">{{ __('dealer.from_date') }}</Label>
                     <Input
                         type="date"
                         v-model="dateFrom"
-                        class="h-8 text-xs"
+                        class="h-10 text-sm transition-all focus-visible:ring-1 focus-visible:ring-primary/20"
                         @change="emitFilters"
                     />
                 </div>
-                <div class="space-y-1.5">
-                    <Label class="text-xs">{{ __('dealer.to_date') }}</Label>
+                <div class="space-y-2">
+                    <Label class="text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80">{{ __('dealer.to_date') }}</Label>
                     <Input
                         type="date"
                         v-model="dateTo"
-                        class="h-8 text-xs"
+                        class="h-10 text-sm transition-all focus-visible:ring-1 focus-visible:ring-primary/20"
                         @change="emitFilters"
                     />
                 </div>
-                <div class="flex items-end gap-2">
+                <div class="flex items-end">
                     <Button
                         variant="ghost"
-                        size="sm"
-                        class="h-8 w-full justify-start px-2 font-normal text-muted-foreground hover:text-foreground"
+                        size="default"
+                        class="group h-10 w-full justify-center px-4 font-medium text-muted-foreground transition-all hover:bg-background hover:text-foreground"
                         @click="handleReset"
                     >
-                        <RotateCcw class="mr-2 h-3.5 w-3.5" />
+                        <RotateCcw class="mr-2 h-4 w-4 transition-transform group-hover:rotate-[-45deg]" />
                         {{ __('ui.reset') }}
                     </Button>
                 </div>
