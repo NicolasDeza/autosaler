@@ -81,7 +81,7 @@
                             <Card
                                 v-for="ad in ads.data"
                                 :key="ad.id"
-                                class="group relative cursor-pointer overflow-hidden border border-border bg-card p-0 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-xl"
+                                class="group relative cursor-pointer overflow-hidden border border-border bg-card p-0 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg"
                                 @click="
                                     () =>
                                         router.visit(
@@ -106,11 +106,11 @@
                                         class="flex flex-1 flex-col justify-between p-6"
                                     >
                                         <div
-                                            class="flex items-start justify-between gap-4"
+                                            class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
                                         >
                                             <div class="min-w-0">
                                                 <h4
-                                                    class="truncate text-xl font-black tracking-tight text-foreground uppercase"
+                                                    class="text-xl font-black tracking-tight text-foreground uppercase sm:truncate"
                                                 >
                                                     {{ ad.brand?.name }}
                                                     {{ ad.model?.name }}
@@ -127,23 +127,34 @@
                                                 </p>
                                             </div>
 
-                                            <div class="shrink-0 text-right">
-                                                <span
-                                                    class="text-2xl font-black tracking-tighter text-primary"
+                                            <div
+                                                class="flex flex-col sm:items-end"
+                                            >
+                                                <div
+                                                    class="inline-flex self-start bg-primary py-0.5 pr-3.5 pl-5 text-white shadow-sm [clip-path:polygon(10%_0,100%_0,100%_100%,0_100%)] sm:self-auto sm:py-1 sm:pr-4 sm:pl-6"
                                                 >
-                                                    {{
-                                                        Number(
-                                                            ad.price,
-                                                        ).toLocaleString(
-                                                            'fr-FR',
-                                                        )
-                                                    }}
-                                                    €
-                                                </span>
-                                                <span
-                                                    class="block text-[10px] font-medium tracking-wider text-muted-foreground/60 uppercase"
-                                                    >TVAC</span
-                                                >
+                                                    <div
+                                                        class="flex items-end gap-2"
+                                                    >
+                                                        <span
+                                                            class="whitespace-nowrap text-base font-black tracking-tight sm:text-xl"
+                                                        >
+                                                            {{
+                                                                Number(
+                                                                    ad.price,
+                                                                ).toLocaleString(
+                                                                    'fr-FR',
+                                                                )
+                                                            }}
+                                                            €
+                                                        </span>
+                                                        <span
+                                                            class="pb-0.5 text-[9px] font-semibold tracking-[0.18em] text-white/80 uppercase sm:text-[10px]"
+                                                        >
+                                                            TVAC
+                                                        </span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 

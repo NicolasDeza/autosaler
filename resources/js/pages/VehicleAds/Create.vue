@@ -768,7 +768,7 @@ import {
     store as vehicleStore,
 } from '@/routes/vehicles';
 
-const props = defineProps<{
+defineProps<{
     brands: any[];
     fuelTypes: any[];
     bodyTypes: any[];

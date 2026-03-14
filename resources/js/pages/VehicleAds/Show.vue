@@ -57,11 +57,7 @@
                                         <span
                                             class="text-lg font-black tracking-tight sm:text-2xl"
                                         >
-                                            €{{
-                                                Number(ad.price).toLocaleString(
-                                                    'fr-FR',
-                                                )
-                                            }}
+                                            {{ Number(ad.price).toLocaleString('fr-FR') }} €
                                         </span>
                                         <span
                                             class="pb-0.5 text-[9px] font-semibold tracking-[0.18em] text-white/80 uppercase sm:text-[10px]"
