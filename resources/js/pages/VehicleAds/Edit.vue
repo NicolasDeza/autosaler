@@ -654,8 +654,14 @@
                                 :key="category.id"
                                 class="space-y-3"
                             >
-                                <h3 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                                    {{ formatOptionLabel(category.code ?? category.key) }}
+                                <h3
+                                    class="text-sm font-semibold tracking-wide text-muted-foreground uppercase"
+                                >
+                                    {{
+                                        formatOptionLabel(
+                                            category.code ?? category.key,
+                                        )
+                                    }}
                                 </h3>
                                 <div
                                     class="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 lg:grid-cols-3"
@@ -765,15 +771,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch, onMounted } from 'vue';
 import { Head, useForm, router } from '@inertiajs/vue3';
-import {
-    show as vehicleShow,
-    update as vehicleUpdate,
-    destroy as vehicleDestroy,
-} from '@/routes/vehicles';
 import axios from 'axios';
-import AppLayout from '@/layouts/AppLayout.vue';
+import { computed, nextTick, ref, watch, onMounted } from 'vue';
+import DatePicker from '@/components/DatePicker.vue';
+import InputError from '@/components/InputError.vue';
+import { Button } from '@/components/ui/button';
 import {
     Card,
     CardHeader,
@@ -781,11 +784,9 @@ import {
     CardDescription,
     CardContent,
 } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
     Select,
     SelectContent,
@@ -793,8 +794,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import InputError from '@/components/InputError.vue';
-import DatePicker from '@/components/DatePicker.vue';
+import { Textarea } from '@/components/ui/textarea';
+import AppLayout from '@/layouts/AppLayout.vue';
+import {
+    show as vehicleShow,
+    update as vehicleUpdate,
+    destroy as vehicleDestroy,
+} from '@/routes/vehicles';
 
 type FeatureOption = {
     id: number | string;
@@ -849,7 +855,9 @@ const extractFeatureIds = (value: unknown): string[] => {
                     pivot?: { feature_id?: number | string };
                 };
                 const featureId =
-                    feature.id ?? feature.feature_id ?? feature.pivot?.feature_id;
+                    feature.id ??
+                    feature.feature_id ??
+                    feature.pivot?.feature_id;
 
                 if (featureId !== undefined && featureId !== null) {
                     return String(featureId);

@@ -9,6 +9,7 @@ return [
     'home' => 'Accueil',
     'dealer_dashboard' => 'Tableau de bord',
     'admin_dashboard' => 'Tableau de bord',
+    'favorites' => 'Favoris',
 
     // légal
     'legal_notices' => 'Mentions légales',

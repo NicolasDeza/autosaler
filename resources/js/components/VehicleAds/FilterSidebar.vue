@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { usePage } from '@inertiajs/vue3';
 import { RotateCcw, SlidersHorizontal, Star } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,13 +32,14 @@ const emit = defineEmits(['resetFilters', 'update:models']);
 const isOpen = ref(false);
 const showLoginModal = ref(false);
 const page = usePage();
+const auth = computed(() => page.props.auth);
 
 const handleUpdateModels = (models: any[]) => {
     emit('update:models', models);
 };
 
 const toggleFavoritesFilter = () => {
-    if (!page.props.auth?.user) {
+    if (!auth.value?.user) {
         showLoginModal.value = true;
         return;
     }
