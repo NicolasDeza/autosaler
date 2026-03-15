@@ -107,7 +107,7 @@
                             href="/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="font-semibold text-red-500 underline decoration-red-500 underline-offset-4 hover:text-red-400"
+                            class="inline-flex items-center rounded-md border border-primary/35 px-2 py-0.5 font-semibold text-primary transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
                         >
                             La passion
                         </a>
