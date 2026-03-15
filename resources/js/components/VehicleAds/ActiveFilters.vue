@@ -306,7 +306,7 @@ const activeFilters = computed(() => {
             );
             filters.push({
                 key: `feature_${id}`,
-                label: `Equip.: ${feature?.key || id}`,
+                label: `Equip.: ${feature?.code || feature?.key || id}`,
                 onRemove: () => {
                     const newValue = v.features.filter(
                         (f: string) => String(f) !== String(id),

@@ -15,7 +15,7 @@ const form = defineModel<any>('form', { required: true });
         <FilterCheckboxGroup
             v-model="form.features"
             :options="features"
-            option-label="key"
+            option-label="code"
             label="feature"
         />
     </FilterGroup>

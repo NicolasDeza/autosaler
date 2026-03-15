@@ -14,17 +14,17 @@ const prefix = props.label || 'filter';
 const labelName = props.optionLabel || 'code';
 
 const isChecked = (id: string) => {
-    return model.value.includes(id);
+    return model.value.some((value) => String(value) === id);
 };
 
 const toggle = (id: string, checked: boolean | string) => {
     const isChecked = checked === true || checked === 'indeterminate';
     if (isChecked) {
-        if (!model.value.includes(id)) {
+        if (!model.value.some((value) => String(value) === id)) {
             model.value.push(id);
         }
     } else {
-        model.value = model.value.filter((v) => v !== id);
+        model.value = model.value.filter((value) => String(value) !== id);
     }
 };
 </script>
@@ -38,8 +38,8 @@ const toggle = (id: string, checked: boolean | string) => {
         >
             <Checkbox
                 :id="`${prefix}-${option.id}`"
-                :checked="isChecked(String(option.id))"
-                @update:modelValue="
+                :model-value="isChecked(String(option.id))"
+                @update:model-value="
                     (v: boolean | string) => toggle(String(option.id), v)
                 "
             />

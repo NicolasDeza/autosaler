@@ -475,26 +475,13 @@
                                                     ad.user?.last_name
                                             }}
                                         </h2>
-                                        <div
-                                            class="flex items-center gap-1.5 text-sm text-secondary-foreground/70"
-                                        >
-                                            <MapPin class="h-3.5 w-3.5" />
-                                            <span
-                                                >{{
-                                                    ad.user?.company?.city
-                                                        ?.zip_code
-                                                }}
-                                                {{
-                                                    ad.user?.company?.city?.code
-                                                }}</span
-                                            >
-                                        </div>
+
                                     </div>
                                 </div>
 
                                 <a
                                     v-if="ad.user?.company?.phone"
-                                    :href="`https://wa.me/${ad.user.company.phone?.replace(/\D/g, '')}`"
+                                    :href="`https://wa.me/${ad.user.company.phone?.replace(/\D/g, '')}?text=${encodeURIComponent('Bonjour, je suis intéressé par votre annonce sur Autosaler. Est-elle toujours disponible ?')}`"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     class="flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white transition-transform hover:scale-110 active:scale-95"
@@ -547,23 +534,12 @@
                                         >Appeler</span
                                     >
                                 </a>
-                                <a
-                                    v-if="ad.user?.company?.email"
-                                    :href="`mailto:${ad.user.company.email}`"
-                                    class="group flex flex-col items-center gap-2 rounded-xl border border-border bg-muted py-3 transition-all hover:border-primary/30 hover:bg-primary/5"
-                                >
-                                    <Mail
-                                        class="h-4 w-4 text-muted-foreground group-hover:text-primary"
-                                    />
-                                    <span
-                                        class="text-[10px] font-bold tracking-tight text-muted-foreground uppercase"
-                                        >Email</span
-                                    >
-                                </a>
                             </div>
 
                             <Button
+                                type="button"
                                 class="h-12 w-full cursor-pointer rounded-md text-sm font-black tracking-tight uppercase transition-transform hover:-translate-y-0.5"
+                                @click="openContactModal"
                             >
                                 Contacter le vendeur
                             </Button>
@@ -595,6 +571,123 @@
         </div>
     </AppLayout>
 
+    <Dialog :open="showContactModal" @update:open="closeContactModal">
+        <DialogContent class="sm:max-w-xl">
+            <DialogHeader>
+                <DialogTitle>Contacter le vendeur</DialogTitle>
+                <DialogDescription>
+                    Envoyez votre message au vendeur par email.
+                </DialogDescription>
+            </DialogHeader>
+
+            <form
+                class="space-y-4"
+                autocomplete="off"
+                @submit.prevent="submitSellerContact"
+            >
+                <div class="space-y-2">
+                    <Label for="seller_message">Message *</Label>
+                    <Textarea
+                        id="seller_message"
+                        v-model="contactForm.message"
+                        rows="5"
+                        required
+                        placeholder="Bonjour, je suis intéressé(e) par ce véhicule..."
+                    />
+                    <InputError :message="contactForm.errors.message" />
+                </div>
+
+                <p class="text-xs text-muted-foreground">Nom ou prénom *</p>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div class="space-y-2">
+                        <Label for="seller_last_name">Nom</Label>
+                        <Input
+                            id="seller_last_name"
+                            v-model="contactForm.last_name"
+                            name="dealer_contact_last_name"
+                            autocomplete="off"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            spellcheck="false"
+                            placeholder="Votre nom"
+                        />
+                        <InputError :message="contactForm.errors.last_name" />
+                    </div>
+
+                    <div class="space-y-2">
+                        <Label for="seller_first_name">Prenom</Label>
+                        <Input
+                            id="seller_first_name"
+                            v-model="contactForm.first_name"
+                            name="dealer_contact_first_name"
+                            autocomplete="off"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            spellcheck="false"
+                            placeholder="Votre prenom"
+                        />
+                        <InputError
+                            :message="contactForm.errors.first_name"
+                        />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div class="space-y-2">
+                        <Label for="seller_email">Email *</Label>
+                        <Input
+                            id="seller_email"
+                            type="email"
+                            v-model="contactForm.email"
+                            name="dealer_contact_email"
+                            autocomplete="off"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            spellcheck="false"
+                            required
+                            placeholder="vous@example.com"
+                        />
+                        <InputError :message="contactForm.errors.email" />
+                    </div>
+
+                    <div class="space-y-2">
+                        <Label for="seller_phone">Telephone (facultatif)</Label>
+                        <Input
+                            id="seller_phone"
+                            type="tel"
+                            v-model="contactForm.phone"
+                            placeholder="+32 4XX XX XX XX"
+                        />
+                        <InputError :message="contactForm.errors.phone" />
+                    </div>
+                </div>
+
+                <DialogFooter class="gap-2">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        class="cursor-pointer"
+                        @click="closeContactModal"
+                    >
+                        Annuler
+                    </Button>
+                    <Button
+                        type="submit"
+                        class="cursor-pointer"
+                        :disabled="contactForm.processing"
+                    >
+                        <Send class="mr-2 h-4 w-4" />
+                        {{
+                            contactForm.processing
+                                ? 'Envoi...'
+                                : 'Envoyer le message'
+                        }}
+                    </Button>
+                </DialogFooter>
+            </form>
+        </DialogContent>
+    </Dialog>
+
     <LoginRequiredModal
         v-model:open="showLoginModal"
         title="Ajouter aux favoris"
@@ -603,14 +696,12 @@
 </template>
 
 <script setup lang="ts">
-import { Head, router, usePage } from '@inertiajs/vue3';
+import { Head, router, useForm, usePage } from '@inertiajs/vue3';
 import {
     CheckCircle,
     AlertTriangle,
     Edit,
-    MapPin,
     Phone,
-    Mail,
     Gauge,
     Calendar,
     Zap,
@@ -619,11 +710,25 @@ import {
     Truck,
     ChevronLeft,
     Star,
+    Send,
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
+import VehicleAdContactController from '@/actions/App/Http/Controllers/VehicleAdContactController';
 import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
+import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
 import {
     edit as vehicleEdit,
@@ -659,6 +764,7 @@ type GroupedFeature = {
 };
 
 const showLoginModal = ref(false);
+const showContactModal = ref(false);
 const page = usePage();
 
 const formatOptionLabel = (value?: string): string => {
@@ -712,6 +818,38 @@ const groupedFeatures = computed<GroupedFeature[]>(() => {
             }),
         }));
 });
+
+const contactForm = useForm({
+    message: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone: '',
+});
+
+const openContactModal = (): void => {
+    contactForm.reset();
+    contactForm.clearErrors();
+    showContactModal.value = true;
+};
+
+const closeContactModal = (): void => {
+    showContactModal.value = false;
+};
+
+const submitSellerContact = (): void => {
+    contactForm.post(
+        VehicleAdContactController.url({ vehicleAd: props.ad.id }),
+        {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => {
+                contactForm.reset();
+                showContactModal.value = false;
+            },
+        },
+    );
+};
 
 const toggleFavorite = () => {
     if (!page.props.auth?.user) {
