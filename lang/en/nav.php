@@ -8,6 +8,7 @@ return [
     'home' => 'Home',
     'dealer_dashboard' => 'Dealer Dashboard',
     'admin_dashboard' => 'Admin Dashboard',
+    'favorites' => 'Favorites',
 
     // legal
     'legal_notices' => 'Legal Notices',

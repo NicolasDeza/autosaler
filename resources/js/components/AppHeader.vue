@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, usePage, router } from '@inertiajs/vue3';
 import {
     // BookOpen,
     // Folder,
@@ -7,9 +7,11 @@ import {
     Menu,
     Shield,
     Car,
+    Star,
 } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
+import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -109,18 +111,27 @@ const mainNavItems = computed<NavItem[]>(() => {
     return items;
 });
 
-const rightNavItems: NavItem[] = [
-    // {
-    //     title: 'Repository',
-    //     href: 'https://github.com/laravel/vue-starter-kit',
-    //     icon: Folder,
-    // },
-    // {
-    //     title: 'Documentation',
-    //     href: 'https://laravel.com/docs/starter-kits#vue',
-    //     icon: BookOpen,
-    // },
-];
+const rightNavItems: NavItem[] = [];
+
+const showLoginModal = ref(false);
+
+const handleFavoritesClick = () => {
+    if (!auth.value?.user) {
+        showLoginModal.value = true;
+        return;
+    }
+    router.get(vehicles.index({ query: { favorites_only: '1' } }).url);
+};
+// {
+//     title: 'Repository',
+//     href: 'https://github.com/laravel/vue-starter-kit',
+//     icon: Folder,
+// },
+// {
+//     title: 'Documentation',
+//     href: 'https://laravel.com/docs/starter-kits#vue',
+//     icon: BookOpen,
+// },
 </script>
 
 <template>
@@ -295,6 +306,43 @@ const rightNavItems: NavItem[] = [
                         </div>
                     </div>
 
+                    <TooltipProvider :delay-duration="0">
+                        <Tooltip>
+                            <TooltipTrigger as-child>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    class="group h-9 w-9 cursor-pointer"
+                                    :class="{
+                                        'bg-foreground/10 text-red-500':
+                                            page.url.includes(
+                                                'favorites_only=1',
+                                            ),
+                                    }"
+                                    @click="handleFavoritesClick"
+                                >
+                                    <Star
+                                        class="size-5 opacity-80 group-hover:opacity-100"
+                                        :class="{
+                                            'fill-red-500 text-red-500':
+                                                page.url.includes(
+                                                    'favorites_only=1',
+                                                ),
+                                        }"
+                                    />
+                                    <span class="sr-only">{{
+                                        __('nav.favorites')
+                                    }}</span>
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent
+                                class="dark border border-background/50"
+                            >
+                                <p>{{ __('nav.favorites') }}</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+
                     <LanguageSelector />
 
                     <DropdownMenu v-if="auth && auth.user">
@@ -347,6 +395,12 @@ const rightNavItems: NavItem[] = [
                 </div>
             </div>
         </div>
+
+        <LoginRequiredModal
+            v-model:open="showLoginModal"
+            title="Coup de cœur ?"
+            description="Connectez-vous pour accéder à vos favoris et ne plus jamais perdre une annonce."
+        />
 
         <div
             v-if="props.breadcrumbs.length > 1"

@@ -156,10 +156,14 @@ class VehicleAdController extends Controller
             }
         }
 
-        if ($request->boolean('favorites_only') && auth()->check()) {
-            $query->whereHas('favoredByUsers', function ($q) {
-                $q->where('user_id', auth()->id());
-            });
+        if ($request->boolean('favorites_only')) {
+            if (auth()->check()) {
+                $query->whereHas('favoredByUsers', function ($q) {
+                    $q->where('user_id', auth()->id());
+                });
+            } else {
+                $query->whereRaw('1 = 0');
+            }
         }
 
         // ── Sorting ─────────────────────────────────────────────
