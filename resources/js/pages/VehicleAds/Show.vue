@@ -155,9 +155,10 @@
                                             >Puissance</span
                                         >
                                     </div>
-                                    <span class="font-semibold"
-                                        >{{ ad.power_kw }} kW</span
-                                    >
+                                    <span class="font-semibold">
+                                        {{ ad.power_kw }} kW
+                                        ({{ kwToHp(ad.power_kw) }} ch)
+                                    </span>
                                 </div>
                                 <div
                                     class="flex flex-col gap-1.5"
@@ -626,6 +627,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import DealerContactModal from '@/components/VehicleAds/DealerContactModal.vue';
 import { useComparison } from '@/composables/useComparison';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { kwToHp } from '@/lib/utils';
 import {
     edit as vehicleEdit,
     index as vehiclesIndex,

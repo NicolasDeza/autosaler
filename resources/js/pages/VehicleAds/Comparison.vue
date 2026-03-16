@@ -5,7 +5,6 @@ import {
     X,
     Car,
     Check,
-    Info,
     Zap,
     Calendar,
     Gauge,
@@ -15,11 +14,17 @@ import {
     DoorOpen,
     Plus,
     ArrowRight,
+    Leaf,
+    MapPin,
+    PaintBucket,
+    Sofa,
+    Users,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { kwToHp } from '@/lib/utils';
 import vehiclesRoutes from '@/routes/vehicles';
 
 const props = defineProps<{
@@ -35,7 +40,7 @@ const fields = [
         highlight: true,
     },
     {
-        label: 'Année',
+        label: '1ère immatriculation',
         key: 'first_registration_date',
         icon: Calendar,
         format: (v: any) => v?.substring(0, 4) || 'N/A',
@@ -46,22 +51,40 @@ const fields = [
         icon: Gauge,
         format: (v: any) => `${v?.toLocaleString('fr-FR')} km`,
     },
+    { label: 'Emplacement', key: 'city.code', icon: MapPin },
     { label: 'Carburant', key: 'fuel_type.code', icon: Fuel },
-    { label: 'Boîte', key: 'transmission_type.code', icon: Cog },
+    { label: 'Carrosserie', key: 'body_type.code', icon: Car },
+    { label: 'Boîte de vitesse', key: 'transmission_type.code', icon: Cog },
+    { label: 'Couleur extérieur', key: 'exterior_color.code', icon: Palette },
+    {
+        label: 'Couleur intérieur',
+        key: 'interior_color.code',
+        icon: PaintBucket,
+    },
+    { label: 'Matériaux intérieur', key: 'interior_type.code', icon: Sofa },
+    { label: 'Norme Euro', key: 'euro_norm.code', icon: Leaf },
     {
         label: 'Puissance',
         key: 'power_kw',
         icon: Zap,
-        format: (v: any) => (v ? `${v} kW` : 'N/A'),
+        format: (v: any) => {
+            if (!v) return 'N/A';
+            const kw = Math.round(Number(v));
+            const hp = kwToHp(kw);
+            return `${kw} kW (${hp} ch)`;
+        },
     },
-    { label: 'Carrosserie', key: 'body_type.code', icon: Car },
-    { label: 'Norme Euro', key: 'euro_norm.code', icon: Info },
-    { label: 'Couleur', key: 'exterior_color.code', icon: Palette },
     {
-        label: 'Configuration',
+        label: 'Portes',
         key: 'doors',
         icon: DoorOpen,
-        format: (_: any, item: any) => `${item.doors}P / ${item.seats}S`,
+        format: (v: any) => `${v}P`,
+    },
+    {
+        label: 'Sièges',
+        key: 'seats',
+        icon: Users,
+        format: (v: any) => `${v}S`,
     },
 ];
 
@@ -270,7 +293,7 @@ const removeAndReload = (id: number) => {
                                             />
                                         </div>
                                         <span
-                                            class="text-[10px] font-black tracking-[0.2em] whitespace-nowrap text-muted-foreground uppercase"
+                                            class="text-[10px] font-black tracking-[0.2em] text-muted-foreground uppercase"
                                         >
                                             {{ field.label }}
                                         </span>
@@ -295,7 +318,6 @@ const removeAndReload = (id: number) => {
                                                               vehicle,
                                                               field.key,
                                                           ),
-                                                          vehicle,
                                                       )
                                                     : getValue(
                                                           vehicle,
@@ -388,12 +410,12 @@ const removeAndReload = (id: number) => {
                     <!-- Background Decorative Pattern -->
                     <div class="absolute inset-0 opacity-5">
                         <div
-                            class="absolute h-full w-full bg-[radial-gradient(#e11d48_1px,transparent_1px)] [background-size:24px_24px]"
+                            class="absolute h-full w-full bg-[radial-gradient(#e11d48_1px,transparent_1px)] bg-size-[24px_24px]"
                         ></div>
                     </div>
 
                     <div
-                        class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+                        class="absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100"
                     />
 
                     <div
