@@ -6,6 +6,8 @@ return [
     'nav_admin_panel' => 'Admin Panel',
     // Menu
     'home' => 'Home',
+    'professionals' => 'Professionals',
+    'dealerPage' => 'Dealers',
     'dealer_dashboard' => 'Dealer Dashboard',
     'admin_dashboard' => 'Admin Dashboard',
     'favorites' => 'Favorites',

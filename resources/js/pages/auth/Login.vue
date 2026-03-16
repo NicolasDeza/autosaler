@@ -7,7 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import AuthBase from '@/layouts/AuthLayout.vue';
+import AuthBase from '@/layouts/auth/AuthModalLayout.vue';
 import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
@@ -16,6 +16,7 @@ defineProps<{
     status?: string;
     canResetPassword: boolean;
     canRegister: boolean;
+    intendedUrl?: string;
 }>();
 </script>
 
@@ -23,6 +24,7 @@ defineProps<{
     <AuthBase
         title="Log in to your account"
         description="Enter your email and password below to log in"
+        :close-href="intendedUrl"
     >
         <Head title="Log in" />
 

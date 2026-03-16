@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { dashboard, login, register } from '@/routes';
+import { home, login, register } from '@/routes';
 
 withDefaults(
     defineProps<{
@@ -26,7 +26,7 @@ withDefaults(
             <nav class="flex items-center justify-end gap-4">
                 <Link
                     v-if="$page.props.auth.user"
-                    :href="dashboard()"
+                    :href="home()"
                     class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                 >
                     Dashboard
@@ -155,7 +155,7 @@ withDefaults(
                     </ul>
                 </div>
                 <div
-                    class="relative -mb-px aspect-335/376 w-full shrink-0 overflow-hidden rounded-t-lg bg-[#fff2f2] lg:mb-0 lg:-ml-px lg:aspect-auto lg:w-[438px] lg:rounded-t-none lg:rounded-r-lg dark:bg-[#1D0002]"
+                    class="relative -mb-px aspect-335/376 w-full shrink-0 overflow-hidden rounded-t-lg bg-[#fff2f2] lg:mb-0 lg:-ml-px lg:aspect-auto lg:w-109.5 lg:rounded-t-none lg:rounded-r-lg dark:bg-[#1D0002]"
                 >
                     <svg
                         class="w-full max-w-none translate-y-0 text-[#F53003] opacity-100 transition-all duration-750 dark:text-[#F61500] starting:translate-y-6 starting:opacity-0"
@@ -193,7 +193,7 @@ withDefaults(
                         />
                     </svg>
                     <svg
-                        class="relative -mt-[4.9rem] -ml-8 w-[448px] max-w-none lg:-mt-[6.6rem] lg:ml-0 dark:hidden"
+                        class="relative -mt-[4.9rem] -ml-8 w-md max-w-none lg:-mt-[6.6rem] lg:ml-0 dark:hidden"
                         viewBox="0 0 440 376"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -517,7 +517,7 @@ withDefaults(
                         </g>
                     </svg>
                     <svg
-                        class="relative -mt-[4.9rem] -ml-8 hidden w-[448px] max-w-none lg:-mt-[6.6rem] lg:ml-0 dark:block"
+                        class="relative -mt-[4.9rem] -ml-8 hidden w-md max-w-none lg:-mt-[6.6rem] lg:ml-0 dark:block"
                         viewBox="0 0 440 376"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"

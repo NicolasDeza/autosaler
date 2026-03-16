@@ -59,6 +59,7 @@ class FortifyServiceProvider extends ServiceProvider
                 'canResetPassword' => Features::enabled(Features::resetPasswords()),
                 'canRegister' => Features::enabled(Features::registration()),
                 'status' => $request->session()->get('status'),
+                'intendedUrl' => $this->resolveAuthModalCloseUrl($request),
             ]);
         });
 
@@ -83,7 +84,9 @@ class FortifyServiceProvider extends ServiceProvider
                 }
             }
 
-            return Inertia::render('auth/Register');
+            return Inertia::render('auth/Register', [
+                'intendedUrl' => $this->resolveAuthModalCloseUrl($request),
+            ]);
         });
 
         Fortify::twoFactorChallengeView(fn () => Inertia::render('auth/TwoFactorChallenge'));
@@ -105,5 +108,23 @@ class FortifyServiceProvider extends ServiceProvider
 
             return Limit::perMinute(5)->by($throttleKey);
         });
+    }
+
+    /**
+     * Resolve close destination for auth modals.
+     */
+    private function resolveAuthModalCloseUrl(Request $request): string
+    {
+        $intendedUrl = (string) $request->session()->get('url.intended', route('home'));
+        $blockedDestinations = [
+            route('login'),
+            route('register'),
+        ];
+
+        if ($intendedUrl === $request->fullUrl() || in_array($intendedUrl, $blockedDestinations, true)) {
+            return route('home');
+        }
+
+        return $intendedUrl;
     }
 }

@@ -110,7 +110,7 @@ const submitSellerContact = (): void => {
                     </div>
 
                     <div class="space-y-2">
-                        <Label for="seller_first_name">Prenom</Label>
+                        <Label for="seller_first_name">Prénom</Label>
                         <Input
                             id="seller_first_name"
                             v-model="contactForm.first_name"
@@ -119,7 +119,7 @@ const submitSellerContact = (): void => {
                             autocorrect="off"
                             autocapitalize="off"
                             spellcheck="false"
-                            placeholder="Votre prenom"
+                            placeholder="Votre prénom"
                         />
                         <InputError :message="contactForm.errors.first_name" />
                     </div>
@@ -144,7 +144,7 @@ const submitSellerContact = (): void => {
                     </div>
 
                     <div class="space-y-2">
-                        <Label for="seller_phone">Telephone (facultatif)</Label>
+                        <Label for="seller_phone">Téléphone (facultatif)</Label>
                         <Input
                             id="seller_phone"
                             v-model="contactForm.phone"
