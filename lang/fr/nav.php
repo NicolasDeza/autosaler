@@ -7,6 +7,8 @@ return [
     'nav_admin_panel' => 'Panel d\'administration',
 
     'home' => 'Accueil',
+    'professionals' => 'Professionnels',
+    'dealerPage' => 'Professionnels',
     'dealer_dashboard' => 'Tableau de bord',
     'admin_dashboard' => 'Tableau de bord',
     'favorites' => 'Favoris',

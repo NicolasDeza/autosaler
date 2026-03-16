@@ -3,7 +3,6 @@ import { Head, Deferred } from '@inertiajs/vue3';
 import BrandsSection from '@/components/BrandsSection.vue';
 import HeroSection from '@/components/HeroSection.vue';
 import HomeSearchFilter from '@/components/HomeSearchFilter.vue';
-import PriceCard from '@/components/PriceCard.vue';
 import RecentVehiclesSection from '@/components/RecentVehiclesSection.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 
@@ -42,6 +41,5 @@ defineProps<{
         </Deferred>
         <RecentVehiclesSection :vehicles="recentVehicles" />
         <BrandsSection />
-        <PriceCard />
     </AppLayout>
 </template>
