@@ -4,7 +4,10 @@ import { X, ArrowRight, Trash2, Car } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
 import { useComparison } from '@/composables/useComparison';
+import { useTranslation } from '@/composables/useTranslation';
 import vehiclesRoutes from '@/routes/vehicles';
+
+const { __ } = useTranslation();
 
 const page = usePage();
 const { state, removeVehicle, clearSelection } = useComparison();
@@ -108,7 +111,8 @@ const compareUrl = computed(() => {
                         >
                             <span
                                 class="text-[9px] font-black tracking-[0.2em] text-white/20 uppercase"
-                                >Slot {{ state.vehicles.length + i }}</span
+                                >{{ __('vehicleAd.slot') }}
+                                {{ state.vehicles.length + i }}</span
                             >
                         </div>
                     </div>
@@ -123,7 +127,7 @@ const compareUrl = computed(() => {
                             size="sm"
                             class="h-11 gap-2 rounded-xl bg-primary px-8 font-black tracking-tighter text-white uppercase shadow-lg shadow-primary/20 transition-all hover:scale-105 hover:bg-primary/90 hover:shadow-primary/40 active:scale-95"
                         >
-                            Comparer
+                            {{ __('vehicleAd.compare') }}
                             <ArrowRight class="size-4" />
                         </Button>
                     </Link>
@@ -134,7 +138,7 @@ const compareUrl = computed(() => {
                         @click="clearSelection"
                     >
                         <Trash2 class="mr-1.5 size-3" />
-                        Tout vider
+                        {{ __('vehicleAd.clear_all') }}
                     </Button>
                 </div>
             </div>

@@ -29,7 +29,31 @@ export function useTranslation() {
         key: string,
         replacements: Record<string, string | number> = {},
     ) {
-        let translation = translations.value[key] ?? key;
+        // Attempt to get the translation directly
+        let translation = translations.value[key];
+
+        // If not found and key has dots, try to traverse if the route somehow failed us or for better compatibility
+        if (translation === undefined && key.includes('.')) {
+            const parts = key.split('.');
+            let current: any = translations.value;
+            for (const part of parts) {
+                if (current && typeof current === 'object' && part in current) {
+                    current = current[part];
+                } else {
+                    current = undefined;
+                    break;
+                }
+            }
+            if (typeof current === 'string') {
+                translation = current;
+            }
+        }
+
+        // Fallback to key
+        if (translation === undefined) {
+            translation = key;
+        }
+
         Object.entries(replacements).forEach(([k, v]) => {
             translation = translation.replace(
                 new RegExp(`:${k}`, 'g'),

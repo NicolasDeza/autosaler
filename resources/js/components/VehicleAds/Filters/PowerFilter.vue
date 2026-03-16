@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Zap } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
-import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import { Input } from '@/components/ui/input';
 import {
     Select,
@@ -10,6 +9,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
+import { useTranslation } from '@/composables/useTranslation';
+
+const { __ } = useTranslation();
 
 const form = defineModel<any>('form', { required: true });
 
@@ -83,7 +86,7 @@ watch(() => form.value.power_unit, updateDisplayValues);
 
 <template>
     <FilterGroup
-        label="Puissance"
+        :label="__('vehicleAd.power')"
         :icon="Zap"
         :is-active="!!form.min_power || !!form.max_power"
     >
@@ -94,8 +97,12 @@ watch(() => form.value.power_unit, updateDisplayValues);
                         <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="kw">Kilowatts (kW)</SelectItem>
-                        <SelectItem value="ch">Chevaux (ch)</SelectItem>
+                        <SelectItem value="kw">{{
+                            __('vehicleAd.power_kw')
+                        }}</SelectItem>
+                        <SelectItem value="ch">{{
+                            __('vehicleAd.power_hp')
+                        }}</SelectItem>
                     </SelectContent>
                 </Select>
 

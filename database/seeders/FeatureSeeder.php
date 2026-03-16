@@ -55,8 +55,8 @@ class FeatureSeeder extends Seeder
                 'Porte-bagages',
                 'Pot catalytique',
                 "Prolongateur d'autonomie",
-                "Reglage electrique du siege arriere",
-                "Retroviseur interieur anti-eblouissement automatique",
+                'Reglage electrique du siege arriere',
+                'Retroviseur interieur anti-eblouissement automatique',
                 'Roue de secours',
                 'Roue de urgence',
                 'Separateur pour coffre',
@@ -193,7 +193,7 @@ class FeatureSeeder extends Seeder
                 ['code' => $categoryCode],
                 [
                     'sort_order' => $categoryOrder++,
-                    'is_active' => true
+                    'is_active' => true,
                 ]
             );
 
@@ -206,7 +206,7 @@ class FeatureSeeder extends Seeder
                     [
                         'feature_category_id' => $category->id,
                         'sort_order' => $featureOrder++,
-                        'is_active' => true
+                        'is_active' => true,
                     ]
                 );
             }

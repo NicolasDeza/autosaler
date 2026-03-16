@@ -37,6 +37,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $user = $request->user()?->load('roles.permissions');
+
         // dd($request->user());
         return [
             ...parent::share($request),
@@ -53,7 +54,7 @@ class HandleInertiaRequests extends Middleware
                     : null,
             ],
             'canRegister' => Features::enabled(Features::registration()),
-            'locale' => fn() => session('locale', app()->getLocale()),
+            'locale' => fn () => session('locale', app()->getLocale()),
             // 'translations' => fn() => $this->getTranslations(),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];

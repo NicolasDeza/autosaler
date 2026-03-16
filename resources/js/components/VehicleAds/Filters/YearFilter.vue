@@ -3,6 +3,9 @@ import { Calendar } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { Slider } from '@/components/ui/slider';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
+import { useTranslation } from '@/composables/useTranslation';
+
+const { __ } = useTranslation();
 
 const form = defineModel<any>('form', { required: true });
 
@@ -27,7 +30,7 @@ watch(
 
 <template>
     <FilterGroup
-        label="1ère immatriculation"
+        :label="__('vehicleAd.first_registration')"
         :icon="Calendar"
         :is-active="form.min_year > 1980 || form.max_year < currentYear"
     >

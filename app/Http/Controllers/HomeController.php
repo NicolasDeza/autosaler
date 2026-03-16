@@ -6,7 +6,6 @@ use App\Models\VehicleAd;
 use App\Models\VehicleBrand;
 use Inertia\Inertia;
 use Inertia\Response;
-use Laravel\Fortify\Features;
 
 class HomeController extends Controller
 {

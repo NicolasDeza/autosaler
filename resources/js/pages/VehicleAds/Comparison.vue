@@ -23,9 +23,12 @@ import {
 import { computed } from 'vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from '@/composables/useTranslation';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { kwToHp } from '@/lib/utils';
 import vehiclesRoutes from '@/routes/vehicles';
+
+const { __ } = useTranslation();
 
 const props = defineProps<{
     vehicles: any[];
@@ -33,38 +36,66 @@ const props = defineProps<{
 
 const fields = [
     {
-        label: 'Prix',
+        label: __('vehicleAd.price'),
         key: 'price',
         icon: Zap,
         format: (v: any) => `${Number(v).toLocaleString('fr-FR')} €`,
         highlight: true,
     },
     {
-        label: '1ère immatriculation',
+        label: __('vehicleAd.first_registration'),
         key: 'first_registration_date',
         icon: Calendar,
         format: (v: any) => v?.substring(0, 4) || 'N/A',
     },
     {
-        label: 'Kilométrage',
+        label: __('vehicleAd.mileage'),
         key: 'mileage',
         icon: Gauge,
         format: (v: any) => `${v?.toLocaleString('fr-FR')} km`,
     },
-    { label: 'Emplacement', key: 'city.code', icon: MapPin },
-    { label: 'Carburant', key: 'fuel_type.code', icon: Fuel },
-    { label: 'Carrosserie', key: 'body_type.code', icon: Car },
-    { label: 'Boîte de vitesse', key: 'transmission_type.code', icon: Cog },
-    { label: 'Couleur extérieur', key: 'exterior_color.code', icon: Palette },
     {
-        label: 'Couleur intérieur',
+        label: __('ui.location'),
+        key: 'city.code',
+        icon: MapPin,
+    },
+    {
+        label: __('vehicleAd.fuel'),
+        key: 'fuel_type.code',
+        icon: Fuel,
+    },
+    {
+        label: __('vehicleAd.body'),
+        key: 'body_type.code',
+        icon: Car,
+    },
+    {
+        label: __('vehicleAd.transmission'),
+        key: 'transmission_type.code',
+        icon: Cog,
+    },
+    {
+        label: __('vehicleAd.exterior_color'),
+        key: 'exterior_color.code',
+        icon: Palette,
+    },
+    {
+        label: __('vehicleAd.interior_color'),
         key: 'interior_color.code',
         icon: PaintBucket,
     },
-    { label: 'Matériaux intérieur', key: 'interior_type.code', icon: Sofa },
-    { label: 'Norme Euro', key: 'euro_norm.code', icon: Leaf },
     {
-        label: 'Puissance',
+        label: __('vehicleAd.interior_material'),
+        key: 'interior_type.code',
+        icon: Sofa,
+    },
+    {
+        label: __('vehicleAd.euro_norm'),
+        key: 'euro_norm.code',
+        icon: Leaf,
+    },
+    {
+        label: __('vehicleAd.power'),
         key: 'power_kw',
         icon: Zap,
         format: (v: any) => {
@@ -75,13 +106,13 @@ const fields = [
         },
     },
     {
-        label: 'Portes',
+        label: __('vehicleAd.doors'),
         key: 'doors',
         icon: DoorOpen,
         format: (v: any) => `${v}P`,
     },
     {
-        label: 'Sièges',
+        label: __('vehicleAd.seats'),
         key: 'seats',
         icon: Users,
         format: (v: any) => `${v}S`,
@@ -164,7 +195,7 @@ const removeAndReload = (id: number) => {
 </script>
 
 <template>
-    <Head title="Comparaison de véhicules" />
+    <Head :title="__('vehicleAd.comparison_title')" />
 
     <AppLayout>
         <div class="min-h-screen bg-background pb-20">
@@ -176,7 +207,7 @@ const removeAndReload = (id: number) => {
                     <ChevronLeft
                         class="size-4 transition-transform group-hover:-translate-x-1"
                     />
-                    Retour au catalogue
+                    {{ __('vehicleAd.back_to_catalog') }}
                 </button>
             </div>
 
@@ -199,11 +230,11 @@ const removeAndReload = (id: number) => {
                             >
                                 <span
                                     class="text-[9px] font-black tracking-[0.4em] text-primary uppercase"
-                                    >Benchmark</span
+                                    >{{ __('vehicleAd.benchmark') }}</span
                                 >
                                 <span
                                     class="text-2xl font-black tracking-tighter text-foreground uppercase"
-                                    >Specs</span
+                                    >{{ __('vehicleAd.specs') }}</span
                                 >
                             </div>
 
@@ -241,7 +272,7 @@ const removeAndReload = (id: number) => {
                                                     )
                                                 "
                                             >
-                                                Voir l'offre
+                                                {{ __('vehicleAd.view_offer') }}
                                             </Button>
                                         </div>
                                     </div>
@@ -429,15 +460,12 @@ const removeAndReload = (id: number) => {
                         <h3
                             class="text-4xl font-black tracking-tighter text-white uppercase italic md:text-5xl"
                         >
-                            Complétez votre
-                            <span class="text-primary italic">duel</span>
+                            {{ __('vehicleAd.complete_duel') }}
                         </h3>
                         <p
                             class="mt-4 max-w-lg text-lg font-medium text-white/40"
                         >
-                            Il reste des places disponibles. Ajoutez d'autres
-                            véhicules pour affiner votre choix et trouver la
-                            perle rare.
+                            {{ __('vehicleAd.complete_duel_desc') }}
                         </p>
 
                         <Button
@@ -445,7 +473,7 @@ const removeAndReload = (id: number) => {
                             class="mt-10 h-14 gap-3 rounded-full bg-primary px-10 text-base font-black tracking-widest text-white uppercase shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-primary/90"
                             @click="router.visit(vehiclesRoutes.index.url())"
                         >
-                            RETOUR AU CATALOGUE
+                            {{ __('vehicleAd.back_to_catalog').toUpperCase() }}
                             <ArrowRight class="size-5" />
                         </Button>
                     </div>

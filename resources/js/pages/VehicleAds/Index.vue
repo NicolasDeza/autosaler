@@ -1,5 +1,5 @@
 <template>
-    <Head title="Vehicles Listing" />
+    <Head :title="__('vehicleAd.listing_title')" />
 
     <AppLayout>
         <div
@@ -29,7 +29,11 @@
                         class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end"
                     >
                         <h2 class="text-2xl font-bold text-foreground">
-                            {{ ads.total }} véhicules trouvés
+                            {{
+                                __('vehicleAd.results_found', {
+                                    count: ads.total,
+                                })
+                            }}
                         </h2>
 
                         <SortSelect v-model="form.sort" />
@@ -151,7 +155,11 @@
                                                         <span
                                                             class="pb-0.5 text-[9px] font-semibold tracking-[0.18em] text-white/80 uppercase sm:text-[10px]"
                                                         >
-                                                            TVAC
+                                                            {{
+                                                                __(
+                                                                    'vehicleAd.vat_included',
+                                                                )
+                                                            }}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -254,7 +262,11 @@
                                                     />
                                                     <span
                                                         class="text-[10px] font-bold tracking-tight uppercase"
-                                                        >Comparer</span
+                                                        >{{
+                                                            __(
+                                                                'vehicleAd.compare',
+                                                            )
+                                                        }}</span
                                                     >
                                                 </Button>
 
@@ -295,16 +307,16 @@
                             class="mx-auto mb-4 h-12 w-12 text-muted-foreground"
                         />
                         <h3 class="text-lg font-bold text-foreground">
-                            Aucun véhicule trouvé
+                            {{ __('vehicleAd.no_vehicles_found') }}
                         </h3>
                         <p class="text-muted-foreground">
-                            Essayez de modifier vos critères de recherche.
+                            {{ __('vehicleAd.try_modifying_filters') }}
                         </p>
                         <Button
                             variant="outline"
                             class="mt-4"
                             @click="resetFilters"
-                            >Réinitialiser les filtres</Button
+                            >{{ __('vehicleAd.reset_filters') }}</Button
                         >
                     </div>
                 </Transition>
@@ -321,8 +333,8 @@
 
     <LoginRequiredModal
         v-model:open="showLoginModal"
-        title="Coup de cœur ?"
-        description="Connectez-vous pour enregistrer ce véhicule dans vos favoris et le retrouver à tout moment."
+        :title="__('vehicleAd.favorite_modal_title')"
+        :description="__('vehicleAd.favorite_modal_description')"
     />
 </template>
 
@@ -346,6 +358,7 @@ import ActiveFilters from '@/components/VehicleAds/ActiveFilters.vue';
 import FilterSidebar from '@/components/VehicleAds/FilterSidebar.vue';
 import SortSelect from '@/components/VehicleAds/SortSelect.vue';
 import { useComparison } from '@/composables/useComparison';
+import { useTranslation } from '@/composables/useTranslation';
 import AppLayout from '@/layouts/AppLayout.vue';
 import vehiclesRoutes from '@/routes/vehicles';
 
@@ -380,6 +393,8 @@ const currentYear = new Date().getFullYear();
 const f = props.filters || {};
 const toArr = (v: any): string[] =>
     v ? (Array.isArray(v) ? v.map(String) : [String(v)]) : [];
+
+const { __ } = useTranslation();
 
 interface FilterForm {
     brand_id: string;

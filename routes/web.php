@@ -73,13 +73,24 @@ Route::get('/translations/{locale}', function ($locale) {
                 $translations = json_decode(file_get_contents($jsonPath), true);
             }
 
+            $flatten = function (array $array, string $prefix = '') use (&$flatten) {
+                $result = [];
+                foreach ($array as $key => $value) {
+                    $newKey = $prefix ? "$prefix.$key" : $key;
+                    if (is_array($value)) {
+                        $result = array_merge($result, $flatten($value, $newKey));
+                    } else {
+                        $result[$newKey] = $value;
+                    }
+                }
+
+                return $result;
+            };
+
             foreach (glob(lang_path("$locale/*.php")) as $file) {
                 $filename = basename($file, '.php');
                 $fileTranslations = require $file;
-
-                foreach ($fileTranslations as $key => $value) {
-                    $translations["$filename.$key"] = $value;
-                }
+                $translations = array_merge($translations, $flatten($fileTranslations, $filename));
             }
 
             return $translations;

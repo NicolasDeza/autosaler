@@ -1,10 +1,10 @@
 <template>
-    <Head title="Modifier l'annonce" />
+    <Head :title="__('vehicleAd.edit_ad')" />
 
     <AppLayout>
         <div class="mx-auto max-w-5xl p-4 md:p-8">
             <h1 class="mb-8 text-3xl font-bold tracking-tight">
-                Modifier l'annonce
+                {{ __('vehicleAd.edit_ad') }}
             </h1>
 
             <form @submit.prevent="submit('active')" class="space-y-8">
@@ -13,10 +13,11 @@
                     <CardHeader
                         class="dark rounded-t-xl bg-card py-6 text-card-foreground"
                     >
-                        <CardTitle>Informations générales</CardTitle>
+                        <CardTitle>{{
+                            __('vehicleAd.general_info')
+                        }}</CardTitle>
                         <CardDescription>
-                            Les informations principales d'identification et de
-                            vente du véhicule.
+                            {{ __('vehicleAd.general_info_desc') }}
                         </CardDescription>
                     </CardHeader>
                     <CardContent class="p-6">
@@ -25,11 +26,13 @@
                         >
                             <!-- Véhicule Identification -->
                             <div class="space-y-2">
-                                <Label for="brand_id">Marque *</Label>
+                                <Label for="brand_id"
+                                    >{{ __('vehicleAd.brand') }} *</Label
+                                >
                                 <Select v-model="form.brand_id" required>
                                     <SelectTrigger
                                         ><SelectValue
-                                            placeholder="Sélectionnez"
+                                            :placeholder="__('ui.select')"
                                     /></SelectTrigger>
                                     <SelectContent>
                                         <SelectItem
@@ -43,7 +46,9 @@
                                 <InputError :message="form.errors.brand_id" />
                             </div>
                             <div class="space-y-2">
-                                <Label for="model_id">Modèle *</Label>
+                                <Label for="model_id"
+                                    >{{ __('vehicleAd.model') }} *</Label
+                                >
                                 <Select
                                     v-model="form.model_id"
                                     :disabled="
@@ -53,7 +58,7 @@
                                 >
                                     <SelectTrigger
                                         ><SelectValue
-                                            placeholder="Sélectionnez"
+                                            :placeholder="__('ui.select')"
                                     /></SelectTrigger>
                                     <SelectContent>
                                         <SelectItem
@@ -92,9 +97,9 @@
                                 />
                             </div> -->
                             <div class="space-y-2">
-                                <Label for="vehicle_version_name"
-                                    >Version</Label
-                                >
+                                <Label for="vehicle_version_name">{{
+                                    __('vehicleAd.version')
+                                }}</Label>
                                 <Input
                                     id="vehicle_version_name"
                                     v-model="form.vehicle_version_name"
@@ -108,7 +113,9 @@
 
                             <!-- Numéros d'identification -->
                             <div class="space-y-2 md:col-span-2 lg:col-span-1">
-                                <Label for="vin">Numéro de châssis (VIN)</Label>
+                                <Label for="vin">{{
+                                    __('vehicleAd.vin')
+                                }}</Label>
                                 <Input
                                     id="vin"
                                     v-model="form.vin"
@@ -121,7 +128,10 @@
                             <!-- Dates -->
                             <div class="space-y-2">
                                 <Label for="first_registration_date"
-                                    >1ère immatriculation *</Label
+                                    >{{
+                                        __('vehicleAd.first_registration')
+                                    }}
+                                    *</Label
                                 >
                                 <DatePicker
                                     v-model="form.first_registration_date"
@@ -135,7 +145,9 @@
                             </div>
                             <div class="hidden space-y-2 lg:block"></div>
                             <div class="space-y-2">
-                                <Label for="purchase_date">Date d'achat</Label>
+                                <Label for="purchase_date">{{
+                                    __('vehicleAd.purchase_date')
+                                }}</Label>
                                 <DatePicker v-model="form.purchase_date" />
                                 <InputError
                                     :message="form.errors.purchase_date"
@@ -144,7 +156,9 @@
 
                             <!-- Données de base Vente -->
                             <div class="space-y-2">
-                                <Label for="price">Prix (€) *</Label>
+                                <Label for="price"
+                                    >{{ __('vehicleAd.price_eur') }} *</Label
+                                >
                                 <Input
                                     id="price"
                                     v-model="form.price"
@@ -156,7 +170,9 @@
                                 <InputError :message="form.errors.price" />
                             </div>
                             <div class="space-y-2">
-                                <Label for="mileage">Kilométrage (km) *</Label>
+                                <Label for="mileage"
+                                    >{{ __('vehicleAd.mileage_km') }} *</Label
+                                >
                                 <Input
                                     id="mileage"
                                     v-model="form.mileage"
@@ -167,9 +183,9 @@
                                 <InputError :message="form.errors.mileage" />
                             </div>
                             <div class="space-y-2">
-                                <Label for="previous_owner"
-                                    >Précédents proprios</Label
-                                >
+                                <Label for="previous_owner">{{
+                                    __('vehicleAd.previous_owners')
+                                }}</Label>
                                 <Input
                                     id="previous_owner"
                                     v-model="form.previous_owner"
@@ -189,10 +205,11 @@
                     <CardHeader
                         class="dark rounded-t-xl bg-card py-6 text-card-foreground"
                     >
-                        <CardTitle>Spécifications techniques</CardTitle>
+                        <CardTitle>{{
+                            __('vehicleAd.technical_specs')
+                        }}</CardTitle>
                         <CardDescription>
-                            Détails sur le moteur, la transmission et le type
-                            carrosserie.
+                            {{ __('vehicleAd.technical_specs_desc') }}
                         </CardDescription>
                     </CardHeader>
                     <CardContent class="p-6">
@@ -201,13 +218,13 @@
                         >
                             <!-- Groupe Carrosserie -->
                             <div class="space-y-2 md:col-span-2">
-                                <Label for="body_type_id"
-                                    >Type de carrosserie</Label
-                                >
+                                <Label for="body_type_id">{{
+                                    __('vehicleAd.body')
+                                }}</Label>
                                 <Select v-model="form.body_type_id">
                                     <SelectTrigger
                                         ><SelectValue
-                                            placeholder="Sélectionnez"
+                                            :placeholder="__('ui.select')"
                                     /></SelectTrigger>
                                     <SelectContent>
                                         <SelectItem
@@ -223,7 +240,7 @@
                                 />
                             </div>
                             <div class="space-y-2">
-                                <Label>Portes</Label>
+                                <Label>{{ __('vehicleAd.doors') }}</Label>
                                 <Select v-model="form.doors">
                                     <SelectTrigger
                                         ><SelectValue placeholder="-"
@@ -240,7 +257,7 @@
                                 <InputError :message="form.errors.doors" />
                             </div>
                             <div class="space-y-2">
-                                <Label>Sièges</Label>
+                                <Label>{{ __('vehicleAd.seats') }}</Label>
                                 <Select v-model="form.seats">
                                     <SelectTrigger
                                         ><SelectValue placeholder="-"
@@ -263,11 +280,13 @@
 
                             <!-- Groupe Moteur / Énergie -->
                             <div class="space-y-2 md:col-span-2 lg:col-span-1">
-                                <Label for="fuel_type_id">Carburant</Label>
+                                <Label for="fuel_type_id">{{
+                                    __('vehicleAd.fuel')
+                                }}</Label>
                                 <Select v-model="form.fuel_type_id">
                                     <SelectTrigger
                                         ><SelectValue
-                                            placeholder="Sélectionnez"
+                                            :placeholder="__('ui.select')"
                                     /></SelectTrigger>
                                     <SelectContent>
                                         <SelectItem
@@ -283,7 +302,9 @@
                                 />
                             </div>
                             <div class="space-y-2">
-                                <Label for="power_kw">Puissance (kW)</Label>
+                                <Label for="power_kw">{{
+                                    __('vehicleAd.power_kw')
+                                }}</Label>
                                 <Input
                                     id="power_kw"
                                     v-model="form.power_kw"
@@ -293,9 +314,9 @@
                                 <InputError :message="form.errors.power_kw" />
                             </div>
                             <div class="space-y-2">
-                                <Label for="engine_displacement"
-                                    >Cylindrée (cm³)</Label
-                                >
+                                <Label for="engine_displacement">{{
+                                    __('vehicleAd.displacement_cm3')
+                                }}</Label>
                                 <Input
                                     id="engine_displacement"
                                     v-model="form.engine_displacement"
@@ -307,7 +328,9 @@
                                 />
                             </div>
                             <div class="space-y-2">
-                                <Label for="cylinder_count">Cylindres</Label>
+                                <Label for="cylinder_count">{{
+                                    __('vehicleAd.cylinders')
+                                }}</Label>
                                 <Input
                                     id="cylinder_count"
                                     v-model="form.cylinder_count"
@@ -325,13 +348,13 @@
 
                             <!-- Groupe Transmission & Performance environnementales -->
                             <div class="space-y-2 md:col-span-2 lg:col-span-1">
-                                <Label for="transmission_type_id"
-                                    >Boîte de vitesse</Label
-                                >
+                                <Label for="transmission_type_id">{{
+                                    __('vehicleAd.transmission')
+                                }}</Label>
                                 <Select v-model="form.transmission_type_id">
                                     <SelectTrigger
                                         ><SelectValue
-                                            placeholder="Sélectionnez"
+                                            :placeholder="__('ui.select')"
                                     /></SelectTrigger>
                                     <SelectContent>
                                         <SelectItem
@@ -347,7 +370,9 @@
                                 />
                             </div>
                             <div class="space-y-2">
-                                <Label for="gear_count">Nb de vitesses</Label>
+                                <Label for="gear_count">{{
+                                    __('vehicleAd.gear_count')
+                                }}</Label>
                                 <Input
                                     id="gear_count"
                                     v-model="form.gear_count"
@@ -357,11 +382,13 @@
                                 <InputError :message="form.errors.gear_count" />
                             </div>
                             <div class="space-y-2">
-                                <Label for="euro_norm_id">Norme Euro</Label>
+                                <Label for="euro_norm_id">{{
+                                    __('vehicleAd.euro_norm')
+                                }}</Label>
                                 <Select v-model="form.euro_norm_id">
                                     <SelectTrigger
                                         ><SelectValue
-                                            placeholder="Sélectionnez"
+                                            :placeholder="__('ui.select')"
                                     /></SelectTrigger>
                                     <SelectContent>
                                         <SelectItem
@@ -377,9 +404,9 @@
                                 />
                             </div>
                             <div class="space-y-2">
-                                <Label for="fuel_consumption_avg"
-                                    >Conso moy (L/100)</Label
-                                >
+                                <Label for="fuel_consumption_avg">{{
+                                    __('vehicleAd.consumption_avg')
+                                }}</Label>
                                 <Input
                                     id="fuel_consumption_avg"
                                     v-model="form.fuel_consumption_avg"
@@ -394,9 +421,9 @@
 
                             <!-- Dernier groupe -->
                             <div class="space-y-2">
-                                <Label for="co2_emission"
-                                    >Émission CO2 (g/km)</Label
-                                >
+                                <Label for="co2_emission">{{
+                                    __('vehicleAd.co2_emissions')
+                                }}</Label>
                                 <Input
                                     id="co2_emission"
                                     v-model="form.co2_emission"
@@ -408,7 +435,9 @@
                                 />
                             </div>
                             <div class="space-y-2">
-                                <Label for="weight_kg">Poids (kg)</Label>
+                                <Label for="weight_kg">{{
+                                    __('vehicleAd.weight_kg')
+                                }}</Label>
                                 <Input
                                     id="weight_kg"
                                     v-model="form.weight_kg"
@@ -426,10 +455,11 @@
                     <CardHeader
                         class="dark rounded-t-xl bg-card py-6 text-card-foreground"
                     >
-                        <CardTitle>Esthétique & État</CardTitle>
+                        <CardTitle>{{
+                            __('vehicleAd.aesthetics_condition')
+                        }}</CardTitle>
                         <CardDescription>
-                            Design intérieur/extérieur et l'état de l'historique
-                            du véhicule.
+                            {{ __('vehicleAd.aesthetics_condition_desc') }}
                         </CardDescription>
                     </CardHeader>
                     <CardContent class="p-6">
@@ -437,19 +467,23 @@
                             <!-- Couleurs & Habitacle -->
                             <div class="space-y-6">
                                 <h3 class="border-b pb-2 font-medium">
-                                    Apparence
+                                    {{ __('vehicleAd.appearance') }}
                                 </h3>
                                 <div
                                     class="grid grid-cols-1 items-end gap-6 sm:grid-cols-2"
                                 >
                                     <div class="space-y-2">
-                                        <Label>Couleur extérieure</Label>
+                                        <Label>{{
+                                            __('vehicleAd.exterior_color')
+                                        }}</Label>
                                         <Select
                                             v-model="form.exterior_color_id"
                                         >
                                             <SelectTrigger
                                                 ><SelectValue
-                                                    placeholder="Sélectionnez"
+                                                    :placeholder="
+                                                        __('ui.select')
+                                                    "
                                             /></SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem
@@ -482,22 +516,26 @@
                                                         v)
                                             "
                                         />
-                                        <Label for="exterior_color_metalised"
-                                            >Peinture métallisée</Label
-                                        >
+                                        <Label for="exterior_color_metalised">{{
+                                            __('vehicleAd.metallic_paint')
+                                        }}</Label>
                                     </div>
                                 </div>
                                 <div
                                     class="grid grid-cols-1 gap-6 sm:grid-cols-2"
                                 >
                                     <div class="space-y-2">
-                                        <Label>Couleur intérieure</Label>
+                                        <Label>{{
+                                            __('vehicleAd.interior_color')
+                                        }}</Label>
                                         <Select
                                             v-model="form.interior_color_id"
                                         >
                                             <SelectTrigger
                                                 ><SelectValue
-                                                    placeholder="Sélectionnez"
+                                                    :placeholder="
+                                                        __('ui.select')
+                                                    "
                                             /></SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem
@@ -517,11 +555,15 @@
                                         />
                                     </div>
                                     <div class="space-y-2">
-                                        <Label>Matière intérieure</Label>
+                                        <Label>{{
+                                            __('vehicleAd.interior_material')
+                                        }}</Label>
                                         <Select v-model="form.interior_type_id">
                                             <SelectTrigger
                                                 ><SelectValue
-                                                    placeholder="Sélectionnez"
+                                                    :placeholder="
+                                                        __('ui.select')
+                                                    "
                                             /></SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem
@@ -544,7 +586,7 @@
                             <!-- État Général -->
                             <div class="space-y-6">
                                 <h3 class="border-b pb-2 font-medium">
-                                    État et Historique
+                                    {{ __('vehicleAd.state_history') }}
                                 </h3>
                                 <div
                                     class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2"
@@ -561,7 +603,9 @@
                                         <Label
                                             for="is_damaged"
                                             class="cursor-pointer leading-tight"
-                                            >Véhicule endommagé</Label
+                                            >{{
+                                                __('vehicleAd.damaged')
+                                            }}</Label
                                         >
                                     </div>
                                     <div class="flex items-center space-x-3">
@@ -576,7 +620,9 @@
                                         <Label
                                             for="has_accident"
                                             class="cursor-pointer leading-tight"
-                                            >A déjà eu un accident</Label
+                                            >{{
+                                                __('vehicleAd.accident')
+                                            }}</Label
                                         >
                                     </div>
                                     <div class="flex items-center space-x-3">
@@ -594,7 +640,11 @@
                                         <Label
                                             for="complete_maintenance_book"
                                             class="cursor-pointer leading-tight"
-                                            >Carnet d'entretien complet</Label
+                                            >{{
+                                                __(
+                                                    'vehicleAd.full_service_history',
+                                                )
+                                            }}</Label
                                         >
                                     </div>
                                     <div class="flex items-center space-x-3">
@@ -609,7 +659,9 @@
                                         <Label
                                             for="non_smoker"
                                             class="cursor-pointer leading-tight"
-                                            >Véhicule non-fumeur</Label
+                                            >{{
+                                                __('vehicleAd.non_smoker')
+                                            }}</Label
                                         >
                                     </div>
                                     <div class="flex items-center space-x-3">
@@ -627,7 +679,11 @@
                                         <Label
                                             for="technical_inspection_status"
                                             class="cursor-pointer leading-tight"
-                                            >Contrôle technique valide</Label
+                                            >{{
+                                                __(
+                                                    'vehicleAd.technical_inspection',
+                                                )
+                                            }}</Label
                                         >
                                     </div>
                                 </div>
@@ -641,10 +697,11 @@
                     <CardHeader
                         class="dark rounded-t-xl bg-card py-6 text-card-foreground"
                     >
-                        <CardTitle>Équipements & Options</CardTitle>
+                        <CardTitle>{{
+                            __('vehicleAd.equipment_options')
+                        }}</CardTitle>
                         <CardDescription>
-                            Sélectionnez les options disponibles sur ce
-                            véhicule.
+                            {{ __('vehicleAd.equipment_options_desc') }}
                         </CardDescription>
                     </CardHeader>
                     <CardContent class="p-6">
@@ -713,9 +770,11 @@
                     <CardHeader
                         class="dark rounded-t-xl bg-card py-6 text-card-foreground"
                     >
-                        <CardTitle>Description détaillée</CardTitle>
+                        <CardTitle>{{
+                            __('vehicleAd.detailed_description')
+                        }}</CardTitle>
                         <CardDescription>
-                            Le texte de votre annonce.
+                            {{ __('vehicleAd.detailed_description_desc') }}
                         </CardDescription>
                     </CardHeader>
                     <CardContent class="p-6">
@@ -723,7 +782,9 @@
                             id="description"
                             v-model="form.description"
                             rows="6"
-                            placeholder="Décrivez votre véhicule de la manière la plus complète possible..."
+                            :placeholder="
+                                __('vehicleAd.detailed_description_placeholder')
+                            "
                         />
                         <InputError :message="form.errors.description" />
                     </CardContent>
@@ -739,7 +800,7 @@
                             variant="destructive"
                             @click="destroyAd"
                         >
-                            Supprimer l'annonce
+                            {{ __('vehicleAd.delete_ad') }}
                         </Button>
                         <div class="flex items-center gap-3">
                             <Button
@@ -749,7 +810,7 @@
                                     () => router.visit(vehicleShow.url(ad.id))
                                 "
                             >
-                                Annuler
+                                {{ __('ui.cancel') }}
                             </Button>
                             <Button
                                 type="button"
@@ -757,10 +818,10 @@
                                 :disabled="form.processing"
                                 @click.prevent="submit('draft')"
                             >
-                                Sauvegarder en brouillon
+                                {{ __('vehicleAd.save_draft') }}
                             </Button>
                             <Button type="submit" :disabled="form.processing">
-                                Enregistrer et publier
+                                {{ __('vehicleAd.save_publish') }}
                             </Button>
                         </div>
                     </div>
@@ -795,12 +856,15 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { useTranslation } from '@/composables/useTranslation';
 import AppLayout from '@/layouts/AppLayout.vue';
 import {
     show as vehicleShow,
     update as vehicleUpdate,
     destroy as vehicleDestroy,
 } from '@/routes/vehicles';
+
+const { __ } = useTranslation();
 
 type FeatureOption = {
     id: number | string;
@@ -1021,7 +1085,7 @@ const submit = (status: 'active' | 'draft') => {
 };
 
 const destroyAd = () => {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette annonce ?')) {
+    if (confirm(__('ui.confirm_delete'))) {
         router.delete(vehicleDestroy.url(props.ad.id));
     }
 };

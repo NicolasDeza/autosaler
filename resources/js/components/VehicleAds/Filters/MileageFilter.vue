@@ -8,20 +8,23 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
+import { useTranslation } from '@/composables/useTranslation';
+
+const { __ } = useTranslation();
 
 const form = defineModel<any>('form', { required: true });
 </script>
 
 <template>
-    <FilterGroup label="Kilométrage" :icon="Gauge" :is-active="form.max_mileage !== 'all'">
+    <FilterGroup :label="__('vehicleAd.mileage_max')" :icon="Gauge" :is-active="form.max_mileage !== 'all'">
         <Select v-model="form.max_mileage">
             <SelectTrigger
                 class="w-full border-input bg-background text-foreground"
             >
-                <SelectValue placeholder="Peu importe" />
+                <SelectValue :placeholder="__('ui.any')" />
             </SelectTrigger>
             <SelectContent class="border-border bg-popover text-popover-foreground">
-                <SelectItem value="all">Peu importe</SelectItem>
+                <SelectItem value="all">{{ __('ui.any') }}</SelectItem>
                 <SelectItem value="10000">10 000 km</SelectItem>
                 <SelectItem value="25000">25 000 km</SelectItem>
                 <SelectItem value="50000">50 000 km</SelectItem>

@@ -3,6 +3,7 @@ import { X } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from '@/composables/useTranslation';
 
 const props = defineProps<{
     form: any;
@@ -26,6 +27,8 @@ const emit = defineEmits([
     'updateYear',
 ]);
 
+const { __ } = useTranslation();
+
 const activeFilters = computed(() => {
     const filters: { key: string; label: string; onRemove: () => void }[] = [];
     const v = props.form;
@@ -37,7 +40,7 @@ const activeFilters = computed(() => {
         );
         filters.push({
             key: 'brand_id',
-            label: `Marque: ${brand?.name || v.brand_id}`,
+            label: `${__('vehicleAd.brand')}: ${brand?.name || v.brand_id}`,
             onRemove: () => emit('updateFilter', 'brand_id', 'all'),
         });
     }
@@ -49,7 +52,7 @@ const activeFilters = computed(() => {
         );
         filters.push({
             key: 'model_id',
-            label: `Modèle: ${model?.name || v.model_id}`,
+            label: `${__('vehicleAd.model')}: ${model?.name || v.model_id}`,
             onRemove: () => emit('updateFilter', 'model_id', 'all'),
         });
     }
@@ -58,7 +61,7 @@ const activeFilters = computed(() => {
     if (v.city) {
         filters.push({
             key: 'city',
-            label: `Ville: ${v.city}`,
+            label: `${__('vehicleAd.city')}: ${v.city}`,
             onRemove: () => emit('updateFilter', 'city', ''),
         });
     }
@@ -67,7 +70,7 @@ const activeFilters = computed(() => {
     if (Number(v.min_price) > 0 || Number(v.max_price) < 200000) {
         filters.push({
             key: 'price',
-            label: `Prix: ${v.min_price}€ - ${v.max_price >= 200000 ? '200k+' : v.max_price + '€'}`,
+            label: `${__('vehicleAd.price')}: ${v.min_price}€ - ${v.max_price >= 200000 ? '200k+' : v.max_price + '€'}`,
             onRemove: () => emit('updatePrice', [0, 200000]),
         });
     }
@@ -76,7 +79,7 @@ const activeFilters = computed(() => {
     if (Number(v.min_year) > 1980 || Number(v.max_year) < props.currentYear) {
         filters.push({
             key: 'year',
-            label: `Année: ${v.min_year} - ${v.max_year}`,
+            label: `${__('vehicleAd.year')}: ${v.min_year} - ${v.max_year}`,
             onRemove: () => emit('updateYear', [1980, props.currentYear]),
         });
     }
@@ -85,7 +88,7 @@ const activeFilters = computed(() => {
     if (v.max_mileage && v.max_mileage !== 'all') {
         filters.push({
             key: 'max_mileage',
-            label: `Kilométrage max: ${v.max_mileage} km`,
+            label: `${__('vehicleAd.mileage_max')}: ${v.max_mileage} km`,
             onRemove: () => emit('updateFilter', 'max_mileage', 'all'),
         });
     }
@@ -98,7 +101,7 @@ const activeFilters = computed(() => {
             );
             filters.push({
                 key: `fuel_type_${id}`,
-                label: `Carburant: ${type?.code || id}`,
+                label: `${__('vehicleAd.fuel')}: ${type?.code || id}`,
                 onRemove: () => {
                     const newValue = v.fuel_types.filter(
                         (t: string) => String(t) !== String(id),
@@ -117,7 +120,7 @@ const activeFilters = computed(() => {
             );
             filters.push({
                 key: `body_type_${id}`,
-                label: `Carrosserie: ${type?.code || id}`,
+                label: `${__('vehicleAd.body')}: ${type?.code || id}`,
                 onRemove: () => {
                     const newValue = v.body_types.filter(
                         (t: string) => String(t) !== String(id),
@@ -136,7 +139,7 @@ const activeFilters = computed(() => {
             );
             filters.push({
                 key: `transmission_type_${id}`,
-                label: `Transmission: ${type?.code || id}`,
+                label: `${__('vehicleAd.transmission')}: ${type?.code || id}`,
                 onRemove: () => {
                     const newValue = v.transmission_types.filter(
                         (t: string) => String(t) !== String(id),
@@ -154,7 +157,7 @@ const activeFilters = computed(() => {
         );
         filters.push({
             key: 'exterior_color_id',
-            label: `Couleur: ${color?.code || v.exterior_color_id}`,
+            label: `${__('vehicleAd.exterior_color')}: ${color?.code || v.exterior_color_id}`,
             onRemove: () => emit('updateFilter', 'exterior_color_id', 'all'),
         });
     }
@@ -166,7 +169,7 @@ const activeFilters = computed(() => {
         );
         filters.push({
             key: 'euro_norm_id',
-            label: `Norme Euro: ${norm?.code || v.euro_norm_id}`,
+            label: `${__('vehicleAd.euro_norm')}: ${norm?.code || v.euro_norm_id}`,
             onRemove: () => emit('updateFilter', 'euro_norm_id', 'all'),
         });
     }
@@ -178,7 +181,7 @@ const activeFilters = computed(() => {
         );
         filters.push({
             key: 'interior_color_id',
-            label: `Coul. Int.: ${color?.code || v.interior_color_id}`,
+            label: `${__('vehicleAd.interior_color')}: ${color?.code || v.interior_color_id}`,
             onRemove: () => emit('updateFilter', 'interior_color_id', 'all'),
         });
     }
@@ -190,7 +193,7 @@ const activeFilters = computed(() => {
         );
         filters.push({
             key: 'interior_type_id',
-            label: `Mat. Int.: ${type?.code || v.interior_type_id}`,
+            label: `${__('vehicleAd.interior_material')}: ${type?.code || v.interior_type_id}`,
             onRemove: () => emit('updateFilter', 'interior_type_id', 'all'),
         });
     }
@@ -199,7 +202,7 @@ const activeFilters = computed(() => {
     if (v.doors && v.doors !== 'all') {
         filters.push({
             key: 'doors',
-            label: `Portes: ${v.doors}`,
+            label: `${__('vehicleAd.doors')}: ${v.doors}`,
             onRemove: () => emit('updateFilter', 'doors', 'all'),
         });
     }
@@ -208,7 +211,7 @@ const activeFilters = computed(() => {
     if (v.seats && v.seats !== 'all') {
         filters.push({
             key: 'seats',
-            label: `Sièges: ${v.seats}`,
+            label: `${__('vehicleAd.seats')}: ${v.seats}`,
             onRemove: () => emit('updateFilter', 'seats', 'all'),
         });
     }
@@ -217,21 +220,21 @@ const activeFilters = computed(() => {
     if (v.is_damaged === true) {
         filters.push({
             key: 'is_damaged',
-            label: 'Véhicule endommagé',
+            label: __('vehicleAd.damaged'),
             onRemove: () => emit('updateFilter', 'is_damaged', null),
         });
     }
     if (v.has_accident === true) {
         filters.push({
             key: 'has_accident',
-            label: 'Accidenté',
+            label: __('vehicleAd.accident'),
             onRemove: () => emit('updateFilter', 'has_accident', null),
         });
     }
     if (v.complete_maintenance_book === true) {
         filters.push({
             key: 'complete_maintenance_book',
-            label: 'Carnet entretien complet',
+            label: __('vehicleAd.full_service_history'),
             onRemove: () =>
                 emit('updateFilter', 'complete_maintenance_book', null),
         });
@@ -239,7 +242,7 @@ const activeFilters = computed(() => {
     if (v.non_smoker === true) {
         filters.push({
             key: 'non_smoker',
-            label: 'Non fumeur',
+            label: __('vehicleAd.non_smoker'),
             onRemove: () => emit('updateFilter', 'non_smoker', null),
         });
     }
@@ -248,7 +251,7 @@ const activeFilters = computed(() => {
     if (v.favorites_only === true) {
         filters.push({
             key: 'favorites_only',
-            label: 'Favoris uniquement',
+            label: __('vehicleAd.favorites_only'),
             onRemove: () => emit('updateFilter', 'favorites_only', false),
         });
     }
@@ -257,7 +260,7 @@ const activeFilters = computed(() => {
     if (v.version) {
         filters.push({
             key: 'version',
-            label: `Version: ${v.version}`,
+            label: `${__('vehicleAd.version')}: ${v.version}`,
             onRemove: () => emit('updateFilter', 'version', ''),
         });
     }
@@ -265,7 +268,7 @@ const activeFilters = computed(() => {
     // Power
     if (v.min_power || v.max_power) {
         const factor = 1.35962;
-        let label = 'Puissance: ';
+        let label = `${__('vehicleAd.power')}: `;
         const isCh = v.power_unit === 'ch';
         const unitLabel = isCh ? 'ch' : 'kW';
 
@@ -306,7 +309,7 @@ const activeFilters = computed(() => {
             );
             filters.push({
                 key: `feature_${id}`,
-                label: `Equip.: ${feature?.code || feature?.key || id}`,
+                label: `${__('vehicleAd.equipment')}: ${feature?.code || feature?.key || id}`,
                 onRemove: () => {
                     const newValue = v.features.filter(
                         (f: string) => String(f) !== String(id),
@@ -363,7 +366,7 @@ const activeFilters = computed(() => {
                     class="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
                     @click="emit('resetAll')"
                 >
-                    Tout effacer
+                    {{ __('vehicleAd.clear_all') }}
                 </Button>
             </TransitionGroup>
         </div>

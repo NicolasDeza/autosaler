@@ -4,6 +4,9 @@ import { MapPin } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { Input } from '@/components/ui/input';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
+import { useTranslation } from '@/composables/useTranslation';
+
+const { __ } = useTranslation();
 
 const city = defineModel<string>('city');
 const cityId = defineModel<string | number>('cityId');
@@ -73,7 +76,7 @@ const handleCityBlur = () => {
 
 <template>
     <FilterGroup
-        label="Emplacement"
+        :label="__('ui.location')"
         :icon="MapPin"
         :is-active="!!city"
         class="relative z-50"
@@ -87,7 +90,7 @@ const handleCityBlur = () => {
                 />
                 <Input
                     v-model="searchTerm"
-                    placeholder="Localisation"
+                    :placeholder="__('ui.location')"
                     class="h-full w-full border-input bg-background pl-9 text-foreground placeholder-muted-foreground"
                     @input="searchCities(searchTerm)"
                     @focus="searchTerm.length >= 2 ? (showCities = true) : null"
@@ -116,7 +119,7 @@ const handleCityBlur = () => {
                         v-if="cities.length === 0 && isSearchingCities"
                         class="p-2 text-center text-sm text-muted-foreground"
                     >
-                        Recherche...
+                        {{ __('ui.loading') }}
                     </div>
                 </div>
             </div>

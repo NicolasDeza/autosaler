@@ -16,9 +16,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { useTranslation } from '@/composables/useTranslation';
 
 const props = defineProps<{
-    vehicleAdId: number | string;
+    vehicleAdId: number;
 }>();
 
 const isOpen = defineModel<boolean>('open', { required: true });
@@ -30,6 +31,8 @@ const contactForm = useForm({
     email: '',
     phone: '',
 });
+
+const { __ } = useTranslation();
 
 const resetForm = (): void => {
     contactForm.reset();
@@ -69,9 +72,9 @@ const submitSellerContact = (): void => {
     <Dialog :open="isOpen" @update:open="handleOpenChange">
         <DialogContent class="sm:max-w-xl">
             <DialogHeader>
-                <DialogTitle>Contacter le vendeur</DialogTitle>
+                <DialogTitle>{{ __('vehicleAd.contact_seller') }}</DialogTitle>
                 <DialogDescription>
-                    Envoyez votre message au vendeur par email.
+                    {{ __('vehicleAd.contact_seller_desc') }}
                 </DialogDescription>
             </DialogHeader>
 
@@ -81,21 +84,21 @@ const submitSellerContact = (): void => {
                 @submit.prevent="submitSellerContact"
             >
                 <div class="space-y-2">
-                    <Label for="seller_message">Message *</Label>
+                    <Label for="seller_message">{{ __('vehicleAd.message') }} *</Label>
                     <Textarea
                         id="seller_message"
                         v-model="contactForm.message"
                         rows="5"
                         required
-                        placeholder="Bonjour, je suis intéressé(e) par ce véhicule..."
+                        :placeholder="__('vehicleAd.message_placeholder')"
                     />
                     <InputError :message="contactForm.errors.message" />
                 </div>
 
-                <p class="text-xs text-muted-foreground">Nom ou prénom *</p>
+                <p class="text-xs text-muted-foreground">{{ __('vehicleAd.last_name_or_first_name') }} *</p>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div class="space-y-2">
-                        <Label for="seller_last_name">Nom</Label>
+                        <Label for="seller_last_name">{{ __('ui.last_name') }}</Label>
                         <Input
                             id="seller_last_name"
                             v-model="contactForm.last_name"
@@ -104,13 +107,13 @@ const submitSellerContact = (): void => {
                             autocorrect="off"
                             autocapitalize="off"
                             spellcheck="false"
-                            placeholder="Votre nom"
+                            :placeholder="__('ui.last_name')"
                         />
                         <InputError :message="contactForm.errors.last_name" />
                     </div>
 
                     <div class="space-y-2">
-                        <Label for="seller_first_name">Prénom</Label>
+                        <Label for="seller_first_name">{{ __('ui.first_name') }}</Label>
                         <Input
                             id="seller_first_name"
                             v-model="contactForm.first_name"
@@ -119,7 +122,7 @@ const submitSellerContact = (): void => {
                             autocorrect="off"
                             autocapitalize="off"
                             spellcheck="false"
-                            placeholder="Votre prénom"
+                            :placeholder="__('ui.first_name')"
                         />
                         <InputError :message="contactForm.errors.first_name" />
                     </div>
@@ -127,7 +130,7 @@ const submitSellerContact = (): void => {
 
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div class="space-y-2">
-                        <Label for="seller_email">Email *</Label>
+                        <Label for="seller_email">{{ __('ui.email') }} *</Label>
                         <Input
                             id="seller_email"
                             v-model="contactForm.email"
@@ -144,7 +147,7 @@ const submitSellerContact = (): void => {
                     </div>
 
                     <div class="space-y-2">
-                        <Label for="seller_phone">Téléphone (facultatif)</Label>
+                        <Label for="seller_phone">{{ __('ui.phone') }} ({{ __('ui.optional') ?? 'facultatif' }})</Label>
                         <Input
                             id="seller_phone"
                             v-model="contactForm.phone"
@@ -162,7 +165,7 @@ const submitSellerContact = (): void => {
                         class="cursor-pointer"
                         @click="closeModal"
                     >
-                        Annuler
+                        {{ __('ui.cancel') }}
                     </Button>
                     <Button
                         type="submit"
@@ -172,8 +175,8 @@ const submitSellerContact = (): void => {
                         <Send class="mr-2 h-4 w-4" />
                         {{
                             contactForm.processing
-                                ? 'Envoi...'
-                                : 'Envoyer le message'
+                                ? __('vehicleAd.sending')
+                                : __('vehicleAd.send_message')
                         }}
                     </Button>
                 </DialogFooter>
