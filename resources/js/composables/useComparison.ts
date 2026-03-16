@@ -37,14 +37,18 @@ export function useComparison() {
         if (state.vehicles.length >= 4) {
             return false;
         }
-        if (!state.vehicles.find((v) => v.id === vehicle.id)) {
-            state.vehicles.push(vehicle);
+        const numericId = Number(vehicle.id);
+        if (!state.vehicles.find((v) => Number(v.id) === numericId)) {
+            state.vehicles.push({ ...vehicle, id: numericId });
         }
         return true;
     };
 
-    const removeVehicle = (id: number) => {
-        const index = state.vehicles.findIndex((v) => v.id === id);
+    const removeVehicle = (id: number | string) => {
+        const numericId = Number(id);
+        const index = state.vehicles.findIndex(
+            (v) => Number(v.id) === numericId,
+        );
         if (index !== -1) {
             state.vehicles.splice(index, 1);
         }
@@ -54,8 +58,8 @@ export function useComparison() {
         state.vehicles.splice(0, state.vehicles.length);
     };
 
-    const isSelected = (id: number) => {
-        return state.vehicles.some((v) => v.id === id);
+    const isSelected = (id: number | string) => {
+        return state.vehicles.some((v) => Number(v.id) === Number(id));
     };
 
     return {

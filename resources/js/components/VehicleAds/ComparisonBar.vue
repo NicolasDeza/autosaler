@@ -3,7 +3,6 @@ import { usePage, Link } from '@inertiajs/vue3';
 import { X, ArrowRight, Trash2, Car } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { useComparison } from '@/composables/useComparison';
 import vehiclesRoutes from '@/routes/vehicles';
 
@@ -39,46 +38,47 @@ const compareUrl = computed(() => {
     >
         <div
             v-if="isVisible"
-            class="fixed bottom-6 left-1/2 z-50 hidden w-max -translate-x-1/2 lg:block"
+            class="fixed bottom-8 left-1/2 z-50 hidden w-max -translate-x-1/2 lg:block"
         >
-            <Card
-                class="flex min-w-[600px] flex-row items-center justify-between gap-8 border-primary/20 bg-background/95 p-3 py-3 shadow-2xl backdrop-blur-md"
+            <div
+                class="flex min-w-[640px] flex-row items-center justify-between gap-10 rounded-2xl border border-white/10 bg-foreground p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-2xl lg:flex"
             >
-                <div class="flex flex-1 items-center gap-4">
-                    <div class="flex gap-3">
+                <!-- Selection Area -->
+                <div class="flex flex-1 items-center gap-3 px-2">
+                    <div class="flex gap-2.5">
                         <div
                             v-for="vehicle in state.vehicles"
                             :key="vehicle.id"
-                            class="group relative flex w-60 items-center gap-3 rounded-xl border border-border/50 bg-muted/30 transition-all hover:bg-muted/50"
+                            class="group relative flex w-64 items-center gap-4 overflow-hidden rounded-xl border border-white/5 bg-white/5 p-2 transition-all duration-300 hover:scale-[1.02] hover:bg-white/10 active:scale-[0.98]"
                         >
-                            <!-- Image/Placeholder -->
+                            <!-- Image/Placeholder Container -->
                             <div
-                                class="relative h-20 w-28 shrink-0 overflow-hidden rounded-lg bg-muted shadow-inner"
+                                class="relative h-16 w-24 shrink-0 overflow-hidden rounded-lg bg-muted shadow-inner"
                             >
                                 <div
-                                    class="flex h-full w-full items-center justify-center"
+                                    class="flex h-full w-full items-center justify-center transition-transform duration-500 group-hover:scale-110"
                                 >
                                     <Car
-                                        class="size-10 text-muted-foreground/20"
+                                        class="size-8 text-muted-foreground/30"
                                     />
                                 </div>
                             </div>
 
-                            <!-- Info -->
-                            <div class="flex min-w-0 flex-col">
+                            <!-- Vehicle Details -->
+                            <div class="flex min-w-0 flex-col py-1">
                                 <h4
-                                    class="truncate font-black tracking-tight text-foreground uppercase"
+                                    class="truncate text-xs font-black tracking-wide text-white uppercase"
                                 >
                                     {{ vehicle.brand }} {{ vehicle.model }}
                                 </h4>
                                 <p
                                     v-if="vehicle.vehicle_version_name"
-                                    class="truncate text-sm leading-tight font-bold text-muted-foreground uppercase"
+                                    class="truncate text-[10px] leading-tight font-bold tracking-wider text-white/40 uppercase"
                                 >
                                     {{ vehicle.vehicle_version_name }}
                                 </p>
                                 <span
-                                    class="mt-0.5 text-sm font-black text-primary"
+                                    class="mt-1 text-xs font-black text-primary"
                                 >
                                     {{
                                         Number(vehicle.price).toLocaleString(
@@ -89,34 +89,39 @@ const compareUrl = computed(() => {
                                 </span>
                             </div>
 
-                            <!-- Delete -->
+                            <!-- Remove Button Overlay -->
                             <button
                                 @click="removeVehicle(vehicle.id)"
-                                class="absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full border border-border bg-background text-muted-foreground opacity-0 shadow-sm transition-all group-hover:opacity-100 hover:bg-destructive hover:text-white"
+                                class="absolute top-1 right-1 flex size-5 items-center justify-center rounded-full bg-background/80 text-muted-foreground opacity-0 backdrop-blur-md transition-all duration-300 group-hover:opacity-100 hover:bg-destructive hover:text-destructive-foreground"
                             >
                                 <X class="size-3" />
                             </button>
                         </div>
                     </div>
 
-                    <div
-                        v-if="state.vehicles.length < 4"
-                        class="flex h-16 w-32 items-center justify-center rounded-xl border border-dashed border-border/50 bg-muted/10"
-                    >
-                        <span
-                            class="text-sm font-bold tracking-widest text-muted-foreground uppercase"
-                            >+ {{ 4 - state.vehicles.length }} places</span
+                    <!-- Placeholder Slots -->
+                    <div v-if="state.vehicles.length < 4" class="flex gap-2.5">
+                        <div
+                            v-for="i in 4 - state.vehicles.length"
+                            :key="`empty-${i}`"
+                            class="flex h-20 w-32 items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/5 transition-colors hover:bg-white/10"
                         >
+                            <span
+                                class="text-[9px] font-black tracking-[0.2em] text-white/20 uppercase"
+                                >Slot {{ state.vehicles.length + i }}</span
+                            >
+                        </div>
                     </div>
                 </div>
 
+                <!-- Action Side -->
                 <div
-                    class="flex shrink-0 flex-col items-center justify-end gap-3 border-l border-border/50 pl-8"
+                    class="flex shrink-0 flex-col items-center justify-center gap-1.5 border-l border-white/10 pr-4 pl-6"
                 >
                     <Link :href="compareUrl">
                         <Button
                             size="sm"
-                            class="h-10 gap-2 px-8 font-black tracking-tighter uppercase"
+                            class="h-11 gap-2 rounded-xl bg-primary px-8 font-black tracking-tighter text-white uppercase shadow-lg shadow-primary/20 transition-all hover:scale-105 hover:bg-primary/90 hover:shadow-primary/40 active:scale-95"
                         >
                             Comparer
                             <ArrowRight class="size-4" />
@@ -125,14 +130,14 @@ const compareUrl = computed(() => {
                     <Button
                         variant="ghost"
                         size="sm"
-                        class="h-10 px-4 text-xs font-bold tracking-widest text-muted-foreground uppercase hover:bg-destructive/5 hover:text-destructive"
+                        class="h-8 rounded-lg px-4 text-[10px] font-black tracking-[0.2em] text-white/40 uppercase transition-colors hover:bg-white/10 hover:text-destructive"
                         @click="clearSelection"
                     >
-                        <Trash2 class="size-4" />
-                        Vider
+                        <Trash2 class="mr-1.5 size-3" />
+                        Tout vider
                     </Button>
                 </div>
-            </Card>
+            </div>
         </div>
     </Transition>
 </template>
