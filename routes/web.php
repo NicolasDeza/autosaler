@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CitySearchController;
+use App\Http\Controllers\DealersPageController;
 use App\Http\Controllers\DealerDashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SubscriptionInquiryController;
@@ -28,6 +29,7 @@ Route::get('/cities/search', CitySearchController::class)->name('cities.search')
 Route::get('/vehicles', [VehicleAdController::class, 'index'])->name('vehicles.index');
 Route::get('/vehicles/{vehicleAd}', [VehicleAdController::class, 'show'])->name('vehicles.show')->whereNumber('vehicleAd');
 Route::post('/vehicles/{vehicleAd}/contact', VehicleAdContactController::class)->name('vehicles.contact')->whereNumber('vehicleAd');
+Route::get('/dealers', [DealersPageController::class, 'index'])->name('dealers.index');
 
 Route::middleware(['auth', 'verified', 'role:admin|dealer'])->group(function () {
     Route::post('/vehicles/{vehicleAd}/favorite', [VehicleAdController::class, 'toggleFavorite'])->name('vehicles.favorite');

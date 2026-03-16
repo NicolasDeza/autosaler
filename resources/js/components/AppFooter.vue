@@ -107,7 +107,7 @@
                             href="/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="inline-flex items-center rounded-md border border-primary/35 px-2 py-0.5 font-semibold text-primary transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                            class="inline-flex items-center font-medium text-primary underline underline-offset-2 transition-colors hover:text-primary/90"
                         >
                             La passion
                         </a>
@@ -127,6 +127,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import { home } from '@/routes';
 import admin from '@/routes/admin';
 import dealer from '@/routes/dealer';
+import dealers from '@/routes/dealers';
 import { notices, privacy, cookies } from '@/routes/legal';
 import vehicles from '@/routes/vehicles';
 import type { NavItem } from '@/types';
@@ -146,6 +147,10 @@ const menuItems = computed<NavItem[]>(() => {
         {
             title: 'Véhicules',
             href: vehicles.index().url,
+        },
+        {
+            title: __('dealerPage.heading'),
+            href: dealers.index().url,
         },
     ];
 

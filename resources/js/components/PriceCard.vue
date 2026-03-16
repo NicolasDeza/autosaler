@@ -75,7 +75,7 @@ function closeModal() {
 </script>
 
 <template>
-    <section class="w-full pt-8 sm:pt-12">
+    <section class="w-full">
         <div class="mx-auto max-w-5xl px-6">
             <div class="mb-16 text-center">
                 <h2

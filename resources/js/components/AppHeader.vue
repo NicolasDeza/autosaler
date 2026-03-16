@@ -8,6 +8,7 @@ import {
     Shield,
     Car,
     Star,
+    Warehouse,
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
@@ -48,6 +49,7 @@ import { toUrl } from '@/lib/utils';
 import { login, register } from '@/routes';
 import admin from '@/routes/admin';
 import dealer from '@/routes/dealer';
+import dealers from '@/routes/dealers';
 import vehicles from '@/routes/vehicles';
 
 import type { BreadcrumbItem, NavItem } from '@/types';
@@ -84,6 +86,11 @@ const mainNavItems = computed<NavItem[]>(() => {
             title: 'Véhicules',
             href: vehicles.index().url,
             icon: Car,
+        },
+        {
+            title: __('nav.professionals'),
+            href: dealers.index().url,
+            icon: Warehouse,
         },
         // {
         //     title: __('nav.nav_dashboard'),
