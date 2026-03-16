@@ -1,4 +1,4 @@
-﻿<template>
+<template>
     <Head :title="`${ad.brand?.name} ${ad.model?.name}`" />
 
     <AppLayout>
@@ -47,6 +47,26 @@
                                             'fill-primary': ad.is_favorited,
                                         }"
                                     />
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    class="hidden h-10 cursor-pointer items-center gap-2 rounded-md border border-border bg-background px-3 transition-all hover:border-primary/30 lg:flex"
+                                    :class="{
+                                        'border-primary/20 bg-primary/5 text-primary':
+                                            isSelected(ad.id),
+                                    }"
+                                    @click="toggleComparison"
+                                >
+                                    <Checkbox
+                                        :id="`compare-${ad.id}`"
+                                        :model-value="isSelected(ad.id)"
+                                        class="pointer-events-none size-4"
+                                    />
+                                    <span
+                                        class="text-xs font-bold tracking-tight uppercase"
+                                    >
+                                        Comparer
+                                    </span>
                                 </Button>
                             </div>
                             <div class="flex flex-col sm:items-end">
@@ -475,7 +495,6 @@
                                                     ad.user?.last_name
                                             }}
                                         </h2>
-
                                     </div>
                                 </div>
 
@@ -538,7 +557,7 @@
 
                             <Button
                                 type="button"
-                                class="h-12 w-full cursor-pointer rounded-md text-sm font-black tracking-tight uppercase "
+                                class="h-12 w-full cursor-pointer rounded-md text-sm font-black tracking-tight uppercase"
                                 @click="openContactModal"
                             >
                                 Contacter le vendeur
@@ -571,7 +590,10 @@
         </div>
     </AppLayout>
 
-    <DealerContactModal v-model:open="showContactModal" :vehicle-ad-id="ad.id" />
+    <DealerContactModal
+        v-model:open="showContactModal"
+        :vehicle-ad-id="ad.id"
+    />
 
     <LoginRequiredModal
         v-model:open="showLoginModal"
@@ -600,7 +622,9 @@ import { computed, ref } from 'vue';
 import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import DealerContactModal from '@/components/VehicleAds/DealerContactModal.vue';
+import { useComparison } from '@/composables/useComparison';
 import AppLayout from '@/layouts/AppLayout.vue';
 import {
     edit as vehicleEdit,
@@ -638,6 +662,22 @@ type GroupedFeature = {
 const showLoginModal = ref(false);
 const showContactModal = ref(false);
 const page = usePage();
+const { addVehicle, removeVehicle, isSelected } = useComparison();
+
+const toggleComparison = () => {
+    if (isSelected(props.ad.id)) {
+        removeVehicle(props.ad.id);
+    } else {
+        addVehicle({
+            id: props.ad.id,
+            brand: props.ad.brand?.name,
+            model: props.ad.model?.name,
+            vehicle_version_name:
+                props.ad.vehicle_version_name || props.ad.vehicle_version?.name,
+            price: Number(props.ad.price),
+        });
+    }
+};
 
 const formatOptionLabel = (value?: string): string => {
     if (!value) {

@@ -1,12 +1,12 @@
 <?php
 
 use App\Http\Controllers\CitySearchController;
-use App\Http\Controllers\DealersPageController;
 use App\Http\Controllers\DealerDashboardController;
+use App\Http\Controllers\DealersPageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SubscriptionInquiryController;
-use App\Http\Controllers\VehicleAdController;
 use App\Http\Controllers\VehicleAdContactController;
+use App\Http\Controllers\VehicleAdController;
 use App\Http\Controllers\VehicleModelController;
 use App\Http\Controllers\VehicleVersionController;
 use Illuminate\Support\Facades\Route;
@@ -27,13 +27,14 @@ Route::get('/vehicle-versions', [VehicleVersionController::class, 'index'])->nam
 Route::get('/cities/search', CitySearchController::class)->name('cities.search');
 
 Route::get('/vehicles', [VehicleAdController::class, 'index'])->name('vehicles.index');
+Route::get('/vehicles/compare', [VehicleAdController::class, 'compare'])->name('vehicles.compare');
 Route::get('/vehicles/{vehicleAd}', [VehicleAdController::class, 'show'])->name('vehicles.show')->whereNumber('vehicleAd');
 Route::post('/vehicles/{vehicleAd}/contact', VehicleAdContactController::class)->name('vehicles.contact')->whereNumber('vehicleAd');
 Route::get('/dealers', [DealersPageController::class, 'index'])->name('dealers.index');
 
 Route::middleware(['auth', 'verified', 'role:admin|dealer'])->group(function () {
     Route::post('/vehicles/{vehicleAd}/favorite', [VehicleAdController::class, 'toggleFavorite'])->name('vehicles.favorite');
-    
+
     Route::prefix('vehicles')->name('vehicles.')->group(function () {
         Route::get('/create', [VehicleAdController::class, 'create'])->name('create');
         Route::post('/', [VehicleAdController::class, 'store'])->name('store');

@@ -406,4 +406,34 @@ class VehicleAdController extends Controller
 
         return back()->with('success', $attached ? 'Véhicule ajouté aux favoris.' : 'Véhicule retiré des favoris.');
     }
+
+    /**
+     * Display the comparison page for selected vehicles.
+     */
+    public function compare(Request $request): Response|\Illuminate\Http\RedirectResponse
+    {
+        $ids = explode(',', $request->query('ids', ''));
+        $ids = array_filter($ids, fn ($id) => is_numeric($id));
+
+        if (empty($ids)) {
+            return redirect()->route('vehicles.index')->with('error', 'Veuillez sélectionner au moins un véhicule à comparer.');
+        }
+
+        $vehicles = VehicleAd::with([
+            'brand', 'model', 'vehicleVersion',
+            'exteriorColor', 'interiorColor', 'interiorType',
+            'fuelType', 'bodyType', 'euroNorm', 'transmissionType',
+            'features.category',
+        ])
+            ->whereIn('id', array_slice($ids, 0, 4))
+            ->get();
+
+        if ($vehicles->isEmpty()) {
+            return redirect()->route('vehicles.index')->with('error', 'Aucun véhicule trouvé pour la comparaison.');
+        }
+
+        return Inertia::render('VehicleAds/Comparison', [
+            'vehicles' => $vehicles,
+        ]);
+    }
 }
