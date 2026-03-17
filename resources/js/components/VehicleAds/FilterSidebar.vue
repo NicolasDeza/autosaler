@@ -51,7 +51,7 @@ const toggleFavoritesFilter = () => {
 
 <template>
     <!-- Mobile Floating Button -->
-    <div class="fixed bottom-6 left-6 z-50 md:hidden">
+    <div class="fixed bottom-6 left-6 z-50 lg:hidden">
         <Sheet v-model:open="isOpen">
             <SheetTrigger as-child>
                 <Button
@@ -127,7 +127,7 @@ const toggleFavoritesFilter = () => {
 
     <!-- Desktop Sidebar -->
     <aside
-        class="sticky top-24 hidden h-fit w-full shrink-0 overflow-hidden rounded-lg bg-card shadow-lg md:block md:w-1/4 lg:w-1/4"
+        class="sticky top-24 hidden h-fit w-full shrink-0 overflow-hidden rounded-lg bg-card shadow-lg lg:block lg:w-1/4"
     >
         <div
             class="dark relative flex items-center justify-between bg-background px-5 py-4"
