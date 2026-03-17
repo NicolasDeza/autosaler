@@ -41,7 +41,7 @@ defineProps<{
 
             <div
                 v-if="vehicles.length"
-                class="grid grid-cols-1 items-stretch gap-4 md:gap-5 lg:grid-cols-4"
+                class="grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-4"
             >
                 <VehicleAdCard
                     v-for="vehicle in vehicles"
