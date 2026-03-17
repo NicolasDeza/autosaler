@@ -86,6 +86,7 @@
                                 v-for="ad in ads.data"
                                 :key="ad.id"
                                 :ad="ad"
+                                variant="list"
                             />
                         </TransitionGroup>
                     </div>
@@ -126,9 +127,7 @@
 
 <script setup lang="ts">
 import { router, Head } from '@inertiajs/vue3';
-import {
-    Car as CarIcon,
-} from 'lucide-vue-next';
+import { Car as CarIcon } from 'lucide-vue-next';
 import { ref, watch, onUnmounted } from 'vue';
 import AppPagination from '@/components/AppPagination.vue';
 import { Button } from '@/components/ui/button';
