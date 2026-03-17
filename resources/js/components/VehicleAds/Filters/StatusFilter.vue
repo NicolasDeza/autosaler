@@ -4,6 +4,9 @@ import { computed } from 'vue';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
+import { useTranslation } from '@/composables/useTranslation';
+
+const { __ } = useTranslation();
 
 const form = defineModel<any>('form', { required: true });
 
@@ -17,7 +20,7 @@ const isStatusActive = computed(
 </script>
 
 <template>
-    <FilterGroup label="État & Historique" :icon="ClipboardList" :is-active="isStatusActive">
+    <FilterGroup :label="__('vehicleAd.state_history')" :icon="ClipboardList" :is-active="isStatusActive">
         <div class="space-y-4 pt-2">
             <div class="flex items-center space-x-2">
                 <Checkbox
@@ -30,7 +33,7 @@ const isStatusActive = computed(
                 <Label
                     for="chk-damaged"
                     class="cursor-pointer text-sm text-foreground"
-                    >Véhicule endommagé</Label
+                    >{{ __('vehicleAd.damaged') }}</Label
                 >
             </div>
             <div class="flex items-center space-x-2">
@@ -44,7 +47,7 @@ const isStatusActive = computed(
                 <Label
                     for="chk-accident"
                     class="cursor-pointer text-sm text-foreground"
-                    >Accidenté</Label
+                    >{{ __('vehicleAd.accident') }}</Label
                 >
             </div>
             <div class="flex items-center space-x-2">
@@ -59,7 +62,7 @@ const isStatusActive = computed(
                 <Label
                     for="chk-maintenance"
                     class="cursor-pointer text-sm text-foreground"
-                    >Carnet entretien complet</Label
+                    >{{ __('vehicleAd.full_service_history') }}</Label
                 >
             </div>
             <div class="flex items-center space-x-2">
@@ -73,7 +76,7 @@ const isStatusActive = computed(
                 <Label
                     for="chk-non-smoker"
                     class="cursor-pointer text-sm text-foreground"
-                    >Non fumeur</Label
+                    >{{ __('vehicleAd.non_smoker') }}</Label
                 >
             </div>
         </div>

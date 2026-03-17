@@ -5,10 +5,18 @@
                 <SelectValue />
             </SelectTrigger>
             <SelectContent>
-                <SelectItem value="latest"> Plus récentes </SelectItem>
-                <SelectItem value="oldest"> Plus anciennes </SelectItem>
-                <SelectItem value="price_asc"> Prix croissant </SelectItem>
-                <SelectItem value="price_desc"> Prix décroissant </SelectItem>
+                <SelectItem value="latest">
+                    {{ __('ui.sorting.latest') }}
+                </SelectItem>
+                <SelectItem value="oldest">
+                    {{ __('ui.sorting.oldest') }}
+                </SelectItem>
+                <SelectItem value="price_asc">
+                    {{ __('ui.sorting.price_asc') }}
+                </SelectItem>
+                <SelectItem value="price_desc">
+                    {{ __('ui.sorting.price_desc') }}
+                </SelectItem>
             </SelectContent>
         </Select>
     </div>
@@ -22,6 +30,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { useTranslation } from '@/composables/useTranslation';
 
 const model = defineModel<string>({ default: 'latest' });
+const { __ } = useTranslation();
 </script>

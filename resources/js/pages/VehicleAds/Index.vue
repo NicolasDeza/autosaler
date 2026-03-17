@@ -1,5 +1,5 @@
 <template>
-    <Head title="Vehicles Listing" />
+    <Head :title="__('vehicleAd.listing_title')" />
 
     <AppLayout>
         <div
@@ -29,7 +29,11 @@
                         class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end"
                     >
                         <h2 class="text-2xl font-bold text-foreground">
-                            {{ ads.total }} véhicules trouvés
+                            {{
+                                __('vehicleAd.results_found', {
+                                    count: ads.total,
+                                })
+                            }}
                         </h2>
 
                         <SortSelect v-model="form.sort" />
@@ -137,7 +141,7 @@
                                                         class="flex items-end gap-2"
                                                     >
                                                         <span
-                                                            class="whitespace-nowrap text-base font-black tracking-tight sm:text-xl"
+                                                            class="text-base font-black tracking-tight whitespace-nowrap sm:text-xl"
                                                         >
                                                             {{
                                                                 Number(
@@ -151,7 +155,11 @@
                                                         <span
                                                             class="pb-0.5 text-[9px] font-semibold tracking-[0.18em] text-white/80 uppercase sm:text-[10px]"
                                                         >
-                                                            TVAC
+                                                            {{
+                                                                __(
+                                                                    'vehicleAd.vat_included',
+                                                                )
+                                                            }}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -231,26 +239,58 @@
                                                 >
                                             </div>
 
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                class="size-9 cursor-pointer rounded-md border border-border bg-background transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
-                                                :class="{
-                                                    'fill-primary text-primary':
-                                                        ad.is_favorited,
-                                                }"
-                                                @click.stop="
-                                                    toggleFavorite(ad.id)
-                                                "
+                                            <div
+                                                class="flex items-center gap-2"
                                             >
-                                                <Star
-                                                    class="size-4"
+                                                <Button
+                                                    variant="ghost"
+                                                    class="hidden h-9 cursor-pointer items-center gap-2 rounded-md border border-border bg-background px-3 transition-all hover:border-primary/30 lg:flex"
                                                     :class="{
-                                                        'fill-primary':
+                                                        'border-primary/50 bg-primary/5 text-primary':
+                                                            isSelected(ad.id),
+                                                    }"
+                                                    @click.stop="
+                                                        toggleComparison(ad)
+                                                    "
+                                                >
+                                                    <Checkbox
+                                                        :id="`compare-${ad.id}`"
+                                                        :model-value="
+                                                            isSelected(ad.id)
+                                                        "
+                                                        class="pointer-events-none size-4"
+                                                    />
+                                                    <span
+                                                        class="text-[10px] font-bold tracking-tight uppercase"
+                                                        >{{
+                                                            __(
+                                                                'vehicleAd.compare',
+                                                            )
+                                                        }}</span
+                                                    >
+                                                </Button>
+
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    class="size-9 cursor-pointer rounded-md border border-border bg-background transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
+                                                    :class="{
+                                                        'fill-primary text-primary':
                                                             ad.is_favorited,
                                                     }"
-                                                />
-                                            </Button>
+                                                    @click.stop="
+                                                        toggleFavorite(ad.id)
+                                                    "
+                                                >
+                                                    <Star
+                                                        class="size-4"
+                                                        :class="{
+                                                            'fill-primary':
+                                                                ad.is_favorited,
+                                                        }"
+                                                    />
+                                                </Button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -267,16 +307,16 @@
                             class="mx-auto mb-4 h-12 w-12 text-muted-foreground"
                         />
                         <h3 class="text-lg font-bold text-foreground">
-                            Aucun véhicule trouvé
+                            {{ __('vehicleAd.no_vehicles_found') }}
                         </h3>
                         <p class="text-muted-foreground">
-                            Essayez de modifier vos critères de recherche.
+                            {{ __('vehicleAd.try_modifying_filters') }}
                         </p>
                         <Button
                             variant="outline"
                             class="mt-4"
                             @click="resetFilters"
-                            >Réinitialiser les filtres</Button
+                            >{{ __('vehicleAd.reset_filters') }}</Button
                         >
                     </div>
                 </Transition>
@@ -293,8 +333,8 @@
 
     <LoginRequiredModal
         v-model:open="showLoginModal"
-        title="Coup de cœur ?"
-        description="Connectez-vous pour enregistrer ce véhicule dans vos favoris et le retrouver à tout moment."
+        :title="__('vehicleAd.favorite_modal_title')"
+        :description="__('vehicleAd.favorite_modal_description')"
     />
 </template>
 
@@ -313,9 +353,12 @@ import AppPagination from '@/components/AppPagination.vue';
 import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import ActiveFilters from '@/components/VehicleAds/ActiveFilters.vue';
 import FilterSidebar from '@/components/VehicleAds/FilterSidebar.vue';
 import SortSelect from '@/components/VehicleAds/SortSelect.vue';
+import { useComparison } from '@/composables/useComparison';
+import { useTranslation } from '@/composables/useTranslation';
 import AppLayout from '@/layouts/AppLayout.vue';
 import vehiclesRoutes from '@/routes/vehicles';
 
@@ -350,6 +393,8 @@ const currentYear = new Date().getFullYear();
 const f = props.filters || {};
 const toArr = (v: any): string[] =>
     v ? (Array.isArray(v) ? v.map(String) : [String(v)]) : [];
+
+const { __ } = useTranslation();
 
 interface FilterForm {
     brand_id: string;
@@ -446,6 +491,22 @@ const models = ref<any[]>([]);
 const isProcessing = ref(false);
 const showLoginModal = ref(false);
 const page = usePage();
+const { addVehicle, removeVehicle, isSelected } = useComparison();
+
+const toggleComparison = (ad: any) => {
+    if (isSelected(ad.id)) {
+        removeVehicle(ad.id);
+    } else {
+        addVehicle({
+            id: ad.id,
+            brand: ad.brand?.name,
+            model: ad.model?.name,
+            vehicle_version_name:
+                ad.vehicle_version_name || ad.vehicle_version?.name,
+            price: Number(ad.price),
+        });
+    }
+};
 
 const startFinishListeners = [
     router.on('start', () => (isProcessing.value = true)),

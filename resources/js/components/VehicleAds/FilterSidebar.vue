@@ -11,6 +11,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
+import { useTranslation } from '@/composables/useTranslation';
 import VehicleFilters from './VehicleFilters.vue';
 
 defineProps<{
@@ -33,6 +34,7 @@ const isOpen = ref(false);
 const showLoginModal = ref(false);
 const page = usePage();
 const auth = computed(() => page.props.auth);
+const { __ } = useTranslation();
 
 const handleUpdateModels = (models: any[]) => {
     emit('update:models', models);
@@ -70,7 +72,7 @@ const toggleFavoritesFilter = () => {
                             <SlidersHorizontal class="h-4 w-4 text-primary" />
                             <SheetTitle
                                 class="text-xl font-bold text-foreground"
-                                >Filtres</SheetTitle
+                                >{{ __('ui.filters') }}</SheetTitle
                             >
                         </div>
                         <div class="flex items-center gap-2">
@@ -133,7 +135,7 @@ const toggleFavoritesFilter = () => {
             <div class="flex items-center gap-2.5">
                 <SlidersHorizontal class="h-4 w-4 text-primary" />
                 <h3 class="text-base font-bold tracking-wide text-white">
-                    Filtres
+                    {{ __('ui.filters') }}
                 </h3>
             </div>
             <div class="flex items-center gap-2">
@@ -185,8 +187,8 @@ const toggleFavoritesFilter = () => {
 
     <LoginRequiredModal
         v-model:open="showLoginModal"
-        title="Vos favoris"
-        description="Connectez-vous pour retrouver vos véhicules favoris sur tous vos appareils et ne manquer aucune opportunité."
+        :title="__('vehicleAd.favorites_filter_title')"
+        :description="__('vehicleAd.favorites_filter_desc')"
     />
 </template>
 

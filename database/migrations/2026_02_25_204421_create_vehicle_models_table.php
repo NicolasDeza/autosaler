@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('brand_id')
-                  ->constrained('vehicle_brands')
-                  ->cascadeOnDelete();
+                ->constrained('vehicle_brands')
+                ->cascadeOnDelete();
 
             $table->string('name')->index();
 

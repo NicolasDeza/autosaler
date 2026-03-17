@@ -49,12 +49,12 @@ import { toUrl } from '@/lib/utils';
 import { login, register } from '@/routes';
 import admin from '@/routes/admin';
 import dealer from '@/routes/dealer';
-import dealers from '@/routes/dealers';
 import vehicles from '@/routes/vehicles';
 
 import type { BreadcrumbItem, NavItem } from '@/types';
 import type { ExtendedPageProps } from '@/types/inertia';
 import LanguageSelector from './LanguageSelector.vue';
+import dealers from '@/routes/dealers';
 
 const { __ } = useTranslation();
 const page = usePage<ExtendedPageProps>();
