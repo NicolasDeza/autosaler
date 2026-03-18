@@ -398,8 +398,8 @@ const handleFavoritesClick = () => {
                             <Button
                                 :as="Link"
                                 :href="login()"
-                                variant="ghost"
-                                class="h-9 px-4 text-[#1b1b18] dark:text-[#EDEDEC]"
+                                variant="outline"
+                                class="h-9 px-4"
                             >
                                 {{ __('nav.login') }}
                             </Button>
