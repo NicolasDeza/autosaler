@@ -102,14 +102,23 @@
                         — {{ __('nav.all_rights_reserved') }}
                     </p>
                     <p class="text-xs text-muted-foreground">
-                        {{ __('nav.made_by') }}
+                        Site réalisé par
                         <a
-                            href="/"
+                            href="https://www.nicolasdeza.com/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="inline-flex items-center font-medium text-primary underline underline-offset-2 transition-colors hover:text-primary/90"
+                            class="font-medium text-primary underline underline-offset-2 transition-colors hover:text-primary/90"
                         >
-                            La passion
+                            Nicolas Deza
+                        </a>
+                        &
+                        <a
+                            href="https://techybear.eu/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="font-medium text-primary underline underline-offset-2 transition-colors hover:text-primary/90"
+                        >
+                            TechkyBear
                         </a>
                     </p>
                 </div>

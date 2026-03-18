@@ -61,7 +61,10 @@ watch(
             return;
         }
 
-        if (selected.value !== null && plans.some((plan) => plan.id === selected.value)) {
+        if (
+            selected.value !== null &&
+            plans.some((plan) => plan.id === selected.value)
+        ) {
             return;
         }
 
@@ -101,19 +104,19 @@ function selectPlan(subscriptionPlanId: number): void {
 </script>
 
 <template>
-    <section class="relative w-full">
+    <section class="relative w-full py-8 sm:py-12">
         <div class="mx-auto max-w-7xl px-6">
             <div class="mb-12 text-center sm:mb-14">
                 <h2
-                    class="text-3xl font-[1000] tracking-tight text-foreground uppercase"
+                    class="text-3xl font-[1000] tracking-tight text-foreground uppercase md:text-4xl"
                 >
                     {{ __('pricing.title_prefix') }}
-                    <span class="text-primary">{{
+                    <span class="bg-primary bg-clip-text text-transparent">{{
                         __('pricing.title_highlight')
                     }}</span>
                 </h2>
                 <p
-                    class="mx-auto mt-4 max-w-lg font-medium text-muted-foreground"
+                    class="mx-auto mt-4 max-w-xl text-sm leading-relaxed font-medium text-muted-foreground sm:text-base"
                 >
                     {{ __('pricing.subtitle') }}
                 </p>
@@ -121,36 +124,52 @@ function selectPlan(subscriptionPlanId: number): void {
 
             <div class="mb-10 flex justify-center sm:mb-12">
                 <div
-                    class="flex items-center gap-3 rounded-lg border border-border bg-muted px-5 py-2.5 text-sm text-muted-foreground shadow-sm"
+                    class="inline-flex items-center gap-3 rounded-lg border border-border/80 bg-card/80 px-5 py-2.5 text-sm text-muted-foreground shadow-[0_10px_28px_-20px_rgba(15,23,42,0.5)] backdrop-blur-sm"
                 >
                     <span
-                        class="rounded-md bg-primary px-2 py-0.5 text-[9px] font-black tracking-widest text-white uppercase"
+                        class="rounded-full bg-foreground px-2.5 py-0.5 text-[9px] font-black tracking-[0.18em] text-background uppercase"
                     >
                         Pro
                     </span>
-                    <span class="font-semibold">{{
+                    <span class="font-semibold tracking-tight">{{
                         __('pricing.pro_only_description')
                     }}</span>
                 </div>
             </div>
 
-            <div v-if="pricingPlans.length > 0" class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <div
+                v-if="pricingPlans.length > 0"
+                class="grid gap-6 md:grid-cols-2 xl:grid-cols-4"
+            >
                 <Card
                     v-for="plan in pricingPlans"
                     :key="plan.id"
-                    class="relative flex h-full flex-col overflow-hidden rounded-2xl border p-6 transition-all duration-300"
+                    class="group relative isolate flex h-full flex-col overflow-hidden rounded-xl border p-7 transition-all duration-300"
                     :class="[
                         plan.featured
-                            ? 'border-primary bg-card lg:-translate-y-2'
-                            : 'border-border/70 bg-card/90 hover:-translate-y-1 hover:border-primary/40',
-                        selected === plan.id ? 'ring-2 ring-primary/35' : '',
+                            ? 'border-primary/45 bg-linear-to-b from-primary/8 via-card to-card shadow-[0_22px_44px_-34px_rgba(239,68,68,0.36)] lg:-translate-y-2'
+                            : 'border-border/70 bg-card/95 shadow-[0_16px_34px_-30px_rgba(15,23,42,0.34)] hover:-translate-y-1 hover:border-border hover:shadow-[0_20px_40px_-28px_rgba(15,23,42,0.42)]',
+                        selected === plan.id
+                            ? 'ring-2 ring-primary/25 ring-offset-2 ring-offset-background'
+                            : '',
                     ]"
                 >
+                    <div
+                        class="pointer-events-none absolute inset-x-5 top-0 h-20 rounded-full bg-linear-to-r from-primary/15 via-primary/5 to-transparent blur-2xl transition-opacity duration-300"
+                        :class="
+                            plan.featured
+                                ? 'opacity-100'
+                                : 'opacity-60 group-hover:opacity-90'
+                        "
+                    />
+
                     <div class="relative z-10 flex h-full flex-col">
-                        <div class="mb-6 flex items-start justify-between gap-3">
+                        <div
+                            class="mb-6 flex items-start justify-between gap-3"
+                        >
                             <div>
                                 <p
-                                    class="text-[10px] font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                    class="text-[10px] font-black tracking-[0.2em] text-muted-foreground/90 uppercase"
                                 >
                                     {{ __('pricing.title_highlight') }}
                                 </p>
@@ -163,7 +182,7 @@ function selectPlan(subscriptionPlanId: number): void {
 
                             <span
                                 v-if="plan.featured"
-                                class="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[10px] font-black tracking-wider text-primary uppercase"
+                                class="rounded-full bg-foreground px-3 py-1 text-[10px] font-black tracking-[0.14em] text-background uppercase shadow-[0_8px_18px_-12px_rgba(17,24,39,0.75)]"
                             >
                                 {{ __('pricing.popular') }}
                             </span>
@@ -175,26 +194,30 @@ function selectPlan(subscriptionPlanId: number): void {
                             >
                                 {{ Number(plan.price).toFixed(2) }}
                             </span>
-                            <span class="mt-1 text-lg font-bold text-primary">
+                            <span
+                                class="mt-1 text-lg font-extrabold text-primary"
+                            >
                                 &euro;
                             </span>
                         </div>
 
                         <p
-                            class="text-xs font-semibold tracking-tight text-muted-foreground uppercase"
+                            class="text-xs font-semibold tracking-[0.03em] text-muted-foreground uppercase"
                         >
                             par {{ __('pricing.month') }} -
                             {{ __('pricing.no_commitment') }}
                         </p>
 
-                        <div class="mt-6 flex-1 space-y-3">
+                        <div class="mt-6 flex-1 space-y-3.5">
                             <div class="flex items-center gap-3">
                                 <div
-                                    class="shrink-0 rounded-full bg-emerald-100 p-1 text-emerald-600"
+                                    class="shrink-0 rounded-full bg-emerald-100/90 p-1 text-emerald-600 ring-1 ring-emerald-200/70"
                                 >
                                     <Check :size="14" stroke-width="4" />
                                 </div>
-                                <span class="text-sm font-semibold text-card-foreground">
+                                <span
+                                    class="text-sm font-semibold text-card-foreground"
+                                >
                                     {{ listingsLabel(plan.listing_limit) }}
                                 </span>
                             </div>
@@ -205,11 +228,13 @@ function selectPlan(subscriptionPlanId: number): void {
                                 class="flex items-center gap-3"
                             >
                                 <div
-                                    class="shrink-0 rounded-full bg-emerald-100 p-1 text-emerald-600"
+                                    class="shrink-0 rounded-full bg-emerald-100/90 p-1 text-emerald-600 ring-1 ring-emerald-200/70"
                                 >
                                     <Check :size="14" stroke-width="4" />
                                 </div>
-                                <span class="text-sm font-semibold text-card-foreground">
+                                <span
+                                    class="text-sm font-semibold text-card-foreground"
+                                >
                                     {{ featureLabel(feature) }}
                                 </span>
                             </div>
@@ -218,11 +243,11 @@ function selectPlan(subscriptionPlanId: number): void {
                         <Button
                             :variant="plan.featured ? 'default' : 'outline'"
                             @click="selectPlan(plan.id)"
-                            class="mt-8 h-11 w-full cursor-pointer rounded-lg text-sm font-black uppercase transition-all duration-300"
+                            class="mt-8 h-11 w-full cursor-pointer rounded-lg text-sm font-black tracking-[0.08em] uppercase transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2"
                             :class="
                                 plan.featured
-                                    ? 'shadow-lg shadow-primary/30'
-                                    : 'border-primary/30 text-foreground hover:border-primary hover:bg-primary hover:text-white'
+                                    ? 'border-transparent!'
+                                    : 'border-transparent! bg-foreground text-background hover:bg-foreground/90 hover:text-background'
                             "
                         >
                             {{ __('pricing.cta_paid') }}
