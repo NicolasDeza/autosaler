@@ -3,9 +3,9 @@
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\CitySearchController;
 use App\Http\Controllers\DealerDashboardController;
+use App\Http\Controllers\DealerRegistrationController;
 use App\Http\Controllers\DealersPageController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SubscriptionInquiryController;
 use App\Http\Controllers\VehicleAdContactController;
 use App\Http\Controllers\VehicleAdController;
 use App\Http\Controllers\VehicleModelController;
@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
-Route::post('/subscription-inquiry', SubscriptionInquiryController::class)->name('subscription.inquiry');
 
 // Pages légales
 Route::prefix('legal')->name('legal.')->group(function () {
@@ -32,6 +30,7 @@ Route::get('/vehicles/compare', [VehicleAdController::class, 'compare'])->name('
 Route::get('/vehicles/{vehicleAd}', [VehicleAdController::class, 'show'])->name('vehicles.show')->whereNumber('vehicleAd');
 Route::post('/vehicles/{vehicleAd}/contact', VehicleAdContactController::class)->name('vehicles.contact')->whereNumber('vehicleAd');
 Route::get('/dealers', [DealersPageController::class, 'index'])->name('dealers.index');
+Route::post('/dealers/register', DealerRegistrationController::class)->name('dealers.register');
 
 Route::middleware(['auth', 'verified', 'role:admin|dealer'])->group(function () {
     Route::post('/vehicles/{vehicleAd}/favorite', [VehicleAdController::class, 'toggleFavorite'])->name('vehicles.favorite');
@@ -60,11 +59,25 @@ Route::middleware(['auth', 'verified', 'role:admin|dealer'])->group(function () 
 Route::get('/translations/{locale}', function ($locale) {
     app()->setLocale($locale);
 
+    $jsonPath = lang_path("$locale.json");
+    $phpFiles = glob(lang_path("$locale/*.php")) ?: [];
+
+    $versionSeed = '';
+
+    if (file_exists($jsonPath)) {
+        $versionSeed .= $jsonPath.'|'.filemtime($jsonPath).'|';
+    }
+
+    foreach ($phpFiles as $file) {
+        $versionSeed .= $file.'|'.filemtime($file).'|';
+    }
+
+    $cacheKey = 'translations_'.$locale.'_'.md5($versionSeed);
+
     return response()->json(
-        cache()->remember("translations_$locale", 3600, function () use ($locale) {
+        cache()->remember($cacheKey, 3600, function () use ($locale, $jsonPath, $phpFiles) {
             $translations = [];
 
-            $jsonPath = lang_path("$locale.json");
             if (file_exists($jsonPath)) {
                 $translations = json_decode(file_get_contents($jsonPath), true);
             }

@@ -167,7 +167,9 @@ const years = computed(() => {
                 >
                     <div class="mb-2 flex items-center px-2">
                         <div class="flex items-center gap-2">
-                            <div class="rounded-lg bg-primary/10 p-2">
+                            <div
+                                class="rounded-lg border border-primary/30 bg-primary/10 p-2"
+                            >
                                 <Car :size="20" class="text-primary" />
                             </div>
                             <h2

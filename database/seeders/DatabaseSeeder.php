@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             TransmissionTypesSeeder::class,
             BrandsAndModelsSeeder::class,
             FeatureSeeder::class,
+            SubscriptionPlansSeeder::class,
             VehicleAdSeeder::class,
             SubscriptionPlansSeeder::class,
         ]);
