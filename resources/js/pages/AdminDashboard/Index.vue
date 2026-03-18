@@ -145,7 +145,7 @@
             </aside>
 
             <!-- Main Workspace -->
-            <main class="min-w-0 flex-1 py-4 lg:py-0">
+            <main class="min-w-0 flex-1 p-4 lg:p-0">
                 <div class="mx-auto max-w-7xl">
                     <Transition name="content-fade" mode="out-in">
                         <div :key="tab" class="space-y-8">
