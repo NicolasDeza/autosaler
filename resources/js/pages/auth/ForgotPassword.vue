@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
+import { useTranslation } from '@/composables/useTranslation';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import { login } from '@/routes';
 import { email } from '@/routes/password';
@@ -13,14 +14,16 @@ import { email } from '@/routes/password';
 defineProps<{
     status?: string;
 }>();
+
+const { __ } = useTranslation();
 </script>
 
 <template>
     <AuthLayout
-        title="Forgot password"
-        description="Enter your email to receive a password reset link"
+        :title="__('auth.forgot_password_title')"
+        :description="__('auth.forgot_password_description')"
     >
-        <Head title="Forgot password" />
+        <Head :title="__('auth.forgot_password_head')" />
 
         <div
             v-if="status"
@@ -32,14 +35,16 @@ defineProps<{
         <div class="space-y-6">
             <Form v-bind="email.form()" v-slot="{ errors, processing }">
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
+                    <Label for="email">{{
+                        __('auth.forgot_password_email_label')
+                    }}</Label>
                     <Input
                         id="email"
                         type="email"
                         name="email"
                         autocomplete="off"
                         autofocus
-                        placeholder="email@example.com"
+                        :placeholder="__('auth.forgot_password_email_placeholder')"
                     />
                     <InputError :message="errors.email" />
                 </div>
@@ -51,14 +56,16 @@ defineProps<{
                         data-test="email-password-reset-link-button"
                     >
                         <Spinner v-if="processing" />
-                        Email password reset link
+                        {{ __('auth.forgot_password_button') }}
                     </Button>
                 </div>
             </Form>
 
             <div class="space-x-1 text-center text-sm text-muted-foreground">
-                <span>Or, return to</span>
-                <TextLink :href="login()">log in</TextLink>
+                <span>{{ __('auth.forgot_password_return_to_login') }}</span>
+                <TextLink :href="login()">{{
+                    __('auth.forgot_password_login_link')
+                }}</TextLink>
             </div>
         </div>
     </AuthLayout>

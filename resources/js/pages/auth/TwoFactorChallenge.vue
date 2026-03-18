@@ -9,25 +9,26 @@ import {
     InputOTPGroup,
     InputOTPSlot,
 } from '@/components/ui/input-otp';
+import { useTranslation } from '@/composables/useTranslation';
 import AuthLayout from '@/layouts/AuthLayout.vue';
-import type { TwoFactorConfigContent } from '@/types';
 import { store } from '@/routes/two-factor/login';
+import type { TwoFactorConfigContent } from '@/types';
+
+const { __ } = useTranslation();
 
 const authConfigContent = computed<TwoFactorConfigContent>(() => {
     if (showRecoveryInput.value) {
         return {
-            title: 'Recovery Code',
-            description:
-                'Please confirm access to your account by entering one of your emergency recovery codes.',
-            buttonText: 'login using an authentication code',
+            title: __('auth.two_factor_recovery_title'),
+            description: __('auth.two_factor_recovery_description'),
+            buttonText: __('auth.two_factor_button_text_auth'),
         };
     }
 
     return {
-        title: 'Authentication Code',
-        description:
-            'Enter the authentication code provided by your authenticator application.',
-        buttonText: 'login using a recovery code',
+        title: __('auth.two_factor_title'),
+        description: __('auth.two_factor_description'),
+        buttonText: __('auth.two_factor_button_text_recovery'),
     };
 });
 
@@ -47,7 +48,7 @@ const code = ref<string>('');
         :title="authConfigContent.title"
         :description="authConfigContent.description"
     >
-        <Head title="Two-Factor Authentication" />
+        <Head :title="__('auth.two_factor_head')" />
 
         <div class="space-y-6">
             <template v-if="!showRecoveryInput">
@@ -81,11 +82,14 @@ const code = ref<string>('');
                         </div>
                         <InputError :message="errors.code" />
                     </div>
-                    <Button type="submit" class="w-full" :disabled="processing"
-                        >Continue</Button
+                    <Button
+                        type="submit"
+                        class="w-full"
+                        :disabled="processing"
+                        >{{ __('auth.two_factor_button') }}</Button
                     >
                     <div class="text-center text-sm text-muted-foreground">
-                        <span>or you can </span>
+                        <span>{{ __('auth.two_factor_or_you_can') }} </span>
                         <button
                             type="button"
                             class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
@@ -107,17 +111,22 @@ const code = ref<string>('');
                     <Input
                         name="recovery_code"
                         type="text"
-                        placeholder="Enter recovery code"
+                        :placeholder="
+                            __('auth.two_factor_recovery_placeholder')
+                        "
                         :autofocus="showRecoveryInput"
                         required
                     />
                     <InputError :message="errors.recovery_code" />
-                    <Button type="submit" class="w-full" :disabled="processing"
-                        >Continue</Button
+                    <Button
+                        type="submit"
+                        class="w-full"
+                        :disabled="processing"
+                        >{{ __('auth.two_factor_button') }}</Button
                     >
 
                     <div class="text-center text-sm text-muted-foreground">
-                        <span>or you can </span>
+                        <span>{{ __('auth.two_factor_or_you_can') }} </span>
                         <button
                             type="button"
                             class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"

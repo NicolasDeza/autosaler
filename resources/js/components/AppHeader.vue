@@ -401,7 +401,7 @@ const handleFavoritesClick = () => {
                                 variant="ghost"
                                 class="h-9 px-4 text-[#1b1b18] dark:text-[#EDEDEC]"
                             >
-                                Log in
+                                {{ __('nav.login') }}
                             </Button>
                         </div>
                     </template>
