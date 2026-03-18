@@ -104,9 +104,9 @@ function selectPlan(subscriptionPlanId: number): void {
 </script>
 
 <template>
-    <section class="relative w-full py-8 sm:py-12">
+    <section class="relative w-full sm:pt-12">
         <div class="mx-auto max-w-7xl px-6">
-            <div class="mb-12 text-center sm:mb-14">
+            <div class="mb-12 text-center sm:mb-16">
                 <h2
                     class="text-3xl font-[1000] tracking-tight text-foreground uppercase md:text-4xl"
                 >
