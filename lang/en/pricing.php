@@ -19,7 +19,6 @@ return [
 
     'feature_photos' => 'Up to 20 photos per listing',
     'feature_stats' => 'View statistics',
-    'feature_priority' => 'Priority support',
 
     'cta_free' => 'Start for free',
     'cta_paid' => 'Choose this plan',
@@ -32,7 +31,7 @@ return [
     'pro_only_description' => 'For automotive professionals only',
 
     'modal_title' => 'Pro Subscription Request',
-    'modal_description' => ':count listings plan at :price€/month. Fill in your details and we\'ll get back to you shortly.',
+    'modal_description' => ':count listings plan at :priceâ‚¬/month. Fill in your details and we\'ll get back to you shortly.',
     'field_company' => 'Company',
     'field_contact' => 'Contact name',
     'field_email' => 'Email',

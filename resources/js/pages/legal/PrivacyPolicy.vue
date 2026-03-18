@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import { useTranslation } from '@/composables/useTranslation';
-import { cookies } from '@/routes/legal';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { cookies } from '@/routes/legal';
 
 const { __ } = useTranslation();
 </script>

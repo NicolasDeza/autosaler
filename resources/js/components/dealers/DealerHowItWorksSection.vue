@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import {
-    BadgeCheck,
     BarChart3,
-    Megaphone,
     Rocket,
     ShieldCheck,
-    UsersRound,
 } from 'lucide-vue-next';
 import type { Component } from 'vue';
 import { Card } from '@/components/ui/card';
@@ -26,24 +23,9 @@ const cards: HowItWorksCard[] = [
         icon: ShieldCheck,
     },
     {
-        titleKey: 'dealerPage.how_it_works_card_2_title',
-        descriptionKey: 'dealerPage.how_it_works_card_2_description',
-        icon: BadgeCheck,
-    },
-    {
         titleKey: 'dealerPage.how_it_works_card_3_title',
         descriptionKey: 'dealerPage.how_it_works_card_3_description',
         icon: Rocket,
-    },
-    {
-        titleKey: 'dealerPage.how_it_works_card_4_title',
-        descriptionKey: 'dealerPage.how_it_works_card_4_description',
-        icon: Megaphone,
-    },
-    {
-        titleKey: 'dealerPage.how_it_works_card_5_title',
-        descriptionKey: 'dealerPage.how_it_works_card_5_description',
-        icon: UsersRound,
     },
     {
         titleKey: 'dealerPage.how_it_works_card_6_title',
@@ -70,15 +52,15 @@ const cards: HowItWorksCard[] = [
                 </p>
             </div>
 
-            <div class="mt-14 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div class="mt-14 grid gap-4 md:grid-cols-3">
                 <Card
                     v-for="card in cards"
                     :key="card.titleKey"
                     class="group gap-0 border-white/10 bg-card/70 p-5 py-5 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
                 >
                     <div class="flex items-start gap-4">
-                        <div class="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary ring-1 ring-primary/30">
-                            <component :is="card.icon" class="size-4.5" />
+                        <div class="inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/15 text-primary ring-1 ring-primary/25 transition-all duration-300 group-hover:border-primary/70 group-hover:bg-primary/25 group-hover:ring-primary/50">
+                            <component :is="card.icon" class="size-4.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-110" />
                         </div>
 
                         <div class="min-w-0">

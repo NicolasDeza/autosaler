@@ -8,25 +8,30 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SubscriptionInquiry extends Mailable
+class DealerRegistrationSubmitted extends Mailable
 {
     use Queueable, SerializesModels;
 
+    /**
+     * @param  array<string, mixed>  $registration
+     */
     public function __construct(
-        public readonly array $inquiry,
+        public readonly array $registration,
     ) {}
 
     public function envelope(): Envelope
     {
+        $companyName = $this->registration['company']->name;
+
         return new Envelope(
-            subject: "Nouvelle demande d'abonnement Pro — {$this->inquiry['company_name']}",
+            subject: "Nouvelle inscription pro - {$companyName}",
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.subscription-inquiry',
+            view: 'mail.dealer-registration-submitted',
         );
     }
 }
