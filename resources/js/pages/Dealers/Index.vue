@@ -17,7 +17,9 @@ const props = defineProps<{
 const showDealerRegistrationModal = ref(false);
 const preselectedPlan = ref<string | number | null>(null);
 
-const openDealerRegistrationModal = (plan: number | string | null = null): void => {
+const openDealerRegistrationModal = (
+    plan: number | string | null = null,
+): void => {
     preselectedPlan.value = plan;
     showDealerRegistrationModal.value = true;
 };
@@ -42,7 +44,7 @@ const openDealerRegistrationModal = (plan: number | string | null = null): void 
                 <div class="relative z-20 mx-auto max-w-5xl px-4 sm:px-6">
                     <div class="flex flex-col items-center text-center">
                         <h1
-                            class="text-balance text-4xl font-extrabold tracking-tight text-white md:text-6xl lg:text-7xl"
+                            class="text-4xl font-extrabold tracking-tight text-balance text-white md:text-6xl lg:text-7xl"
                         >
                             {{ __('dealerPage.heading') }}
                         </h1>
@@ -59,7 +61,7 @@ const openDealerRegistrationModal = (plan: number | string | null = null): void 
                             <Button
                                 @click="openDealerRegistrationModal(null)"
                                 size="lg"
-                                class="group relative h-12 w-full overflow-hidden px-10 text-base font-bold text-white! transition-all duration-300 hover:-translate-y-0.5 hover:text-white! active:scale-95 sm:w-auto cursor-pointer"
+                                class="group relative h-12 w-full cursor-pointer overflow-hidden px-10 text-base font-bold text-white! transition-all duration-300 hover:-translate-y-0.5 hover:text-white! active:scale-95 sm:w-auto"
                             >
                                 <span
                                     class="absolute inset-0 -translate-x-full -skew-x-12 bg-white/15 transition-transform duration-500 group-hover:translate-x-full"
@@ -101,7 +103,10 @@ const openDealerRegistrationModal = (plan: number | string | null = null): void 
             <DealerHowItWorksSection />
         </template>
 
-        <PriceCard :plans="props.plans" @select-plan="openDealerRegistrationModal" />
+        <PriceCard
+            :plans="props.plans"
+            @select-plan="openDealerRegistrationModal"
+        />
 
         <DealerRegistrationModal
             v-model:open="showDealerRegistrationModal"

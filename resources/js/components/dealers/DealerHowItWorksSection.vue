@@ -36,7 +36,7 @@ const cards: HowItWorksCard[] = [
 </script>
 
 <template>
-    <section class="relative overflow-hidden py-16 md:py-24">
+    <section class="relative overflow-hidden pt-12 pb-12  sm:pt-24 sm:pb-12">
         <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
             <div class="mx-auto max-w-3xl text-center">
 
