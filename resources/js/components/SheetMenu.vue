@@ -15,7 +15,6 @@ import {
 import { cn } from '@/lib/utils';
 
 interface Props {
-    open?: boolean;
     side?: 'left' | 'right' | 'top' | 'bottom';
     title?: string;
     description?: string;
@@ -26,17 +25,22 @@ interface Props {
      * When open, the button icon changes to a 'X' and serves as a close button.
      */
     withFloatingButton?: boolean;
+    /**
+     * If true, shows the close button even if title/description/icon are missing.
+     */
+    showClose?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     side: 'right',
     withFloatingButton: false,
+    showClose: true,
 });
 
-const emit = defineEmits(['update:open']);
+const isOpen = defineModel<boolean>('open', { default: false });
 
 const handleOpenChange = (val: boolean) => {
-    emit('update:open', val);
+    isOpen.value = val;
 };
 </script>
 
@@ -45,15 +49,15 @@ const handleOpenChange = (val: boolean) => {
         <!-- Floating Toggle/Close Button -->
         <div
             v-if="withFloatingButton"
-            class="pointer-events-auto fixed bottom-6 z-100 flex transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] md:hidden"
+            class="pointer-events-auto fixed bottom-6 flex transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] lg:hidden"
             :class="[
                 side === 'left'
-                    ? open
-                        ? 'left-[85vw]'
-                        : 'left-6'
-                    : open
-                      ? 'right-[85vw]'
-                      : 'right-6',
+                    ? isOpen
+                        ? 'left-[85vw] z-100'
+                        : 'left-6 z-40'
+                    : isOpen
+                      ? 'right-[85vw] z-100'
+                      : 'right-6 z-40',
             ]"
         >
             <Button
@@ -61,21 +65,21 @@ const handleOpenChange = (val: boolean) => {
                 type="button"
                 class="dark group flex h-14 w-14 items-center justify-center rounded-full p-0 shadow-lg transition-all hover:ring-2 hover:ring-primary active:scale-95"
                 :class="
-                    open
+                    isOpen
                         ? 'translate-x-[-50%] bg-primary text-white ring-2 ring-primary hover:bg-primary/90'
                         : 'bg-background hover:scale-110'
                 "
-                @click="emit('update:open', !open)"
+                @click="isOpen = !isOpen"
             >
                 <component
-                    :is="open ? X : icon"
+                    :is="isOpen ? X : icon"
                     class="h-6 w-6 transition-transform group-hover:scale-110"
-                    :class="open ? 'rotate-0 text-white' : 'text-primary'"
+                    :class="isOpen ? 'rotate-0 text-white' : 'text-primary'"
                 />
             </Button>
         </div>
 
-        <Sheet :open="open" @update:open="handleOpenChange">
+        <Sheet :open="isOpen" @update:open="handleOpenChange">
             <SheetTrigger v-if="$slots.trigger" as-child>
                 <slot name="trigger" />
             </SheetTrigger>
@@ -94,36 +98,43 @@ const handleOpenChange = (val: boolean) => {
                 "
             >
                 <SheetHeader
-                    v-if="title || description || icon"
+                    v-if="title || description || icon || $slots.headerBranding"
                     class="dark mb-0 bg-background p-6"
                 >
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <div
-                                v-if="icon"
-                                class="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary"
-                            >
-                                <component :is="icon" class="h-5 w-5" />
+                            <!-- Custom Branding Slot (often for Logo) -->
+                            <div v-if="$slots.headerBranding" class="flex-1">
+                                <slot name="headerBranding" />
                             </div>
-                            <div class="space-y-0.5">
-                                <SheetTitle
-                                    v-if="title"
-                                    class="text-xl font-bold tracking-tight text-foreground"
+
+                            <template v-else>
+                                <div
+                                    v-if="icon"
+                                    class="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary"
                                 >
-                                    {{ title }}
-                                </SheetTitle>
-                                <SheetDescription
-                                    v-if="description"
-                                    class="text-xs font-medium text-muted-foreground/80"
-                                >
-                                    {{ description }}
-                                </SheetDescription>
-                            </div>
+                                    <component :is="icon" class="h-5 w-5" />
+                                </div>
+                                <div class="space-y-0.5">
+                                    <SheetTitle
+                                        v-if="title"
+                                        class="text-xl font-bold tracking-tight text-foreground"
+                                    >
+                                        {{ title }}
+                                    </SheetTitle>
+                                    <SheetDescription
+                                        v-if="description"
+                                        class="text-xs font-medium text-muted-foreground/80"
+                                    >
+                                        {{ description }}
+                                    </SheetDescription>
+                                </div>
+                            </template>
                         </div>
 
                         <div
                             class="flex items-center gap-2"
-                            :class="!withFloatingButton ? 'pr-10' : ''"
+                            :class="!withFloatingButton ? 'min-w-9' : ''"
                         >
                             <!-- Slot for extra header actions (buttons, etc.) -->
                             <div
@@ -135,7 +146,7 @@ const handleOpenChange = (val: boolean) => {
 
                             <!-- Integrated Close Button (standard X, hidden if floating button is present) -->
                             <SheetClose
-                                v-if="!withFloatingButton"
+                                v-if="showClose && !withFloatingButton"
                                 class="absolute top-5 right-5 z-50 flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground/60 transition-all hover:bg-muted hover:text-foreground active:scale-95"
                             >
                                 <X class="h-5 w-5" />

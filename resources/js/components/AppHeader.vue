@@ -15,6 +15,7 @@ import { computed, ref } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import SheetMenu from '@/components/SheetMenu.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -28,13 +29,6 @@ import {
     NavigationMenuList,
     navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
-import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from '@/components/ui/sheet';
 import {
     Tooltip,
     TooltipContent,
@@ -145,8 +139,8 @@ const handleFavoritesClick = () => {
             <div class="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                 <!-- Mobile Menu -->
                 <div class="lg:hidden">
-                    <Sheet>
-                        <SheetTrigger :as-child="true">
+                    <SheetMenu side="left">
+                        <template #trigger>
                             <Button
                                 variant="ghost"
                                 size="icon"
@@ -154,87 +148,82 @@ const handleFavoritesClick = () => {
                             >
                                 <Menu class="h-5 w-5" />
                             </Button>
-                        </SheetTrigger>
-                        <SheetContent side="left" class="w-75 border-primary">
-                            <SheetTitle class="sr-only"
-                                >Navigation Menu</SheetTitle
-                            >
-                            <SheetHeader
-                                class="flex items-center justify-center bg-foreground pb-0 text-left"
-                            >
-                                <div class="flex items-center gap-x-2 p-6">
-                                    <AppLogo />
-                                </div>
-                            </SheetHeader>
-                            <div
-                                class="flex h-full flex-1 flex-col justify-between space-y-4 px-6 pb-6"
-                            >
-                                <nav class="-mx-3 space-y-1">
-                                    <template v-if="!auth || !auth.user">
-                                        <div
-                                            class="border-b border-foreground/20 py-2"
+                        </template>
+
+                        <template #headerBranding>
+                            <div class="flex items-center gap-x-2">
+                                <AppLogo />
+                            </div>
+                        </template>
+
+                        <div
+                            class="flex h-full flex-1 flex-col justify-between space-y-4"
+                        >
+                            <nav class="-mx-3 space-y-1">
+                                <template v-if="!auth || !auth.user">
+                                    <div
+                                        class="border-b border-foreground/20 py-2"
+                                    >
+                                        <Button
+                                            :as="Link"
+                                            :href="login()"
+                                            class="w-full justify-start"
+                                            variant="ghost"
                                         >
-                                            <Button
-                                                :as="Link"
-                                                :href="login()"
-                                                class="w-full justify-start"
-                                                variant="ghost"
-                                            >
-                                                <span>
-                                                    <User
-                                                        class="h-5 w-5 text-primary"
-                                                    />
-                                                </span>
-                                                <span> Log in </span>
-                                            </Button>
-                                        </div>
-                                    </template>
-                                    <Link
-                                        v-for="item in mainNavItems"
-                                        :key="item.title"
-                                        :href="item.href"
-                                        class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-foreground/90 hover:text-background/90"
-                                        :class="
+                                            <span>
+                                                <User
+                                                    class="h-5 w-5 text-primary"
+                                                />
+                                            </span>
+                                            <span> Log in </span>
+                                        </Button>
+                                    </div>
+                                </template>
+                                <Link
+                                    v-for="item in mainNavItems"
+                                    :key="item.title"
+                                    :href="item.href"
+                                    class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-foreground/90 hover:text-background/90"
+                                    :class="
+                                        whenCurrentUrl(
+                                            item.href,
+                                            'bg-primary/10 text-background',
+                                        )
+                                    "
+                                >
+                                    <component
+                                        v-if="item.icon"
+                                        :is="item.icon"
+                                        class="h-5 w-5"
+                                        :class="[
                                             whenCurrentUrl(
                                                 item.href,
-                                                'bg-primary/10 text-background',
-                                            )
-                                        "
-                                    >
-                                        <component
-                                            v-if="item.icon"
-                                            :is="item.icon"
-                                            class="h-5 w-5"
-                                            :class="[
-                                                whenCurrentUrl(
-                                                    item.href,
-                                                    'text-red-500',
-                                                ),
-                                            ]"
-                                        />
-                                        {{ item.title }}
-                                    </Link>
-                                </nav>
-                                <div class="flex flex-col space-y-4">
-                                    <a
-                                        v-for="item in rightNavItems"
-                                        :key="item.title"
-                                        :href="toUrl(item.href)"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        class="flex items-center space-x-2 text-sm font-medium"
-                                    >
-                                        <component
-                                            v-if="item.icon"
-                                            :is="item.icon"
-                                            class="h-5 w-5"
-                                        />
-                                        <span>{{ item.title }}</span>
-                                    </a>
-                                </div>
+                                                'text-red-500',
+                                            ),
+                                        ]"
+                                    />
+                                    {{ item.title }}
+                                </Link>
+                            </nav>
+                            <div class="flex flex-col space-y-4">
+                                <a
+                                    v-for="item in rightNavItems"
+                                    :key="item.title"
+                                    :href="toUrl(item.href)"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="flex items-center space-x-2 text-sm font-medium"
+                                >
+                                    <component
+                                        v-if="item.icon"
+                                        :is="item.icon"
+                                        class="h-5 w-5"
+                                    />
+                                    <span>{{ item.title }}</span>
+                                </a>
                             </div>
-                        </SheetContent>
-                    </Sheet>
+                        </div>
+                    </SheetMenu>
                 </div>
 
                 <Link href="/" class="flex items-center gap-x-2">

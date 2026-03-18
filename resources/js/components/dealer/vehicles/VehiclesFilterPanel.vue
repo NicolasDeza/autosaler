@@ -46,7 +46,7 @@ const emit = defineEmits(['update:filters', 'reset', 'update:open']);
 
 const { __ } = useTranslation();
 const breakpoints = useBreakpoints(breakpointsTailwind);
-const isDesktop = breakpoints.greaterOrEqual('md');
+const isDesktop = breakpoints.greaterOrEqual('lg');
 
 const internalSearch = ref(props.filters.search || '');
 const brandFilter = ref(props.filters.brand_id?.toString() || 'all');
