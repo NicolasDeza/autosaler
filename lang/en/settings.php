@@ -8,6 +8,7 @@ return [
     'menu_password' => 'Password',
     'menu_2fa' => 'Two-factor Auth',
     'menu_appearance' => 'Appearance',
+    'menu_company' => 'Company',
 
     // profile page
     'profile_title' => 'Profile information',
@@ -53,4 +54,15 @@ return [
     'twa_factor_disable_description' => 'When you enable two-factor authentication, you will be prompted for a secure pin during login. This pin can be retrieved from a TOTP-supported application on your phone.',
     'twa_factor_enable_description' => 'With two-factor authentication enabled, you will be prompted for a secure, random pin during login, which you can retrieve from the TOTP-supported application on your phone.',
 
+    // company page
+    'company_title' => 'Company Information',
+    'company_description' => 'Manage your company information like name, address, and VAT number',
+    'company_name' => 'Company Name',
+    'company_address' => 'Address',
+    'company_tva_number' => 'VAT Number',
+    'company_phone' => 'Phone',
+    'company_city' => 'City',
+    'company_country' => 'Country',
+    'company_save' => 'Save',
+    'company_updated' => 'Company information updated.',
 ];

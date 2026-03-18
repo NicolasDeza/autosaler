@@ -28,4 +28,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('settings/two-factor', [TwoFactorAuthenticationController::class, 'show'])
         ->name('two-factor.show');
+
+    Route::middleware(['role:dealer'])->group(function () {
+        Route::get('settings/company', [\App\Http\Controllers\Settings\CompanyController::class, 'edit'])->name('company.edit');
+        Route::patch('settings/company', [\App\Http\Controllers\Settings\CompanyController::class, 'update'])->name('company.update');
+    });
 });

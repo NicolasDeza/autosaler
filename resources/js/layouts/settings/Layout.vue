@@ -5,17 +5,28 @@ import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
+import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
 import { toUrl } from '@/lib/utils';
 // import { edit as editAppearance } from '@/routes/appearance';
+import { edit as editCompany } from '@/routes/company';
 import { edit as editProfile } from '@/routes/profile';
 import { show } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { type NavItem } from '@/types';
 
 const { __ } = useTranslation();
+const { hasRole } = usePermissions();
 
 const sidebarNavItems = computed<NavItem[]>(() => [
+    ...(hasRole('dealer')
+        ? [
+              {
+                  title: __('settings.menu_company'),
+                  href: editCompany(),
+              },
+          ]
+        : []),
     {
         title: __('settings.menu_profile'),
         href: editProfile(),
@@ -28,10 +39,6 @@ const sidebarNavItems = computed<NavItem[]>(() => [
         title: __('settings.menu_2fa'),
         href: show(),
     },
-    // {
-    //     title: __('settings.menu_appearance'),
-    //     href: editAppearance(),
-    // },
 ]);
 
 const { isCurrentUrl } = useCurrentUrl();
