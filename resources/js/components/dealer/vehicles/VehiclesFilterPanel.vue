@@ -14,7 +14,6 @@ import {
     Car,
 } from 'lucide-vue-next';
 import { ref, watch, computed } from 'vue';
-import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import SheetMenu from '@/components/SheetMenu.vue';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible';
@@ -27,6 +26,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import { useTranslation } from '@/composables/useTranslation';
 
 interface Props {
@@ -284,7 +284,9 @@ const isDateActive = computed(
                     class="group h-7 w-7 cursor-pointer rounded-md bg-transparent text-primary transition-colors duration-200 hover:bg-primary/80 hover:text-white"
                     @click="handleReset"
                 >
-                    <RotateCcw class="h-4 w-4 transition-transform duration-500 group-hover:-rotate-180 group-hover:text-white" />
+                    <RotateCcw
+                        class="h-4 w-4 transition-transform duration-500 group-hover:-rotate-180 group-hover:text-white"
+                    />
                 </Button>
             </template>
 
@@ -295,7 +297,7 @@ const isDateActive = computed(
                     :icon="Search"
                     :is-active="isSearchActive"
                 >
-                    <div class="relative group/input">
+                    <div class="group/input relative">
                         <Input
                             v-model="internalSearch"
                             :placeholder="__('ui.search') + '...'"
@@ -314,11 +316,23 @@ const isDateActive = computed(
                         <SelectTrigger
                             class="h-10 border-input bg-background text-sm transition-all focus:ring-1 focus:ring-primary/20"
                         >
-                            <SelectValue :placeholder="!brands ? __('ui.loading') : __('dealer.all_brands')" />
+                            <SelectValue
+                                :placeholder="
+                                    !brands
+                                        ? __('ui.loading')
+                                        : __('dealer.all_brands')
+                                "
+                            />
                         </SelectTrigger>
                         <SelectContent class="border-border">
-                            <SelectItem value="all">{{ __('dealer.all_brands') }}</SelectItem>
-                            <SelectItem v-for="brand in brands" :key="brand.id" :value="brand.id.toString()">
+                            <SelectItem value="all">{{
+                                __('dealer.all_brands')
+                            }}</SelectItem>
+                            <SelectItem
+                                v-for="brand in brands"
+                                :key="brand.id"
+                                :value="brand.id.toString()"
+                            >
                                 {{ brand.name }}
                             </SelectItem>
                         </SelectContent>
@@ -332,15 +346,30 @@ const isDateActive = computed(
                     :is-active="isModelActive"
                     :disabled="brandFilter === 'all'"
                 >
-                    <Select v-model="modelFilter" :disabled="!models || brandFilter === 'all'">
+                    <Select
+                        v-model="modelFilter"
+                        :disabled="!models || brandFilter === 'all'"
+                    >
                         <SelectTrigger
                             class="h-10 border-input bg-background text-sm transition-all focus:ring-1 focus:ring-primary/20"
                         >
-                            <SelectValue :placeholder="!models ? __('ui.loading') : __('dealer.all_models')" />
+                            <SelectValue
+                                :placeholder="
+                                    !models
+                                        ? __('ui.loading')
+                                        : __('dealer.all_models')
+                                "
+                            />
                         </SelectTrigger>
                         <SelectContent class="border-border">
-                            <SelectItem value="all">{{ __('dealer.all_models') }}</SelectItem>
-                            <SelectItem v-for="model in models" :key="model.id" :value="model.id.toString()">
+                            <SelectItem value="all">{{
+                                __('dealer.all_models')
+                            }}</SelectItem>
+                            <SelectItem
+                                v-for="model in models"
+                                :key="model.id"
+                                :value="model.id.toString()"
+                            >
                                 {{ model.name }}
                             </SelectItem>
                         </SelectContent>
@@ -354,14 +383,26 @@ const isDateActive = computed(
                     :is-active="isStatusActive"
                 >
                     <Select v-model="statusFilter">
-                        <SelectTrigger class="h-10 border-input bg-background text-sm transition-all focus:ring-1 focus:ring-primary/20">
-                            <SelectValue :placeholder="__('dealer.all_statuses')" />
+                        <SelectTrigger
+                            class="h-10 border-input bg-background text-sm transition-all focus:ring-1 focus:ring-primary/20"
+                        >
+                            <SelectValue
+                                :placeholder="__('dealer.all_statuses')"
+                            />
                         </SelectTrigger>
                         <SelectContent class="border-border">
-                            <SelectItem value="all">{{ __('dealer.all_statuses') }}</SelectItem>
-                            <SelectItem value="active">{{ __('dealer.active_status') }}</SelectItem>
-                            <SelectItem value="draft">{{ __('dealer.draft_status') }}</SelectItem>
-                            <SelectItem value="sold">{{ __('dealer.sold_status') }}</SelectItem>
+                            <SelectItem value="all">{{
+                                __('dealer.all_statuses')
+                            }}</SelectItem>
+                            <SelectItem value="active">{{
+                                __('dealer.active_status')
+                            }}</SelectItem>
+                            <SelectItem value="draft">{{
+                                __('dealer.draft_status')
+                            }}</SelectItem>
+                            <SelectItem value="sold">{{
+                                __('dealer.sold_status')
+                            }}</SelectItem>
                         </SelectContent>
                     </Select>
                 </FilterGroup>
@@ -374,7 +415,9 @@ const isDateActive = computed(
                 >
                     <div class="grid grid-cols-2 gap-3">
                         <div class="space-y-1.5">
-                            <Label class="text-[10px] font-bold text-muted-foreground uppercase">
+                            <Label
+                                class="text-[10px] font-bold text-muted-foreground uppercase"
+                            >
                                 {{ __('dealer.from_date') }}
                             </Label>
                             <Input
@@ -384,7 +427,9 @@ const isDateActive = computed(
                             />
                         </div>
                         <div class="space-y-1.5">
-                            <Label class="text-[10px] font-bold text-muted-foreground uppercase">
+                            <Label
+                                class="text-[10px] font-bold text-muted-foreground uppercase"
+                            >
                                 {{ __('dealer.to_date') }}
                             </Label>
                             <Input
