@@ -30,6 +30,13 @@ class UserSeeder extends Seeder
                     'role' => 'admin',
                 ],
                 [
+                    'first_name' => 'Rony',
+                    'last_name' => 'Quoidbach',
+                    'email' => 'autosalerpro@gmail.com',
+                    'password' => Hash::make('password'),
+                    'role' => 'admin',
+                ],
+                [
                     'first_name' => 'John',
                     'last_name' => 'Doe',
                     'email' => 'john@johngarage.com',
