@@ -3,9 +3,7 @@
         class="overflow-hidden border-border/40 bg-background/50 shadow-xl backdrop-blur-xl"
     >
         <CardHeader class="border-b border-border/40 bg-muted/20 pb-8">
-            <div
-                class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"
-            >
+            <div class="flex flex-col gap-8">
                 <div class="space-y-2">
                     <CardTitle
                         class="font-heading text-3xl font-bold tracking-tight"

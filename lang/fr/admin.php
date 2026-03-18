@@ -39,6 +39,7 @@ return [
     'vehicles_label' => 'véhicules',
 
     'users_description' => 'Gérez les comptes utilisateurs, leurs rôles et pour les concessionnaires, leurs abonnements.',
+    'search' => 'Rechercher',
     'search_users_placeholder' => 'Rechercher un utilisateur (nom, email)...',
     'all_roles' => 'Tous les rôles',
     'user_info' => 'Utilisateur',
@@ -63,7 +64,7 @@ return [
     'cancel_subscription_action' => 'Résilier l\'abonnement',
     'close' => 'Fermer',
     'active' => 'Actif',
-    
+
     'choose_plan' => 'Choisir un plan',
     'select_plan' => 'Sélectionnez un plan...',
     'cancel' => 'Annuler',

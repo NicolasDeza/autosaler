@@ -1,17 +1,25 @@
 <template>
-    <Card class="overflow-hidden border-border/50 bg-background/60 backdrop-blur-md shadow-xl">
-        <CardHeader class="border-b border-border/50 pb-6 bg-muted/20">
-            <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+    <Card
+        class="overflow-hidden border-border/50 bg-background/60 shadow-xl backdrop-blur-md"
+    >
+        <CardHeader class="border-b border-border/50 bg-muted/20 pb-6">
+            <div class="flex flex-col gap-6">
                 <div class="space-y-1">
-                    <CardTitle class="font-heading text-2xl tracking-tight">{{ __('admin.tab_vehicles') }}</CardTitle>
-                    <CardDescription class="font-body text-sm">{{ __('admin.vehicles_description') }}</CardDescription>
+                    <CardTitle class="font-heading text-2xl tracking-tight">{{
+                        __('admin.tab_vehicles')
+                    }}</CardTitle>
+                    <CardDescription class="font-body text-sm">{{
+                        __('admin.vehicles_description')
+                    }}</CardDescription>
                 </div>
-                <div class="relative w-full sm:w-80 group">
-                    <Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
+                <div class="group relative w-full sm:w-80">
+                    <Search
+                        class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary"
+                    />
                     <Input
                         v-model="search"
                         :placeholder="__('admin.search_placeholder')"
-                        class="pl-10 h-11 bg-background/50 border-border/40 focus-visible:ring-primary/20"
+                        class="h-11 border-border/40 bg-background/50 pl-10 focus-visible:ring-primary/20"
                         @input="debouncedSearch"
                     />
                 </div>
@@ -21,16 +29,32 @@
         <CardContent class="p-0">
             <!-- Admin Filter Panel -->
             <div class="border-b border-border/50 bg-muted/10 p-6">
-                <div class="grid grid-cols-1 gap-6 md:grid-cols-4 items-end">
+                <div class="grid grid-cols-1 items-end gap-6 md:grid-cols-4">
                     <div class="space-y-2.5">
-                        <Label class="font-heading text-[10px] font-bold uppercase tracking-widest text-muted-foreground/80 leading-none ml-1">{{ __('admin.filter_company') }}</Label>
-                        <Select v-model="companyId" @update:model-value="updateFilters">
-                            <SelectTrigger class="h-11 bg-background/50 border-border/40 font-heading text-xs font-bold transition-all hover:border-primary/30">
-                                <SelectValue :placeholder="__('admin.all_companies')" />
+                        <Label
+                            class="font-heading ml-1 text-[10px] leading-none font-bold tracking-widest text-muted-foreground/80 uppercase"
+                            >{{ __('admin.filter_company') }}</Label
+                        >
+                        <Select
+                            v-model="companyId"
+                            @update:model-value="updateFilters"
+                        >
+                            <SelectTrigger
+                                class="font-heading h-11 border-border/40 bg-background/50 text-xs font-bold transition-all hover:border-primary/30"
+                            >
+                                <SelectValue
+                                    :placeholder="__('admin.all_companies')"
+                                />
                             </SelectTrigger>
                             <SelectContent class="font-body">
-                                <SelectItem value="all">{{ __('admin.all_companies') }}</SelectItem>
-                                <SelectItem v-for="company in companies" :key="company.id" :value="company.id.toString()">
+                                <SelectItem value="all">{{
+                                    __('admin.all_companies')
+                                }}</SelectItem>
+                                <SelectItem
+                                    v-for="company in companies"
+                                    :key="company.id"
+                                    :value="company.id.toString()"
+                                >
                                     {{ company.name }}
                                 </SelectItem>
                             </SelectContent>
@@ -38,14 +62,30 @@
                     </div>
 
                     <div class="space-y-2.5">
-                        <Label class="font-heading text-[10px] font-bold uppercase tracking-widest text-muted-foreground/80 leading-none ml-1">{{ __('admin.filter_brand') }}</Label>
-                        <Select v-model="brandId" @update:model-value="updateFilters">
-                            <SelectTrigger class="h-11 bg-background/50 border-border/40 font-heading text-xs font-bold transition-all hover:border-primary/30">
-                                <SelectValue :placeholder="__('admin.all_brands')" />
+                        <Label
+                            class="font-heading ml-1 text-[10px] leading-none font-bold tracking-widest text-muted-foreground/80 uppercase"
+                            >{{ __('admin.filter_brand') }}</Label
+                        >
+                        <Select
+                            v-model="brandId"
+                            @update:model-value="updateFilters"
+                        >
+                            <SelectTrigger
+                                class="font-heading h-11 border-border/40 bg-background/50 text-xs font-bold transition-all hover:border-primary/30"
+                            >
+                                <SelectValue
+                                    :placeholder="__('admin.all_brands')"
+                                />
                             </SelectTrigger>
                             <SelectContent class="font-body">
-                                <SelectItem value="all">{{ __('admin.all_brands') }}</SelectItem>
-                                <SelectItem v-for="brand in brands" :key="brand.id" :value="brand.id.toString()">
+                                <SelectItem value="all">{{
+                                    __('admin.all_brands')
+                                }}</SelectItem>
+                                <SelectItem
+                                    v-for="brand in brands"
+                                    :key="brand.id"
+                                    :value="brand.id.toString()"
+                                >
                                     {{ brand.name }}
                                 </SelectItem>
                             </SelectContent>
@@ -53,22 +93,44 @@
                     </div>
 
                     <div class="space-y-2.5">
-                        <Label class="font-heading text-[10px] font-bold uppercase tracking-widest text-muted-foreground/80 leading-none ml-1">{{ __('admin.filter_status') }}</Label>
-                        <Select v-model="status" @update:model-value="updateFilters">
-                            <SelectTrigger class="h-11 bg-background/50 border-border/40 font-heading text-xs font-bold transition-all hover:border-primary/30">
-                                <SelectValue :placeholder="__('admin.all_statuses')" />
+                        <Label
+                            class="font-heading ml-1 text-[10px] leading-none font-bold tracking-widest text-muted-foreground/80 uppercase"
+                            >{{ __('admin.filter_status') }}</Label
+                        >
+                        <Select
+                            v-model="status"
+                            @update:model-value="updateFilters"
+                        >
+                            <SelectTrigger
+                                class="font-heading h-11 border-border/40 bg-background/50 text-xs font-bold transition-all hover:border-primary/30"
+                            >
+                                <SelectValue
+                                    :placeholder="__('admin.all_statuses')"
+                                />
                             </SelectTrigger>
                             <SelectContent class="font-body">
-                                <SelectItem value="all">{{ __('admin.all_statuses') }}</SelectItem>
-                                <SelectItem value="active">{{ __('admin.status_active') }}</SelectItem>
-                                <SelectItem value="draft">{{ __('admin.status_draft') }}</SelectItem>
-                                <SelectItem value="pending">{{ __('admin.status_pending') }}</SelectItem>
+                                <SelectItem value="all">{{
+                                    __('admin.all_statuses')
+                                }}</SelectItem>
+                                <SelectItem value="active">{{
+                                    __('admin.status_active')
+                                }}</SelectItem>
+                                <SelectItem value="draft">{{
+                                    __('admin.status_draft')
+                                }}</SelectItem>
+                                <SelectItem value="pending">{{
+                                    __('admin.status_pending')
+                                }}</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
 
                     <div class="flex">
-                        <Button variant="outline" class="w-full h-11 gap-2 font-heading text-[10px] uppercase tracking-widest font-bold border-border/40 hover:bg-muted transition-all shadow-sm" @click="resetFilters">
+                        <Button
+                            variant="outline"
+                            class="font-heading h-11 w-full gap-2 border-border/40 text-[10px] font-bold tracking-widest uppercase shadow-sm transition-all hover:bg-muted"
+                            @click="resetFilters"
+                        >
                             <RotateCcw class="h-4 w-4" />
                             {{ __('admin.reset_filters') }}
                         </Button>
@@ -107,10 +169,22 @@ import { index as adminDashboardIndex } from '@/actions/App/Http/Controllers/Adm
 import AppPagination from '@/components/AppPagination.vue';
 import VehiclesTable from '@/components/dealer/vehicles/VehiclesTable.vue';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { useTranslation } from '@/composables/useTranslation';
 
 const props = defineProps<{
