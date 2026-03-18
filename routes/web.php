@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\CitySearchController;
 use App\Http\Controllers\DealerDashboardController;
 use App\Http\Controllers\DealersPageController;
@@ -44,21 +45,16 @@ Route::middleware(['auth', 'verified', 'role:admin|dealer'])->group(function () 
         Route::delete('/{vehicleAd}', [VehicleAdController::class, 'destroy'])->name('destroy');
     });
 
-    Route::middleware('permission:view_admin_dashboard')->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', function () {
-            return Inertia::render('AdminDashboard');
-        })->name('dashboard');
-    });
-
     Route::middleware('permission:view_dealer_dashboard')->prefix('dealer')->name('dealer.')->group(function () {
         Route::get('/dashboard', [DealerDashboardController::class, 'index'])->name('dashboard');
     });
 
-    // Route::middleware('role:admin')->group(function () {
-    //     Route::get('/admindashboard', function () {
-    //         return Inertia::render('AdminDashboard');
-    //     })->name('admin_dashboard');
-    // });
+    Route::middleware('permission:view_admin_dashboard')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::patch('/users/{user}/subscription', [AdminDashboardController::class, 'updateSubscription'])->name('users.update_subscription');
+        Route::delete('/users/{user}/subscription', [AdminDashboardController::class, 'cancelSubscription'])->name('users.cancel_subscription');
+        Route::patch('/users/{user}/status', [AdminDashboardController::class, 'updateStatus'])->name('users.update_status');
+    });
 });
 
 Route::get('/translations/{locale}', function ($locale) {

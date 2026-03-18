@@ -18,6 +18,7 @@ return new class extends Migration
                 ->nullable()
                 ->unique();
 
+            $table->enum('status', ['active', 'inactive', 'suspended', 'banned'])->default('active');
             $table->string('first_name');
             $table->string('last_name');
 

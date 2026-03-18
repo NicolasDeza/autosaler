@@ -34,7 +34,7 @@ return [
     'displacement' => 'Cylindrée',
     'displacement_cm3' => 'Cylindrée (cm³)',
     'cylinders' => 'Cylindres',
-    'gears' => 'Nb de vitesses',
+    'gear_count' => 'Nb de vitesses',
     'weight' => 'Poids',
     'weight_kg' => 'Poids (kg)',
     'doors' => 'Portes',

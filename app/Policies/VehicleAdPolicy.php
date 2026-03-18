@@ -28,7 +28,7 @@ class VehicleAdPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['dealer', 'admin']);
+        return $user->hasRole(['dealer', 'admin']) && $user->status === UserStatus::ACTIVE;
     }
 
     /**
@@ -36,7 +36,7 @@ class VehicleAdPolicy
      */
     public function update(User $user, VehicleAd $vehicleAd): bool
     {
-        return $user->hasRole('admin') || ($user->hasRole('dealer') && $user->id === $vehicleAd->user_id);
+        return $user->hasRole('admin') && $user->status === UserStatus::ACTIVE || ($user->hasRole('dealer') && $user->id === $vehicleAd->user_id && $user->status === UserStatus::ACTIVE);
     }
 
     /**
@@ -44,7 +44,7 @@ class VehicleAdPolicy
      */
     public function delete(User $user, VehicleAd $vehicleAd): bool
     {
-        return $user->hasRole('admin') || ($user->hasRole('dealer') && $user->id === $vehicleAd->user_id);
+        return $user->hasRole('admin') && $user->status === UserStatus::ACTIVE || ($user->hasRole('dealer') && $user->id === $vehicleAd->user_id && $user->status === UserStatus::ACTIVE);
     }
 
     /**
@@ -52,7 +52,7 @@ class VehicleAdPolicy
      */
     public function restore(User $user, VehicleAd $vehicleAd): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('admin') && $user->status === UserStatus::ACTIVE;
     }
 
     /**
@@ -60,6 +60,6 @@ class VehicleAdPolicy
      */
     public function forceDelete(User $user, VehicleAd $vehicleAd): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('admin') && $user->status === UserStatus::ACTIVE;
     }
 }
