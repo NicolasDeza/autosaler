@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Cog } from 'lucide-vue-next';
-import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import FilterCheckboxGroup from '@/components/VehicleAds/FilterCheckboxGroup.vue';
+import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 
 defineProps<{
     transmissionTypes: any[];

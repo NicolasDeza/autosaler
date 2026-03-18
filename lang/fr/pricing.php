@@ -19,7 +19,6 @@ return [
 
     'feature_photos' => 'Jusqu\'à 20 photos par annonce',
     'feature_stats' => 'Statistiques de vues',
-    'feature_priority' => 'Support prioritaire',
 
     'cta_free' => 'Commencer gratuitement',
     'cta_paid' => 'Choisir ce plan',

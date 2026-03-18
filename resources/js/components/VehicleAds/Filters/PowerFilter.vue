@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Zap } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
-import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import { Input } from '@/components/ui/input';
 import {
     Select,
@@ -10,6 +9,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 
 const form = defineModel<any>('form', { required: true });
 
