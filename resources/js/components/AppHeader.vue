@@ -9,6 +9,7 @@ import {
     Car,
     Star,
     Warehouse,
+    User,
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
@@ -46,7 +47,7 @@ import { getInitials } from '@/composables/useInitials';
 import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
 import { toUrl } from '@/lib/utils';
-import { login, register } from '@/routes';
+import { login } from '@/routes';
 import admin from '@/routes/admin';
 import dealer from '@/routes/dealer';
 import vehicles from '@/routes/vehicles';
@@ -71,9 +72,6 @@ const auth = computed(() => page.props.auth);
 const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
 
 const { can } = usePermissions();
-
-const activeItemStyles =
-    'text-neutral-900 dark:bg-foreground dark:text-background';
 
 const mainNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
@@ -157,24 +155,40 @@ const handleFavoritesClick = () => {
                                 <Menu class="h-5 w-5" />
                             </Button>
                         </SheetTrigger>
-                        <SheetContent
-                            side="left"
-                            class="dark w-75 bg-background p-6 text-foreground"
-                        >
+                        <SheetContent side="left" class="w-75 border-primary">
                             <SheetTitle class="sr-only"
                                 >Navigation Menu</SheetTitle
                             >
                             <SheetHeader
-                                class="flex items-center justify-center text-left"
+                                class="flex items-center justify-center bg-foreground pb-0 text-left"
                             >
-                                <div class="flex items-center gap-x-2">
+                                <div class="flex items-center gap-x-2 p-6">
                                     <AppLogo />
                                 </div>
                             </SheetHeader>
                             <div
-                                class="flex h-full flex-1 flex-col justify-between space-y-4 py-6"
+                                class="flex h-full flex-1 flex-col justify-between space-y-4 px-6 pb-6"
                             >
                                 <nav class="-mx-3 space-y-1">
+                                    <template v-if="!auth || !auth.user">
+                                        <div
+                                            class="border-b border-foreground/20 py-2"
+                                        >
+                                            <Button
+                                                :as="Link"
+                                                :href="login()"
+                                                class="w-full justify-start"
+                                                variant="ghost"
+                                            >
+                                                <span>
+                                                    <User
+                                                        class="h-5 w-5 text-primary"
+                                                    />
+                                                </span>
+                                                <span> Log in </span>
+                                            </Button>
+                                        </div>
+                                    </template>
                                     <Link
                                         v-for="item in mainNavItems"
                                         :key="item.title"
@@ -183,7 +197,7 @@ const handleFavoritesClick = () => {
                                         :class="
                                             whenCurrentUrl(
                                                 item.href,
-                                                activeItemStyles,
+                                                'bg-primary/10 text-background',
                                             )
                                         "
                                     >
@@ -243,7 +257,7 @@ const handleFavoritesClick = () => {
                                         navigationMenuTriggerStyle(),
                                         whenCurrentUrl(
                                             item.href,
-                                            activeItemStyles,
+                                            'text-neutral-900 dark:bg-foreground dark:text-background',
                                         ),
                                         'h-9 cursor-pointer px-3 hover:bg-foreground/90 hover:text-background/90',
                                     ]"
@@ -385,19 +399,16 @@ const handleFavoritesClick = () => {
                         </DropdownMenuContent>
                     </DropdownMenu>
                     <template v-else>
-                        <Link
-                            :href="login()"
-                            class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
-                        >
-                            Log in
-                        </Link>
-                        <Link
-                            v-if="page.props.canRegister"
-                            :href="register()"
-                            class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                        >
-                            Register
-                        </Link>
+                        <div class="hidden lg:block">
+                            <Button
+                                :as="Link"
+                                :href="login()"
+                                variant="ghost"
+                                class="h-9 px-4 text-[#1b1b18] dark:text-[#EDEDEC]"
+                            >
+                                Log in
+                            </Button>
+                        </div>
                     </template>
                 </div>
             </div>
