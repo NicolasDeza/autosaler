@@ -44,12 +44,12 @@ import { toUrl } from '@/lib/utils';
 import { login } from '@/routes';
 import admin from '@/routes/admin';
 import dealer from '@/routes/dealer';
+import dealers from '@/routes/dealers';
 import vehicles from '@/routes/vehicles';
 
 import type { BreadcrumbItem, NavItem } from '@/types';
 import type { ExtendedPageProps } from '@/types/inertia';
 import LanguageSelector from './LanguageSelector.vue';
-import dealers from '@/routes/dealers';
 
 const { __ } = useTranslation();
 const page = usePage<ExtendedPageProps>();
@@ -159,51 +159,57 @@ const handleFavoritesClick = () => {
                         <div
                             class="flex h-full flex-1 flex-col justify-between space-y-4"
                         >
-                            <nav class="-mx-3 space-y-1">
+                            <nav class="space-y-1.5">
                                 <template v-if="!auth || !auth.user">
-                                    <div
-                                        class="border-b border-foreground/20 py-2"
+                                    <Button
+                                        :as="Link"
+                                        :href="login()"
+                                        variant="ghost"
+                                        class="group relative w-full justify-start gap-4 rounded-xl px-4 py-8 text-muted-foreground transition-all duration-300 hover:bg-muted/50 hover:text-foreground"
                                     >
-                                        <Button
-                                            :as="Link"
-                                            :href="login()"
-                                            class="w-full justify-start"
-                                            variant="ghost"
+                                        <div
+                                            class="flex h-10 w-10 items-center justify-center rounded-lg bg-background shadow-xs transition-colors group-hover:bg-muted/10"
                                         >
-                                            <span>
-                                                <User
-                                                    class="h-5 w-5 text-primary"
-                                                />
-                                            </span>
-                                            <span> Log in </span>
-                                        </Button>
-                                    </div>
+                                            <User class="h-5 w-5" />
+                                        </div>
+                                        <span
+                                            class="font-heading text-sm font-bold tracking-widest uppercase"
+                                        >
+                                            Log in
+                                        </span>
+                                    </Button>
+                                    <div class="my-4 h-px bg-border/40" />
                                 </template>
-                                <Link
+
+                                <Button
                                     v-for="item in mainNavItems"
                                     :key="item.title"
+                                    :as="Link"
                                     :href="item.href"
-                                    class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-foreground/90 hover:text-background/90"
-                                    :class="
-                                        whenCurrentUrl(
-                                            item.href,
-                                            'bg-primary/10 text-background',
-                                        )
-                                    "
+                                    variant="ghost"
+                                    class="group relative w-full justify-start gap-4 rounded-xl px-4 py-8 transition-all duration-300"
+                                    :class="{
+                                        'bg-primary/10 text-primary hover:bg-primary/15':
+                                            isCurrentUrl(item.href),
+                                        'text-muted-foreground hover:bg-muted/50 hover:text-foreground':
+                                            !isCurrentUrl(item.href),
+                                    }"
                                 >
-                                    <component
-                                        v-if="item.icon"
-                                        :is="item.icon"
-                                        class="h-5 w-5"
-                                        :class="[
-                                            whenCurrentUrl(
-                                                item.href,
-                                                'text-red-500',
-                                            ),
-                                        ]"
-                                    />
-                                    {{ item.title }}
-                                </Link>
+                                    <div
+                                        class="flex h-10 w-10 items-center justify-center rounded-lg bg-background shadow-xs transition-colors group-hover:bg-muted/10"
+                                    >
+                                        <component
+                                            v-if="item.icon"
+                                            :is="item.icon"
+                                            class="h-5 w-5"
+                                        />
+                                    </div>
+                                    <span
+                                        class="font-heading text-sm font-bold tracking-widest uppercase"
+                                    >
+                                        {{ item.title }}
+                                    </span>
+                                </Button>
                             </nav>
                             <div class="flex flex-col space-y-4">
                                 <a
@@ -395,7 +401,7 @@ const handleFavoritesClick = () => {
                                 variant="ghost"
                                 class="h-9 px-4 text-[#1b1b18] dark:text-[#EDEDEC]"
                             >
-                                Log in
+                                {{ __('nav.login') }}
                             </Button>
                         </div>
                     </template>

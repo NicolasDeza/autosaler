@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
+import { useTranslation } from '@/composables/useTranslation';
 import AuthBase from '@/layouts/auth/AuthModalLayout.vue';
 import { login } from '@/routes';
 import { store } from '@/routes/register';
@@ -13,15 +14,17 @@ import { store } from '@/routes/register';
 defineProps<{
     intendedUrl?: string;
 }>();
+
+const { __ } = useTranslation();
 </script>
 
 <template>
     <AuthBase
-        title="Create an account"
-        description="Enter your details below to create your account"
+        :title="__('auth.register_title')"
+        :description="__('auth.register_description')"
         :close-href="intendedUrl"
     >
-        <Head title="Register" />
+        <Head :title="__('auth.register_head')" />
 
         <Form
             v-bind="store.form()"
@@ -32,7 +35,9 @@ defineProps<{
             <div class="grid gap-6">
                 <div class="flex gap-2">
                     <div class="grid gap-2">
-                        <Label for="first_name">First Name</Label>
+                        <Label for="first_name">{{
+                            __('auth.register_first_name_label')
+                        }}</Label>
                         <Input
                             id="first_name"
                             type="text"
@@ -41,12 +46,14 @@ defineProps<{
                             :tabindex="1"
                             autocomplete="given-name"
                             name="first_name"
-                            placeholder="Fisrt name"
+                            :placeholder="__('auth.register_first_name_placeholder')"
                         />
                         <InputError :message="errors.first_name" />
                     </div>
                     <div class="grid gap-2">
-                        <Label for="last_name">Last Name</Label>
+                        <Label for="last_name">{{
+                            __('auth.register_last_name_label')
+                        }}</Label>
                         <Input
                             id="last_name"
                             type="text"
@@ -55,14 +62,16 @@ defineProps<{
                             :tabindex="1"
                             autocomplete="family-name"
                             name="last_name"
-                            placeholder="Last name"
+                            :placeholder="__('auth.register_last_name_placeholder')"
                         />
                         <InputError :message="errors.last_name" />
                     </div>
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
+                    <Label for="email">{{
+                        __('auth.register_email_label')
+                    }}</Label>
                     <Input
                         id="email"
                         type="email"
@@ -70,13 +79,15 @@ defineProps<{
                         :tabindex="2"
                         autocomplete="email"
                         name="email"
-                        placeholder="email@example.com"
+                        :placeholder="__('auth.register_email_placeholder')"
                     />
                     <InputError :message="errors.email" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password">Password</Label>
+                    <Label for="password">{{
+                        __('auth.register_password_label')
+                    }}</Label>
                     <Input
                         id="password"
                         type="password"
@@ -84,13 +95,15 @@ defineProps<{
                         :tabindex="3"
                         autocomplete="new-password"
                         name="password"
-                        placeholder="Password"
+                        :placeholder="__('auth.register_password_placeholder')"
                     />
                     <InputError :message="errors.password" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password_confirmation">Confirm password</Label>
+                    <Label for="password_confirmation">{{
+                        __('auth.register_confirm_password_label')
+                    }}</Label>
                     <Input
                         id="password_confirmation"
                         type="password"
@@ -98,7 +111,9 @@ defineProps<{
                         :tabindex="4"
                         autocomplete="new-password"
                         name="password_confirmation"
-                        placeholder="Confirm password"
+                        :placeholder="
+                            __('auth.register_confirm_password_placeholder')
+                        "
                     />
                     <InputError :message="errors.password_confirmation" />
                 </div>
@@ -111,17 +126,17 @@ defineProps<{
                     data-test="register-user-button"
                 >
                     <Spinner v-if="processing" />
-                    Create account
+                    {{ __('auth.register_button') }}
                 </Button>
             </div>
 
             <div class="text-center text-sm text-muted-foreground">
-                Already have an account?
+                {{ __('auth.register_already_have_account') }}
                 <TextLink
                     :href="login()"
                     class="underline underline-offset-4"
                     :tabindex="6"
-                    >Log in</TextLink
+                    >{{ __('auth.register_login_link') }}</TextLink
                 >
             </div>
         </Form>

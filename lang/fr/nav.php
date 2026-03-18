@@ -12,6 +12,9 @@ return [
     'dealer_dashboard' => 'Tableau de bord',
     'admin_dashboard' => 'Tableau de bord',
     'favorites' => 'Favoris',
+    'login' => 'Connexion',
+    'logout' => 'Déconnexion',
+    'settings' => 'Paramètres',
 
     // légal
     'legal_notices' => 'Mentions légales',

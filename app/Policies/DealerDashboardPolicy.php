@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\UserStatus;
 
 class DealerDashboardPolicy
 {
@@ -12,6 +13,6 @@ class DealerDashboardPolicy
     public function view(User $user): bool
     {
         // On n'autorise que les dealers et les administrateurs
-        return $user->hasRole(['dealer', 'admin']);
+        return $user->hasRole(['dealer', 'admin']) && $user->status === UserStatus::ACTIVE;
     }
 }

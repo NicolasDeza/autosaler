@@ -8,6 +8,7 @@ return [
     'menu_password' => 'Mot de passe',
     'menu_2fa' => 'Authentification à double facteur',
     'menu_appearance' => 'Apparence',
+    'menu_company' => 'Entreprise',
 
     // profile page
     'profile_title' => 'Informations du profil',
@@ -53,4 +54,15 @@ return [
     'twa_factor_disable_description' => 'Lorsque vous activez l\'authentification à double facteur, un code sécurisé vous sera demandé lors de la connexion. Ce code peut être récupéré à partir d\'une application compatible TOTP sur votre téléphone.',
     'twa_factor_enable_description' => 'Avec l\'authentification à double facteur activée, un code sécurisé et aléatoire vous sera demandé lors de la connexion, que vous pourrez récupérer depuis l\'application compatible TOTP sur votre téléphone.',
 
+    // company page
+    'company_title' => 'Informations de l\'entreprise',
+    'company_description' => 'Gérer les informations de votre entreprise comme le nom, l\'adresse et le numéro de TVA',
+    'company_name' => 'Nom de l\'entreprise',
+    'company_address' => 'Adresse',
+    'company_tva_number' => 'Numéro de TVA',
+    'company_phone' => 'Téléphone',
+    'company_city' => 'Ville',
+    'company_country' => 'Pays',
+    'company_save' => 'Enregistrer',
+    'company_updated' => 'Informations de l\'entreprise mises à jour.',
 ];
