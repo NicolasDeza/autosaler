@@ -23,19 +23,12 @@ const slides = computed(() => [
 ]);
 
 const current = ref(0);
-const transitioning = ref(false);
 const paused = ref(false);
 let interval: ReturnType<typeof setInterval> | undefined;
 
 function goTo(index: number) {
     if (index === current.value) return;
-    transitioning.value = true;
-    setTimeout(() => {
-        current.value = index;
-        setTimeout(() => {
-            transitioning.value = false;
-        }, 50);
-    }, 300);
+    current.value = index;
     resetInterval();
 }
 
@@ -142,30 +135,27 @@ onUnmounted(() => {
             class="absolute inset-0 z-10 flex items-center justify-center px-6 pb-32 sm:pb-40"
         >
             <div
-                class="w-full max-w-4xl text-center"
+                v-for="(slide, i) in slides"
+                :key="'content-' + i"
+                class="absolute w-full max-w-4xl text-center transition-all duration-1500 ease-in-out"
                 :class="
-                    transitioning
-                        ? 'translate-y-2 opacity-0'
-                        : 'translate-y-0 opacity-100'
-                "
-                style="
-                    transition:
-                        opacity 0.3s ease,
-                        transform 0.3s ease;
+                    i === current
+                        ? 'translate-y-0 opacity-100'
+                        : 'pointer-events-none translate-y-8 opacity-0'
                 "
             >
                 <!-- Titre -->
                 <h1
                     class="mb-5 text-4xl leading-[1.05] font-black text-white sm:text-5xl md:text-6xl lg:text-7xl"
                 >
-                    {{ slides[current].title }}
+                    {{ slide.title }}
                 </h1>
 
                 <!-- Sous-titre -->
                 <p
                     class="mx-auto mb-8 min-h-13 max-w-xl text-base leading-relaxed font-semibold text-white/80 md:min-h-15 md:text-lg"
                 >
-                    {{ slides[current].subtitle }}
+                    {{ slide.subtitle }}
                 </p>
 
                 <!-- CTA -->
@@ -181,7 +171,7 @@ onUnmounted(() => {
                         <!-- Text avec tracking expansion -->
                         <span
                             class="relative z-10 transition-all duration-300 group-hover:tracking-widest"
-                            >{{ slides[current].cta }}</span
+                            >{{ slide.cta }}</span
                         >
                     </Button>
                 </div>
