@@ -87,7 +87,7 @@ const handleOpenChange = (val: boolean) => {
                 :side="side"
                 :class="
                     cn(
-                        'flex w-[85vw] flex-col bg-card p-0 sm:max-w-md',
+                        'flex w-[85vw] flex-col gap-0 bg-card p-0 sm:max-w-md',
                         side === 'left'
                             ? 'border-r-primary'
                             : side === 'right'

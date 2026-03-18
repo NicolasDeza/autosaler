@@ -14,7 +14,7 @@
                     :icon="ShieldCheck"
                     with-floating-button
                 >
-                    <nav class="space-y-1.5 pt-4">
+                    <nav class="space-y-1.5">
                         <Button
                             v-for="item in navItems"
                             :key="item.id"
