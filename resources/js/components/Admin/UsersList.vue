@@ -108,7 +108,7 @@
                         <TableRow
                             v-for="user in users.data"
                             :key="user.id"
-                            class="group border-b border-border/40 transition-all duration-300 hover:bg-primary/[0.02]"
+                            class="group border-b border-border/40 transition-all duration-300 hover:bg-primary/2"
                         >
                             <TableCell class="px-8 py-5">
                                 <div class="flex items-center gap-5">
@@ -215,7 +215,7 @@
                                 <Button
                                     variant="outline"
                                     size="sm"
-                                    class="font-heading h-9 w-9 border-border/40 bg-background/50 p-0 text-foreground/60 transition-all duration-300 hover:border-primary/50 hover:bg-primary/[0.05] hover:text-primary"
+                                    class="font-heading h-9 w-9 border-border/40 bg-background/50 p-0 text-foreground/60 transition-all duration-300 hover:border-primary/50 hover:bg-primary/5 hover:text-primary"
                                     @click="openEditModal(user)"
                                 >
                                     <Edit2 class="h-4 w-4" />
