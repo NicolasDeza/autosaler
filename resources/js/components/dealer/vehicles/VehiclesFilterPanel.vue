@@ -11,8 +11,10 @@ import {
     Tag,
     Activity,
     Search,
+    Car,
 } from 'lucide-vue-next';
 import { ref, watch, computed } from 'vue';
+import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import SheetMenu from '@/components/SheetMenu.vue';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible';
@@ -273,217 +275,127 @@ const isDateActive = computed(
             @update:open="handleOpenChange"
             side="left"
             :title="__('ui.filters')"
-            :description="__('dealer.manage_ads_description')"
             :icon="SlidersHorizontal"
             with-floating-button
         >
-            <div class="space-y-8">
+            <template #headerActions>
+                <Button
+                    size="icon"
+                    class="group h-7 w-7 cursor-pointer rounded-md bg-transparent text-primary transition-colors duration-200 hover:bg-primary/80 hover:text-white"
+                    @click="handleReset"
+                >
+                    <RotateCcw class="h-4 w-4 transition-transform duration-500 group-hover:-rotate-180 group-hover:text-white" />
+                </Button>
+            </template>
+
+            <div class="space-y-6">
                 <!-- Mobile Search Section -->
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <Search
-                                class="h-3.5 w-3.5 text-muted-foreground/60"
-                            />
-                            <Label
-                                class="text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase"
-                                >{{ __('ui.search') }}</Label
-                            >
-                        </div>
-                        <div
-                            v-if="isSearchActive"
-                            class="h-1.5 w-1.5 rounded-full bg-primary"
-                        ></div>
-                    </div>
-                    <div class="relative">
-                        <Search
-                            class="absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground/50"
-                        />
+                <FilterGroup
+                    :label="__('ui.search')"
+                    :icon="Search"
+                    :is-active="isSearchActive"
+                >
+                    <div class="relative group/input">
                         <Input
                             v-model="internalSearch"
-                            :placeholder="__('ui.search')"
-                            class="h-11 border-border/20 bg-muted/10 pl-9 text-sm text-foreground transition-all focus-visible:bg-muted/20 focus-visible:ring-1 focus-visible:ring-primary/20"
+                            :placeholder="__('ui.search') + '...'"
+                            class="h-10 border-input bg-background text-sm transition-all focus-visible:ring-1 focus-visible:ring-primary/20"
                         />
                     </div>
-                </div>
+                </FilterGroup>
 
-                <!-- Brand & Model Section -->
-                <div class="space-y-4 border-t border-border/10 pt-6">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <Tag class="h-3.5 w-3.5 text-muted-foreground/60" />
-                            <Label
-                                class="text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase"
-                                >{{ __('dealer.vehicle') }}</Label
-                            >
-                        </div>
-                        <div
-                            v-if="isBrandActive || isModelActive"
-                            class="h-1.5 w-1.5 animate-pulse rounded-full bg-primary"
-                        ></div>
-                    </div>
-
-                    <div class="grid gap-4">
-                        <div class="space-y-2">
-                            <Select v-model="brandFilter" :disabled="!brands">
-                                <SelectTrigger
-                                    class="h-11 border-border/20 bg-muted/10 text-sm text-foreground transition-all focus:ring-1 focus:ring-primary/20"
-                                >
-                                    <SelectValue
-                                        :placeholder="
-                                            !brands
-                                                ? __('ui.loading')
-                                                : __('dealer.all_brands')
-                                        "
-                                    />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">{{
-                                        __('dealer.all_brands')
-                                    }}</SelectItem>
-                                    <SelectItem
-                                        v-for="brand in brands"
-                                        :key="brand.id"
-                                        :value="brand.id.toString()"
-                                    >
-                                        {{ brand.name }}
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        <div class="space-y-2">
-                            <Select v-model="modelFilter" :disabled="!models">
-                                <SelectTrigger
-                                    class="h-11 border-border/20 bg-muted/10 text-sm text-foreground transition-all focus:ring-1 focus:ring-primary/20"
-                                >
-                                    <SelectValue
-                                        :placeholder="
-                                            !models
-                                                ? __('ui.loading')
-                                                : __('dealer.all_models')
-                                        "
-                                    />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">{{
-                                        __('dealer.all_models')
-                                    }}</SelectItem>
-                                    <SelectItem
-                                        v-for="model in models"
-                                        :key="model.id"
-                                        :value="model.id.toString()"
-                                    >
-                                        {{ model.name }}
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Status Section -->
-                <div class="space-y-4 border-t border-border/10 pt-6">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <Activity
-                                class="h-3.5 w-3.5 text-muted-foreground/60"
-                            />
-                            <Label
-                                class="text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase"
-                                >{{ __('dealer.status') }}</Label
-                            >
-                        </div>
-                        <div
-                            v-if="isStatusActive"
-                            class="h-1.5 w-1.5 rounded-full bg-primary"
-                        ></div>
-                    </div>
-
-                    <Select v-model="statusFilter">
+                <!-- Brand Selection -->
+                <FilterGroup
+                    :label="__('dealer.brand')"
+                    :icon="Car"
+                    :is-active="isBrandActive"
+                >
+                    <Select v-model="brandFilter" :disabled="!brands">
                         <SelectTrigger
-                            class="h-11 border-border/20 bg-muted/10 text-sm text-foreground transition-all focus:ring-1 focus:ring-primary/20"
+                            class="h-10 border-input bg-background text-sm transition-all focus:ring-1 focus:ring-primary/20"
                         >
-                            <SelectValue
-                                :placeholder="__('dealer.all_statuses')"
-                            />
+                            <SelectValue :placeholder="!brands ? __('ui.loading') : __('dealer.all_brands')" />
                         </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">{{
-                                __('dealer.all_statuses')
-                            }}</SelectItem>
-                            <SelectItem value="active">{{
-                                __('dealer.active_status')
-                            }}</SelectItem>
-                            <SelectItem value="draft">{{
-                                __('dealer.draft_status')
-                            }}</SelectItem>
-                            <SelectItem value="sold">{{
-                                __('dealer.sold_status')
-                            }}</SelectItem>
+                        <SelectContent class="border-border">
+                            <SelectItem value="all">{{ __('dealer.all_brands') }}</SelectItem>
+                            <SelectItem v-for="brand in brands" :key="brand.id" :value="brand.id.toString()">
+                                {{ brand.name }}
+                            </SelectItem>
                         </SelectContent>
                     </Select>
-                </div>
+                </FilterGroup>
+
+                <!-- Model Selection -->
+                <FilterGroup
+                    :label="__('dealer.model')"
+                    :icon="Tag"
+                    :is-active="isModelActive"
+                    :disabled="brandFilter === 'all'"
+                >
+                    <Select v-model="modelFilter" :disabled="!models || brandFilter === 'all'">
+                        <SelectTrigger
+                            class="h-10 border-input bg-background text-sm transition-all focus:ring-1 focus:ring-primary/20"
+                        >
+                            <SelectValue :placeholder="!models ? __('ui.loading') : __('dealer.all_models')" />
+                        </SelectTrigger>
+                        <SelectContent class="border-border">
+                            <SelectItem value="all">{{ __('dealer.all_models') }}</SelectItem>
+                            <SelectItem v-for="model in models" :key="model.id" :value="model.id.toString()">
+                                {{ model.name }}
+                            </SelectItem>
+                        </SelectContent>
+                    </Select>
+                </FilterGroup>
+
+                <!-- Status Section -->
+                <FilterGroup
+                    :label="__('dealer.status')"
+                    :icon="Activity"
+                    :is-active="isStatusActive"
+                >
+                    <Select v-model="statusFilter">
+                        <SelectTrigger class="h-10 border-input bg-background text-sm transition-all focus:ring-1 focus:ring-primary/20">
+                            <SelectValue :placeholder="__('dealer.all_statuses')" />
+                        </SelectTrigger>
+                        <SelectContent class="border-border">
+                            <SelectItem value="all">{{ __('dealer.all_statuses') }}</SelectItem>
+                            <SelectItem value="active">{{ __('dealer.active_status') }}</SelectItem>
+                            <SelectItem value="draft">{{ __('dealer.draft_status') }}</SelectItem>
+                            <SelectItem value="sold">{{ __('dealer.sold_status') }}</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </FilterGroup>
 
                 <!-- Date Range Section -->
-                <div class="space-y-4 border-t border-border/10 pt-6">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <Calendar
-                                class="h-3.5 w-3.5 text-muted-foreground/60"
-                            />
-                            <Label
-                                class="text-[11px] font-bold tracking-wider text-muted-foreground/80 uppercase"
-                                >{{ __('ui.date') }}</Label
-                            >
-                        </div>
-                        <div
-                            v-if="isDateActive"
-                            class="h-1.5 w-1.5 rounded-full bg-primary"
-                        ></div>
-                    </div>
-
-                    <div class="grid gap-4">
-                        <div class="space-y-2">
-                            <span
-                                class="text-[10px] font-bold text-muted-foreground/50 uppercase"
-                                >{{ __('dealer.from_date') }}</span
-                            >
+                <FilterGroup
+                    :label="__('ui.date')"
+                    :icon="Calendar"
+                    :is-active="isDateActive"
+                >
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="space-y-1.5">
+                            <Label class="text-[10px] font-bold text-muted-foreground uppercase">
+                                {{ __('dealer.from_date') }}
+                            </Label>
                             <Input
                                 type="date"
                                 v-model="dateFrom"
-                                class="scheme:dark h-11 border-border/20 bg-muted/10 text-sm text-foreground transition-all focus-visible:ring-1 focus-visible:ring-primary/20"
+                                class="h-10 border-input bg-background text-xs transition-all focus-visible:ring-1 focus-visible:ring-primary/20"
                             />
                         </div>
-                        <div class="space-y-2">
-                            <span
-                                class="text-[10px] font-bold text-muted-foreground/50 uppercase"
-                                >{{ __('dealer.to_date') }}</span
-                            >
+                        <div class="space-y-1.5">
+                            <Label class="text-[10px] font-bold text-muted-foreground uppercase">
+                                {{ __('dealer.to_date') }}
+                            </Label>
                             <Input
                                 type="date"
                                 v-model="dateTo"
-                                class="h-11 border-border/20 bg-muted/10 text-sm text-foreground scheme-dark transition-all focus-visible:ring-1 focus-visible:ring-primary/20"
+                                class="h-10 border-input bg-background text-xs transition-all focus-visible:ring-1 focus-visible:ring-primary/20"
                             />
                         </div>
                     </div>
-                </div>
+                </FilterGroup>
             </div>
-
-            <template #footer>
-                <div class="flex w-full flex-col gap-3">
-                    <Button
-                        variant="ghost"
-                        class="group h-11 w-full font-bold text-foreground transition-all hover:bg-muted"
-                        @click="handleReset"
-                    >
-                        <RotateCcw
-                            class="mr-2 h-4 w-4 transition-transform group-hover:-rotate-45"
-                        />
-                        {{ __('ui.reset') }}
-                    </Button>
-                </div>
-            </template>
         </SheetMenu>
     </template>
 </template>
