@@ -137,7 +137,10 @@ watch(searchTerm, (newVal) => {
                                 :default-value="company.address"
                                 required
                             />
-                            <InputError class="mt-2" :message="errors.address" />
+                            <InputError
+                                class="mt-2"
+                                :message="errors.address"
+                            />
                         </div>
 
                         <div class="relative grid gap-2">
@@ -152,7 +155,9 @@ watch(searchTerm, (newVal) => {
                                 <Input
                                     id="city_search"
                                     v-model="searchTerm"
-                                    :placeholder="__('settings.company_city_search')"
+                                    :placeholder="
+                                        __('settings.company_city_search')
+                                    "
                                     class="block w-full pl-9"
                                     @input="searchCities(searchTerm)"
                                     @focus="
@@ -163,7 +168,11 @@ watch(searchTerm, (newVal) => {
                                     @blur="handleCityBlur"
                                 />
                             </div>
-                            <input type="hidden" name="city_id" :value="selectedCityId" />
+                            <input
+                                type="hidden"
+                                name="city_id"
+                                :value="selectedCityId"
+                            />
 
                             <!-- Suggestions List -->
                             <div
@@ -190,7 +199,8 @@ watch(searchTerm, (newVal) => {
                                     </div>
                                     <div
                                         v-if="
-                                            cities.length === 0 && isSearchingCities
+                                            cities.length === 0 &&
+                                            isSearchingCities
                                         "
                                         class="p-2 text-center text-sm text-muted-foreground"
                                     >
@@ -198,7 +208,10 @@ watch(searchTerm, (newVal) => {
                                     </div>
                                 </div>
                             </div>
-                            <InputError class="mt-2" :message="errors.city_id" />
+                            <InputError
+                                class="mt-2"
+                                :message="errors.city_id"
+                            />
                         </div>
                     </div>
 
@@ -227,14 +240,19 @@ watch(searchTerm, (newVal) => {
                                 name="tva_number"
                                 :default-value="company.tva_number"
                             />
-                            <InputError class="mt-2" :message="errors.tva_number" />
+                            <InputError
+                                class="mt-2"
+                                :message="errors.tva_number"
+                            />
                         </div>
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button :disabled="processing">{{
-                            __('settings.company_save')
-                        }}</Button>
+                        <Button
+                            :disabled="processing"
+                            class="hover:cursor-pointer"
+                            >{{ __('settings.company_save') }}</Button
+                        >
 
                         <Transition
                             enter-active-class="transition ease-in-out"

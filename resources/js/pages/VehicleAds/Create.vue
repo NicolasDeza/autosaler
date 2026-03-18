@@ -767,6 +767,7 @@
                         <Button
                             type="button"
                             variant="outline"
+                            class="hover:cursor-pointer"
                             @click="() => router.visit(vehiclesIndex.url())"
                         >
                             {{ __('ui.cancel') }}
@@ -774,12 +775,17 @@
                         <Button
                             type="button"
                             variant="secondary"
+                            class="hover:cursor-pointer"
                             :disabled="form.processing"
                             @click.prevent="submit('draft')"
                         >
                             {{ __('vehicleAd.save_draft') }}
                         </Button>
-                        <Button type="submit" :disabled="form.processing">
+                        <Button
+                            type="submit"
+                            class="hover:cursor-pointer"
+                            :disabled="form.processing"
+                        >
                             {{ __('vehicleAd.publish_ad') }}
                         </Button>
                     </div>

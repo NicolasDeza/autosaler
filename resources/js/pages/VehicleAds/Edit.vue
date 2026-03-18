@@ -798,6 +798,7 @@
                         <Button
                             type="button"
                             variant="destructive"
+                            class="hover:cursor-pointer"
                             @click="destroyAd"
                         >
                             {{ __('vehicleAd.delete_ad') }}
@@ -806,6 +807,7 @@
                             <Button
                                 type="button"
                                 variant="outline"
+                                class="hover:cursor-pointer"
                                 @click="
                                     () => router.visit(vehicleShow.url(ad.id))
                                 "
@@ -815,12 +817,17 @@
                             <Button
                                 type="button"
                                 variant="secondary"
+                                class="hover:cursor-pointer"
                                 :disabled="form.processing"
                                 @click.prevent="submit('draft')"
                             >
                                 {{ __('vehicleAd.save_draft') }}
                             </Button>
-                            <Button type="submit" :disabled="form.processing">
+                            <Button
+                                type="submit"
+                                class="hover:cursor-pointer"
+                                :disabled="form.processing"
+                            >
                                 {{ __('vehicleAd.save_publish') }}
                             </Button>
                         </div>

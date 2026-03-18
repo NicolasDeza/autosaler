@@ -40,7 +40,7 @@
                             @update:model-value="updateFilters"
                         >
                             <SelectTrigger
-                                class="font-heading h-11 border-border/40 bg-background/50 text-xs font-bold transition-all hover:border-primary/30"
+                                class="font-heading h-11 border-border/40 bg-background/50 text-xs font-bold transition-all hover:cursor-pointer hover:border-primary/30"
                             >
                                 <SelectValue
                                     :placeholder="__('admin.all_companies')"
@@ -71,7 +71,7 @@
                             @update:model-value="updateFilters"
                         >
                             <SelectTrigger
-                                class="font-heading h-11 border-border/40 bg-background/50 text-xs font-bold transition-all hover:border-primary/30"
+                                class="font-heading h-11 border-border/40 bg-background/50 text-xs font-bold transition-all hover:cursor-pointer hover:border-primary/30"
                             >
                                 <SelectValue
                                     :placeholder="__('admin.all_brands')"
@@ -102,7 +102,7 @@
                             @update:model-value="updateFilters"
                         >
                             <SelectTrigger
-                                class="font-heading h-11 border-border/40 bg-background/50 text-xs font-bold transition-all hover:border-primary/30"
+                                class="font-heading h-11 border-border/40 bg-background/50 text-xs font-bold transition-all hover:cursor-pointer hover:border-primary/30"
                             >
                                 <SelectValue
                                     :placeholder="__('admin.all_statuses')"
@@ -128,7 +128,7 @@
                     <div class="flex">
                         <Button
                             variant="outline"
-                            class="font-heading h-11 w-full gap-2 border-border/40 text-[10px] font-bold tracking-widest uppercase shadow-sm transition-all hover:bg-muted"
+                            class="font-heading h-11 w-full gap-2 border-border/40 text-[10px] font-bold tracking-widest uppercase shadow-sm transition-all hover:cursor-pointer hover:bg-muted"
                             @click="resetFilters"
                         >
                             <RotateCcw class="h-4 w-4" />

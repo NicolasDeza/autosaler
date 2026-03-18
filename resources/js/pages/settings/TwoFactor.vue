@@ -71,6 +71,7 @@ onUnmounted(() => {
                         <Button
                             v-if="hasSetupData"
                             @click="showSetupModal = true"
+                            class="hover:cursor-pointer"
                         >
                             <ShieldCheck />{{
                                 __('settings.two_factor_continue_setup')

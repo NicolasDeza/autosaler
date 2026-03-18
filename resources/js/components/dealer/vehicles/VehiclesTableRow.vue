@@ -260,7 +260,7 @@ const handleStatusChange = (checked: boolean) => {
                     <Button
                         variant="ghost"
                         size="icon"
-                        class="h-9 w-9 p-0 transition-all hover:bg-background hover:shadow-sm"
+                        class="h-9 w-9 p-0 transition-all hover:cursor-pointer hover:bg-background hover:shadow-sm"
                     >
                         <span class="sr-only">{{ __('ui.open_menu') }}</span>
                         <MoreHorizontal class="h-5 w-5" />
