@@ -2,7 +2,10 @@
 import { CarFront } from 'lucide-vue-next';
 import { computed } from 'vue';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
+import { useTranslation } from '@/composables/useTranslation';
 import FilterSelect from './Partials/FilterSelect.vue';
+
+const { __ } = useTranslation();
 
 const props = defineProps<{
     models: any[];
@@ -22,7 +25,7 @@ const isDisabled = computed(
 
 <template>
     <FilterGroup
-        label="Modèle"
+        :label="__('vehicleAd.model')"
         :icon="CarFront"
         :is-active="isModelActive"
         :disabled="isDisabled"
@@ -31,7 +34,7 @@ const isDisabled = computed(
             v-model="form.model_id"
             :options="models"
             option-label="name"
-            placeholder="Tous les modèles"
+            :placeholder="__('ui.all_models')"
             :disabled="isDisabled"
         />
     </FilterGroup>

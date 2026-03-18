@@ -15,31 +15,31 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('user_id')
-                  ->constrained('users')
-                  ->cascadeOnDelete();
+                ->constrained('users')
+                ->cascadeOnDelete();
 
             $table->foreignId('subscription_plan_id')
-                  ->constrained('subscription_plans')
-                  ->restrictOnDelete();
+                ->constrained('subscription_plans')
+                ->restrictOnDelete();
 
-             $table->enum('status', [
-                 'trial',
-                 'active',
-                 'expired',
-                 'cancelled'
-             ])->index();
+            $table->enum('status', [
+                'trial',
+                'active',
+                'expired',
+                'cancelled',
+            ])->index();
 
-             $table->timestamp('starts_at');
-             $table->timestamp('ends_at');
+            $table->timestamp('starts_at');
+            $table->timestamp('ends_at');
 
-             $table->boolean('auto_renew')->default(true);
+            $table->boolean('auto_renew')->default(true);
 
-             $table->timestamp('trial_ends_at')->nullable();
-             $table->timestamp('cancelled_at')->nullable();
+            $table->timestamp('trial_ends_at')->nullable();
+            $table->timestamp('cancelled_at')->nullable();
 
-             $table->timestamps();
-             // INDEX Composite
-             $table->index(['user_id', 'status']);
+            $table->timestamps();
+            // INDEX Composite
+            $table->index(['user_id', 'status']);
         });
     }
 

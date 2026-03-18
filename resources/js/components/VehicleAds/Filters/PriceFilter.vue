@@ -3,6 +3,9 @@ import { BadgeEuro } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { Slider } from '@/components/ui/slider';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
+import { useTranslation } from '@/composables/useTranslation';
+
+const { __ } = useTranslation();
 
 const form = defineModel<any>('form', { required: true });
 
@@ -26,7 +29,7 @@ watch(
 
 <template>
     <FilterGroup
-        label="Prix"
+        :label="__('vehicleAd.price')"
         :icon="BadgeEuro"
         :is-active="form.min_price > 0 || form.max_price < 200000"
     >

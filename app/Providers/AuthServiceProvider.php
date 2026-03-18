@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use App\Http\Controllers\DealerDashboardController;
+use App\Models\VehicleAd;
 use App\Policies\DealerDashboardPolicy;
 use App\Policies\VehicleAdPolicy;
-use App\Models\VehicleAd;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 

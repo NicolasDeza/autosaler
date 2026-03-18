@@ -25,6 +25,7 @@ Route::get('/vehicle-versions', [VehicleVersionController::class, 'index'])->nam
 Route::get('/cities/search', CitySearchController::class)->name('cities.search');
 
 Route::get('/vehicles', [VehicleAdController::class, 'index'])->name('vehicles.index');
+Route::get('/vehicles/compare', [VehicleAdController::class, 'compare'])->name('vehicles.compare');
 Route::get('/vehicles/{vehicleAd}', [VehicleAdController::class, 'show'])->name('vehicles.show')->whereNumber('vehicleAd');
 Route::post('/vehicles/{vehicleAd}/contact', VehicleAdContactController::class)->name('vehicles.contact')->whereNumber('vehicleAd');
 Route::get('/dealers', [DealersPageController::class, 'index'])->name('dealers.index');
@@ -85,13 +86,24 @@ Route::get('/translations/{locale}', function ($locale) {
                 $translations = json_decode(file_get_contents($jsonPath), true);
             }
 
-            foreach ($phpFiles as $file) {
+            $flatten = function (array $array, string $prefix = '') use (&$flatten) {
+                $result = [];
+                foreach ($array as $key => $value) {
+                    $newKey = $prefix ? "$prefix.$key" : $key;
+                    if (is_array($value)) {
+                        $result = array_merge($result, $flatten($value, $newKey));
+                    } else {
+                        $result[$newKey] = $value;
+                    }
+                }
+
+                return $result;
+            };
+
+            foreach (glob(lang_path("$locale/*.php")) as $file) {
                 $filename = basename($file, '.php');
                 $fileTranslations = require $file;
-
-                foreach ($fileTranslations as $key => $value) {
-                    $translations["$filename.$key"] = $value;
-                }
+                $translations = array_merge($translations, $flatten($fileTranslations, $filename));
             }
 
             return $translations;

@@ -406,4 +406,45 @@ class VehicleAdController extends Controller
 
         return back()->with('success', $attached ? 'Véhicule ajouté aux favoris.' : 'Véhicule retiré des favoris.');
     }
+
+    /**
+     * Display the comparison page for selected vehicles.
+     */
+    public function compare(Request $request): Response|\Illuminate\Http\RedirectResponse
+    {
+        $ids = explode(',', $request->query('ids', ''));
+        $ids = array_filter($ids, fn ($id) => is_numeric($id));
+        $ids = array_unique(array_values($ids));
+
+        if (empty($ids)) {
+            return redirect()->route('vehicles.index')->with('error', 'Veuillez sélectionner au moins un véhicule à comparer.');
+        }
+
+        // Limit to 4 vehicles max
+        $selectedIds = array_slice($ids, 0, 4);
+
+        $vehicles = VehicleAd::with([
+            'brand', 'model', 'vehicleVersion',
+            'exteriorColor', 'interiorColor', 'interiorType',
+            'fuelType', 'bodyType', 'euroNorm', 'transmissionType',
+            'features.category',
+        ])
+            ->whereIn('id', $selectedIds)
+            // Optional: only show active vehicles, or comment this out if you want to allow comparing inactive ones
+            // ->where('status', 'active')
+            ->get();
+
+        // Sort vehicles by the order of IDs in $selectedIds
+        $vehicles = $vehicles->sortBy(function ($vehicle) use ($selectedIds) {
+            return array_search($vehicle->id, $selectedIds);
+        })->values();
+
+        if ($vehicles->isEmpty()) {
+            return redirect()->route('vehicles.index')->with('error', 'Aucun véhicule trouvé pour la comparaison.');
+        }
+
+        return Inertia::render('VehicleAds/Comparison', [
+            'vehicles' => $vehicles,
+        ]);
+    }
 }

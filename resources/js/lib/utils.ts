@@ -9,3 +9,11 @@ export function cn(...inputs: ClassValue[]) {
 export function toUrl(href: NonNullable<InertiaLinkProps['href']>) {
     return typeof href === 'string' ? href : href?.url;
 }
+
+export function kwToHp(kw: number): number {
+    return Math.round(kw * 1.35962);
+}
+
+export function formatNumber(value: number): string {
+    return new Intl.NumberFormat('fr-FR').format(value);
+}

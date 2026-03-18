@@ -9,11 +9,13 @@ import {
     Car,
     Star,
     Warehouse,
+    User,
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import SheetMenu from '@/components/SheetMenu.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -28,13 +30,6 @@ import {
     navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from '@/components/ui/sheet';
-import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
@@ -46,15 +41,15 @@ import { getInitials } from '@/composables/useInitials';
 import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
 import { toUrl } from '@/lib/utils';
-import { login, register } from '@/routes';
+import { login } from '@/routes';
 import admin from '@/routes/admin';
 import dealer from '@/routes/dealer';
-import dealers from '@/routes/dealers';
 import vehicles from '@/routes/vehicles';
 
 import type { BreadcrumbItem, NavItem } from '@/types';
 import type { ExtendedPageProps } from '@/types/inertia';
 import LanguageSelector from './LanguageSelector.vue';
+import dealers from '@/routes/dealers';
 
 const { __ } = useTranslation();
 const page = usePage<ExtendedPageProps>();
@@ -71,9 +66,6 @@ const auth = computed(() => page.props.auth);
 const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
 
 const { can } = usePermissions();
-
-const activeItemStyles =
-    'text-neutral-900 dark:bg-foreground dark:text-background';
 
 const mainNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
@@ -147,8 +139,8 @@ const handleFavoritesClick = () => {
             <div class="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                 <!-- Mobile Menu -->
                 <div class="lg:hidden">
-                    <Sheet>
-                        <SheetTrigger :as-child="true">
+                    <SheetMenu side="left">
+                        <template #trigger>
                             <Button
                                 variant="ghost"
                                 size="icon"
@@ -156,71 +148,82 @@ const handleFavoritesClick = () => {
                             >
                                 <Menu class="h-5 w-5" />
                             </Button>
-                        </SheetTrigger>
-                        <SheetContent
-                            side="left"
-                            class="dark w-75 bg-background p-6 text-foreground"
+                        </template>
+
+                        <template #headerBranding>
+                            <div class="flex items-center gap-x-2">
+                                <AppLogo />
+                            </div>
+                        </template>
+
+                        <div
+                            class="flex h-full flex-1 flex-col justify-between space-y-4"
                         >
-                            <SheetTitle class="sr-only"
-                                >Navigation Menu</SheetTitle
-                            >
-                            <SheetHeader
-                                class="flex items-center justify-center text-left"
-                            >
-                                <div class="flex items-center gap-x-2">
-                                    <AppLogo />
-                                </div>
-                            </SheetHeader>
-                            <div
-                                class="flex h-full flex-1 flex-col justify-between space-y-4 py-6"
-                            >
-                                <nav class="-mx-3 space-y-1">
-                                    <Link
-                                        v-for="item in mainNavItems"
-                                        :key="item.title"
-                                        :href="item.href"
-                                        class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-foreground/90 hover:text-background/90"
-                                        :class="
+                            <nav class="-mx-3 space-y-1">
+                                <template v-if="!auth || !auth.user">
+                                    <div
+                                        class="border-b border-foreground/20 py-2"
+                                    >
+                                        <Button
+                                            :as="Link"
+                                            :href="login()"
+                                            class="w-full justify-start"
+                                            variant="ghost"
+                                        >
+                                            <span>
+                                                <User
+                                                    class="h-5 w-5 text-primary"
+                                                />
+                                            </span>
+                                            <span> Log in </span>
+                                        </Button>
+                                    </div>
+                                </template>
+                                <Link
+                                    v-for="item in mainNavItems"
+                                    :key="item.title"
+                                    :href="item.href"
+                                    class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-foreground/90 hover:text-background/90"
+                                    :class="
+                                        whenCurrentUrl(
+                                            item.href,
+                                            'bg-primary/10 text-background',
+                                        )
+                                    "
+                                >
+                                    <component
+                                        v-if="item.icon"
+                                        :is="item.icon"
+                                        class="h-5 w-5"
+                                        :class="[
                                             whenCurrentUrl(
                                                 item.href,
-                                                activeItemStyles,
-                                            )
-                                        "
-                                    >
-                                        <component
-                                            v-if="item.icon"
-                                            :is="item.icon"
-                                            class="h-5 w-5"
-                                            :class="[
-                                                whenCurrentUrl(
-                                                    item.href,
-                                                    'text-red-500',
-                                                ),
-                                            ]"
-                                        />
-                                        {{ item.title }}
-                                    </Link>
-                                </nav>
-                                <div class="flex flex-col space-y-4">
-                                    <a
-                                        v-for="item in rightNavItems"
-                                        :key="item.title"
-                                        :href="toUrl(item.href)"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        class="flex items-center space-x-2 text-sm font-medium"
-                                    >
-                                        <component
-                                            v-if="item.icon"
-                                            :is="item.icon"
-                                            class="h-5 w-5"
-                                        />
-                                        <span>{{ item.title }}</span>
-                                    </a>
-                                </div>
+                                                'text-red-500',
+                                            ),
+                                        ]"
+                                    />
+                                    {{ item.title }}
+                                </Link>
+                            </nav>
+                            <div class="flex flex-col space-y-4">
+                                <a
+                                    v-for="item in rightNavItems"
+                                    :key="item.title"
+                                    :href="toUrl(item.href)"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="flex items-center space-x-2 text-sm font-medium"
+                                >
+                                    <component
+                                        v-if="item.icon"
+                                        :is="item.icon"
+                                        class="h-5 w-5"
+                                    />
+                                    <span>{{ item.title }}</span>
+                                </a>
                             </div>
-                        </SheetContent>
-                    </Sheet>
+                        </div>
+                    </SheetMenu>
                 </div>
 
                 <Link href="/" class="flex items-center gap-x-2">
@@ -243,7 +246,7 @@ const handleFavoritesClick = () => {
                                         navigationMenuTriggerStyle(),
                                         whenCurrentUrl(
                                             item.href,
-                                            activeItemStyles,
+                                            'text-neutral-900 dark:bg-foreground dark:text-background',
                                         ),
                                         'h-9 cursor-pointer px-3 hover:bg-foreground/90 hover:text-background/90',
                                     ]"
@@ -385,19 +388,16 @@ const handleFavoritesClick = () => {
                         </DropdownMenuContent>
                     </DropdownMenu>
                     <template v-else>
-                        <Link
-                            :href="login()"
-                            class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
-                        >
-                            Log in
-                        </Link>
-                        <Link
-                            v-if="page.props.canRegister"
-                            :href="register()"
-                            class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                        >
-                            Register
-                        </Link>
+                        <div class="hidden lg:block">
+                            <Button
+                                :as="Link"
+                                :href="login()"
+                                variant="ghost"
+                                class="h-9 px-4 text-[#1b1b18] dark:text-[#EDEDEC]"
+                            >
+                                Log in
+                            </Button>
+                        </div>
                     </template>
                 </div>
             </div>

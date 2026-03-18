@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ComparisonBar from '@/components/VehicleAds/ComparisonBar.vue';
 import AppLayout from '@/layouts/app/AppHeaderLayout.vue';
 import type { BreadcrumbItem } from '@/types';
 
@@ -18,4 +19,6 @@ withDefaults(defineProps<Props>(), {
         </template>
         <slot />
     </AppLayout>
+
+    <ComparisonBar />
 </template>
