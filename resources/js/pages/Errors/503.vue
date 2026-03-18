@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { Home, MoveLeft, Search } from 'lucide-vue-next';
+import { Home, Wrench, RefreshCcw } from 'lucide-vue-next';
 import AppLogoLg from '@/components/AppLogoLg.vue';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/composables/useTranslation';
 
 const { __ } = useTranslation();
 
-const goBack = () => {
-    window.history.back();
+const reload = () => {
+    window.location.reload();
 };
 </script>
 
 <template>
-    <Head :title="__('errors.404_title')" />
+    <Head :title="__('errors.503_title')" />
 
     <div
         class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background px-6 py-20 lg:px-8"
@@ -33,38 +33,33 @@ const goBack = () => {
         ></div>
 
         <div class="z-10 text-center">
-            <!-- Central Visual -->
-            <div class="relative mb-12 flex items-center justify-center">
+            <!-- Central Visual (Icon behind text) -->
+            <div class="relative mb-8 flex items-center justify-center">
                 <!-- Large Transparent Background Icon -->
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <Search
-                        class="size-64 opacity-[0.03] sm:size-80 dark:opacity-[0.05]"
-                    />
+                <div
+                    class="absolute inset-0 -z-10 flex items-center justify-center opacity-[0.03] dark:opacity-[0.05]"
+                >
+                    <Wrench class="size-80 sm:size-128" />
                 </div>
 
-                <!-- Error Number -->
-                <h2
-                    class="relative mt-4 text-[8rem] leading-none font-black tracking-tighter text-primary opacity-40 drop-shadow-sm select-none sm:text-[12rem]"
-                >
-                    404
-                </h2>
+                <div class="relative py-12">
+                    <p
+                        class="text-sm font-bold tracking-[0.3em] text-primary uppercase"
+                    >
+                        {{ __('errors.503_maintenance') }}
+                    </p>
+                    <h1
+                        class="mt-6 text-4xl font-extrabold tracking-tight text-foreground sm:text-6xl"
+                    >
+                        {{ __('errors.503_header') }}
+                    </h1>
+                    <p
+                        class="mx-auto mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground"
+                    >
+                        {{ __('errors.503_description') }}
+                    </p>
+                </div>
             </div>
-
-            <p
-                class="text-sm font-bold tracking-[0.3em] text-primary uppercase"
-            >
-                {{ __('errors.404_title') }}
-            </p>
-            <h1
-                class="mt-6 text-4xl font-extrabold tracking-tight text-foreground sm:text-6xl"
-            >
-                {{ __('errors.404_header') }}
-            </h1>
-            <p
-                class="mx-auto mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground"
-            >
-                {{ __('errors.404_description') }}
-            </p>
 
             <div
                 class="mt-12 flex flex-col items-center justify-center gap-5 sm:flex-row"
@@ -72,7 +67,7 @@ const goBack = () => {
                 <Button
                     as-child
                     size="lg"
-                    class="h-14 w-full rounded-xl px-10 text-base font-bold shadow-xl shadow-primary/20 transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto"
+                    class="h-14 w-full rounded-xl bg-primary px-10 text-base font-bold text-white shadow-xl shadow-primary/20 transition-all duration-300 hover:scale-105 hover:bg-primary/80 active:scale-95 sm:w-auto"
                 >
                     <Link href="/">
                         <Home class="mr-2 size-5" />
@@ -84,10 +79,10 @@ const goBack = () => {
                     variant="outline"
                     size="lg"
                     class="h-14 w-full rounded-xl border-white/10 bg-white/5 px-10 text-base font-bold backdrop-blur-sm transition-all duration-300 hover:bg-white/10 sm:w-auto"
-                    @click="goBack"
+                    @click="reload"
                 >
-                    <MoveLeft class="mr-2 size-5" />
-                    {{ __('errors.go_back') }}
+                    <RefreshCcw class="mr-2 size-5" />
+                    {{ __('errors.refresh_page') || 'Refresh' }}
                 </Button>
             </div>
         </div>

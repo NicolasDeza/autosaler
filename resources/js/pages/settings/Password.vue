@@ -99,6 +99,7 @@ const { __ } = useTranslation();
                         <Button
                             :disabled="processing"
                             data-test="update-password-button"
+                            class="hover:cursor-pointer"
                             >{{ __('settings.password_save') }}</Button
                         >
 

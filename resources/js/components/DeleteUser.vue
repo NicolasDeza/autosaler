@@ -47,6 +47,7 @@ const { __ } = useTranslation();
                     <Button
                         variant="destructive"
                         data-test="delete-user-button"
+                        class="hover:cursor-pointer"
                         >{{ __('settings.profile_delete') }}</Button
                     >
                 </DialogTrigger>
@@ -94,6 +95,7 @@ const { __ } = useTranslation();
                             <DialogClose as-child>
                                 <Button
                                     variant="secondary"
+                                    class="hover:cursor-pointer"
                                     @click="
                                         () => {
                                             clearErrors();
@@ -114,6 +116,7 @@ const { __ } = useTranslation();
                                 variant="destructive"
                                 :disabled="processing"
                                 data-test="confirm-delete-user-button"
+                                class="hover:cursor-pointer"
                             >
                                 {{
                                     __('settings.profile_delete_modal_confirm')

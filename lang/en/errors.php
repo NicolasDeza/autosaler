@@ -11,4 +11,9 @@ return [
     'go_back' => 'Previous page',
     'login_as_another' => 'Log in with another account',
     '403_forbidden' => 'Access Forbidden',
+    '503_title' => 'Maintenance in Progress - Autosaler',
+    '503_header' => "We'll be back soon",
+    '503_description' => "We're currently performing some maintenance on our systems to improve your experience. We should be back online shortly. Thank you for your patience.",
+    '503_maintenance' => 'Maintenance Mode',
+    'refresh_page' => 'Refresh page',
 ];

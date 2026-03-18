@@ -22,7 +22,7 @@
                     <Button
                         variant="outline"
                         size="icon"
-                        class="group h-10 w-10 border-border/60 bg-background/50 backdrop-blur-sm transition-all hover:bg-background hover:shadow-sm md:w-auto md:px-4"
+                        class="group h-10 w-10 border-border/60 bg-background/50 backdrop-blur-sm transition-all hover:cursor-pointer hover:bg-background hover:shadow-sm md:w-auto md:px-4"
                         @click="exportToCSV"
                         :title="__('dealer.save_csv')"
                     >
@@ -36,7 +36,7 @@
                     <Button
                         variant="outline"
                         size="icon"
-                        class="group h-10 w-10 border-border/60 bg-background/50 backdrop-blur-sm transition-all hover:bg-background hover:shadow-sm md:w-auto md:px-4"
+                        class="group h-10 w-10 border-border/60 bg-background/50 backdrop-blur-sm transition-all hover:cursor-pointer hover:bg-background hover:shadow-sm md:w-auto md:px-4"
                         @click="printList"
                         :title="__('dealer.print_list')"
                     >

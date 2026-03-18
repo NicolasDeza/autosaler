@@ -11,4 +11,9 @@ return [
     'go_back' => 'Page précédente',
     'login_as_another' => 'Se connecter avec un autre compte',
     '403_forbidden' => 'Accès interdit',
+    '503_title' => 'Maintenance en cours - Autosaler',
+    '503_header' => 'Nous serons bientôt de retour',
+    '503_description' => 'Nous effectuons actuellement une maintenance sur nos systèmes pour améliorer votre expérience. Nous devrions être de retour en ligne très prochainement. Merci de votre patience.',
+    '503_maintenance' => 'Maintenance en cours',
+    'refresh_page' => 'Actualiser la page',
 ];

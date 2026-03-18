@@ -18,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->preventRequestsDuringMaintenance(except: [
+            '/translations/*',
+            '/locale',
+        ]);
+
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
         $middleware->web(append: [
@@ -35,7 +40,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->respond(function (\Symfony\Component\HttpFoundation\Response $response, \Throwable $exception, \Illuminate\Http\Request $request) {
-            if (in_array($response->getStatusCode(), [404, 403])) {
+            if (in_array($response->getStatusCode(), [404, 403, 503])) {
                 return \Inertia\Inertia::render('Errors/'.$response->getStatusCode(), [
                     'status' => $response->getStatusCode(),
                     'locale' => session('locale', app()->getLocale()),

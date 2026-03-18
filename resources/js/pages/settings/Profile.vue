@@ -136,6 +136,7 @@ const user = page.props.auth.user;
                         <Button
                             :disabled="processing"
                             data-test="update-profile-button"
+                            class="hover:cursor-pointer"
                             >{{ __('settings.profile_save') }}</Button
                         >
 

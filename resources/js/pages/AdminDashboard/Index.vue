@@ -94,7 +94,7 @@
                             v-for="item in navItems"
                             :key="item.id"
                             variant="ghost"
-                            class="group relative w-full justify-start gap-3 rounded-xl px-3 py-6 transition-all duration-300"
+                            class="group relative w-full justify-start gap-3 rounded-xl px-3 py-6 transition-all duration-300 hover:cursor-pointer"
                             :class="{
                                 'bg-primary/10 text-primary hover:bg-primary/15':
                                     tab === item.id,
