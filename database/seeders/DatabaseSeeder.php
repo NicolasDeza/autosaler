@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             FeatureSeeder::class,
             SubscriptionPlansSeeder::class,
             VehicleAdSeeder::class,
+            SubscriptionPlansSeeder::class,
         ]);
     }
 }

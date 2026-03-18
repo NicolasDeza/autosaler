@@ -50,7 +50,7 @@
                     <Button
                         as-child
                         size="default"
-                        class="h-10 flex-1 bg-primary px-6 font-semibold shadow-md transition-all  active:scale-95 md:flex-none"
+                        class="h-10 flex-1 bg-primary px-6 font-semibold shadow-md transition-all active:scale-95 md:flex-none"
                     >
                         <Link :href="vehicles.create().url">
                             <Plus class="mr-2 h-5 w-5" />
@@ -61,62 +61,70 @@
             </div>
 
             <div class="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-3">
+                <!-- Total Ads -->
                 <Card
-                    class="relative overflow-hidden border-none bg-linear-to-br from-background to-muted/30 shadow-sm"
+                    class="group relative overflow-hidden rounded-2xl border border-border/50 bg-card shadow-xl ring-1 ring-border/50 transition-all duration-500"
                 >
+                    <div
+                        class="absolute inset-x-0 top-0 h-1 bg-primary/20 transition-all duration-500 group-hover:h-1.5 group-hover:bg-primary"
+                    ></div>
                     <CardHeader
-                        class="flex flex-row items-center justify-between p-3 pb-2 md:p-6 md:pb-2"
+                        class="flex flex-row items-center justify-between p-4 pb-2 md:p-6 md:pb-2"
                     >
                         <CardTitle
-                            class="text-[10px] font-bold tracking-wider text-muted-foreground/80 uppercase md:text-sm md:tracking-normal md:text-foreground md:normal-case"
+                            class="font-heading text-[10px] font-bold tracking-widest text-muted-foreground uppercase"
                         >
                             {{ __('dealer.total') }}
                         </CardTitle>
                         <div
-                            class="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-primary md:h-8 md:w-8"
+                            class="flex h-8 w-8 items-center justify-center rounded-lg bg-background shadow-xs transition-all duration-500 group-hover:scale-110 group-hover:bg-primary group-hover:text-white"
                         >
-                            <span class="text-[10px] font-bold">#</span>
+                            <CarFront class="h-4 w-4" />
                         </div>
                     </CardHeader>
-                    <CardContent class="p-3 pt-0 md:p-6 md:pt-0">
-                        <div class="text-2xl font-bold md:text-3xl">
+                    <CardContent class="p-4 pt-0 md:p-6 md:pt-0">
+                        <div
+                            class="text-3xl font-bold tracking-tight md:text-4xl"
+                        >
                             {{ stats.total }}
                         </div>
                         <p
-                            class="mt-0.5 text-[10px] text-muted-foreground md:mt-1 md:text-xs"
+                            class="mt-1 text-[10px] font-bold tracking-widest text-muted-foreground/60 uppercase"
                         >
                             {{ __('dealer.vehicles_label') }}
                         </p>
                     </CardContent>
                 </Card>
 
+                <!-- Active Ads -->
                 <Card
-                    class="relative overflow-hidden border-none bg-linear-to-br from-background to-green-500/5 shadow-sm"
+                    class="group relative overflow-hidden rounded-2xl border border-border/50 bg-card shadow-xl ring-1 ring-border/50 transition-all duration-500"
                 >
+                    <div
+                        class="absolute inset-x-0 top-0 h-1 bg-green-500/20 transition-all duration-500 group-hover:h-1.5 group-hover:bg-green-500"
+                    ></div>
                     <CardHeader
-                        class="flex flex-row items-center justify-between p-3 pb-2 md:p-6 md:pb-2"
+                        class="flex flex-row items-center justify-between p-4 pb-2 md:p-6 md:pb-2"
                     >
                         <CardTitle
-                            class="text-[10px] font-bold tracking-wider text-muted-foreground/80 uppercase md:text-sm md:tracking-normal md:text-foreground md:normal-case"
+                            class="font-heading text-[10px] font-bold tracking-widest text-muted-foreground uppercase"
                         >
                             {{ __('dealer.active') }}
                         </CardTitle>
                         <div
-                            class="flex h-6 w-6 items-center justify-center rounded-full bg-green-500/10 text-green-600 md:h-8 md:w-8 dark:text-green-400"
+                            class="flex h-8 w-8 items-center justify-center rounded-lg bg-background shadow-xs transition-all duration-500 group-hover:scale-110 group-hover:bg-green-500 group-hover:text-white"
                         >
-                            <div
-                                class="h-1.5 w-1.5 rounded-full bg-current md:h-2 md:w-2"
-                            ></div>
+                            <CheckCircle class="h-4 w-4" />
                         </div>
                     </CardHeader>
-                    <CardContent class="p-3 pt-0 md:p-6 md:pt-0">
+                    <CardContent class="p-4 pt-0 md:p-6 md:pt-0">
                         <div
-                            class="text-2xl font-bold text-green-600 md:text-3xl dark:text-green-400"
+                            class="text-3xl font-bold tracking-tight text-green-600 md:text-4xl dark:text-green-400"
                         >
                             {{ stats.active }}
                         </div>
                         <p
-                            class="mt-0.5 text-[10px] text-muted-foreground md:mt-1 md:text-xs"
+                            class="mt-1 text-[10px] font-bold tracking-widest text-muted-foreground/60 uppercase"
                         >
                             {{
                                 __('dealer.active_status_description') ||
@@ -126,31 +134,35 @@
                     </CardContent>
                 </Card>
 
+                <!-- Draft Ads -->
                 <Card
-                    class="relative col-span-2 overflow-hidden border-none bg-linear-to-br from-background to-amber-500/5 shadow-sm lg:col-span-1"
+                    class="group relative col-span-2 overflow-hidden rounded-2xl border border-border/50 bg-card shadow-xl ring-1 ring-border/50 transition-all duration-500 lg:col-span-1"
                 >
+                    <div
+                        class="absolute inset-x-0 top-0 h-1 bg-amber-500/20 transition-all duration-500 group-hover:h-1.5 group-hover:bg-amber-500"
+                    ></div>
                     <CardHeader
-                        class="flex flex-row items-center justify-between p-3 pb-2 md:p-6 md:pb-2"
+                        class="flex flex-row items-center justify-between p-4 pb-2 md:p-6 md:pb-2"
                     >
                         <CardTitle
-                            class="text-[10px] font-bold tracking-wider text-muted-foreground/80 uppercase md:text-sm md:tracking-normal md:text-foreground md:normal-case"
+                            class="font-heading text-[10px] font-bold tracking-widest text-muted-foreground uppercase"
                         >
                             {{ __('dealer.draft') }}
                         </CardTitle>
                         <div
-                            class="flex h-6 w-6 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 md:h-8 md:w-8 dark:text-amber-400"
+                            class="flex h-8 w-8 items-center justify-center rounded-lg bg-background shadow-xs transition-all duration-500 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-white"
                         >
-                            <Clock class="h-3 w-3 md:h-4 md:w-4" />
+                            <Clock class="h-4 w-4" />
                         </div>
                     </CardHeader>
-                    <CardContent class="p-3 pt-0 md:p-6 md:pt-0">
+                    <CardContent class="p-4 pt-0 md:p-6 md:pt-0">
                         <div
-                            class="text-2xl font-bold text-amber-600 md:text-3xl dark:text-amber-400"
+                            class="text-3xl font-bold tracking-tight text-amber-600 md:text-4xl dark:text-amber-400"
                         >
                             {{ stats.draft }}
                         </div>
                         <p
-                            class="mt-0.5 text-[10px] text-muted-foreground md:mt-1 md:text-xs"
+                            class="mt-1 text-[10px] font-bold tracking-widest text-muted-foreground/60 uppercase"
                         >
                             {{
                                 __('dealer.draft_status_description') ||
@@ -218,7 +230,14 @@
 <script setup lang="ts">
 import { Head, Link, router } from '@inertiajs/vue3';
 import { useDebounceFn } from '@vueuse/core';
-import { Download, Plus, Printer, Clock } from 'lucide-vue-next';
+import {
+    Download,
+    Plus,
+    Printer,
+    Clock,
+    CarFront,
+    CheckCircle,
+} from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import AppPagination from '@/components/AppPagination.vue';
 import VehiclesFilterPanel from '@/components/dealer/vehicles/VehiclesFilterPanel.vue';
