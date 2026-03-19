@@ -5,6 +5,7 @@ import { SidebarInset } from '@/components/ui/sidebar';
 type Props = {
     variant?: 'header' | 'sidebar';
     class?: string;
+    isOffline?: boolean;
 };
 
 const props = defineProps<Props>();
@@ -17,9 +18,16 @@ const className = computed(() => props.class);
     </SidebarInset>
     <main v-else class="flex-1 bg-slate-50" :class="className">
         <div
+            v-if="!isOffline"
             class="mx-auto flex h-full w-full max-w-7xl flex-col gap-4 rounded-xl pb-16 sm:pb-24"
         >
             <slot />
+        </div>
+        <div v-else class="flex h-full w-full items-center justify-center">
+            <div class="text-center">
+                <h1 class="text-2xl font-bold">Offline</h1>
+                <p class="text-gray-500">You are offline</p>
+            </div>
         </div>
     </main>
 </template>

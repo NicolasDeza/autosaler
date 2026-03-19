@@ -28,6 +28,33 @@ export default defineConfig({
             registerType: 'autoUpdate',
             workbox: {
                 navigateFallback: null,
+                runtimeCaching: [
+                    {
+                        urlPattern: ({ request }) =>
+                            request.mode === 'navigate',
+                        handler: 'NetworkFirst',
+                        options: {
+                            cacheName: 'pages',
+                        },
+                    },
+                    {
+                        urlPattern: ({ request }) =>
+                            request.destination === 'script' ||
+                            request.destination === 'style',
+                        handler: 'StaleWhileRevalidate',
+                        options: {
+                            cacheName: 'assets',
+                        },
+                    },
+                    {
+                        urlPattern: ({ request }) =>
+                            request.destination === 'image',
+                        handler: 'CacheFirst',
+                        options: {
+                            cacheName: 'images',
+                        },
+                    },
+                ],
             },
             manifest: {
                 name: 'Autosaler',
