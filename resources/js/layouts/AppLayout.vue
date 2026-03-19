@@ -20,6 +20,7 @@ withDefaults(defineProps<Props>(), {
 
 const isOffline = ref(!navigator.onLine);
 const isDismissed = ref(false);
+const showBanner = ref(false);
 
 const dismiss = () => {
     isDismissed.value = true;
@@ -33,6 +34,10 @@ onMounted(() => {
     if (localStorage.getItem('pwa_install_dismissed') === 'true') {
         isDismissed.value = true;
     }
+
+    setTimeout(() => {
+        showBanner.value = true;
+    }, 5000);
 });
 </script>
 
@@ -46,7 +51,7 @@ onMounted(() => {
                 You are currently offline. Some features may be unavailable.
             </div>
 
-            <InstallApp v-if="!isDismissed" v-slot="{ install }">
+            <InstallApp v-if="!isDismissed && showBanner" v-slot="{ install }">
                 <div
                     class="dark fixed top-20 left-1/2 z-60 flex w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 animate-in items-center gap-x-3 rounded-2xl border border-white/10 bg-background p-3 shadow-2xl backdrop-blur-xl transition-all duration-500 fade-in slide-in-from-top-8"
                 >

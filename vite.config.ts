@@ -57,12 +57,26 @@ export default defineConfig({
                 ],
             },
             manifest: {
+                id: '/',
                 name: 'Autosaler',
                 short_name: 'Autosaler',
+                description:
+                    'Application de gestion de véhicules et ventes AutoSaler',
                 start_url: '/',
+                scope: '/',
                 display: 'standalone',
+                orientation: 'portrait',
                 background_color: '#ffffff',
                 theme_color: '#1c2431',
+                prefer_related_applications: false,
+                // prefer_related_applications: true,
+                // related_applications: [
+                //     {
+                //         platform: 'play',
+                //         url: 'https://play.google.com/store/apps/details?id=com.app',
+                //     },
+                // ],
+
                 icons: [
                     {
                         src: '/icon-192x192.png',
@@ -75,8 +89,20 @@ export default defineConfig({
                         type: 'image/png',
                     },
                 ],
+                screenshots: [
+                    {
+                        src: '/images/screenshots/mobile.png',
+                        sizes: '1080x1920',
+                        type: 'image/png',
+                    },
+                    {
+                        src: '/images/screenshots/desktop.png',
+                        sizes: '1280x720',
+                        type: 'image/png',
+                        form_factor: 'wide',
+                    },
+                ],
             },
-            buildBase: '/build/',
         }),
     ],
     resolve: {

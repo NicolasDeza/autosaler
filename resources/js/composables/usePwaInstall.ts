@@ -2,27 +2,33 @@ import { ref } from 'vue';
 
 interface BeforeInstallPromptEvent extends Event {
     prompt: () => Promise<void>;
-    userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
+    userChoice: Promise<{
+        outcome: 'accepted' | 'dismissed';
+        platform: string;
+    }>;
 }
 
 const deferredPrompt = ref<BeforeInstallPromptEvent | null>(null);
 const canInstall = ref(false);
+const isPWA = ref(false);
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
 
 // Register the listener once at the module level (browser only)
-if (typeof window !== 'undefined') {
-    console.log('[PWA] Registering beforeinstallprompt listener');
+if (typeof window !== 'undefined' && !(window as any)._pwaListenerAdded) {
+    (window as any)._pwaListenerAdded = true;
+
+    isPWA.value =
+        window.matchMedia('(display-mode: standalone)').matches ||
+        (window.navigator as any).standalone === true;
+
     window.addEventListener('beforeinstallprompt', (e) => {
-        console.log('[PWA] beforeinstallprompt event caught');
-        // Prevent default browser prompt
         e.preventDefault();
-        // Stash the event so it can be triggered later
         deferredPrompt.value = e as BeforeInstallPromptEvent;
+
         canInstall.value = true;
     });
 
     window.addEventListener('appinstalled', () => {
-        console.log('[PWA] App installed event caught');
-        // Hide the install button as the app is already installed
         canInstall.value = false;
         deferredPrompt.value = null;
     });
@@ -30,25 +36,25 @@ if (typeof window !== 'undefined') {
 
 export function usePwaInstall() {
     const install = async () => {
-        if (!deferredPrompt.value) {
-            return;
-        }
+        if (!deferredPrompt.value) return;
 
-        // Show the install prompt
-        await deferredPrompt.value.prompt();
+        try {
+            await deferredPrompt.value.prompt();
+            const { outcome } = await deferredPrompt.value.userChoice;
 
-        // Wait for the user to respond to the prompt
-        const { outcome } = await deferredPrompt.value.userChoice;
-
-        if (outcome === 'accepted') {
-            // If accepted, we clear the prompt and hide the trigger
-            canInstall.value = false;
-            deferredPrompt.value = null;
+            if (outcome === 'accepted') {
+                canInstall.value = false;
+                deferredPrompt.value = null;
+            }
+        } catch (e) {
+            console.error('[PWA] Install error', e);
         }
     };
 
     return {
         canInstall,
         install,
+        isPWA,
+        isIOS,
     };
 }
