@@ -242,7 +242,7 @@ const handleFavoritesClick = () => {
                                             class="size-5 opacity-80 group-hover:opacity-100"
                                         />
                                         <span class="sr-only">{{
-                                            __('Install app')
+                                            __('pwa.tooltip')
                                         }}</span>
                                     </Button>
                                 </div>
@@ -392,14 +392,14 @@ const handleFavoritesClick = () => {
                                             class="size-5 opacity-80 group-hover:opacity-100"
                                         />
                                         <span class="sr-only">{{
-                                            __('Install app')
+                                            __('pwa.tooltip')
                                         }}</span>
                                     </Button>
                                 </TooltipTrigger>
                                 <TooltipContent
                                     class="dark border border-background/50"
                                 >
-                                    <p>{{ __('Install app') }}</p>
+                                    <p>{{ __('pwa.tooltip') }}</p>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
