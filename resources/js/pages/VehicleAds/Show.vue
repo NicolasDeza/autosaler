@@ -2,7 +2,9 @@
     <Head :title="`${ad.brand?.name} ${ad.model?.name}`" />
 
     <AppLayout>
-        <div class="mx-auto w-full max-w-7xl space-y-8 p-4 md:p-8">
+        <div
+            class="mx-auto w-full max-w-7xl space-y-8 p-4 pb-32 lg:p-8 lg:pb-8"
+        >
             <button
                 class="flex cursor-pointer items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
                 @click="router.visit(vehiclesIndex.url())"
@@ -11,8 +13,8 @@
                 {{ __('vehicleAd.back_to_ads') }}
             </button>
 
-            <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
-                <div class="col-span-1 space-y-8 md:col-span-2">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                <div class="col-span-1 space-y-8 lg:col-span-2">
                     <div
                         class="space-y-8 rounded-lg border bg-card p-4 shadow-sm sm:p-6"
                     >
@@ -135,7 +137,11 @@
                                         />
                                         <span
                                             class="text-xs font-bold text-muted-foreground uppercase"
-                                            >{{ __('vehicleAd.first_registration') }}</span
+                                            >{{
+                                                __(
+                                                    'vehicleAd.first_registration',
+                                                )
+                                            }}</span
                                         >
                                     </div>
                                     <span class="font-semibold">{{
@@ -156,8 +162,10 @@
                                         >
                                     </div>
                                     <span class="font-semibold">
-                                        {{ ad.power_kw }} kW
-                                        ({{ kwToHp(ad.power_kw) }} ch)
+                                        {{ ad.power_kw }} kW ({{
+                                            kwToHp(ad.power_kw)
+                                        }}
+                                        ch)
                                     </span>
                                 </div>
                                 <div
@@ -185,7 +193,9 @@
                                         <Cog class="h-3.5 w-3.5 text-primary" />
                                         <span
                                             class="text-xs font-bold text-muted-foreground uppercase"
-                                            >{{ __('vehicleAd.transmission') }}</span
+                                            >{{
+                                                __('vehicleAd.transmission')
+                                            }}</span
                                         >
                                     </div>
                                     <span class="font-semibold">{{
@@ -223,9 +233,9 @@
                                 <div
                                     class="flex items-center justify-between border-b py-2.5"
                                 >
-                                    <span class="text-muted-foreground"
-                                        >{{ __('vehicleAd.displacement') }}</span
-                                    >
+                                    <span class="text-muted-foreground">{{
+                                        __('vehicleAd.displacement')
+                                    }}</span>
                                     <span class="font-medium"
                                         >{{
                                             ad.engine_displacement ?? '-'
@@ -236,9 +246,9 @@
                                 <div
                                     class="flex items-center justify-between border-b py-2.5"
                                 >
-                                    <span class="text-muted-foreground"
-                                        >{{ __('vehicleAd.cylinders') }}</span
-                                    >
+                                    <span class="text-muted-foreground">{{
+                                        __('vehicleAd.cylinders')
+                                    }}</span>
                                     <span class="font-medium">{{
                                         ad.cylinder_count ?? '-'
                                     }}</span>
@@ -246,9 +256,9 @@
                                 <div
                                     class="flex items-center justify-between border-b py-2.5"
                                 >
-                                    <span class="text-muted-foreground"
-                                        >{{ __('vehicleAd.gears') }}</span
-                                    >
+                                    <span class="text-muted-foreground">{{
+                                        __('vehicleAd.gears')
+                                    }}</span>
                                     <span class="font-medium">{{
                                         ad.gear_count ?? '-'
                                     }}</span>
@@ -256,9 +266,9 @@
                                 <div
                                     class="flex items-center justify-between border-b py-2.5"
                                 >
-                                    <span class="text-muted-foreground"
-                                        >{{ __('vehicleAd.weight') }}</span
-                                    >
+                                    <span class="text-muted-foreground">{{
+                                        __('vehicleAd.weight')
+                                    }}</span>
                                     <span class="font-medium"
                                         >{{ ad.weight_kg ?? '-' }} kg</span
                                     >
@@ -266,9 +276,9 @@
                                 <div
                                     class="flex items-center justify-between py-2.5"
                                 >
-                                    <span class="text-muted-foreground"
-                                        >{{ __('vehicleAd.doors_seats') }}</span
-                                    >
+                                    <span class="text-muted-foreground">{{
+                                        __('vehicleAd.doors_seats')
+                                    }}</span>
                                     <span class="font-medium"
                                         >{{ ad.doors ?? '-' }} /
                                         {{ ad.seats ?? '-' }}</span
@@ -279,9 +289,9 @@
                                 <div
                                     class="flex items-center justify-between border-b py-2.5"
                                 >
-                                    <span class="text-muted-foreground"
-                                        >{{ __('vehicleAd.euro_norm') }}</span
-                                    >
+                                    <span class="text-muted-foreground">{{
+                                        __('vehicleAd.euro_norm')
+                                    }}</span>
                                     <span class="font-medium">{{
                                         ad.euro_norm?.code ?? '-'
                                     }}</span>
@@ -289,9 +299,9 @@
                                 <div
                                     class="flex items-center justify-between border-b py-2.5"
                                 >
-                                    <span class="text-muted-foreground"
-                                        >{{ __('vehicleAd.co2_consumption') }}</span
-                                    >
+                                    <span class="text-muted-foreground">{{
+                                        __('vehicleAd.co2_consumption')
+                                    }}</span>
                                     <span class="font-medium"
                                         >{{ ad.co2_emission ?? '-' }} g/km /
                                         {{ ad.fuel_consumption_avg ?? '-' }}
@@ -301,24 +311,26 @@
                                 <div
                                     class="flex items-center justify-between border-b py-2.5"
                                 >
-                                    <span class="text-muted-foreground"
-                                        >{{ __('vehicleAd.exterior_color') }}</span
-                                    >
+                                    <span class="text-muted-foreground">{{
+                                        __('vehicleAd.exterior_color')
+                                    }}</span>
                                     <span class="font-medium"
                                         >{{ ad.exterior_color?.code ?? '-'
                                         }}<span
                                             v-if="ad.exterior_color_metalised"
                                         >
-                                            ({{ __('vehicleAd.metallic') }})</span
+                                            ({{
+                                                __('vehicleAd.metallic')
+                                            }})</span
                                         ></span
                                     >
                                 </div>
                                 <div
                                     class="flex items-center justify-between border-b py-2.5"
                                 >
-                                    <span class="text-muted-foreground"
-                                        >{{ __('vehicleAd.interior') }}</span
-                                    >
+                                    <span class="text-muted-foreground">{{
+                                        __('vehicleAd.interior')
+                                    }}</span>
                                     <span class="font-medium"
                                         >{{ ad.interior_color?.code ?? '-' }},
                                         {{
@@ -329,9 +341,9 @@
                                 <div
                                     class="flex items-center justify-between py-2.5"
                                 >
-                                    <span class="text-muted-foreground"
-                                        >{{ __('vehicleAd.previous_owners') }}</span
-                                    >
+                                    <span class="text-muted-foreground">{{
+                                        __('vehicleAd.previous_owners')
+                                    }}</span>
                                     <span class="font-medium">{{
                                         ad.previous_owner ?? '-'
                                     }}</span>
@@ -362,7 +374,8 @@
                                     "
                                     class="h-3.5 w-3.5"
                                 />
-                                {{ __('vehicleAd.damaged') }}: {{ ad.is_damaged ? __('ui.yes') : __('ui.no') }}
+                                {{ __('vehicleAd.damaged') }}:
+                                {{ ad.is_damaged ? __('ui.yes') : __('ui.no') }}
                             </span>
                             <span
                                 class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold"
@@ -380,7 +393,10 @@
                                     "
                                     class="h-3.5 w-3.5"
                                 />
-                                {{ __('vehicleAd.accident') }}: {{ ad.has_accident ? __('ui.yes') : __('ui.no') }}
+                                {{ __('vehicleAd.accident') }}:
+                                {{
+                                    ad.has_accident ? __('ui.yes') : __('ui.no')
+                                }}
                             </span>
                             <span
                                 class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold"
@@ -390,7 +406,8 @@
                                         : 'border-border bg-muted/50 text-muted-foreground/50'
                                 "
                             >
-                                <CheckCircle class="h-3.5 w-3.5" /> {{ __('vehicleAd.full_service_history') }}
+                                <CheckCircle class="h-3.5 w-3.5" />
+                                {{ __('vehicleAd.full_service_history') }}
                             </span>
                             <span
                                 class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold"
@@ -400,7 +417,8 @@
                                         : 'border-border bg-muted/50 text-muted-foreground/50'
                                 "
                             >
-                                <CheckCircle class="h-3.5 w-3.5" /> {{ __('vehicleAd.non_smoker') }}
+                                <CheckCircle class="h-3.5 w-3.5" />
+                                {{ __('vehicleAd.non_smoker') }}
                             </span>
                             <span
                                 class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold"
@@ -410,7 +428,8 @@
                                         : 'border-border bg-muted/50 text-muted-foreground/50'
                                 "
                             >
-                                <CheckCircle class="h-3.5 w-3.5" /> {{ __('vehicleAd.technical_inspection') }}
+                                <CheckCircle class="h-3.5 w-3.5" />
+                                {{ __('vehicleAd.technical_inspection') }}
                             </span>
                         </div>
                     </div>
@@ -459,115 +478,18 @@
                         v-if="ad.description"
                         class="rounded-lg border bg-card p-6 shadow-sm"
                     >
-                        <h3 class="mb-4 text-lg font-bold">{{ __('vehicleAd.description') }}</h3>
+                        <h3 class="mb-4 text-lg font-bold">
+                            {{ __('vehicleAd.description') }}
+                        </h3>
                         <p class="whitespace-pre-wrap text-foreground">
                             {{ ad.description }}
                         </p>
                     </div>
-                </div>
 
-                <!-- Contact Sidebar -->
-                <div
-                    class="col-span-1 space-y-4 md:sticky md:top-24 md:self-start"
-                >
-                    <Card
-                        class="gap-0! overflow-hidden border-none py-0! shadow-xl ring-1 ring-border/60"
-                    >
-                        <div
-                            class="relative bg-secondary px-6 py-7 text-secondary-foreground"
-                        >
-                            <div class="flex items-start justify-between">
-                                <div class="space-y-4">
-                                    <Badge
-                                        variant="outline"
-                                        class="border-secondary-foreground/20 bg-secondary-foreground/10 text-[12px] font-bold tracking-widest text-secondary-foreground/90 uppercase hover:bg-secondary-foreground/20"
-                                    >
-                                        {{ __('vehicleAd.seller') }}
-                                    </Badge>
-                                    <div class="space-y-1">
-                                        <h2
-                                            class="text-xl font-black tracking-tight text-secondary-foreground"
-                                        >
-                                            {{
-                                                ad.user?.company?.name ??
-                                                ad.user?.first_name +
-                                                    ' ' +
-                                                    ad.user?.last_name
-                                            }}
-                                        </h2>
-                                    </div>
-                                </div>
-
-                                <a
-                                    v-if="ad.user?.company?.phone"
-                                    :href="`https://wa.me/${ad.user.company.phone?.replace(/\D/g, '')}?text=${encodeURIComponent(__('vehicleAd.whatsapp_message'))}`"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white transition-transform hover:scale-110 active:scale-95"
-                                    title="WhatsApp"
-                                >
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        class="h-6 w-6 fill-current"
-                                    >
-                                        <path
-                                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
-                                        />
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="p-6">
-                            <div v-if="ad.user?.company" class="mb-6 space-y-2">
-                                <p
-                                    class="text-[11px] font-black tracking-widest text-muted-foreground/60 uppercase"
-                                >
-                                    {{ __('ui.location') }}
-                                </p>
-                                <div
-                                    class="text-sm leading-relaxed text-foreground/80"
-                                >
-                                    <p class="font-bold text-foreground">
-                                        {{ ad.user.company.address }}
-                                    </p>
-                                    <p>
-                                        {{ ad.user.company.city?.zip_code }}
-                                        {{ ad.user.company.city?.code }},
-                                        {{ ad.user.company.country?.code }}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="mb-6 grid grid-cols-2 gap-3">
-                                <a
-                                    v-if="ad.user?.company?.phone"
-                                    :href="`tel:${ad.user.company.phone}`"
-                                    class="group flex flex-col items-center gap-2 rounded-xl border border-border bg-muted py-3 transition-all hover:border-primary/30 hover:bg-primary/5"
-                                >
-                                    <Phone
-                                        class="h-4 w-4 text-muted-foreground group-hover:text-primary"
-                                    />
-                                    <span
-                                        class="text-[10px] font-bold tracking-tight text-muted-foreground uppercase"
-                                        >{{ __('ui.call') }}</span
-                                    >
-                                </a>
-                            </div>
-
-                            <Button
-                                type="button"
-                                class="h-12 w-full cursor-pointer rounded-md text-sm font-black tracking-tight uppercase"
-                                @click="openContactModal"
-                            >
-                                {{ __('vehicleAd.contact_seller') }}
-                            </Button>
-                        </div>
-                    </Card>
-
+                    <!-- Ad Management for mobile -->
                     <Card
                         v-if="canEdit"
-                        class="border-2 border-dashed bg-muted/10 p-4 shadow-none"
+                        class="border-2 border-dashed bg-muted/10 p-4 shadow-none lg:hidden"
                     >
                         <h3
                             class="mb-3 text-[10px] font-black tracking-[0.2em] text-muted-foreground/70 uppercase"
@@ -580,9 +502,278 @@
                             @click="router.visit(vehicleEdit.url(ad.id))"
                         >
                             <Edit class="h-3.5 w-3.5 text-primary" />
-                            <span class="text-xs font-bold"
-                                >{{ __('vehicleAd.edit_ad') }}</span
+                            <span class="text-xs font-bold">{{
+                                __('vehicleAd.edit_ad')
+                            }}</span>
+                        </Button>
+                    </Card>
+                </div>
+
+                <!-- Contact Sidebar -->
+                <div
+                    class="rounded-top col-span-1 space-y-6 bg-background max-lg:fixed max-lg:right-0 max-lg:bottom-0 max-lg:left-0 max-lg:z-50 max-lg:m-0 max-lg:border-t max-lg:bg-background max-lg:shadow-[0_-8px_30px_rgba(0,0,0,0.12)] max-lg:backdrop-blur-xl lg:sticky lg:top-24 lg:self-start lg:rounded-lg"
+                >
+                    <Card
+                        class="gap-0! overflow-hidden rounded-lg border border-border/50 bg-card/60 pt-0 shadow-2xl shadow-primary/5 backdrop-blur-sm transition-all hover:border-primary/20 hover:shadow-primary/10 max-lg:rounded-none max-lg:border-none max-lg:bg-transparent max-lg:p-0 max-lg:shadow-none max-lg:backdrop-blur-none"
+                    >
+                        <!-- Desktop Header (Hidden on Mobile) -->
+                        <div
+                            class="dark hidden border-b border-border/50 bg-background px-6 py-8 text-foreground lg:block"
+                        >
+                            <div class="flex items-start justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-center gap-2">
+                                        <Badge
+                                            variant="outline"
+                                            class="border-primary/20 bg-primary/5 text-[10px] font-black tracking-[0.2em] text-primary uppercase"
+                                        >
+                                            {{ __('vehicleAd.seller') }}
+                                        </Badge>
+                                        <span
+                                            class="inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[9px] font-bold text-green-600"
+                                        >
+                                            <CheckCircle class="size-2.5" />
+                                            {{ __('ui.verified') || 'Vérifié' }}
+                                        </span>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <h2
+                                            class="text-xl leading-tight font-black tracking-tight text-foreground"
+                                        >
+                                            {{
+                                                ad.user?.company?.name ??
+                                                ad.user?.first_name +
+                                                    ' ' +
+                                                    ad.user?.last_name
+                                            }}
+                                        </h2>
+                                        <p
+                                            class="text-xs font-medium text-muted-foreground"
+                                            v-if="ad.user?.created_at"
+                                        >
+                                            {{
+                                                __('ui.member_since') ||
+                                                'Membre depuis'
+                                            }}
+                                            {{
+                                                new Date(
+                                                    ad.user.created_at,
+                                                ).getFullYear()
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <a
+                                    v-if="ad.user?.company?.phone"
+                                    :href="`https://wa.me/${ad.user.company.phone?.replace(/\D/g, '')}?text=${encodeURIComponent(__('vehicleAd.whatsapp_message'))}`"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-[#25D366] text-white shadow-lg shadow-[#25D366]/20 transition-all hover:scale-105 hover:shadow-[#25D366]/40 active:scale-95"
+                                    title="WhatsApp"
+                                >
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        class="h-7 w-7 fill-current"
+                                    >
+                                        <path
+                                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                                        />
+                                    </svg>
+                                    <div
+                                        class="absolute -top-1 -right-1 block h-3 w-3 rounded-full border-2 border-card bg-green-500"
+                                    ></div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Sticky Mobile Layout -->
+                        <div
+                            class="dark flex flex-col gap-4 bg-background p-4 max-lg:w-full max-lg:items-center lg:hidden"
+                        >
+                            <div
+                                class="flex w-full items-center justify-between p-0"
                             >
+                                <div class="flex min-w-0 flex-col gap-0.5">
+                                    <h2
+                                        class="truncate text-sm font-bold tracking-tight text-foreground"
+                                    >
+                                        {{
+                                            ad.user?.company?.name ??
+                                            ad.user?.first_name +
+                                                ' ' +
+                                                ad.user?.last_name
+                                        }}
+                                    </h2>
+                                    <div class="flex items-center gap-1.5">
+                                        <div class="flex items-center gap-1">
+                                            <CheckCircle
+                                                class="size-2.5 text-green-500"
+                                            />
+                                            <span
+                                                class="text-[9px] font-black tracking-widest text-muted-foreground uppercase"
+                                                >{{
+                                                    __('ui.verified') ||
+                                                    'Vérifié'
+                                                }}</span
+                                            >
+                                        </div>
+                                        <span
+                                            v-if="ad.user?.company?.city"
+                                            class="flex items-center gap-1 text-[9px] font-bold text-muted-foreground uppercase"
+                                        >
+                                            <span class="opacity-30">•</span>
+                                            <MapPin class="size-2.5" />
+                                            <span class="sm:hidden">{{
+                                                ad.user.company.city.code
+                                            }}</span>
+                                            <span class="hidden sm:inline">
+                                                {{ ad.user.company.address }},
+                                                {{
+                                                    ad.user.company.city
+                                                        .zip_code
+                                                }}
+                                                {{ ad.user.company.city.code }}
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-2">
+                                    <a
+                                        v-if="ad.user?.company?.phone"
+                                        :href="`tel:${ad.user.company.phone}`"
+                                        class="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-primary/10 py-3 transition-all hover:bg-primary/25 active:scale-95"
+                                        :title="__('ui.call')"
+                                    >
+                                        <Phone class="size-5 text-primary" />
+                                    </a>
+
+                                    <a
+                                        v-if="ad.user?.company?.phone"
+                                        :href="`https://wa.me/${ad.user.company.phone?.replace(/\D/g, '')}?text=${encodeURIComponent(__('vehicleAd.whatsapp_message'))}`"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#25D366]/10 text-[#25D366] ring-1 ring-[#25D366]/20 transition-all hover:bg-[#25D366]/20 active:scale-95"
+                                        title="WhatsApp"
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            class="size-5 fill-current"
+                                        >
+                                            <path
+                                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                                            />
+                                        </svg>
+                                    </a>
+
+                                    <Button
+                                        type="button"
+                                        size="sm"
+                                        class="h-10 rounded-xl bg-primary px-4 font-black tracking-tight text-white uppercase shadow-lg shadow-primary/20 active:scale-95"
+                                        @click="openContactModal"
+                                    >
+                                        <Mail class="size-4" />
+                                        <span class="max-sm:hidden">{{
+                                            __('vehicleAd.contact') || 'Contact'
+                                        }}</span>
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Body (Desktop Location / Sidebar Actions) -->
+                        <div class="hidden p-6 lg:block">
+                            <div v-if="ad.user?.company" class="mb-8 space-y-4">
+                                <div class="flex items-center gap-2">
+                                    <div
+                                        class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary"
+                                    >
+                                        <MapPin class="h-4 w-4" />
+                                    </div>
+                                    <p
+                                        class="text-[11px] font-black tracking-widest text-muted-foreground/60 uppercase"
+                                    >
+                                        {{ __('ui.location') }}
+                                    </p>
+                                </div>
+                                <div
+                                    class="rounded-xl border border-border/50 bg-muted/30 p-4 text-sm leading-relaxed text-foreground/80"
+                                >
+                                    <p class="font-bold text-foreground">
+                                        {{ ad.user.company.address }}
+                                    </p>
+                                    <p>
+                                        {{ ad.user.company.city?.zip_code }}
+                                        {{ ad.user.company.city?.code }}
+                                    </p>
+                                    <p
+                                        class="mt-2 flex items-center gap-1.5 text-[11px] font-bold text-primary uppercase"
+                                    >
+                                        <Globe class="size-3" />
+                                        {{ ad.user.company.country?.code }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="mb-6 grid grid-cols-2 gap-3">
+                                <a
+                                    v-if="ad.user?.company?.phone"
+                                    :href="`tel:${ad.user.company.phone}`"
+                                    class="group flex flex-col items-center gap-2 rounded-xl border border-border bg-muted/50 py-3.5 transition-all hover:border-primary/30 hover:bg-primary/5"
+                                >
+                                    <Phone
+                                        class="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary"
+                                    />
+                                    <span
+                                        class="text-[10px] font-bold tracking-tight text-muted-foreground uppercase"
+                                        >{{ __('ui.call') }}</span
+                                    >
+                                </a>
+
+                                <Button
+                                    type="button"
+                                    class="group relative flex h-16 flex-1 items-center justify-center overflow-hidden rounded-xl bg-primary px-6 font-black tracking-tight text-white uppercase shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] hover:shadow-primary/40 active:scale-[0.98]"
+                                    @click="openContactModal"
+                                >
+                                    <div
+                                        class="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-1000 group-hover:translate-x-full"
+                                    ></div>
+                                    <div
+                                        class="flex flex-col items-center gap-2"
+                                    >
+                                        <Mail
+                                            class="h-4 w-4 transition-transform group-hover:-rotate-12"
+                                        />
+                                        <span
+                                            class="text-xs font-bold whitespace-break-spaces"
+                                            >{{
+                                                __('vehicleAd.contact_seller')
+                                            }}</span
+                                        >
+                                    </div>
+                                </Button>
+                            </div>
+                        </div>
+                    </Card>
+
+                    <Card
+                        v-if="canEdit"
+                        class="hidden border-2 border-dashed bg-muted/10 p-4 shadow-none lg:block"
+                    >
+                        <h3
+                            class="mb-3 text-[10px] font-black tracking-[0.2em] text-muted-foreground/70 uppercase"
+                        >
+                            {{ __('vehicleAd.ad_management') }}
+                        </h3>
+                        <Button
+                            variant="outline"
+                            class="w-full cursor-pointer justify-start gap-2 rounded border-border/50 bg-background"
+                            @click="router.visit(vehicleEdit.url(ad.id))"
+                        >
+                            <Edit class="h-3.5 w-3.5 text-primary" />
+                            <span class="text-xs font-bold">{{
+                                __('vehicleAd.edit_ad')
+                            }}</span>
                         </Button>
                     </Card>
                 </div>
@@ -617,6 +808,9 @@ import {
     Truck,
     ChevronLeft,
     Star,
+    MapPin,
+    Globe,
+    Mail,
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';

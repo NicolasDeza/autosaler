@@ -35,4 +35,6 @@ return [
         'price_asc' => 'Lowest price',
         'price_desc' => 'Highest price',
     ],
+    'verified' => 'Verified',
+    'member_since' => 'Member since',
 ];

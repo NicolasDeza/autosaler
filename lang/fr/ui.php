@@ -35,4 +35,6 @@ return [
         'price_asc' => 'Prix croissant',
         'price_desc' => 'Prix décroissant',
     ],
+    'verified' => 'Vérifié',
+    'member_since' => 'Membre depuis',
 ];
