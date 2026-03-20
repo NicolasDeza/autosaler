@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class VehicleAd extends Model
+class VehicleAd extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'user_id',
@@ -228,5 +232,25 @@ class VehicleAd extends Model
             'favs_desc' => $query->withAggregate('stat', 'fav_count')->orderBy('stat_fav_count', 'desc'),
             default => $query->orderBy('created_at', 'desc'),
         };
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+       $this->addMediaConversion('thumb')
+         ->width(300)
+         ->height(200)
+         ->format('webp')
+         ->sharpen(10);
+
+    $this->addMediaConversion('card')
+         ->width(600)
+         ->height(400)
+         ->format('webp');
+
+    $this->addMediaConversion('large')
+         ->width(1200) // important
+         ->height(900)
+         ->format('webp')
+         ->optimize();
     }
 }
