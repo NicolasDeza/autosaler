@@ -381,7 +381,7 @@ const handleFavoritesClick = () => {
                     <InstallApp v-slot="{ install }">
                         <TooltipProvider :delay-duration="0">
                             <Tooltip>
-                                <TooltipTrigger as-child>
+                                <TooltipTrigger as-child class="hidden lg:flex">
                                     <Button
                                         variant="ghost"
                                         size="icon"
