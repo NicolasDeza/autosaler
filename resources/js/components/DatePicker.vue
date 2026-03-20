@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type { DateValue } from '@internationalized/date';
 import {
     DateFormatter,
     getLocalTimeZone,
-    today,
     parseDate,
+    today,
 } from '@internationalized/date';
-
 import { CalendarIcon } from 'lucide-vue-next';
-import { ref, watch } from 'vue';
+import type { DateValue } from 'reka-ui';
+import { ref, watch, computed } from 'vue';
+
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -16,6 +16,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover';
+import { useTranslation } from '@/composables/useTranslation';
 import { cn } from '@/lib/utils';
 
 const props = defineProps<{
@@ -26,6 +27,8 @@ const emit = defineEmits<{
     (e: 'update:modelValue', value: string): void;
 }>();
 
+const { __, locale } = useTranslation();
+
 const defaultPlaceholder = today(getLocalTimeZone());
 
 // Try parsing initial modelValue
@@ -33,15 +36,17 @@ let initialDate: DateValue | undefined = undefined;
 if (props.modelValue) {
     try {
         initialDate = parseDate(props.modelValue);
-    } catch (e) {
+    } catch {
         initialDate = undefined;
     }
 }
 
 const date = ref<DateValue | undefined>(initialDate);
 
-const df = new DateFormatter('fr-FR', {
-    dateStyle: 'long',
+const df = computed(() => {
+    return new DateFormatter(locale.value, {
+        dateStyle: 'long',
+    });
 });
 
 watch(date, (newVal) => {
@@ -62,7 +67,7 @@ watch(
         if (newVal !== date.value?.toString()) {
             try {
                 date.value = parseDate(newVal);
-            } catch (e) {
+            } catch {
                 date.value = undefined;
             }
         }
@@ -86,14 +91,15 @@ watch(
                 {{
                     date
                         ? df.format(date.toDate(getLocalTimeZone()))
-                        : 'Sélectionner une date'
+                        : __('ui.select_date')
                 }}
             </Button>
         </PopoverTrigger>
         <PopoverContent class="w-auto p-0" align="start">
             <Calendar
-                v-model="date"
+                v-model="date as any"
                 :default-placeholder="defaultPlaceholder"
+                :locale="locale"
                 layout="month-and-year"
                 initial-focus
                 @update:model-value="close"
