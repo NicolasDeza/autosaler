@@ -18,6 +18,7 @@ return [
     'location' => 'Location',
     'back' => 'Back',
     'select' => 'Select',
+    'select_date' => 'Select date',
     'cancel' => 'Cancel',
     'confirm_delete' => 'Are you sure you want to delete this item?',
     'first_name' => 'First Name',

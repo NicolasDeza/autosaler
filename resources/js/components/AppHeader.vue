@@ -10,11 +10,14 @@ import {
     Star,
     Warehouse,
     User,
+    Download,
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
+import { toast } from 'vue-sonner';
 import AppLogo from '@/components/AppLogo.vue';
 import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import InstallApp from '@/components/InstallApp.vue';
 import SheetMenu from '@/components/SheetMenu.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -228,6 +231,32 @@ const handleFavoritesClick = () => {
                                     <span>{{ item.title }}</span>
                                 </a>
                             </div>
+                            <InstallApp
+                                v-slot="{
+                                    install,
+                                    canInstall,
+                                    showIosInstallMessage,
+                                }"
+                            >
+                                <div
+                                    v-if="canInstall || showIosInstallMessage"
+                                    class="flex flex-col space-y-4"
+                                >
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        class="group h-9 w-9 cursor-pointer"
+                                        @click="showIosInstallMessage ? toast.info(__('pwa.ios_guide_step_1') + '\n' + __('pwa.ios_guide_step_2')) : install()"
+                                    >
+                                        <Download
+                                            class="size-5 opacity-80 group-hover:opacity-100"
+                                        />
+                                        <span class="sr-only">{{
+                                            __('pwa.tooltip')
+                                        }}</span>
+                                    </Button>
+                                </div>
+                            </InstallApp>
                         </div>
                     </SheetMenu>
                 </div>
@@ -358,6 +387,33 @@ const handleFavoritesClick = () => {
                             </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
+
+                    <InstallApp v-slot="{ install, canInstall, showIosInstallMessage }">
+                        <TooltipProvider v-if="canInstall || showIosInstallMessage" :delay-duration="0">
+                            <Tooltip>
+                                <TooltipTrigger as-child class="hidden lg:flex">
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        class="group h-9 w-9 cursor-pointer"
+                                        @click="showIosInstallMessage ? toast.info(__('pwa.ios_guide_step_1') + '\n' + __('pwa.ios_guide_step_2')) : install()"
+                                    >
+                                        <Download
+                                            class="size-5 opacity-80 group-hover:opacity-100"
+                                        />
+                                        <span class="sr-only">{{
+                                            __('pwa.tooltip')
+                                        }}</span>
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent
+                                    class="dark border border-background/50"
+                                >
+                                    <p>{{ __('pwa.tooltip') }}</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    </InstallApp>
 
                     <LanguageSelector />
 

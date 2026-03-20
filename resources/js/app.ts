@@ -1,5 +1,6 @@
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { registerSW } from 'virtual:pwa-register';
 import type { DefineComponent } from 'vue';
 import { createApp, h, Teleport } from 'vue';
 import '../css/app.css';
@@ -8,6 +9,19 @@ import 'vue-sonner/style.css';
 import { Toaster } from '@/components/ui/sonner';
 import { loadTranslations } from '@/composables/useTranslation';
 import type { ExtendedPageProps } from './types/inertia';
+
+const updateSW = registerSW({
+    onNeedRefresh() {
+        // Show a prompt to the user to refresh the page
+        if (confirm('New version available! Reload?')) {
+            updateSW(true);
+        }
+    },
+    onOfflineReady() {
+        // The app is ready to work offline
+        console.log('App is ready to work offline');
+    },
+});
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
