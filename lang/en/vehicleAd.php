@@ -80,6 +80,7 @@ return [
     'equipment_options' => 'Equipment & options',
     'equipment_options_desc' => 'Select the options available on this vehicle.',
     'photos' => 'Photos',
+    'photos_desc' => 'Add up to 20 photos. Drag and drop to reorder. The first image will be the main image.',
     'description' => 'Description',
     'detailed_description' => 'Detailed Description',
     'detailed_description_desc' => 'The text of your ad.',

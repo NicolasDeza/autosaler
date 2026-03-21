@@ -81,6 +81,7 @@ return [
     'equipment_options' => 'Equipements & options',
     'equipment_options_desc' => 'Sélectionnez les options disponibles sur ce véhicule.',
     'photos' => 'Photos',
+    'photos_desc' => "Ajoutez jusqu'à 20 photos. Glissez-déposez pour réorganiser. La première image sera l'image principale.",
     'description' => 'Description',
     'detailed_description' => 'Description détaillée',
     'detailed_description_desc' => 'Le texte de votre annonce.',

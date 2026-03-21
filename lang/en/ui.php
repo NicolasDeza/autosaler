@@ -38,4 +38,5 @@ return [
     ],
     'verified' => 'Verified',
     'member_since' => 'Member since',
+    'add_photos' => 'Add photos',
 ];

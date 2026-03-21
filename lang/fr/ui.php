@@ -40,4 +40,5 @@ return [
     ],
     'verified' => 'Vérifié',
     'member_since' => 'Membre depuis',
+    'add_photos' => 'Ajouter des photos',
 ];
