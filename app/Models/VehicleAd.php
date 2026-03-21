@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -15,6 +16,13 @@ class VehicleAd extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+
+    protected static function booted(): void
+    {
+        static::deleting(function (VehicleAd $vehicleAd) {
+            Storage::disk('public')->deleteDirectory("cars/{$vehicleAd->id}");
+        });
+    }
 
     protected $fillable = [
         'user_id',
