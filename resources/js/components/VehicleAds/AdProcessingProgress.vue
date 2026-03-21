@@ -12,6 +12,7 @@ import {
     DialogTitle,
     DialogDescription,
 } from '@/components/ui/dialog';
+import { useTranslation } from '@/composables/useTranslation';
 import { show as vehicleShow } from '@/routes/vehicles';
 
 const props = defineProps<{
@@ -23,6 +24,8 @@ const emit = defineEmits<{
     (e: 'complete'): void;
     (e: 'close'): void;
 }>();
+
+const { __ } = useTranslation();
 
 const progress = ref(0);
 const ready = ref(false);
@@ -72,34 +75,34 @@ onUnmounted(() => {
 const statusConfig = computed(() => {
     if (error.value) {
         return {
-            label: 'Erreur',
+            label: __('vehicleAd.ad_processing.status_error'),
             variant: 'destructive' as const,
             icon: AlertCircle,
-            message: "Une erreur est survenue lors de l'optimisation.",
-            detail: "Échec du suivi en temps réel",
+            message: __('vehicleAd.ad_processing.msg_error'),
+            detail: __('vehicleAd.ad_processing.detail_error'),
             color: 'text-destructive',
-            bg: 'bg-destructive/10'
+            bg: 'bg-destructive/10',
         };
     }
     if (ready.value) {
         return {
-            label: 'Succès',
+            label: __('vehicleAd.ad_processing.status_success'),
             variant: 'secondary' as const,
             icon: CheckCircle2,
-            message: 'Images traitées avec succès !',
-            detail: "C'est prêt !",
+            message: __('vehicleAd.ad_processing.msg_success'),
+            detail: __('vehicleAd.ad_processing.detail_success'),
             color: 'text-emerald-500',
-            bg: 'bg-emerald-500/10'
+            bg: 'bg-emerald-500/10',
         };
     }
     return {
-        label: 'Optimisation',
+        label: __('vehicleAd.ad_processing.status_optimizing'),
         variant: 'secondary' as const,
         icon: Loader2,
-        message: 'Veuillez patienter pendant le traitement des images...',
-        detail: 'Optimisation des visuels...',
+        message: __('vehicleAd.ad_processing.msg_optimizing'),
+        detail: __('vehicleAd.ad_processing.detail_optimizing'),
         color: 'text-primary',
-        bg: 'bg-primary/10'
+        bg: 'bg-primary/10',
     };
 });
 </script>
@@ -142,7 +145,11 @@ const statusConfig = computed(() => {
                     
                     <div class="space-y-2">
                         <DialogTitle class="text-3xl font-black tracking-tight text-foreground leading-none">
-                            {{ mode === 'edit' ? 'Mise à jour' : 'Publication' }}
+                            {{
+                                mode === 'edit'
+                                    ? __('vehicleAd.ad_processing.title_edit')
+                                    : __('vehicleAd.ad_processing.title_create')
+                            }}
                         </DialogTitle>
                         <DialogDescription class="text-muted-foreground font-medium text-base/relaxed max-w-[90%]">
                             {{ statusConfig.message }}
@@ -190,10 +197,10 @@ const statusConfig = computed(() => {
                             {{ statusConfig.detail }}
                         </span>
                         <span v-if="!ready && !error" class="text-[11px] text-muted-foreground font-semibold">
-                            Traitement en arrière-plan par le moteur IA
+                            {{ __('vehicleAd.ad_processing.hint_background') }}
                         </span>
                         <span v-else-if="ready" class="text-[11px] text-muted-foreground font-semibold">
-                            Tous les visuels sont optimisés
+                            {{ __('vehicleAd.ad_processing.hint_finished') }}
                         </span>
                     </div>
                 </div>
@@ -206,7 +213,7 @@ const statusConfig = computed(() => {
                         class="h-14 rounded-2xl font-black text-[11px] uppercase tracking-widest bg-muted/50 hover:bg-muted text-foreground border-none active:scale-[0.98] transition-all cursor-pointer"
                         @click="closeModal"
                     >
-                        OK
+                        {{ __('vehicleAd.ad_processing.action_continue') }}
                     </Button>
                     <Button 
                         type="button" 
@@ -214,7 +221,7 @@ const statusConfig = computed(() => {
                         @click="router.visit(vehicleShow.url(vehicleId))"
                     >
                         <Eye class="mr-2 size-4" />
-                        Voir l'annonce
+                        {{ __('vehicleAd.ad_processing.action_view_ad') }}
                     </Button>
                 </div>
 
@@ -224,7 +231,7 @@ const statusConfig = computed(() => {
                         class="w-full text-[10px] font-black text-muted-foreground hover:text-foreground transition-all uppercase tracking-[0.2em] h-12 rounded-2xl cursor-pointer"
                         @click="closeModal"
                     >
-                        Continuer sans attendre
+                        {{ __('vehicleAd.ad_processing.action_skip') }}
                     </Button>
                 </div>
 
@@ -232,7 +239,7 @@ const statusConfig = computed(() => {
                     <div class="flex items-center gap-3">
                          <div class="h-px w-8 bg-muted-foreground/30"></div>
                          <p class="text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground">
-                            Media Engine V2.1
+                            {{ __('vehicleAd.ad_processing.footer_version') }}
                         </p>
                         <div class="h-px w-8 bg-muted-foreground/30"></div>
                     </div>
