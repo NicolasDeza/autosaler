@@ -5,38 +5,50 @@
         <div
             class="mx-auto w-full max-w-7xl space-y-8 p-4 pb-32 lg:p-8 lg:pb-8"
         >
-            <button
-                class="flex cursor-pointer items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                @click="router.visit(vehiclesIndex.url())"
-            >
-                <ChevronLeft class="h-4 w-4" />
-                {{ __('vehicleAd.back_to_ads') }}
-            </button>
-
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
                 <div class="col-span-1 space-y-8 lg:col-span-2">
                     <div
                         class="space-y-8 rounded-lg border bg-card p-4 shadow-sm sm:p-6"
                     >
                         <div
-                            class="flex flex-col gap-4 p-1 sm:flex-row sm:items-start sm:justify-between sm:p-2"
+                            class="flex flex-col gap-6 p-1 sm:flex-row sm:items-start sm:justify-between sm:p-2"
                         >
-                            <div class="flex items-start justify-between gap-4">
-                                <div>
-                                    <h1 class="text-2xl font-bold sm:text-3xl">
-                                        {{ ad.brand?.name }}
-                                        {{ ad.model?.name }}
-                                    </h1>
-                                    <h2
-                                        class="mt-1 text-sm font-bold tracking-wider text-muted-foreground/80 uppercase"
+                            <!-- Top: Navigation, Title and Mobile Star -->
+                            <div
+                                class="flex w-full items-start justify-between gap-4 sm:w-auto"
+                            >
+                                <div class="flex items-start gap-3 sm:gap-4">
+                                    <button
+                                        class="group flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-border/50 bg-background/50 transition-all hover:border-primary/30 hover:bg-background hover:shadow-md"
+                                        @click="
+                                            router.visit(vehiclesIndex.url())
+                                        "
+                                        :title="__('vehicleAd.back_to_ads')"
                                     >
-                                        {{ ad.vehicle_version_name }}
-                                    </h2>
+                                        <ChevronLeft
+                                            class="h-5 w-5 text-muted-foreground transition-colors group-hover:text-primary"
+                                        />
+                                    </button>
+                                    <div class="min-w-0 flex-1">
+                                        <h1
+                                            class="text-2xl font-bold sm:text-3xl"
+                                        >
+                                            {{ ad.brand?.name }}
+                                            {{ ad.model?.name }}
+                                        </h1>
+                                        <h2
+                                            class="mt-1 text-sm font-bold tracking-wider text-muted-foreground/80 uppercase"
+                                        >
+                                            {{ ad.vehicle_version_name }}
+                                        </h2>
+                                    </div>
                                 </div>
+
+                                <!-- Mobile Favorite -->
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    class="size-10 shrink-0 cursor-pointer rounded-md border border-border bg-background transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
+                                    class="size-10 shrink-0 cursor-pointer rounded-md border border-border bg-background transition-all hover:border-primary hover:bg-primary/10 hover:text-primary sm:hidden"
                                     :class="{
                                         'border-primary/20 fill-primary text-primary':
                                             ad.is_favorited,
@@ -50,34 +62,17 @@
                                         }"
                                     />
                                 </Button>
-                                <Button
-                                    variant="ghost"
-                                    class="hidden h-10 cursor-pointer items-center gap-2 rounded-md border border-border bg-background px-3 transition-all hover:border-primary/30 lg:flex"
-                                    :class="{
-                                        'border-primary/20 bg-primary/5 text-primary':
-                                            isSelected(ad.id),
-                                    }"
-                                    @click="toggleComparison"
-                                >
-                                    <Checkbox
-                                        :id="`compare-${ad.id}`"
-                                        :model-value="isSelected(ad.id)"
-                                        class="pointer-events-none size-4"
-                                    />
-                                    <span
-                                        class="text-xs font-bold tracking-tight uppercase"
-                                    >
-                                        {{ __('vehicleAd.compare') }}
-                                    </span>
-                                </Button>
                             </div>
-                            <div class="flex flex-col sm:items-end">
+
+                            <!-- Right: Actions & Price -->
+                            <div class="flex flex-col gap-4 sm:items-end">
+                                <!-- Price Badge -->
                                 <div
-                                    class="inline-flex self-start bg-primary py-1 pr-4 pl-6 text-white shadow-sm [clip-path:polygon(10%_0,100%_0,100%_100%,0_100%)] sm:self-auto sm:py-1.5 sm:pr-5 sm:pl-7"
+                                    class="inline-flex self-start bg-primary py-1 pr-6 pl-4 text-white shadow-sm [clip-path:polygon(0_0,90%_0,100%_100%,0_100%)] sm:self-auto sm:py-1.5 sm:pr-5 sm:pl-7 sm:[clip-path:polygon(10%_0,100%_0,100%_100%,0_100%)]"
                                 >
                                     <div class="flex items-end gap-2">
                                         <span
-                                            class="text-lg font-black tracking-tight sm:text-2xl"
+                                            class="text-2xl font-black tracking-tight sm:text-3xl"
                                         >
                                             {{
                                                 Number(ad.price).toLocaleString(
@@ -87,11 +82,52 @@
                                             €
                                         </span>
                                         <span
-                                            class="pb-0.5 text-[9px] font-semibold tracking-[0.18em] text-white/80 uppercase sm:text-[10px]"
+                                            class="pb-0.5 text-[10px] font-semibold tracking-[0.18em] text-white/80 uppercase sm:pb-1 sm:text-[11px]"
                                         >
                                             {{ __('vehicleAd.vat_included') }}
                                         </span>
                                     </div>
+                                </div>
+
+                                <!-- Desktop Actions -->
+                                <div class="hidden items-center gap-3 sm:flex">
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        class="size-10 shrink-0 cursor-pointer rounded-md border border-border bg-background transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
+                                        :class="{
+                                            'border-primary/20 fill-primary text-primary':
+                                                ad.is_favorited,
+                                        }"
+                                        @click="toggleFavorite"
+                                    >
+                                        <Star
+                                            class="size-5"
+                                            :class="{
+                                                'fill-primary': ad.is_favorited,
+                                            }"
+                                        />
+                                    </Button>
+                                    <Button
+                                        variant="ghost"
+                                        class="hidden h-10 cursor-pointer items-center gap-2 rounded-md border border-border bg-background px-3 transition-all hover:border-primary/30 lg:flex"
+                                        :class="{
+                                            'border-primary/20 bg-primary/5 text-primary':
+                                                isSelected(ad.id),
+                                        }"
+                                        @click="toggleComparison"
+                                    >
+                                        <Checkbox
+                                            :id="`compare-${ad.id}`"
+                                            :model-value="isSelected(ad.id)"
+                                            class="pointer-events-none size-4"
+                                        />
+                                        <span
+                                            class="text-xs font-bold tracking-tight uppercase"
+                                        >
+                                            {{ __('vehicleAd.compare') }}
+                                        </span>
+                                    </Button>
                                 </div>
                             </div>
                         </div>

@@ -15,16 +15,17 @@
 
             <!-- Main content -->
             <main class="flex min-w-0 flex-1 flex-col gap-8">
-                <div class="space-y-6">
+                <div class="flex items-center gap-4">
                     <button
-                        class="flex cursor-pointer items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        class="group flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-border/50 bg-background/50 transition-all hover:border-primary/30 hover:bg-background hover:shadow-md"
                         type="button"
                         @click="() => router.visit(vehiclesIndex.url())"
+                        :title="__('vehicleAd.back_to_ads')"
                     >
-                        <ChevronLeft class="h-4 w-4" />
-                        {{ __('vehicleAd.back_to_ads') }}
+                        <ChevronLeft
+                            class="h-5 w-5 text-muted-foreground transition-colors group-hover:text-primary"
+                        />
                     </button>
-
                     <h1 class="text-3xl font-bold tracking-tight">
                         {{ __('vehicleAd.create_new_ad') }}
                     </h1>
