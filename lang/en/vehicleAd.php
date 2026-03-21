@@ -112,6 +112,7 @@ return [
     'save_draft' => 'Save as draft',
     'save_publish' => 'Save and publish',
     'publish_ad' => 'Publish ad',
+    'processing' => 'Processing images...',
     'create_ad' => 'Create Ad',
     'create_new_ad' => 'Create a new ad',
 

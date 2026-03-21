@@ -40,8 +40,8 @@ class VehicleAdController extends Controller
             'bodyType',
             'euroNorm',
             'transmissionType',
-            'features',
             'user.company.city',
+            'media',
         ])
             ->where('status', 'active')
             ->when(auth()->check(), function ($q) {
@@ -288,6 +288,7 @@ class VehicleAdController extends Controller
             'exteriorColor', 'interiorColor', 'interiorType',
             'fuelType', 'bodyType', 'euroNorm', 'transmissionType',
             'user.company.city', 'user.company.country',
+            'media',
         ]);
 
         if (auth()->check()) {

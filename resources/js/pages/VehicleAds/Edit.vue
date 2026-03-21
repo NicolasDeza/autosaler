@@ -833,14 +833,30 @@
                                 :disabled="form.processing"
                                 @click.prevent="submit('draft')"
                             >
-                                {{ __('vehicleAd.save_draft') }}
+                                <Loader2
+                                    v-if="form.processing"
+                                    class="mr-2 h-4 w-4 animate-spin"
+                                />
+                                {{
+                                    form.processing
+                                        ? __('vehicleAd.processing')
+                                        : __('vehicleAd.save_draft')
+                                }}
                             </Button>
                             <Button
                                 type="submit"
                                 class="hover:cursor-pointer"
                                 :disabled="form.processing"
                             >
-                                {{ __('vehicleAd.save_publish') }}
+                                <Loader2
+                                    v-if="form.processing"
+                                    class="mr-2 h-4 w-4 animate-spin"
+                                />
+                                {{
+                                    form.processing
+                                        ? __('vehicleAd.processing')
+                                        : __('vehicleAd.save_publish')
+                                }}
                             </Button>
                         </div>
                     </div>
@@ -853,6 +869,7 @@
 <script setup lang="ts">
 import { Head, useForm, router } from '@inertiajs/vue3';
 import axios from 'axios';
+import { Loader2 } from 'lucide-vue-next';
 import { computed, nextTick, ref, watch, onMounted } from 'vue';
 import DatePicker from '@/components/DatePicker.vue';
 import InputError from '@/components/InputError.vue';

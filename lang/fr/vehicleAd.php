@@ -113,6 +113,7 @@ return [
     'save_draft' => 'Sauvegarder en brouillon',
     'save_publish' => 'Enregistrer et publier',
     'publish_ad' => "Publier l'annonce",
+    'processing' => 'Traitement des images...',
     'create_ad' => 'Créer une annonce',
     'create_new_ad' => 'Créer une nouvelle annonce',
 

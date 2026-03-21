@@ -97,15 +97,54 @@
                         </div>
 
                         <div class="space-y-3">
+                            <!-- Main Image -->
                             <div
-                                class="aspect-video w-full rounded-lg bg-muted"
-                            ></div>
-                            <div class="flex gap-3 overflow-x-auto">
+                                class="aspect-video w-full overflow-hidden rounded-lg border bg-muted"
+                            >
+                                <img
+                                    v-if="ad.primary_image"
+                                    :src="
+                                        selectedImage || ad.primary_image?.large
+                                    "
+                                    class="h-full w-full object-cover transition-opacity duration-300"
+                                    :alt="`${ad.brand?.name} ${ad.model?.name}`"
+                                    loading="lazy"
+                                />
                                 <div
-                                    v-for="i in 6"
-                                    :key="i"
-                                    class="h-16 w-24 shrink-0 rounded bg-muted/60"
-                                ></div>
+                                    v-else
+                                    class="flex h-full w-full items-center justify-center"
+                                >
+                                    <CarIcon
+                                        class="size-16 text-muted-foreground/20"
+                                    />
+                                </div>
+                            </div>
+
+                            <!-- Thumbnails -->
+                            <div
+                                v-if="ad.gallery?.length > 1"
+                                class="flex gap-3 overflow-x-auto pb-2 focus:outline-none"
+                            >
+                                <button
+                                    v-for="image in ad.gallery"
+                                    :key="image.id"
+                                    class="h-16 w-24 shrink-0 cursor-pointer overflow-hidden rounded border-2 transition-all hover:border-primary/50"
+                                    :class="
+                                        (selectedImage ||
+                                            ad.primary_image?.large) ===
+                                        image.large
+                                            ? 'border-primary'
+                                            : 'border-transparent'
+                                    "
+                                    @click="selectedImage = image.large"
+                                >
+                                    <img
+                                        :src="image.thumb"
+                                        class="h-full w-full object-cover"
+                                        :alt="`${ad.brand?.name} ${ad.model?.name} photo`"
+                                        loading="lazy"
+                                    />
+                                </button>
                             </div>
                         </div>
 
@@ -860,6 +899,7 @@ type GroupedFeature = {
 
 const showLoginModal = ref(false);
 const showContactModal = ref(false);
+const selectedImage = ref<string | null>(null);
 const page = usePage();
 const { addVehicle, removeVehicle, isSelected } = useComparison();
 

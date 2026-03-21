@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -69,6 +70,36 @@ class VehicleAd extends Model implements HasMedia
 
         'description',
     ];
+
+    protected $appends = ['primary_image', 'gallery'];
+
+    public function getPrimaryImageAttribute(): ?array
+    {
+        $media = $this->getFirstMedia('gallery');
+
+        if (! $media) {
+            return null;
+        }
+
+        return [
+            'id' => $media->id,
+            'thumb' => parse_url($media->getUrl('thumb'), PHP_URL_PATH),
+            'card' => parse_url($media->getUrl('card'), PHP_URL_PATH),
+            'large' => parse_url($media->getUrl('large'), PHP_URL_PATH),
+        ];
+    }
+
+    public function getGalleryAttribute(): Collection
+    {
+        return $this->getMedia('gallery')->sortBy('order_column')->map(function ($media) {
+            return [
+                'id' => $media->id,
+                'thumb' => parse_url($media->getUrl('thumb'), PHP_URL_PATH),
+                'card' => parse_url($media->getUrl('card'), PHP_URL_PATH),
+                'large' => parse_url($media->getUrl('large'), PHP_URL_PATH),
+            ];
+        });
+    }
 
     protected function casts(): array
     {
@@ -248,21 +279,24 @@ class VehicleAd extends Model implements HasMedia
             ->width(150)
             ->height(100)
             ->sharpen(10)
-            ->format('webp');
+            ->format('webp')
+            ->nonQueued();
 
         $this->addMediaConversion('card')
             ->width(600)
             ->height(400)
             ->sharpen(10)
             ->format('webp')
-            ->optimize();
+            ->optimize()
+            ->nonQueued();
 
         $this->addMediaConversion('large')
             ->width(1600) // important
             ->height(1200)
             ->format('webp')
             ->sharpen(10)
-            ->optimize();
+            ->optimize()
+            ->nonQueued();
     }
 
     // Active le tri

@@ -199,6 +199,7 @@ watch(
                         :src="element.previewUrl"
                         class="h-full w-full object-cover transition-transform group-hover:scale-105"
                         alt="Preview"
+                        loading="lazy"
                     />
 
                     <!-- Overlay Layer -->
