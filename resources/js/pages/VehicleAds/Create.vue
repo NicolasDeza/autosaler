@@ -736,6 +736,15 @@
                     </CardContent>
                 </Card>
 
+
+                <!-- Barre de progression de traitement des images -->
+                <AdProcessingProgress
+                    v-if="isProcessingImages"
+                    :vehicle-id="0"
+                    mode="create"
+                    @close="isProcessingImages = false"
+                />
+
                 <GalleryManager v-model="form.images" :errors="form.errors" />
 
                 <!-- Section 5 : Description -->
@@ -814,7 +823,7 @@
 </template>
 
 <script setup lang="ts">
-import { Head, useForm, router } from '@inertiajs/vue3';
+import { Head, useForm, router, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import { Loader2 } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
@@ -833,6 +842,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import AdProcessingProgress from '@/components/VehicleAds/AdProcessingProgress.vue';
 import GalleryManager from '@/components/VehicleAds/GalleryManager.vue';
 import { useTranslation } from '@/composables/useTranslation';
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -840,6 +850,7 @@ import {
     index as vehiclesIndex,
     store as vehicleStore,
 } from '@/routes/vehicles';
+import type { ExtendedPageProps } from '@/types/inertia';
 
 const { __ } = useTranslation();
 
@@ -965,4 +976,18 @@ const submit = (status: 'active' | 'draft') => {
         return transformed;
     }).post(vehicleStore.url());
 };
+
+const page = usePage<ExtendedPageProps>();
+// État pour gérer la visibilité du modal de progression de manière persistante
+const isProcessingImages = ref(Boolean(page.props.flash?.processing_images));
+
+// Surveiller les changements de flash pour mettre à jour l'état si nécessaire
+watch(
+    () => page.props.flash?.processing_images,
+    (val) => {
+        if (val) {
+            isProcessingImages.value = true;
+        }
+    },
+);
 </script>

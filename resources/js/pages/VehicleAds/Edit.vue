@@ -765,6 +765,14 @@
                     </CardContent>
                 </Card>
 
+                <!-- Barre de progression de traitement des images -->
+                <AdProcessingProgress
+                    v-if="isProcessingImages"
+                    :vehicle-id="ad.id"
+                    :mode="processingMode"
+                    @close="isProcessingImages = false"
+                />
+
                 <GalleryManager
                     v-model="form.images"
                     :existing-media="images"
@@ -867,7 +875,7 @@
 </template>
 
 <script setup lang="ts">
-import { Head, useForm, router } from '@inertiajs/vue3';
+import { Head, useForm, router, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import { Loader2 } from 'lucide-vue-next';
 import { computed, nextTick, ref, watch, onMounted } from 'vue';
@@ -892,6 +900,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import AdProcessingProgress from '@/components/VehicleAds/AdProcessingProgress.vue';
 import GalleryManager from '@/components/VehicleAds/GalleryManager.vue';
 import { useTranslation } from '@/composables/useTranslation';
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -901,6 +910,7 @@ import {
     update as vehicleUpdate,
     destroy as vehicleDestroy,
 } from '@/routes/vehicles';
+import type { ExtendedPageProps } from '@/types/inertia';
 
 const { __ } = useTranslation();
 
@@ -1128,4 +1138,18 @@ const destroyAd = () => {
         router.delete(vehicleDestroy.url(props.ad.id));
     }
 };
+const page = usePage<ExtendedPageProps>();
+// État pour gérer la visibilité du modal de progression de manière persistante
+const isProcessingImages = ref(Boolean(page.props.flash?.processing_images));
+const processingMode = computed(() => (page.props.flash?.created ? 'create' : 'edit'));
+
+// Surveiller les changements de flash pour mettre à jour l'état si nécessaire
+watch(
+    () => page.props.flash?.processing_images,
+    (val) => {
+        if (val) {
+            isProcessingImages.value = true;
+        }
+    },
+);
 </script>

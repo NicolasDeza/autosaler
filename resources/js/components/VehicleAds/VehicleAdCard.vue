@@ -81,7 +81,7 @@ const toggleFavorite = (adId: number) => {
             >
                 <img
                     v-if="ad.primary_image"
-                    :src="ad.primary_image.thumb"
+                    :src="ad.primary_image.card"
                     class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     :alt="`${ad.brand?.name} ${ad.model?.name}`"
                     loading="lazy"

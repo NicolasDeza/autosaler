@@ -279,24 +279,21 @@ class VehicleAd extends Model implements HasMedia
             ->width(150)
             ->height(100)
             ->sharpen(10)
-            ->format('webp')
-            ->nonQueued();
+            ->format('webp');
 
         $this->addMediaConversion('card')
             ->width(600)
             ->height(400)
             ->sharpen(10)
             ->format('webp')
-            ->optimize()
-            ->nonQueued();
+            ->optimize();
 
         $this->addMediaConversion('large')
             ->width(1600) // important
             ->height(1200)
             ->format('webp')
             ->sharpen(10)
-            ->optimize()
-            ->nonQueued();
+            ->optimize();
     }
 
     // Active le tri

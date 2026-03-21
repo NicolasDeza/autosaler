@@ -16,6 +16,7 @@ use App\Models\TransmissionType;
 use App\Models\VehicleAd;
 use App\Models\VehicleBrand;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -267,8 +268,10 @@ class VehicleAdController extends Controller
             }
         }
 
-        return redirect()->route('vehicles.show', $vehicleAd->id)
-            ->with('success', 'Annonce créée avec succès.');
+        return redirect()->route('vehicles.edit', $vehicleAd->id)
+            ->with('success', 'Annonce créée avec succès.')
+            ->with('created', true)
+            ->with('processing_images', $request->hasFile('images'));
     }
 
     /**
@@ -403,8 +406,9 @@ class VehicleAdController extends Controller
             }
         }
 
-        return redirect()->route('vehicles.show', $vehicleAd->id)
-            ->with('success', 'Annonce mise à jour avec succès.');
+        return redirect()->route('vehicles.edit', $vehicleAd->id)
+            ->with('success', 'Annonce mise à jour avec succès.')
+            ->with('processing_images', $request->hasFile('images'));
     }
 
     /**
@@ -507,6 +511,31 @@ class VehicleAdController extends Controller
 
         return Inertia::render('VehicleAds/Comparison', [
             'vehicles' => $vehicles,
+        ]);
+    }
+
+    /**
+     * Get the status of image processing for a vehicle ad.
+     */
+    public function imagesStatus(VehicleAd $vehicleAd): JsonResponse
+    {
+        $media = $vehicleAd->getMedia('gallery');
+        $total = $media->count();
+
+        if ($total === 0) {
+            return response()->json([
+                'progress' => 100,
+                'ready' => true,
+            ]);
+        }
+
+        $done = $media->filter(function ($m) {
+            return $m->hasGeneratedConversion('card');
+        })->count();
+
+        return response()->json([
+            'progress' => round(($done / $total) * 100),
+            'ready' => $done === $total,
         ]);
     }
 }
