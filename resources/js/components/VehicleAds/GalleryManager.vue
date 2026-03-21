@@ -1,11 +1,23 @@
 <script setup lang="ts">
-import { X, GripVertical, Plus, UploadCloud, Image as ImageIcon } from 'lucide-vue-next';
+import {
+    X,
+    GripVertical,
+    Plus,
+    UploadCloud,
+    Image as ImageIcon,
+} from 'lucide-vue-next';
 import { ref, watch, onMounted } from 'vue';
 import { toast } from 'vue-sonner';
 import draggable from 'vuedraggable';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import {
+    Card,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+    CardContent,
+} from '@/components/ui/card';
 import { useTranslation } from '@/composables/useTranslation';
 
 const { __ } = useTranslation();
@@ -151,7 +163,9 @@ watch(
 
 <template>
     <Card class="overflow-hidden pt-0">
-        <CardHeader class="dark rounded-t-xl bg-background py-5 text-card-foreground">
+        <CardHeader
+            class="dark rounded-t-xl bg-background py-5 text-card-foreground"
+        >
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div
@@ -160,35 +174,35 @@ watch(
                         <ImageIcon class="h-4 w-4" />
                     </div>
                     <div>
-                        <CardTitle class="text-base">{{
-                            __('vehicleAd.photos')
-                        }}</CardTitle>
-                        <CardDescription class="text-xs">{{
-                            __('vehicleAd.photos_desc')
-                        }}</CardDescription>
+                        <div class="flex items-center gap-2">
+                            <CardTitle class="text-base">{{
+                                __('vehicleAd.photos')
+                            }}</CardTitle>
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                class="relative h-6 w-6 rounded-md hover:bg-primary/20 hover:text-primary transition-colors hover:ring-1 hover:ring-primary/30"
+                            >
+                                <Plus class="h-4 w-4" />
+                                <input
+                                    type="file"
+                                    multiple
+                                    accept="image/*"
+                                    class="absolute inset-0 cursor-pointer opacity-0"
+                                    @change="onFileSelected"
+                                />
+                            </Button>
+                        </div>
+                        <CardDescription class="text-xs">
+                            {{ __('vehicleAd.photos_desc') }}
+                        </CardDescription>
                     </div>
                 </div>
-
-                <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    class="relative h-9 cursor-pointer"
-                >
-                    <Plus class="mr-2 h-4 w-4" />
-                    {{ __('ui.add_photos') || 'Ajouter des photos' }}
-                    <input
-                        type="file"
-                        multiple
-                        accept="image/*"
-                        class="absolute inset-0 cursor-pointer opacity-0"
-                        @change="onFileSelected"
-                    />
-                </Button>
             </div>
         </CardHeader>
 
-        <CardContent class="p-6 space-y-4">
+        <CardContent class="space-y-4 p-6">
             <!-- Dropzone area when empty -->
             <div
                 v-if="items.length === 0"
@@ -199,7 +213,9 @@ watch(
                         <UploadCloud class="h-6 w-6 text-muted-foreground" />
                     </div>
                     <div class="space-y-1">
-                        <p class="text-sm font-medium">Aucune photo sélectionnée</p>
+                        <p class="text-sm font-medium">
+                            Aucune photo sélectionnée
+                        </p>
                         <p class="text-xs text-muted-foreground">
                             Cliquez sur le bouton pour en ajouter
                         </p>
@@ -214,99 +230,104 @@ watch(
                 />
             </div>
 
-        <!-- Draggable Grid -->
-        <div
-            v-else
-            class="relative rounded-xl border-2 border-transparent transition-all"
-            :class="{ 'border-dashed border-primary bg-primary/5 ring-4 ring-primary/10': isDragging }"
-            @dragover="handleDragOver"
-            @dragleave="handleDragLeave"
-            @drop="handleDrop"
-        >
-            <draggable
-                v-model="items"
-                item-key="previewUrl"
-                class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
-                handle=".drag-handle"
-                ghost-class="opacity-50"
+            <!-- Draggable Grid -->
+            <div
+                v-else
+                class="relative rounded-xl border-2 border-transparent transition-all"
+                :class="{
+                    'border-dashed border-primary bg-primary/5 ring-4 ring-primary/10':
+                        isDragging,
+                }"
+                @dragover="handleDragOver"
+                @dragleave="handleDragLeave"
+                @drop="handleDrop"
             >
-                <template #item="{ element, index }">
-                    <div
-                        class="group relative aspect-4/3 overflow-hidden rounded-xl border bg-muted transition-all hover:ring-2 hover:ring-primary/20"
-                    >
-                        <!-- Preview Image -->
-                        <img
-                            :src="element.previewUrl"
-                            class="h-full w-full object-cover transition-transform group-hover:scale-105"
-                            alt="Preview"
-                            loading="lazy"
-                        />
-
-                        <!-- Overlay Layer (Visible on touch, hover otherwise) -->
+                <draggable
+                    v-model="items"
+                    item-key="previewUrl"
+                    class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+                    handle=".drag-handle"
+                    ghost-class="opacity-50"
+                >
+                    <template #item="{ element, index }">
                         <div
-                            class="absolute inset-0 bg-black/30 transition-opacity lg:opacity-0 lg:group-hover:opacity-100"
+                            class="group relative aspect-4/3 overflow-hidden rounded-xl border bg-muted transition-all hover:ring-2 hover:ring-primary/20"
                         >
-                            <div class="absolute top-2 right-2">
-                                <Button
-                                    type="button"
-                                    variant="destructive"
-                                    size="icon"
-                                    class="h-8 w-8 rounded-full shadow-lg"
-                                    @click="removeItem(index)"
-                                >
-                                    <X class="h-4 w-4" />
-                                </Button>
-                            </div>
+                            <!-- Preview Image -->
+                            <img
+                                :src="element.previewUrl"
+                                class="h-full w-full object-cover transition-transform group-hover:scale-105"
+                                alt="Preview"
+                                loading="lazy"
+                            />
 
+                            <!-- Overlay Layer (Visible on touch, hover otherwise) -->
                             <div
-                                class="drag-handle absolute top-2 left-2 flex h-8 w-8 cursor-move items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-md transition-colors hover:bg-white/40"
+                                class="absolute inset-0 bg-black/30 transition-opacity lg:opacity-0 lg:group-hover:opacity-100"
                             >
-                                <GripVertical class="h-4 w-4" />
+                                <div class="absolute top-2 right-2">
+                                    <Button
+                                        type="button"
+                                        variant="destructive"
+                                        size="icon"
+                                        class="h-8 w-8 rounded-full shadow-lg"
+                                        @click="removeItem(index)"
+                                    >
+                                        <X class="h-4 w-4" />
+                                    </Button>
+                                </div>
+
+                                <div
+                                    class="drag-handle absolute top-2 left-2 flex h-8 w-8 cursor-move items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-md transition-colors hover:bg-white/40"
+                                >
+                                    <GripVertical class="h-4 w-4" />
+                                </div>
+                            </div>
+
+                            <!-- Main Badge -->
+                            <div
+                                v-if="index === 0"
+                                class="absolute bottom-2 left-2"
+                            >
+                                <Badge
+                                    variant="secondary"
+                                    class="bg-primary text-primary-foreground shadow-sm"
+                                >
+                                    Principale
+                                </Badge>
+                            </div>
+
+                            <!-- New Indicator -->
+                            <div
+                                v-if="element.isNew"
+                                class="absolute top-2 left-1/2 -translate-x-1/2"
+                            >
+                                <Badge
+                                    variant="outline"
+                                    class="bg-background/80 text-[10px] backdrop-blur-sm"
+                                >
+                                    Nouveau
+                                </Badge>
                             </div>
                         </div>
+                    </template>
 
-                        <!-- Main Badge -->
-                        <div v-if="index === 0" class="absolute bottom-2 left-2">
-                            <Badge
-                                variant="secondary"
-                                class="bg-primary text-primary-foreground shadow-sm"
-                            >
-                                Principale
-                            </Badge>
-                        </div>
-
-                        <!-- New Indicator -->
+                    <template #footer>
                         <div
-                            v-if="element.isNew"
-                            class="absolute top-2 left-1/2 -translate-x-1/2"
+                            class="relative flex aspect-4/3 flex-col items-center justify-center rounded-xl border-2 border-dashed border-muted-foreground/20 bg-muted/10 transition-colors hover:border-primary/50 hover:bg-muted/20"
                         >
-                            <Badge
-                                variant="outline"
-                                class="bg-background/80 text-[10px] backdrop-blur-sm"
-                            >
-                                Nouveau
-                            </Badge>
+                            <Plus class="h-8 w-8 text-muted-foreground/50" />
+                            <input
+                                type="file"
+                                multiple
+                                accept="image/*"
+                                class="absolute inset-0 cursor-pointer opacity-0"
+                                @change="onFileSelected"
+                            />
                         </div>
-                    </div>
-                </template>
-
-                <template #footer>
-                    <div
-                        class="relative flex aspect-4/3 flex-col items-center justify-center rounded-xl border-2 border-dashed border-muted-foreground/20 bg-muted/10 transition-colors hover:border-primary/50 hover:bg-muted/20"
-                    >
-                        <Plus class="h-8 w-8 text-muted-foreground/50" />
-                        <input
-                            type="file"
-                            multiple
-                            accept="image/*"
-                            class="absolute inset-0 cursor-pointer opacity-0"
-                            @change="onFileSelected"
-                        />
-                    </div>
-                </template>
-            </draggable>
-        </div>
-
+                    </template>
+                </draggable>
+            </div>
         </CardContent>
 
         <!-- Errors -->
