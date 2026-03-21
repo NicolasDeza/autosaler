@@ -109,42 +109,50 @@
                         </TransitionGroup>
                     </div>
 
-                    <div
+                    <Card
                         v-else
                         key="no-results"
-                        class="flex flex-col items-center justify-center space-y-6 rounded-2xl border border-dashed border-border/60 bg-muted/30 py-20 text-center"
+                        class="flex flex-col items-center justify-center space-y-8 border-border/50 bg-card py-24 text-center shadow-lg rounded-xl"
                     >
-                        <div class="relative">
-                            <CarIcon
-                                class="h-20 w-20 text-muted-foreground/30"
-                            />
-                            <div
-                                class="absolute -top-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-background shadow-sm ring-1 ring-border"
-                            >
-                                <Search class="h-4 w-4 text-primary" />
-                            </div>
-                        </div>
-                        <div class="max-w-xs space-y-2">
-                            <h3 class="text-xl font-bold text-foreground">
-                                {{ __('vehicleAd.no_vehicles_found') }}
-                            </h3>
-                            <p
-                                class="text-sm leading-relaxed text-muted-foreground"
-                            >
-                                {{ __('vehicleAd.try_modifying_filters') }}
-                            </p>
-                        </div>
-                        <Button
-                            variant="default"
-                            class="group rounded-full px-8 shadow-md transition-all hover:shadow-lg active:scale-95"
-                            @click="resetFilters"
+                        <CardContent
+                            class="flex flex-col items-center space-y-6"
                         >
-                            <RefreshCw
-                                class="mr-2 h-4 w-4 transition-transform group-hover:rotate-180"
-                            />
-                            {{ __('vehicleAd.reset_filters') }}
-                        </Button>
-                    </div>
+                            <div class="relative">
+                                <AppLogoIcon
+                                    class="h-24 w-auto drop-shadow-xl"
+                                />
+                                <div
+                                    class="absolute -right-2 -bottom-2 flex h-9 w-9 items-center justify-center rounded-full bg-background shadow-lg ring-2 ring-border"
+                                >
+                                    <Search class="h-5 w-5 text-primary" />
+                                </div>
+                            </div>
+
+                            <div class="max-w-sm space-y-3">
+                                <CardTitle
+                                    class="text-2xl font-black tracking-tight text-foreground"
+                                >
+                                    {{ __('vehicleAd.no_vehicles_found') }}
+                                </CardTitle>
+                                <CardDescription
+                                    class="text-base leading-relaxed"
+                                >
+                                    {{ __('vehicleAd.try_modifying_filters') }}
+                                </CardDescription>
+                            </div>
+
+                            <Button
+                                variant="default"
+                                class="group h-11 rounded-full px-10 text-base font-bold shadow-xl transition-all hover:shadow-2xl active:scale-95"
+                                @click="resetFilters"
+                            >
+                                <RefreshCw
+                                    class="mr-2 h-5 w-5 transition-transform group-hover:rotate-180"
+                                />
+                                {{ __('vehicleAd.reset_filters') }}
+                            </Button>
+                        </CardContent>
+                    </Card>
                 </Transition>
 
                 <!-- Pagination -->
@@ -160,10 +168,17 @@
 
 <script setup lang="ts">
 import { router, Head } from '@inertiajs/vue3';
-import { Car as CarIcon, RefreshCw, Search } from 'lucide-vue-next';
+import { RefreshCw, Search } from 'lucide-vue-next';
 import { ref, watch, onUnmounted } from 'vue';
+import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import AppPagination from '@/components/AppPagination.vue';
 import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardTitle,
+} from '@/components/ui/card';
 import ActiveFilters from '@/components/VehicleAds/ActiveFilters.vue';
 import FilterSidebar from '@/components/VehicleAds/FilterSidebar.vue';
 import SortSelect from '@/components/VehicleAds/SortSelect.vue';
