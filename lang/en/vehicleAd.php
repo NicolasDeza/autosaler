@@ -3,6 +3,7 @@
 return [
     // General actions & navigation
     'back_to_ads' => 'Back to ads',
+    'back_to_ad' => 'Back to ad',
     'back_to_catalog' => 'Back to catalog',
     'compare' => 'Compare',
     'comparison_title' => 'Vehicle Comparison',
@@ -34,7 +35,8 @@ return [
     'displacement' => 'Displacement',
     'displacement_cm3' => 'Displacement (cm³)',
     'cylinders' => 'Cylinders',
-    'gears' => 'Number of gears',
+    'gear_count' => 'Number of gears',
+    'color' => 'Color',
     'weight' => 'Weight',
     'weight_kg' => 'Weight (kg)',
     'doors' => 'Doors',
@@ -77,10 +79,15 @@ return [
     'equipment' => 'Equipment',
     'equipment_options' => 'Equipment & options',
     'equipment_options_desc' => 'Select the options available on this vehicle.',
+    'photos' => 'Photos',
     'description' => 'Description',
     'detailed_description' => 'Detailed Description',
     'detailed_description_desc' => 'The text of your ad.',
     'detailed_description_placeholder' => 'Describe your vehicle as completely as possible...',
+
+    // Form progress
+    'form_progress' => 'Progress',
+    'global_completion' => 'Completion',
 
     // Seller & Contact
     'seller' => 'Seller',

@@ -3,6 +3,7 @@
 return [
     // General actions & navigation
     'back_to_ads' => 'Retour aux annonces',
+    'back_to_ad' => "Retour à l'annonce",
     'back_to_catalog' => 'Retour au catalogue',
     'compare' => 'Comparer',
     'comparison_title' => 'Comparaison de véhicules',
@@ -78,10 +79,15 @@ return [
     'equipment' => 'Equipements',
     'equipment_options' => 'Equipements & options',
     'equipment_options_desc' => 'Sélectionnez les options disponibles sur ce véhicule.',
+    'photos' => 'Photos',
     'description' => 'Description',
     'detailed_description' => 'Description détaillée',
     'detailed_description_desc' => 'Le texte de votre annonce.',
     'detailed_description_placeholder' => 'Décrivez votre véhicule de la manière la plus complète possible...',
+
+    // Form progress
+    'form_progress' => 'Progression',
+    'global_completion' => 'Complétion',
 
     // Seller & Contact
     'seller' => 'Vendeur',

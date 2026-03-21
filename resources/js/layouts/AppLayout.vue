@@ -39,6 +39,10 @@ onMounted(() => {
             <slot name="full-width" />
         </template>
 
+        <template #sticky-bottom>
+            <slot name="sticky-bottom" />
+        </template>
+
         <slot />
     </AppHeaderLayout>
 
