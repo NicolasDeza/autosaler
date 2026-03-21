@@ -18,6 +18,7 @@
                 :interior-colors="interiorColors"
                 :interior-types="interiorTypes"
                 :features="features"
+                :badge-count="activeFilterCount"
                 @reset-filters="resetFilters"
             />
 
@@ -25,14 +26,25 @@
             <main class="flex min-w-0 flex-1 flex-col gap-6">
                 <!-- Results Header & Active Filters (Compact) -->
                 <header
-                    class="flex flex-col gap-4 rounded-xl border border-border/30 bg-card/40 p-3.5 shadow-sm backdrop-blur-sm sm:px-6 sm:py-4"
+                    class="flex flex-col gap-3 rounded-xl border border-border/30 bg-card/40 p-3 shadow-sm backdrop-blur-sm sm:gap-4 sm:px-6 sm:py-4"
                 >
                     <div
-                        class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center"
+                        class="flex items-center justify-between gap-3 overflow-hidden"
                     >
-                        <div class="flex items-center gap-3">
+                        <div class="flex min-w-0 items-center gap-2 sm:gap-4">
+                            <!-- Mobile Icon-based Count -->
+                            <div class="flex items-center gap-1.5 sm:hidden">
+                                <CarIcon class="size-5 text-primary" />
+                                <span
+                                    class="text-lg font-black text-foreground"
+                                >
+                                    {{ ads.total }}
+                                </span>
+                            </div>
+
+                            <!-- Desktop Text-based Count -->
                             <h2
-                                class="text-xl font-black text-foreground sm:text-2xl"
+                                class="hidden truncate text-xl font-black text-foreground sm:inline-block sm:text-2xl"
                             >
                                 {{
                                     __('vehicleAd.results_found', {
@@ -40,18 +52,25 @@
                                     })
                                 }}
                             </h2>
+
+                            <!-- Results Range Badge -->
                             <span
                                 v-if="ads.total > 0"
-                                class="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary ring-1 ring-primary/20"
+                                class="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[9px] font-black tracking-tighter text-primary ring-1 ring-primary/20 sm:text-[10px]"
                             >
                                 {{ ads.from }}-{{ ads.to }} / {{ ads.total }}
                             </span>
                         </div>
 
-                        <div class="flex w-full items-center gap-3 sm:w-auto">
+                        <div class="flex shrink-0 items-center gap-2 sm:gap-3">
+                            <span
+                                class="hidden text-[10px] font-bold tracking-widest text-muted-foreground uppercase lg:inline-block"
+                            >
+                                {{ __('ui.sorting.sort_by') }}
+                            </span>
                             <SortSelect
                                 v-model="form.sort"
-                                class="h-9 w-full sm:w-[200px]"
+                                class="h-8 w-[105px] text-[10px] sm:h-9 sm:w-[200px] sm:text-sm"
                             />
                         </div>
                     </div>
@@ -69,7 +88,7 @@
                         :features="features"
                         :models="models"
                         :current-year="currentYear"
-                        class="border-t border-border/10 pt-3"
+                        class="hidden border-t border-border/10 pt-3 sm:block"
                         @reset-all="resetFilters"
                         @update-filter="updateFilter"
                         @update-price="onPriceChange"
@@ -112,7 +131,7 @@
                     <Card
                         v-else
                         key="no-results"
-                        class="flex flex-col items-center justify-center space-y-8 border-border/50 bg-card py-24 text-center shadow-lg rounded-xl"
+                        class="flex flex-col items-center justify-center space-y-8 rounded-xl border-border/50 bg-card py-24 text-center shadow-lg"
                     >
                         <CardContent
                             class="flex flex-col items-center space-y-6"
@@ -168,8 +187,8 @@
 
 <script setup lang="ts">
 import { router, Head } from '@inertiajs/vue3';
-import { RefreshCw, Search } from 'lucide-vue-next';
-import { ref, watch, onUnmounted } from 'vue';
+import { CarIcon, RefreshCw, Search } from 'lucide-vue-next';
+import { ref, watch, onUnmounted, computed } from 'vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import AppPagination from '@/components/AppPagination.vue';
 import { Button } from '@/components/ui/button';
@@ -310,6 +329,40 @@ const form = ref<FilterForm>({
     power_unit: f.power_unit || 'ch',
     features: toArr(f.features),
     favorites_only: f.favorites_only === '1' || f.favorites_only === true,
+});
+
+const activeFilterCount = computed(() => {
+    const v = form.value;
+    const simpleFilters = [
+        v.brand_id !== 'all',
+        v.model_id !== 'all',
+        !!v.city,
+        v.max_mileage !== 'all',
+        v.exterior_color_id !== 'all',
+        v.euro_norm_id !== 'all',
+        v.interior_color_id !== 'all',
+        v.interior_type_id !== 'all',
+        v.doors !== 'all',
+        v.seats !== 'all',
+        !!v.version,
+        v.is_damaged === true,
+        v.has_accident === true,
+        v.complete_maintenance_book === true,
+        v.non_smoker === true,
+        v.favorites_only === true,
+        Number(v.min_price) > 0 || Number(v.max_price) < 200000,
+        Number(v.min_year) > 1980 || Number(v.max_year) < currentYear,
+        !!(v.min_power || v.max_power),
+    ].filter(Boolean).length;
+
+    const multiFilters = [
+        v.fuel_types,
+        v.body_types,
+        v.transmission_types,
+        v.features,
+    ].reduce((acc, curr) => acc + (curr?.length || 0), 0);
+
+    return simpleFilters + multiFilters;
 });
 
 const models = ref<any[]>([]);
