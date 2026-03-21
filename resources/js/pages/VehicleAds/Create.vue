@@ -736,6 +736,8 @@
                     </CardContent>
                 </Card>
 
+                <GalleryManager v-model="form.images" :errors="form.errors" />
+
                 <!-- Section 5 : Description -->
                 <Card class="pt-0">
                     <CardHeader
@@ -814,6 +816,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import GalleryManager from '@/components/VehicleAds/GalleryManager.vue';
 import { useTranslation } from '@/composables/useTranslation';
 import AppLayout from '@/layouts/AppLayout.vue';
 import {
@@ -885,6 +888,7 @@ const form = useForm({
     technical_inspection_status: false,
     description: '',
     features: [] as string[],
+    images: [] as File[],
 });
 
 const models = ref<any[]>([]);

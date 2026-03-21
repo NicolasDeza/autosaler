@@ -765,6 +765,18 @@
                     </CardContent>
                 </Card>
 
+                <GalleryManager
+                    v-model="form.images"
+                    :existing-media="images"
+                    :errors="form.errors"
+                    @update:media-order="
+                        (ids: number[]) => (form.media_order = ids)
+                    "
+                    @update:media-to-delete="
+                        (ids: number[]) => (form.media_to_delete = ids)
+                    "
+                />
+
                 <!-- Section 5 : Description -->
                 <Card class="pt-0">
                     <CardHeader
@@ -863,8 +875,10 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import GalleryManager from '@/components/VehicleAds/GalleryManager.vue';
 import { useTranslation } from '@/composables/useTranslation';
 import AppLayout from '@/layouts/AppLayout.vue';
+
 import {
     show as vehicleShow,
     update as vehicleUpdate,
@@ -898,6 +912,7 @@ const props = defineProps<{
     euroNorms: any[];
     featureCategories: FeatureCategoryOption[];
     selectedFeatureIds: string[];
+    images: any[];
 }>();
 
 const formatDate = (date: any) => {
@@ -996,6 +1011,9 @@ const form = useForm({
     technical_inspection_status: props.ad.technical_inspection_status ?? false,
     description: props.ad.description ?? '',
     features: getInitialFeatureIds(),
+    images: [] as File[],
+    media_order: [] as number[],
+    media_to_delete: [] as number[],
 });
 
 const models = ref<any[]>([]);
@@ -1003,7 +1021,7 @@ const versions = ref<any[]>([]);
 const featureSelectionReady = ref(false);
 
 const normalizedSelectedFeatureIds = computed<string[]>(() =>
-    (form.features ?? []).map((featureId) => String(featureId)),
+    (form.features ?? []).map((featureId: string) => String(featureId)),
 );
 
 const isFeatureSelected = (featureId: number | string): boolean => {
@@ -1021,7 +1039,7 @@ const toggleFeature = (
     if (checked === true) {
         if (!form.features.includes(id)) form.features.push(id);
     } else {
-        form.features = form.features.filter((fId) => fId !== id);
+        form.features = form.features.filter((fId: string) => fId !== id);
     }
 };
 
@@ -1082,13 +1100,10 @@ watch(
 
 const submit = (status: 'active' | 'draft') => {
     form.status = status;
-    form.transform((data: Record<string, any>) => {
-        const transformed: Record<string, any> = {};
-        for (const [key, value] of Object.entries(data)) {
-            transformed[key] = value === '' ? null : value;
-        }
-        return transformed;
-    }).put(vehicleUpdate.url(props.ad.id));
+    form.transform((data) => ({
+        ...data,
+        _method: 'PUT',
+    })).post(vehicleUpdate.url(props.ad.id));
 };
 
 const destroyAd = () => {

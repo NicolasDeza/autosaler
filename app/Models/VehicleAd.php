@@ -234,23 +234,32 @@ class VehicleAd extends Model implements HasMedia
         };
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
-       $this->addMediaConversion('thumb')
-         ->width(300)
-         ->height(200)
-         ->format('webp')
-         ->sharpen(10);
+        $this->addMediaConversion('thumb')
+            ->width(150)
+            ->height(100)
+            ->sharpen(10)
+            ->format('webp');
 
-    $this->addMediaConversion('card')
-         ->width(600)
-         ->height(400)
-         ->format('webp');
+        $this->addMediaConversion('card')
+            ->width(600)
+            ->height(400)
+            ->sharpen(10)
+            ->format('webp')
+            ->optimize();
 
-    $this->addMediaConversion('large')
-         ->width(1200) // important
-         ->height(900)
-         ->format('webp')
-         ->optimize();
+        $this->addMediaConversion('large')
+            ->width(1600) // important
+            ->height(1200)
+            ->format('webp')
+            ->sharpen(10)
+            ->optimize();
+    }
+
+    // Active le tri
+    public function getMediaCollectionNames(): array
+    {
+        return ['gallery']; // une seule collection
     }
 }
