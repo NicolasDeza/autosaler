@@ -23,20 +23,37 @@
 
             <!-- Main Content -->
             <main class="flex min-w-0 flex-1 flex-col gap-6">
-                <!-- Filters Summary and Result Count -->
-                <div class="flex flex-col gap-4">
+                <!-- Results Header & Active Filters (Compact) -->
+                <header
+                    class="flex flex-col gap-4 rounded-xl border border-border/30 bg-card/40 p-3.5 shadow-sm backdrop-blur-sm sm:px-6 sm:py-4"
+                >
                     <div
-                        class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end"
+                        class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center"
                     >
-                        <h2 class="text-2xl font-bold text-foreground">
-                            {{
-                                __('vehicleAd.results_found', {
-                                    count: ads.total,
-                                })
-                            }}
-                        </h2>
+                        <div class="flex items-center gap-3">
+                            <h2
+                                class="text-xl font-black text-foreground sm:text-2xl"
+                            >
+                                {{
+                                    __('vehicleAd.results_found', {
+                                        count: ads.total,
+                                    })
+                                }}
+                            </h2>
+                            <span
+                                v-if="ads.total > 0"
+                                class="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary ring-1 ring-primary/20"
+                            >
+                                {{ ads.from }}-{{ ads.to }} / {{ ads.total }}
+                            </span>
+                        </div>
 
-                        <SortSelect v-model="form.sort" />
+                        <div class="flex w-full items-center gap-3 sm:w-auto">
+                            <SortSelect
+                                v-model="form.sort"
+                                class="h-9 w-full sm:w-[200px]"
+                            />
+                        </div>
                     </div>
 
                     <ActiveFilters
@@ -52,12 +69,13 @@
                         :features="features"
                         :models="models"
                         :current-year="currentYear"
+                        class="border-t border-border/10 pt-3"
                         @reset-all="resetFilters"
                         @update-filter="updateFilter"
                         @update-price="onPriceChange"
                         @update-year="onYearChange"
                     />
-                </div>
+                </header>
                 <!-- Vehicles List -->
                 <Transition
                     mode="out-in"
@@ -94,23 +112,38 @@
                     <div
                         v-else
                         key="no-results"
-                        class="rounded-lg bg-muted py-12 text-center"
+                        class="flex flex-col items-center justify-center space-y-6 rounded-2xl border border-dashed border-border/60 bg-muted/30 py-20 text-center"
                     >
-                        <CarIcon
-                            class="mx-auto mb-4 h-12 w-12 text-muted-foreground"
-                        />
-                        <h3 class="text-lg font-bold text-foreground">
-                            {{ __('vehicleAd.no_vehicles_found') }}
-                        </h3>
-                        <p class="text-muted-foreground">
-                            {{ __('vehicleAd.try_modifying_filters') }}
-                        </p>
+                        <div class="relative">
+                            <CarIcon
+                                class="h-20 w-20 text-muted-foreground/30"
+                            />
+                            <div
+                                class="absolute -top-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-background shadow-sm ring-1 ring-border"
+                            >
+                                <Search class="h-4 w-4 text-primary" />
+                            </div>
+                        </div>
+                        <div class="max-w-xs space-y-2">
+                            <h3 class="text-xl font-bold text-foreground">
+                                {{ __('vehicleAd.no_vehicles_found') }}
+                            </h3>
+                            <p
+                                class="text-sm leading-relaxed text-muted-foreground"
+                            >
+                                {{ __('vehicleAd.try_modifying_filters') }}
+                            </p>
+                        </div>
                         <Button
-                            variant="outline"
-                            class="mt-4"
+                            variant="default"
+                            class="group rounded-full px-8 shadow-md transition-all hover:shadow-lg active:scale-95"
                             @click="resetFilters"
-                            >{{ __('vehicleAd.reset_filters') }}</Button
                         >
+                            <RefreshCw
+                                class="mr-2 h-4 w-4 transition-transform group-hover:rotate-180"
+                            />
+                            {{ __('vehicleAd.reset_filters') }}
+                        </Button>
                     </div>
                 </Transition>
 
@@ -127,7 +160,7 @@
 
 <script setup lang="ts">
 import { router, Head } from '@inertiajs/vue3';
-import { Car as CarIcon } from 'lucide-vue-next';
+import { Car as CarIcon, RefreshCw, Search } from 'lucide-vue-next';
 import { ref, watch, onUnmounted } from 'vue';
 import AppPagination from '@/components/AppPagination.vue';
 import { Button } from '@/components/ui/button';

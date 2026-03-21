@@ -189,6 +189,11 @@ python3 skills/ui-ux-pro-max/scripts/search.py "layout responsive form" --stack 
 
 **Then:** Synthesize design system + detailed searches and implement the design.
 
+### Step 5: Persist Design System to Skill Data
+
+All design system files generated for a project should be stored in the `design_system/` folder within this skill directory for persistence and cross-session reference.
+Path: `.agents/skills/ui-ux-pro-max/design_system/`
+
 ---
 
 ## Output Formats

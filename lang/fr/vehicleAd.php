@@ -14,6 +14,7 @@ return [
     'reset_filters' => 'Réinitialiser les filtres',
     'clear_all' => 'Tout effacer',
     'listing_title' => 'Annonces véhicules',
+    'available_vehicles' => 'véhicules disponibles',
 
     // Vehicle properties (labels)
     'brand' => 'Marque',

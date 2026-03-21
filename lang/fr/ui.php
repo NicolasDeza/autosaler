@@ -30,7 +30,9 @@ return [
     'all_colors' => 'Toutes les couleurs',
     'all_materials' => 'Tous les matériaux',
     'any' => 'Peu importe',
+    'on' => 'sur',
     'sorting' => [
+        'sort_by' => 'Trier par',
         'latest' => 'Plus récentes',
         'oldest' => 'Plus anciennes',
         'price_asc' => 'Prix croissant',
