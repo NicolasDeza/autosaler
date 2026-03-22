@@ -118,7 +118,7 @@
                             rel="noopener noreferrer"
                             class="font-medium text-primary underline underline-offset-2 transition-colors hover:text-primary/90"
                         >
-                            TechkyBear
+                            Sébastien Ector
                         </a>
                     </p>
                 </div>
