@@ -10,6 +10,7 @@ use App\Http\Controllers\VehicleAdContactController;
 use App\Http\Controllers\VehicleAdController;
 use App\Http\Controllers\VehicleModelController;
 use App\Http\Controllers\VehicleVersionController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -39,6 +40,7 @@ Route::middleware(['auth', 'verified', 'role:admin|dealer'])->group(function () 
         Route::get('/create', [VehicleAdController::class, 'create'])->name('create');
         Route::post('/', [VehicleAdController::class, 'store'])->name('store');
         Route::get('/{vehicleAd}/edit', [VehicleAdController::class, 'edit'])->name('edit');
+        Route::get('/{vehicleAd}/images-status', [VehicleAdController::class, 'imagesStatus'])->name('images_status');
         Route::put('/{vehicleAd}', [VehicleAdController::class, 'update'])->name('update');
         Route::patch('/{vehicleAd}/status', [VehicleAdController::class, 'updateStatus'])->name('update_status');
         Route::delete('/{vehicleAd}', [VehicleAdController::class, 'destroy'])->name('destroy');
@@ -107,7 +109,7 @@ Route::get('/translations/{locale}', function ($locale) {
     );
 });
 
-Route::post('/locale', function (\Illuminate\Http\Request $request) {
+Route::post('/locale', function (Request $request) {
     $locale = $request->input('locale');
 
     abort_unless(in_array($locale, config('app.available_locales', ['en', 'fr'])), 400);

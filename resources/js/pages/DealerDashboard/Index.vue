@@ -369,9 +369,9 @@ const handleSort = (column: string) => {
 
 const handleStatusChange = (ad: any, checked: boolean) => {
     const newStatus = checked ? 'active' : 'draft';
-    router.patch(
+    router.post(
         vehicles.update_status.url(ad.id),
-        { status: newStatus },
+        { _method: 'patch', status: newStatus },
         {
             preserveScroll: true,
             onError: (err) => console.error('Error updating status:', err),

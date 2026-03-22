@@ -3,6 +3,7 @@
 return [
     // General actions & navigation
     'back_to_ads' => 'Back to ads',
+    'back_to_ad' => 'Back to ad',
     'back_to_catalog' => 'Back to catalog',
     'compare' => 'Compare',
     'comparison_title' => 'Vehicle Comparison',
@@ -34,7 +35,8 @@ return [
     'displacement' => 'Displacement',
     'displacement_cm3' => 'Displacement (cm³)',
     'cylinders' => 'Cylinders',
-    'gears' => 'Number of gears',
+    'gear_count' => 'Number of gears',
+    'color' => 'Color',
     'weight' => 'Weight',
     'weight_kg' => 'Weight (kg)',
     'doors' => 'Doors',
@@ -77,10 +79,16 @@ return [
     'equipment' => 'Equipment',
     'equipment_options' => 'Equipment & options',
     'equipment_options_desc' => 'Select the options available on this vehicle.',
+    'photos' => 'Photos',
+    'photos_desc' => 'Add up to 20 photos. Drag and drop to reorder. The first image will be the main image.',
     'description' => 'Description',
     'detailed_description' => 'Detailed Description',
     'detailed_description_desc' => 'The text of your ad.',
     'detailed_description_placeholder' => 'Describe your vehicle as completely as possible...',
+
+    // Form progress
+    'form_progress' => 'Progress',
+    'global_completion' => 'Completion',
 
     // Seller & Contact
     'seller' => 'Seller',
@@ -112,6 +120,7 @@ return [
     'save_draft' => 'Save as draft',
     'save_publish' => 'Save and publish',
     'publish_ad' => 'Publish ad',
+    'processing' => 'Processing images...',
     'create_ad' => 'Create Ad',
     'create_new_ad' => 'Create a new ad',
 
@@ -121,4 +130,23 @@ return [
     'complete_duel' => 'Complete your duel',
     'complete_duel_desc' => 'Slots are available. Add more vehicles to refine your choice and find the rare gem.',
     'slot' => 'Slot',
+    'ad_processing' => [
+        'title_create' => 'Publishing',
+        'title_edit' => 'Updating',
+        'status_optimizing' => 'Optimizing',
+        'status_success' => 'Success',
+        'status_error' => 'Error',
+        'msg_optimizing' => 'Please wait while images are being processed...',
+        'msg_success' => 'Images processed successfully!',
+        'msg_error' => 'An error occurred during optimization.',
+        'detail_optimizing' => 'Optimizing visuals...',
+        'detail_success' => "It's ready!",
+        'detail_error' => 'Real-time tracking failed',
+        'hint_background' => 'Background processing by AI engine',
+        'hint_finished' => 'All visuals are optimized',
+        'action_view_ad' => 'View ad',
+        'action_continue' => 'OK',
+        'action_skip' => 'Skip and continue',
+        'footer_version' => 'Media Engine V2.1',
+    ],
 ];

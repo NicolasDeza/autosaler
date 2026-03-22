@@ -81,6 +81,7 @@ const brands = [
                   :src="brand.logo"
                   :alt="brand.name"
                   class="max-w-full max-h-full object-contain"
+                  loading="lazy"
                 />
               </div>
               <span class="text-base font-medium text-muted-foreground group-hover:text-foreground transition-colors group-hover:underline">

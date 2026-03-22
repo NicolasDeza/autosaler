@@ -3,6 +3,7 @@
 return [
     // General actions & navigation
     'back_to_ads' => 'Retour aux annonces',
+    'back_to_ad' => "Retour à l'annonce",
     'back_to_catalog' => 'Retour au catalogue',
     'compare' => 'Comparer',
     'comparison_title' => 'Comparaison de véhicules',
@@ -13,6 +14,7 @@ return [
     'reset_filters' => 'Réinitialiser les filtres',
     'clear_all' => 'Tout effacer',
     'listing_title' => 'Annonces véhicules',
+    'available_vehicles' => 'véhicules disponibles',
 
     // Vehicle properties (labels)
     'brand' => 'Marque',
@@ -78,10 +80,16 @@ return [
     'equipment' => 'Equipements',
     'equipment_options' => 'Equipements & options',
     'equipment_options_desc' => 'Sélectionnez les options disponibles sur ce véhicule.',
+    'photos' => 'Photos',
+    'photos_desc' => "Ajoutez jusqu'à 20 photos. Glissez-déposez pour réorganiser. La première image sera l'image principale.",
     'description' => 'Description',
     'detailed_description' => 'Description détaillée',
     'detailed_description_desc' => 'Le texte de votre annonce.',
     'detailed_description_placeholder' => 'Décrivez votre véhicule de la manière la plus complète possible...',
+
+    // Form progress
+    'form_progress' => 'Progression',
+    'global_completion' => 'Complétion',
 
     // Seller & Contact
     'seller' => 'Vendeur',
@@ -113,6 +121,7 @@ return [
     'save_draft' => 'Sauvegarder en brouillon',
     'save_publish' => 'Enregistrer et publier',
     'publish_ad' => "Publier l'annonce",
+    'processing' => 'Traitement des images...',
     'create_ad' => 'Créer une annonce',
     'create_new_ad' => 'Créer une nouvelle annonce',
 
@@ -122,4 +131,23 @@ return [
     'complete_duel' => 'Complétez votre duel',
     'complete_duel_desc' => "Il reste des places disponibles. Ajoutez d'autres véhicules pour affiner votre choix et trouver la perle rare.",
     'slot' => 'Slot',
+    'ad_processing' => [
+        'title_create' => 'Publication',
+        'title_edit' => 'Mise à jour',
+        'status_optimizing' => 'Optimisation',
+        'status_success' => 'Succès',
+        'status_error' => 'Erreur',
+        'msg_optimizing' => 'Veuillez patienter pendant le traitement des images...',
+        'msg_success' => 'Images traitées avec succès !',
+        'msg_error' => "Une erreur est survenue lors de l'optimisation.",
+        'detail_optimizing' => 'Optimisation des visuels...',
+        'detail_success' => "C'est prêt !",
+        'detail_error' => 'Échec du suivi en temps réel',
+        'hint_background' => 'Traitement en arrière-plan par le moteur IA',
+        'hint_finished' => 'Tous les visuels sont optimisés',
+        'action_view_ad' => "Voir l'annonce",
+        'action_continue' => 'OK',
+        'action_skip' => 'Ignorer et continuer',
+        'footer_version' => 'Media Engine V2.1',
+    ],
 ];
