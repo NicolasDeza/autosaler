@@ -9,13 +9,11 @@ type Props = {
     breadcrumbs?: BreadcrumbItem[];
 };
 
-
 withDefaults(defineProps<Props>(), {
     breadcrumbs: () => [],
 });
 
 const isOffline = ref(false);
-
 
 onMounted(() => {
     isOffline.value = !navigator.onLine;
