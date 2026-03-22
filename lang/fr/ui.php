@@ -18,6 +18,7 @@ return [
     'location' => 'Localisation',
     'back' => 'Retour',
     'select' => 'Sélectionnez',
+    'select_date' => 'Sélectionner une date',
     'cancel' => 'Annuler',
     'confirm_delete' => 'Êtes-vous sûr de vouloir supprimer cet élément ?',
     'first_name' => 'Prénom',
@@ -35,4 +36,6 @@ return [
         'price_asc' => 'Prix croissant',
         'price_desc' => 'Prix décroissant',
     ],
+    'verified' => 'Vérifié',
+    'member_since' => 'Membre depuis',
 ];

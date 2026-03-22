@@ -15,6 +15,7 @@ import { computed, ref } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import InstallButton from '@/components/PWA/InstallButton.vue';
 import SheetMenu from '@/components/SheetMenu.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -228,6 +229,7 @@ const handleFavoritesClick = () => {
                                     <span>{{ item.title }}</span>
                                 </a>
                             </div>
+                            <InstallButton variant="outline" />
                         </div>
                     </SheetMenu>
                 </div>
@@ -358,6 +360,8 @@ const handleFavoritesClick = () => {
                             </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
+
+                    <InstallButton show-tooltip class="hidden lg:flex" />
 
                     <LanguageSelector />
 

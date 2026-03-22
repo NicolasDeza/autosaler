@@ -18,6 +18,7 @@ return [
     'location' => 'Location',
     'back' => 'Back',
     'select' => 'Select',
+    'select_date' => 'Select date',
     'cancel' => 'Cancel',
     'confirm_delete' => 'Are you sure you want to delete this item?',
     'first_name' => 'First Name',
@@ -35,4 +36,6 @@ return [
         'price_asc' => 'Lowest price',
         'price_desc' => 'Highest price',
     ],
+    'verified' => 'Verified',
+    'member_since' => 'Member since',
 ];
