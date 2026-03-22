@@ -127,7 +127,7 @@
     <!-- Mobile: compact strip (only if not desktopOnly) -->
     <div
         v-if="!desktopOnly"
-        class="dark relative z-40 border-t border-border/40 bg-background px-4 py-3 shadow-2xl backdrop-blur-md lg:hidden"
+        class="dark relative z-40 px-2 lg:hidden"
     >
         <div class="flex items-center gap-3">
             <!-- Section icon dots -->
@@ -186,7 +186,7 @@
                     {{ globalCompletion }}%
                 </span>
                 <p
-                    class="mt-1 text-[8px] font-bold tracking-widest text-white/50 uppercase"
+                    class="mt-0.5 text-[8px] font-bold tracking-widest text-white/50 uppercase"
                 >
                     {{ __('vehicleAd.form_progress') }}
                 </p>

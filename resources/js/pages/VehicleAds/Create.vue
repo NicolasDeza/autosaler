@@ -51,68 +51,75 @@
                         @toggle-feature="toggleFeature"
                         @close-processing="isProcessingImages = false"
                     />
-
                 </form>
             </main>
         </div>
 
         <template #sticky-bottom>
-            <VehicleAdFormProgressNav
-                :sections="progressSections"
-                :active-section="activeSection"
-                :global-completion="globalCompletion"
-                mobile-only
-            />
-            <!-- Actions Bar (sticky before footer, full width via slot container) -->
-            <div
-                class="dark relative z-50 border-t-0 border-border/40 bg-background shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.3)] backdrop-blur-md"
-            >
-                <div class="mx-auto max-w-7xl px-4 py-3 md:px-8 md:py-4">
-                    <div class="flex items-center justify-between gap-2 md:justify-end md:gap-3">
-                        <div class="flex items-center gap-2">
+            <div class="flex w-full flex-col lg:gap-0">
+                <VehicleAdFormProgressNav
+                    :sections="progressSections"
+                    :active-section="activeSection"
+                    :global-completion="globalCompletion"
+                    mobile-only
+                />
+                <!-- Actions Bar (simplified for dock on mobile) -->
+                <div
+                    class="dark relative z-50 transition-all lg:border-t lg:border-border/40 lg:bg-background lg:shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.3)] lg:backdrop-blur-md"
+                >
+                    <div class="mx-auto max-w-7xl px-2 py-2 lg:px-8 lg:py-4">
+                        <div
+                            class="flex items-center justify-between gap-2 lg:justify-end lg:gap-3"
+                        >
+                            <div class="flex items-center gap-2">
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    class="h-10 w-10 cursor-pointer border-border/40 p-0 hover:bg-white/10 lg:h-10 lg:w-auto lg:px-4"
+                                    @click="
+                                        () => router.visit(vehiclesIndex.url())
+                                    "
+                                >
+                                    <ChevronLeft class="h-4 w-4 lg:mr-2" />
+                                    <span class="hidden lg:inline">{{
+                                        __('ui.cancel')
+                                    }}</span>
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    class="h-10 w-10 cursor-pointer bg-muted/20 p-0 hover:bg-muted/30 lg:h-10 lg:w-auto lg:px-4"
+                                    :disabled="form.processing"
+                                    @click.prevent="submit('draft')"
+                                >
+                                    <Loader2
+                                        v-if="form.processing"
+                                        class="h-4 w-4 animate-spin"
+                                    />
+                                    <template v-else>
+                                        <FileText class="h-4 w-4 lg:mr-2" />
+                                        <span class="hidden lg:inline">{{
+                                            __('vehicleAd.save_draft')
+                                        }}</span>
+                                    </template>
+                                </Button>
+                            </div>
+
                             <Button
-                                type="button"
-                                variant="outline"
-                                class="h-10 w-10 cursor-pointer border-border/40 p-0 hover:bg-white/10 md:h-10 md:w-auto md:px-4"
-                                @click="() => router.visit(vehiclesIndex.url())"
-                            >
-                                <ChevronLeft class="h-4 w-4 md:mr-2" />
-                                <span class="hidden md:inline">{{ __('ui.cancel') }}</span>
-                            </Button>
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                class="h-10 w-10 cursor-pointer bg-muted/20 p-0 hover:bg-muted/30 md:h-10 md:w-auto md:px-4"
+                                type="submit"
+                                class="h-10 flex-1 cursor-pointer bg-red-600 font-bold hover:bg-red-700 lg:h-11 lg:flex-none lg:px-8"
                                 :disabled="form.processing"
-                                @click.prevent="submit('draft')"
+                                @click.prevent="submit('active')"
                             >
                                 <Loader2
                                     v-if="form.processing"
                                     class="h-4 w-4 animate-spin"
                                 />
                                 <template v-else>
-                                    <FileText class="h-4 w-4 md:mr-2" />
-                                    <span class="hidden md:inline">{{ __('vehicleAd.save_draft') }}</span>
+                                    {{ __('vehicleAd.save_and_publish') }}
                                 </template>
                             </Button>
                         </div>
-
-                        <Button
-                            type="button"
-                            class="h-10 flex-1 cursor-pointer px-4 md:flex-none md:w-auto"
-                            :disabled="form.processing"
-                            @click="submit('active')"
-                        >
-                            <Loader2
-                                v-if="form.processing"
-                                class="mr-2 h-4 w-4 animate-spin"
-                            />
-                            {{
-                                form.processing
-                                    ? __('vehicleAd.processing')
-                                    : __('vehicleAd.publish_ad')
-                            }}
-                        </Button>
                     </div>
                 </div>
             </div>

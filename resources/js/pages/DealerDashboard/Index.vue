@@ -224,6 +224,28 @@
                 </CardContent>
             </Card>
         </div>
+
+        <template #sticky-bottom>
+            <div class="flex h-12 w-full items-center gap-2 lg:hidden">
+                <Button
+                    variant="ghost"
+                    class="h-full w-full gap-3 rounded-xl bg-white/5 px-6 transition-all hover:bg-white/10 active:scale-95"
+                    @click="showFilters = true"
+                >
+                    <SlidersHorizontal class="size-5 text-primary" />
+                    <span
+                        class="text-xs font-black tracking-[0.1em] text-white uppercase"
+                        >Filtres</span
+                    >
+                    <span
+                        v-if="activeFiltersCount > 0"
+                        class="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-white shadow-sm ring-1 ring-primary/20"
+                    >
+                        {{ activeFiltersCount }}
+                    </span>
+                </Button>
+            </div>
+        </template>
     </AppLayout>
 </template>
 
@@ -237,6 +259,7 @@ import {
     Clock,
     CarFront,
     CheckCircle,
+    SlidersHorizontal,
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import AppPagination from '@/components/AppPagination.vue';
