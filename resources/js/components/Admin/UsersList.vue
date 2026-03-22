@@ -518,9 +518,9 @@ const saveUserSettings = async () => {
         // Update Status if changed
         if (selectedUserStatus.value !== selectedUser.value.status) {
             await new Promise((resolve, reject) => {
-                router.patch(
+                router.post(
                     updateUserStatus.url(selectedUser.value.id),
-                    { status: selectedUserStatus.value },
+                    { _method: 'patch', status: selectedUserStatus.value },
                     {
                         onSuccess: resolve,
                         onError: reject,
@@ -540,9 +540,12 @@ const saveUserSettings = async () => {
                     activeSub.subscription_plan_id.toString())
         ) {
             await new Promise((resolve, reject) => {
-                router.patch(
+                router.post(
                     updateUserSubscription.url(selectedUser.value.id),
-                    { subscription_plan_id: selectedPlanId.value },
+                    {
+                        _method: 'patch',
+                        subscription_plan_id: selectedPlanId.value,
+                    },
                     {
                         onSuccess: resolve,
                         onError: reject,
