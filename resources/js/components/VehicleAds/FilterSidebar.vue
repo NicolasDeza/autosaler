@@ -23,9 +23,9 @@ defineProps<{
 }>();
 
 const form = defineModel<any>('form', { required: true });
+const isOpen = defineModel<boolean>('open', { default: false });
 
 const emit = defineEmits(['resetFilters', 'update:models']);
-const isOpen = ref(false);
 const showLoginModal = ref(false);
 const page = usePage();
 const auth = computed(() => page.props.auth);
@@ -45,7 +45,7 @@ const toggleFavoritesFilter = () => {
 </script>
 
 <template>
-    <!-- Mobile Floating Button -->
+    <!-- Mobile Sheet (Triggered from outside via v-model:open or by default floating button) -->
     <div class="lg:hidden">
         <SheetMenu
             v-model:open="isOpen"
@@ -53,9 +53,9 @@ const toggleFavoritesFilter = () => {
             :title="__('ui.filters')"
             :icon="SlidersHorizontal"
             with-floating-button
+            hide-floating-button-when-closed
             :badge-count="badgeCount"
         >
-
             <template #headerActions>
                 <Button
                     size="icon"
@@ -189,6 +189,7 @@ const toggleFavoritesFilter = () => {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--muted-foreground) / 0.5);
+    border-radius: 10px;
 }
 
 /* Firefox */

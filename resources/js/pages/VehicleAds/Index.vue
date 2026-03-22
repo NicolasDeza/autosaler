@@ -7,9 +7,11 @@
         >
             <!-- Filters Sidebar -->
             <FilterSidebar
+                v-model:open="isFilterSheetOpen"
                 v-model:models="models"
                 v-model:form="form"
                 :brands="brands"
+
                 :fuel-types="fuelTypes"
                 :body-types="bodyTypes"
                 :transmission-types="transmissionTypes"
@@ -174,21 +176,43 @@
                     </Card>
                 </Transition>
 
-                <!-- Pagination -->
-                <AppPagination
-                    :pagination="ads"
-                    v-model:per-page="form.per_page"
-                    @update:page="handlePageChange"
-                />
-            </main>
+            <!-- Pagination -->
+            <AppPagination
+                :pagination="ads"
+                v-model:per-page="form.per_page"
+                @update:page="handlePageChange"
+            />
+        </main>
+    </div>
+
+    <template #sticky-bottom>
+        <div class="flex h-12 w-full items-center gap-2 lg:hidden">
+            <Button
+                variant="ghost"
+                class="group h-full w-full gap-3 rounded-xl bg-white/5 px-6 transition-all hover:bg-white/10 active:scale-95"
+                @click="isFilterSheetOpen = true"
+            >
+                <SlidersHorizontal class="size-5 text-primary" />
+                <span class="text-xs font-black tracking-widest text-white uppercase">
+                    {{ __('ui.filters') }}
+                </span>
+                <span
+                    v-if="activeFilterCount > 0"
+                    class="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-white shadow-sm ring-1 ring-primary/20"
+                >
+                    {{ activeFilterCount }}
+                </span>
+            </Button>
         </div>
-    </AppLayout>
+    </template>
+</AppLayout>
 </template>
 
 <script setup lang="ts">
 import { router, Head } from '@inertiajs/vue3';
-import { CarIcon, RefreshCw, Search } from 'lucide-vue-next';
+import { CarIcon, RefreshCw, Search, SlidersHorizontal } from 'lucide-vue-next';
 import { ref, watch, onUnmounted, computed } from 'vue';
+
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import AppPagination from '@/components/AppPagination.vue';
 import { Button } from '@/components/ui/button';
@@ -232,7 +256,10 @@ const props = defineProps<{
     filters?: Record<string, any>;
 }>();
 
+const isFilterSheetOpen = ref(false);
+
 // ── Form state ──────────────────────────────────────────────────
+
 const currentYear = new Date().getFullYear();
 const f = props.filters || {};
 const toArr = (v: any): string[] =>

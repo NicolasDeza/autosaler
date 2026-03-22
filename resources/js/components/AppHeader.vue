@@ -64,7 +64,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const auth = computed(() => page.props.auth);
-const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
+const { isCurrentUrl } = useCurrentUrl();
 
 const { can } = usePermissions();
 
@@ -132,7 +132,27 @@ const handleFavoritesClick = () => {
 //     href: 'https://laravel.com/docs/starter-kits#vue',
 //     icon: BookOpen,
 // },
+
+const isNavItemActive = (item: NavItem) => {
+    const url = page.url;
+
+    // Vehicles: check for any /vehicles path, but exclude if it's favorites
+    if (item.title === 'Véhicules') {
+        const isVehiclePath = url.startsWith('/vehicles');
+        const isFavorites = url.includes('favorites_only=1');
+        return isVehiclePath && !isFavorites;
+    }
+
+    // Dashboard: check for nested dashboard routes
+    if (item.title === __('nav.dealer_dashboard') || item.title === __('nav.admin_dashboard')) {
+        return url.startsWith('/dealer/dashboard') || url.startsWith('/admin/dashboard');
+    }
+
+    // Default to the standard isCurrentUrl
+    return isCurrentUrl(item.href);
+};
 </script>
+
 
 <template>
     <header class="dark sticky top-0 z-50 text-foreground print:hidden">
@@ -191,10 +211,11 @@ const handleFavoritesClick = () => {
                                     class="group relative w-full justify-start gap-4 rounded-xl px-4 py-8 transition-all duration-300"
                                     :class="{
                                         'bg-primary/10 text-primary hover:bg-primary/15':
-                                            isCurrentUrl(item.href),
+                                            isNavItemActive(item),
                                         'text-muted-foreground hover:bg-muted/50 hover:text-foreground':
-                                            !isCurrentUrl(item.href),
+                                            !isNavItemActive(item),
                                     }"
+
                                 >
                                     <div
                                         class="flex h-10 w-10 items-center justify-center rounded-lg bg-background shadow-xs transition-colors group-hover:bg-muted/10"
@@ -252,10 +273,10 @@ const handleFavoritesClick = () => {
                                 <Link
                                     :class="[
                                         navigationMenuTriggerStyle(),
-                                        whenCurrentUrl(
-                                            item.href,
-                                            'text-neutral-900 dark:bg-foreground dark:text-background',
-                                        ),
+                                        isNavItemActive(item)
+                                            ? 'text-neutral-900 dark:bg-foreground dark:text-background'
+                                            : '',
+
                                         'h-9 cursor-pointer px-3 hover:bg-foreground/90 hover:text-background/90',
                                     ]"
                                     :href="item.href"
@@ -265,18 +286,19 @@ const handleFavoritesClick = () => {
                                         :is="item.icon"
                                         class="mr-2 h-4 w-4"
                                         :class="[
-                                            whenCurrentUrl(
-                                                item.href,
-                                                'text-red-500',
-                                            ),
+                                            isNavItemActive(item)
+                                                ? 'text-red-500'
+                                                : '',
                                         ]"
+
                                     />
                                     {{ item.title }}
                                 </Link>
                                 <div
-                                    v-if="isCurrentUrl(item.href)"
+                                    v-if="isNavItemActive(item)"
                                     class="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-red-500"
                                 ></div>
+
                             </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>

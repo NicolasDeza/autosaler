@@ -33,12 +33,18 @@ interface Props {
      * Optional count to show as a badge on the floating button.
      */
     badgeCount?: number;
+    /**
+     * If true, hides the floating button when the menu is closed.
+     * Useful when the menu is triggered from another source (e.g., a dock).
+     */
+    hideFloatingButtonWhenClosed?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     side: 'right',
     withFloatingButton: false,
     showClose: true,
+    hideFloatingButtonWhenClosed: false,
 });
 
 const isOpen = defineModel<boolean>('open', { default: false });
@@ -50,40 +56,26 @@ const handleOpenChange = (val: boolean) => {
 
 <template>
     <div class="contents">
-        <!-- Floating Toggle/Close Button -->
+        <!-- TRIGGER: Floating Button (only when closed) -->
         <div
-            v-if="withFloatingButton"
-            class="pointer-events-auto fixed bottom-6 flex transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] lg:hidden"
-            :class="[
-                side === 'left'
-                    ? isOpen
-                        ? 'left-[85vw] z-100'
-                        : 'left-6 z-40'
-                    : isOpen
-                      ? 'right-[85vw] z-100'
-                      : 'right-6 z-40',
-            ]"
+            v-if="withFloatingButton && !isOpen && !hideFloatingButtonWhenClosed"
+            class="pointer-events-auto fixed bottom-6 z-40 flex transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] lg:hidden"
+            :class="[side === 'left' ? 'left-6' : 'right-6']"
         >
             <Button
                 size="lg"
                 type="button"
-                class="dark group flex h-14 w-14 items-center justify-center rounded-full p-0 shadow-lg transition-all hover:ring-2 hover:ring-primary active:scale-95"
-                :class="
-                    isOpen
-                        ? 'translate-x-[-50%] bg-primary text-white ring-2 ring-primary hover:bg-primary/90'
-                        : 'bg-background hover:scale-110'
-                "
-                @click="isOpen = !isOpen"
+                class="dark group flex h-14 w-14 items-center justify-center rounded-full p-0 shadow-lg transition-all hover:scale-110 hover:ring-2 hover:ring-primary bg-background active:scale-95"
+                @click="isOpen = true"
             >
                 <component
-                    :is="isOpen ? X : icon"
-                    class="h-6 w-6 transition-transform group-hover:scale-110"
-                    :class="isOpen ? 'rotate-0 text-white' : 'text-primary'"
+                    :is="icon"
+                    class="h-6 w-6 text-primary transition-transform group-hover:scale-110"
                 />
 
                 <!-- Badge Count Pill -->
                 <div
-                    v-if="!isOpen && badgeCount && badgeCount > 0"
+                    v-if="badgeCount && badgeCount > 0"
                     class="absolute -top-1.5 -right-1.5 flex h-5.5 min-w-5.5 items-center justify-center rounded-full border border-background bg-primary px-1 text-[10px] leading-none font-black text-white shadow-sm ring-1 ring-primary/20"
                 >
                     {{ badgeCount }}
@@ -109,6 +101,26 @@ const handleOpenChange = (val: boolean) => {
                     )
                 "
             >
+                <!-- CLOSE BUTTON: Floating (when open) - Attached to the content! -->
+                <div
+                    v-if="withFloatingButton"
+                    class="absolute bottom-6 flex transition-all lg:hidden"
+                    :class="[
+                        side === 'left'
+                            ? 'right-0 translate-x-1/2'
+                            : 'left-0 -translate-x-1/2',
+                    ]"
+                >
+                    <Button
+                        size="lg"
+                        type="button"
+                        class="dark group z-100 flex h-14 w-14 items-center justify-center rounded-full p-0 shadow-lg bg-primary text-white ring-2 ring-primary transition-all hover:bg-primary/90 active:scale-90"
+                        @click="isOpen = false"
+                    >
+                        <X class="h-6 w-6" />
+                    </Button>
+                </div>
+
                 <SheetHeader
                     v-if="title || description || icon || $slots.headerBranding"
                     class="dark mb-0 bg-background p-6"

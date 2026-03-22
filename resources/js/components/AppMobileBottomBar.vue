@@ -3,7 +3,6 @@ import { Link, usePage } from '@inertiajs/vue3';
 import {
     Home,
     PlusCircle,
-    Star,
     User,
     Car,
 } from 'lucide-vue-next';
@@ -30,12 +29,35 @@ const canCreateAd = computed(() => {
     if (!auth.value?.user) return false;
     if (!hasRole('dealer')) return false;
     // Don't show create button if we are already on the create page
-    if (isCurrentUrl(vehicles.create().url)) return false;
+    if (page.url.startsWith('/vehicles/create')) return false;
     return true;
 });
 
 const hasContextualTools = computed(() => !!slots.default);
 const hasToolsTier = computed(() => hasContextualTools.value || canCreateAd.value);
+
+/**
+ * Intelligent helper to determine if a nav item should be marked as active.
+ * Handles grouped routes and query parameters.
+ */
+const isActiveItem = (item: NavItem) => {
+    const url = page.url;
+    
+    // Vehicles: check for any /vehicles path, but exclude if it's favorites
+    if (item.title === (__('ui.vehicles') || 'Véhicules')) {
+        const isVehiclePath = url.startsWith('/vehicles');
+        const isFavorites = url.includes('favorites_only=1');
+        return isVehiclePath && !isFavorites;
+    }
+
+    // Dashboard: check for nested dashboard routes
+    if (item.title === __('nav.nav_dashboard')) {
+        return url.startsWith('/dealer/dashboard');
+    }
+
+    // Default to the standard isCurrentUrl for Home and Login
+    return isCurrentUrl(item.href);
+};
 
 const navItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
@@ -48,11 +70,6 @@ const navItems = computed<NavItem[]>(() => {
             title: __('ui.vehicles') || 'Véhicules',
             href: vehicles.index().url,
             icon: Car,
-        },
-        {
-            title: __('nav.favorites'),
-            href: vehicles.index({ query: { favorites_only: '1' } }),
-            icon: Star,
         },
     ];
 
@@ -124,7 +141,7 @@ const navItems = computed<NavItem[]>(() => {
                     :href="item.href"
                     class="relative flex flex-1 flex-col items-center justify-center gap-1.5 transition-all duration-300"
                     :class="[
-                        isCurrentUrl(item.href)
+                        isActiveItem(item)
                             ? 'scale-105 opacity-100'
                             : 'text-neutral-400 opacity-60 hover:opacity-100',
                     ]"
@@ -133,7 +150,7 @@ const navItems = computed<NavItem[]>(() => {
                     <div
                         class="relative flex flex-col items-center px-4 py-1.5 transition-all duration-300"
                         :class="[
-                            isCurrentUrl(item.href)
+                            isActiveItem(item)
                                 ? 'rounded-2xl bg-foreground text-background shadow-lg'
                                 : 'rounded-2xl bg-transparent',
                         ]"
@@ -141,7 +158,7 @@ const navItems = computed<NavItem[]>(() => {
                         <component 
                             :is="item.icon" 
                             class="size-5 shrink-0 transition-colors" 
-                            :class="isCurrentUrl(item.href) ? 'text-red-500' : ''"
+                            :class="isActiveItem(item) ? 'text-red-500' : ''"
                         />
                         <span
                             class="whitespace-nowrap font-heading text-[9px] font-black tracking-tight uppercase"
@@ -152,7 +169,7 @@ const navItems = computed<NavItem[]>(() => {
 
                     <!-- Active Indicator Line -->
                     <div
-                        v-if="isCurrentUrl(item.href)"
+                        v-if="isActiveItem(item)"
                         class="absolute -bottom-1 h-0.5 w-3 rounded-full bg-primary animate-pulse"
                     ></div>
                 </Link>

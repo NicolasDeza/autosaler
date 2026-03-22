@@ -234,7 +234,7 @@
                 >
                     <SlidersHorizontal class="size-5 text-primary" />
                     <span
-                        class="text-xs font-black tracking-[0.1em] text-white uppercase"
+                        class="text-xs font-black tracking-widest text-white uppercase"
                         >Filtres</span
                     >
                     <span
