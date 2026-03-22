@@ -158,8 +158,9 @@ const isNavItemActive = (item: NavItem) => {
     <header class="dark sticky top-0 z-50 text-foreground print:hidden">
         <div class="border-b border-sidebar-border/80 bg-background">
             <div class="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
-                <!-- Mobile Menu -->
-                <div class="lg:hidden">
+                <!-- Mobile Menu (Now Hidden as we use Bottom Dock) -->
+                <div class="hidden">
+
                     <SheetMenu side="left">
                         <template #trigger>
                             <Button

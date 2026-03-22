@@ -9,7 +9,8 @@
             <div class="lg:hidden">
                 <SheetMenu
                     v-model:open="isOpen"
-                    side="left"
+                    side="top"
+
                     :title="__('admin.menu_title')"
                     :icon="ShieldCheck"
                     with-floating-button

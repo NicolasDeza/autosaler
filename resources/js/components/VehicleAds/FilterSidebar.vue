@@ -49,7 +49,9 @@ const toggleFavoritesFilter = () => {
     <div class="lg:hidden">
         <SheetMenu
             v-model:open="isOpen"
-            side="left"
+            side="top"
+
+
             :title="__('ui.filters')"
             :icon="SlidersHorizontal"
             with-floating-button

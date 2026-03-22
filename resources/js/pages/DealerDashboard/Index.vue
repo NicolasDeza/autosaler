@@ -230,7 +230,7 @@
                 <Button
                     variant="ghost"
                     class="h-full w-full gap-3 rounded-xl bg-white/5 px-6 transition-all hover:bg-white/10 active:scale-95"
-                    @click="showFilters = true"
+                    @click="showFilters = !showFilters"
                 >
                     <SlidersHorizontal class="size-5 text-primary" />
                     <span

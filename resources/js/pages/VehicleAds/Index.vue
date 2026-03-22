@@ -190,7 +190,7 @@
             <Button
                 variant="ghost"
                 class="group h-full w-full gap-3 rounded-xl bg-white/5 px-6 transition-all hover:bg-white/10 active:scale-95"
-                @click="isFilterSheetOpen = true"
+                @click="isFilterSheetOpen = !isFilterSheetOpen"
             >
                 <SlidersHorizontal class="size-5 text-primary" />
                 <span class="text-xs font-black tracking-widest text-white uppercase">

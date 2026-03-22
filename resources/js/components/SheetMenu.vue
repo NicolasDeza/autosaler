@@ -91,12 +91,12 @@ const handleOpenChange = (val: boolean) => {
                 :side="side"
                 :class="
                     cn(
-                        'flex w-[85vw] flex-col gap-0 bg-card p-0 sm:max-w-md',
-                        side === 'left'
-                            ? 'border-r-primary'
-                            : side === 'right'
-                              ? 'border-l-primary'
-                              : '',
+                        'flex flex-col gap-0 bg-card p-0 z-60 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
+                        (side === 'left' || side === 'right') && 'w-[85vw] sm:max-w-md',
+                        side === 'left' && 'border-r-primary',
+                        side === 'right' && 'border-l-primary',
+                        side === 'bottom' && 'inset-x-4 bottom-4 h-[85vh] sm:h-[80vh] border border-sidebar-border/80 rounded-3xl shadow-2xl backdrop-blur-xl',
+                        side === 'top' && 'inset-x-4 top-4 h-[85vh] sm:h-[80vh] border border-sidebar-border/80 rounded-3xl shadow-2xl backdrop-blur-xl',
                         props.class,
                     )
                 "
@@ -104,11 +104,17 @@ const handleOpenChange = (val: boolean) => {
                 <!-- CLOSE BUTTON: Floating (when open) - Attached to the content! -->
                 <div
                     v-if="withFloatingButton"
-                    class="absolute bottom-6 flex transition-all lg:hidden"
+                    class="absolute flex transition-all lg:hidden"
                     :class="[
                         side === 'left'
-                            ? 'right-0 translate-x-1/2'
-                            : 'left-0 -translate-x-1/2',
+                            ? 'right-0 translate-x-1/2 bottom-6'
+                            : side === 'right'
+                              ? 'left-0 -translate-x-1/2 bottom-6'
+                              : side === 'bottom'
+                                ? 'right-6 top-0 -translate-y-1/2'
+                                : side === 'top'
+                                  ? 'right-6 bottom-0 translate-y-1/2'
+                                  : '',
                     ]"
                 >
                     <Button
@@ -124,6 +130,7 @@ const handleOpenChange = (val: boolean) => {
                 <SheetHeader
                     v-if="title || description || icon || $slots.headerBranding"
                     class="dark mb-0 bg-background p-6"
+                    :class="[ (side === 'top' || side === 'bottom') ? 'rounded-t-3xl border-b border-border/10' : '']"
                 >
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
@@ -197,6 +204,7 @@ const handleOpenChange = (val: boolean) => {
                 <SheetFooter
                     v-if="$slots.footer"
                     class="mt-auto border-t border-border/10 bg-background/50 p-6"
+                    :class="[ (side === 'top' || side === 'bottom') ? 'rounded-b-3xl' : '']"
                 >
                     <slot name="footer" />
                 </SheetFooter>

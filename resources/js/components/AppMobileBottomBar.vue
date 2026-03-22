@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import {
-    Home,
-    PlusCircle,
-    User,
-    Car,
-} from 'lucide-vue-next';
+import { Home, PlusCircle, User, Car } from 'lucide-vue-next';
 import { computed, useSlots } from 'vue';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { usePermissions } from '@/composables/usePermissions';
@@ -34,7 +29,9 @@ const canCreateAd = computed(() => {
 });
 
 const hasContextualTools = computed(() => !!slots.default);
-const hasToolsTier = computed(() => hasContextualTools.value || canCreateAd.value);
+const hasToolsTier = computed(
+    () => hasContextualTools.value || canCreateAd.value,
+);
 
 /**
  * Intelligent helper to determine if a nav item should be marked as active.
@@ -42,7 +39,7 @@ const hasToolsTier = computed(() => hasContextualTools.value || canCreateAd.valu
  */
 const isActiveItem = (item: NavItem) => {
     const url = page.url;
-    
+
     // Vehicles: check for any /vehicles path, but exclude if it's favorites
     if (item.title === (__('ui.vehicles') || 'Véhicules')) {
         const isVehiclePath = url.startsWith('/vehicles');
@@ -94,7 +91,7 @@ const navItems = computed<NavItem[]>(() => {
 
 <template>
     <div
-        class="dark pointer-events-none fixed inset-x-0 bottom-0 z-50 flex flex-col items-center justify-end pb-4 md:hidden lg:hidden"
+        class="dark pointer-events-none fixed inset-x-0 bottom-0 z-50 flex flex-col items-center justify-end px-2 pb-4 md:hidden lg:hidden"
     >
         <!-- The Multi-Tier Dock Console -->
         <div
@@ -109,24 +106,36 @@ const navItems = computed<NavItem[]>(() => {
                 leave-from-class="max-h-60 opacity-100 transform translate-y-0"
                 leave-to-class="max-h-0 opacity-0 transform translate-y-2"
             >
-                <div 
-                    v-if="hasToolsTier" 
-                    class="relative z-10 w-full overflow-hidden px-3 pt-2 border-b border-white/5"
+                <div
+                    v-if="hasToolsTier"
+                    class="relative z-10 w-full overflow-hidden border-b border-white/5 px-3 pt-2"
                 >
-                    <div class="mb-1 flex w-full flex-row items-center gap-2 py-1">
+                    <div
+                        class="mb-1 flex w-full flex-row items-center gap-2 py-1"
+                    >
                         <!-- Left: Global Quick Actions (Create Ad) -->
-                        <div v-if="canCreateAd" class="shrink-0 pr-2 border-r border-white/5">
+                        <div
+                            v-if="canCreateAd"
+                            class="shrink-0 border-r border-white/10 pr-2"
+                        >
                             <Link
                                 :href="vehicles.create().url"
-                                class="flex flex-row items-center gap-2 rounded-full bg-primary px-3 py-1.5 text-white shadow-lg transition-transform active:scale-95"
+                                class="flex h-10 items-center gap-2 rounded-xl bg-white/5 px-3 transition-all hover:bg-white/10 active:scale-95"
                             >
-                                <PlusCircle class="size-4" />
-                                <span class="text-[9px] font-black uppercase tracking-tight">{{ __('dealer.create_ad') }}</span>
+                                <PlusCircle class="size-4 text-primary" />
+                                <span
+                                    class="text-[10px] font-black tracking-widest text-white uppercase"
+                                    >{{ __('dealer.create_ad') }}</span
+                                >
                             </Link>
                         </div>
 
+
                         <!-- Right/Next: Contextual Tools from Slot -->
-                        <div v-if="hasContextualTools" class="flex flex-1 items-center justify-center">
+                        <div
+                            v-if="hasContextualTools"
+                            class="flex flex-1 items-center justify-center"
+                        >
                             <slot />
                         </div>
                     </div>
@@ -134,7 +143,9 @@ const navItems = computed<NavItem[]>(() => {
             </Transition>
 
             <!-- TIER 2: MAIN NAVIGATION FLOW -->
-            <nav class="relative z-20 flex h-16 w-full items-center justify-around px-2">
+            <nav
+                class="relative z-20 flex h-16 w-full items-center justify-around px-2"
+            >
                 <Link
                     v-for="item in navItems"
                     :key="item.title"
@@ -155,13 +166,13 @@ const navItems = computed<NavItem[]>(() => {
                                 : 'rounded-2xl bg-transparent',
                         ]"
                     >
-                        <component 
-                            :is="item.icon" 
-                            class="size-5 shrink-0 transition-colors" 
+                        <component
+                            :is="item.icon"
+                            class="size-5 shrink-0 transition-colors"
                             :class="isActiveItem(item) ? 'text-red-500' : ''"
                         />
                         <span
-                            class="whitespace-nowrap font-heading text-[9px] font-black tracking-tight uppercase"
+                            class="font-heading text-[9px] font-black tracking-tight whitespace-nowrap uppercase"
                         >
                             {{ item.title }}
                         </span>
@@ -170,7 +181,7 @@ const navItems = computed<NavItem[]>(() => {
                     <!-- Active Indicator Line -->
                     <div
                         v-if="isActiveItem(item)"
-                        class="absolute -bottom-1 h-0.5 w-3 rounded-full bg-primary animate-pulse"
+                        class="absolute -bottom-1 h-0.5 w-3 animate-pulse rounded-full bg-primary"
                     ></div>
                 </Link>
             </nav>
@@ -181,7 +192,8 @@ const navItems = computed<NavItem[]>(() => {
 <style scoped>
 /* Smooth transition for the height of the dock itself */
 .rounded-3xl {
-    transition: height 0.7s cubic-bezier(0.32, 0.72, 0, 1), 
-                width 0.7s cubic-bezier(0.32, 0.72, 0, 1);
+    transition:
+        height 0.7s cubic-bezier(0.32, 0.72, 0, 1),
+        width 0.7s cubic-bezier(0.32, 0.72, 0, 1);
 }
 </style>
