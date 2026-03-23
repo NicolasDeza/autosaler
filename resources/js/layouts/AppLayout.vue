@@ -9,13 +9,11 @@ type Props = {
     breadcrumbs?: BreadcrumbItem[];
 };
 
-
 withDefaults(defineProps<Props>(), {
     breadcrumbs: () => [],
 });
 
 const isOffline = ref(false);
-
 
 onMounted(() => {
     isOffline.value = !navigator.onLine;
@@ -37,6 +35,10 @@ onMounted(() => {
             <InstallBanner />
 
             <slot name="full-width" />
+        </template>
+
+        <template #sticky-bottom>
+            <slot name="sticky-bottom" />
         </template>
 
         <slot />

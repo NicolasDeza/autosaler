@@ -29,6 +29,10 @@ interface Props {
      * If true, shows the close button even if title/description/icon are missing.
      */
     showClose?: boolean;
+    /**
+     * Optional count to show as a badge on the floating button.
+     */
+    badgeCount?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -76,6 +80,14 @@ const handleOpenChange = (val: boolean) => {
                     class="h-6 w-6 transition-transform group-hover:scale-110"
                     :class="isOpen ? 'rotate-0 text-white' : 'text-primary'"
                 />
+
+                <!-- Badge Count Pill -->
+                <div
+                    v-if="!isOpen && badgeCount && badgeCount > 0"
+                    class="absolute -top-1.5 -right-1.5 flex h-5.5 min-w-5.5 items-center justify-center rounded-full border border-background bg-primary px-1 text-[10px] leading-none font-black text-white shadow-sm ring-1 ring-primary/20"
+                >
+                    {{ badgeCount }}
+                </div>
             </Button>
         </div>
 
@@ -116,12 +128,20 @@ const handleOpenChange = (val: boolean) => {
                                     <component :is="icon" class="h-5 w-5" />
                                 </div>
                                 <div class="space-y-0.5">
-                                    <SheetTitle
-                                        v-if="title"
-                                        class="text-xl font-bold tracking-tight text-foreground"
-                                    >
-                                        {{ title }}
-                                    </SheetTitle>
+                                    <div class="flex items-center gap-2">
+                                        <SheetTitle
+                                            v-if="title"
+                                            class="text-xl font-bold tracking-tight text-foreground"
+                                        >
+                                            {{ title }}
+                                        </SheetTitle>
+                                        <div
+                                            v-if="badgeCount && badgeCount > 0"
+                                            class="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[10px] leading-none font-black text-white shadow-sm"
+                                        >
+                                            {{ badgeCount }}
+                                        </div>
+                                    </div>
                                     <SheetDescription
                                         v-if="description"
                                         class="text-xs font-medium text-muted-foreground/80"

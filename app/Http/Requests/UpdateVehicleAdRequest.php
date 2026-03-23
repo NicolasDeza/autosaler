@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateVehicleAdRequest extends FormRequest
@@ -17,7 +18,7 @@ class UpdateVehicleAdRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -65,6 +66,12 @@ class UpdateVehicleAdRequest extends FormRequest
             'description' => 'nullable|string',
             'features' => 'nullable|array',
             'features.*' => 'exists:features,id',
+            'images' => 'nullable|array',
+            'images.*' => 'image|max:10240',
+            'media_to_delete' => 'nullable|array',
+            'media_to_delete.*' => 'exists:media,id',
+            'media_order' => 'nullable|array',
+            'media_order.*' => 'exists:media,id',
         ];
     }
 }

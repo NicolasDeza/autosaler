@@ -79,7 +79,15 @@ const toggleFavorite = (adId: number) => {
                         : 'aspect-video w-full',
                 ]"
             >
+                <img
+                    v-if="ad.primary_image"
+                    :src="ad.primary_image.card"
+                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    :alt="`${ad.brand?.name} ${ad.model?.name}`"
+                    loading="lazy"
+                />
                 <div
+                    v-else
                     class="flex h-full w-full items-center justify-center bg-muted transition-transform duration-500 group-hover:scale-105"
                 >
                     <CarIcon class="size-16 text-muted-foreground/20" />

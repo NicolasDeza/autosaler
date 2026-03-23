@@ -22,6 +22,9 @@ withDefaults(defineProps<Props>(), {
         <AppContent>
             <slot />
         </AppContent>
+        <div id="sticky-bottom-container" class="sticky bottom-0 z-50 w-full">
+            <slot name="sticky-bottom" />
+        </div>
         <AppFooter />
         <CookieBanner />
     </AppShell>

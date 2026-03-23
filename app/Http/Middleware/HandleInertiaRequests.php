@@ -56,6 +56,9 @@ class HandleInertiaRequests extends Middleware
             'canRegister' => Features::enabled(Features::registration()),
             'locale' => fn () => session('locale', app()->getLocale()),
             'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+                'processing_images' => fn () => $request->session()->get('processing_images'),
                 'dealerRegistrationSuccess' => fn () => $request->session()->get('dealerRegistrationSuccess'),
             ],
             // 'translations' => fn() => $this->getTranslations(),

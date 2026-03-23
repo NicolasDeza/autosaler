@@ -19,6 +19,7 @@ defineProps<{
     interiorTypes?: any[];
     features?: any[];
     models?: any[];
+    badgeCount?: number;
 }>();
 
 const form = defineModel<any>('form', { required: true });
@@ -52,6 +53,7 @@ const toggleFavoritesFilter = () => {
             :title="__('ui.filters')"
             :icon="SlidersHorizontal"
             with-floating-button
+            :badge-count="badgeCount"
         >
 
             <template #headerActions>
@@ -105,9 +107,17 @@ const toggleFavoritesFilter = () => {
         >
             <div class="flex items-center gap-2.5">
                 <SlidersHorizontal class="h-4 w-4 text-primary" />
-                <h3 class="text-base font-bold tracking-wide text-white">
-                    {{ __('ui.filters') }}
-                </h3>
+                <div class="flex items-center gap-2">
+                    <h3 class="text-base font-bold tracking-wide text-white">
+                        {{ __('ui.filters') }}
+                    </h3>
+                    <div
+                        v-if="badgeCount && badgeCount > 0"
+                        class="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-black leading-none text-white shadow-sm"
+                    >
+                        {{ badgeCount }}
+                    </div>
+                </div>
             </div>
             <div class="flex items-center gap-2">
                 <Button

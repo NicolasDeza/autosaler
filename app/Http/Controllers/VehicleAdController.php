@@ -16,6 +16,8 @@ use App\Models\TransmissionType;
 use App\Models\VehicleAd;
 use App\Models\VehicleBrand;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -39,8 +41,8 @@ class VehicleAdController extends Controller
             'bodyType',
             'euroNorm',
             'transmissionType',
-            'features',
             'user.company.city',
+            'media',
         ])
             ->where('status', 'active')
             ->when(auth()->check(), function ($q) {
@@ -243,17 +245,33 @@ class VehicleAdController extends Controller
 
         $validated = $request->validated();
 
-        // Ensure the ad is attached to the current user
-        $validated['user_id'] = $request->user()->id;
+        $data = $validated;
+        unset($data['features'], $data['images']);
 
-        $vehicleAd = VehicleAd::create($validated);
+        // Ensure the ad is attached to the current user
+        $data['user_id'] = $request->user()->id;
+
+        $vehicleAd = VehicleAd::create($data);
 
         if (isset($validated['features'])) {
             $vehicleAd->features()->sync($validated['features']);
         }
 
-        return redirect()->route('vehicles.show', $vehicleAd->id)
-            ->with('success', 'Annonce créée avec succès.');
+        if ($request->hasFile('images')) {
+            $order = 1;
+            foreach ($request->file('images') as $file) {
+                if ($file->isValid()) {
+                    $vehicleAd->addMedia($file)
+                        ->setOrder($order++)
+                        ->toMediaCollection('gallery');
+                }
+            }
+        }
+
+        return redirect()->route('vehicles.edit', $vehicleAd->id)
+            ->with('success', 'Annonce créée avec succès.')
+            ->with('created', true)
+            ->with('processing_images', $request->hasFile('images'));
     }
 
     /**
@@ -273,6 +291,7 @@ class VehicleAdController extends Controller
             'exteriorColor', 'interiorColor', 'interiorType',
             'fuelType', 'bodyType', 'euroNorm', 'transmissionType',
             'user.company.city', 'user.company.country',
+            'media',
         ]);
 
         if (auth()->check()) {
@@ -296,8 +315,19 @@ class VehicleAdController extends Controller
             'features' => fn ($query) => $query->orderBy('code'),
         ]);
 
+        $images = $vehicleAd->getMedia('gallery')->map(fn ($media) => [
+            'id' => $media->id,
+            'thumb' => parse_url($media->getUrl('thumb'), PHP_URL_PATH),
+            'card' => parse_url($media->getUrl('card'), PHP_URL_PATH),
+            'large' => parse_url($media->getUrl('large'), PHP_URL_PATH),
+            'name' => $media->file_name,
+            'size' => $media->size,
+            'order_column' => $media->order_column,
+        ])->sortBy('order_column')->values();
+
         return Inertia::render('VehicleAds/Edit', [
             'ad' => $vehicleAd,
+            'images' => $images,
             'brands' => fn () => VehicleBrand::orderBy('name')->get(['id', 'name']),
             'fuelTypes' => fn () => FuelType::orderBy('code')->get(['id', 'code']),
             'bodyTypes' => fn () => BodyType::orderBy('code')->get(['id', 'code']),
@@ -335,14 +365,50 @@ class VehicleAdController extends Controller
     {
         Gate::authorize('update', $vehicleAd);
 
-        $vehicleAd->update($request->validated());
+        $validated = $request->validated();
+
+        $data = $validated;
+        unset($data['features'], $data['images'], $data['media_to_delete'], $data['media_order']);
+
+        $vehicleAd->update($data);
 
         if ($request->has('features')) {
             $vehicleAd->features()->sync($request->validated('features', []));
         }
 
-        return redirect()->route('vehicles.show', $vehicleAd->id)
-            ->with('success', 'Annonce mise à jour avec succès.');
+        // Delete media
+        if ($request->filled('media_to_delete')) {
+            $vehicleAd->media()->whereIn('id', $request->media_to_delete)->get()->each->delete();
+        }
+
+        // Add new media
+        if ($request->hasFile('images')) {
+            // Get the current max order to increment correctly in the loop
+            $lastOrder = $vehicleAd->getMedia('gallery')->max('order_column') ?? 0;
+
+            foreach ($request->file('images') as $file) {
+                if ($file->isValid()) {
+                    $vehicleAd->addMedia($file)
+                        ->setOrder(++$lastOrder)
+                        ->toMediaCollection('gallery');
+                }
+            }
+
+            // Refresh the media collection from DB for subsequent reordering logic
+            $vehicleAd->unsetRelation('media');
+        }
+
+        // Reorder media
+        if ($request->filled('media_order')) {
+            $order = 1;
+            foreach ($request->media_order as $mediaId) {
+                $vehicleAd->media()->where('id', $mediaId)->update(['order_column' => $order++]);
+            }
+        }
+
+        return redirect()->route('vehicles.edit', $vehicleAd->id)
+            ->with('success', 'Annonce mise à jour avec succès.')
+            ->with('processing_images', $request->hasFile('images'));
     }
 
     /**
@@ -375,11 +441,11 @@ class VehicleAdController extends Controller
 
         // If we're deleting from the ad's own pages, go back to the dashboard
         if (str_contains($previousUrl, "/vehicles/{$adId}")) {
-            return redirect()->route('dealer_dashboard.index')
+            return redirect()->route('dealer.dashboard')
                 ->with('success', 'Annonce supprimée avec succès.');
         }
 
-        return redirect()->back(fallback: route('dealer_dashboard.index'))
+        return redirect()->back(fallback: route('dealer.dashboard'))
             ->with('success', 'Annonce supprimée avec succès.');
     }
 
@@ -410,7 +476,7 @@ class VehicleAdController extends Controller
     /**
      * Display the comparison page for selected vehicles.
      */
-    public function compare(Request $request): Response|\Illuminate\Http\RedirectResponse
+    public function compare(Request $request): Response|RedirectResponse
     {
         $ids = explode(',', $request->query('ids', ''));
         $ids = array_filter($ids, fn ($id) => is_numeric($id));
@@ -445,6 +511,31 @@ class VehicleAdController extends Controller
 
         return Inertia::render('VehicleAds/Comparison', [
             'vehicles' => $vehicles,
+        ]);
+    }
+
+    /**
+     * Get the status of image processing for a vehicle ad.
+     */
+    public function imagesStatus(VehicleAd $vehicleAd): JsonResponse
+    {
+        $media = $vehicleAd->getMedia('gallery');
+        $total = $media->count();
+
+        if ($total === 0) {
+            return response()->json([
+                'progress' => 100,
+                'ready' => true,
+            ]);
+        }
+
+        $done = $media->filter(function ($m) {
+            return $m->hasGeneratedConversion('card');
+        })->count();
+
+        return response()->json([
+            'progress' => round(($done / $total) * 100),
+            'ready' => $done === $total,
         ]);
     }
 }
