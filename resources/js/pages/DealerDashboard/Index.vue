@@ -1,9 +1,9 @@
 <template>
     <Head :title="__('dealer.dashboard_title')" />
 
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppContent>
         <div
-            class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 md:p-6"
+            class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl py-4 md:py-6"
         >
             <div
                 class="mb-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
@@ -246,7 +246,7 @@
                 </Button>
             </div>
         </template>
-    </AppLayout>
+    </AppContent>
 </template>
 
 <script setup lang="ts">
@@ -262,6 +262,7 @@ import {
     SlidersHorizontal,
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
+import AppContent from '@/components/AppContent.vue';
 import AppPagination from '@/components/AppPagination.vue';
 import VehiclesFilterPanel from '@/components/dealer/vehicles/VehiclesFilterPanel.vue';
 import VehiclesSearchHeader from '@/components/dealer/vehicles/VehiclesSearchHeader.vue';
@@ -275,10 +276,8 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { useTranslation } from '@/composables/useTranslation';
-import AppLayout from '@/layouts/AppLayout.vue';
 import dealer from '@/routes/dealer';
 import vehicles from '@/routes/vehicles';
-import type { BreadcrumbItem } from '@/types';
 
 interface Props {
     ads: any;
@@ -304,13 +303,6 @@ interface Props {
 const props = defineProps<Props>();
 
 const { __ } = useTranslation();
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: __('dealer.dashboard_title'),
-        href: dealer.dashboard().url,
-    },
-];
 
 const currentSort = ref(
     typeof props.filters.sort === 'string' ? props.filters.sort : 'latest',

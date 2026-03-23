@@ -1,9 +1,9 @@
 <template>
     <Head :title="__('vehicleAd.edit_ad')" />
 
-    <AppLayout>
+    <AppContent>
         <div
-            class="mx-auto flex w-full max-w-7xl flex-col gap-8 p-4 pb-48 md:p-8 lg:flex-row lg:items-start lg:pb-8"
+            class="mx-auto flex w-full flex-col gap-8 py-4 pb-48 md:py-8 lg:flex-row lg:items-start lg:pb-8"
         >
             <!-- Progress sidebar -->
             <VehicleAdFormProgressNav
@@ -149,7 +149,7 @@
                 </div>
             </div>
         </template>
-    </AppLayout>
+    </AppContent>
 </template>
 
 <script setup lang="ts">
@@ -167,6 +167,7 @@ import {
     Trash2,
 } from 'lucide-vue-next';
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import AppContent from '@/components/AppContent.vue';
 import { Button } from '@/components/ui/button';
 import VehicleAdFormProgressNav, {
     type FormSection,
@@ -174,7 +175,6 @@ import VehicleAdFormProgressNav, {
 import { SECTION_IDS } from '@/components/VehicleAds/VehicleAdFormSectionIds';
 import VehicleAdFormSections from '@/components/VehicleAds/VehicleAdFormSections.vue';
 import { useTranslation } from '@/composables/useTranslation';
-import AppLayout from '@/layouts/AppLayout.vue';
 import {
     show as vehicleShow,
     update as vehicleUpdate,

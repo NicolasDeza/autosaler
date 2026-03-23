@@ -27,11 +27,19 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
-    resolve: (name) =>
-        resolvePageComponent(
+    resolve: async (name) => {
+        const page = (await resolvePageComponent(
             `./pages/${name}.vue`,
             import.meta.glob<DefineComponent>('./pages/**/*.vue'),
-        ),
+        )) as any;
+
+        if (page.default.layout === undefined) {
+            const layoutModule = await import('./layouts/PersistentShell.vue');
+            page.default.layout = layoutModule.default;
+        }
+
+        return page;
+    },
     async setup({ el, App, props, plugin }) {
         const pageProps = props.initialPage.props as ExtendedPageProps;
         const locale = pageProps.locale ?? 'en';

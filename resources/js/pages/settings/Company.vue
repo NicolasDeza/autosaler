@@ -4,13 +4,13 @@ import axios from 'axios';
 import { MapPin } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import CompanyController from '@/actions/App/Http/Controllers/Settings/CompanyController';
+import AppContent from '@/components/AppContent.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useTranslation } from '@/composables/useTranslation';
-import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { edit } from '@/routes/company';
 import { type BreadcrumbItem } from '@/types';
@@ -90,7 +90,7 @@ watch(searchTerm, (newVal) => {
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbItems">
+    <AppContent :breadcrumbs="breadcrumbItems">
         <Head :title="__('settings.company_title')" />
         <Head :title="__('settings.menu_company')" />
 
@@ -271,5 +271,5 @@ watch(searchTerm, (newVal) => {
                 </Form>
             </div>
         </SettingsLayout>
-    </AppLayout>
+    </AppContent>
 </template>

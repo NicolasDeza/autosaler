@@ -1,16 +1,15 @@
 <template>
     <Head :title="__('admin.dashboard_title')" />
 
-    <AppLayout>
+    <AppContent>
         <div
-            class="flex min-h-[calc(100vh-64px)] flex-col bg-linear-to-b from-background to-muted/20 lg:flex-row lg:gap-8 lg:p-8"
+            class="flex min-h-[calc(100vh-64px)] flex-col bg-linear-to-b from-background to-muted/20 lg:flex-row lg:gap-8 lg:py-8"
         >
             <!-- Mobile Menu -->
             <div class="lg:hidden">
                 <SheetMenu
                     v-model:open="isOpen"
                     side="top"
-
                     :title="__('admin.menu_title')"
                     :icon="ShieldCheck"
                     with-floating-button
@@ -146,7 +145,7 @@
             </aside>
 
             <!-- Main Workspace -->
-            <main class="min-w-0 flex-1 p-4 lg:p-0">
+            <main class="min-w-0 flex-1 lg:mt-0">
                 <div class="mx-auto max-w-7xl">
                     <Transition name="content-fade" mode="out-in">
                         <div :key="tab" class="space-y-8">
@@ -179,7 +178,7 @@
                 </div>
             </main>
         </div>
-    </AppLayout>
+    </AppContent>
 </template>
 
 <script setup lang="ts">
@@ -190,10 +189,10 @@ import { index as adminDashboardIndex } from '@/actions/App/Http/Controllers/Adm
 import DashboardStats from '@/components/Admin/DashboardStats.vue';
 import UsersList from '@/components/Admin/UsersList.vue';
 import VehiclesList from '@/components/Admin/VehiclesList.vue';
+import AppContent from '@/components/AppContent.vue';
 import SheetMenu from '@/components/SheetMenu.vue';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/composables/useTranslation';
-import AppLayout from '@/layouts/AppLayout.vue';
 
 interface Props {
     tab: 'stats' | 'vehicles' | 'users';

@@ -1,9 +1,9 @@
 <template>
     <Head :title="__('vehicleAd.listing_title')" />
 
-    <AppLayout>
+    <AppContent>
         <div
-            class="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4 md:flex-row md:items-start md:p-8"
+            class="mx-auto flex w-full flex-col gap-6 py-4 md:flex-row md:items-start md:py-8"
         >
             <!-- Filters Sidebar -->
             <FilterSidebar
@@ -176,36 +176,36 @@
                     </Card>
                 </Transition>
 
-            <!-- Pagination -->
-            <AppPagination
-                :pagination="ads"
-                v-model:per-page="form.per_page"
-                @update:page="handlePageChange"
-            />
-        </main>
-    </div>
-
-    <template #sticky-bottom>
-        <div class="flex h-12 w-full items-center gap-2 lg:hidden">
-            <Button
-                variant="ghost"
-                class="group h-full w-full gap-3 rounded-xl bg-white/5 px-6 transition-all hover:bg-white/10 active:scale-95"
-                @click="isFilterSheetOpen = !isFilterSheetOpen"
-            >
-                <SlidersHorizontal class="size-5 text-primary" />
-                <span class="text-xs font-black tracking-widest text-white uppercase">
-                    {{ __('ui.filters') }}
-                </span>
-                <span
-                    v-if="activeFilterCount > 0"
-                    class="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-white shadow-sm ring-1 ring-primary/20"
-                >
-                    {{ activeFilterCount }}
-                </span>
-            </Button>
+                <!-- Pagination -->
+                <AppPagination
+                    :pagination="ads"
+                    v-model:per-page="form.per_page"
+                    @update:page="handlePageChange"
+                />
+            </main>
         </div>
-    </template>
-</AppLayout>
+
+        <template #sticky-bottom>
+            <div class="flex h-12 w-full items-center gap-2 lg:hidden px-4 mb-4">
+                <Button
+                    variant="ghost"
+                    class="group h-full w-full gap-3 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 px-6 transition-all hover:bg-black/90 active:scale-95"
+                    @click="isFilterSheetOpen = !isFilterSheetOpen"
+                >
+                    <SlidersHorizontal class="size-5 text-primary" />
+                    <span class="text-xs font-black tracking-widest text-white uppercase">
+                        {{ __('ui.filters') }}
+                    </span>
+                    <span
+                        v-if="activeFilterCount > 0"
+                        class="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-white shadow-sm ring-1 ring-primary/20"
+                    >
+                        {{ activeFilterCount }}
+                    </span>
+                </Button>
+            </div>
+        </template>
+    </AppContent>
 </template>
 
 <script setup lang="ts">
@@ -213,6 +213,7 @@ import { router, Head } from '@inertiajs/vue3';
 import { CarIcon, RefreshCw, Search, SlidersHorizontal } from 'lucide-vue-next';
 import { ref, watch, onUnmounted, computed } from 'vue';
 
+import AppContent from '@/components/AppContent.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import AppPagination from '@/components/AppPagination.vue';
 import { Button } from '@/components/ui/button';
@@ -227,7 +228,6 @@ import FilterSidebar from '@/components/VehicleAds/FilterSidebar.vue';
 import SortSelect from '@/components/VehicleAds/SortSelect.vue';
 import VehicleAdCard from '@/components/VehicleAds/VehicleAdCard.vue';
 import { useTranslation } from '@/composables/useTranslation';
-import AppLayout from '@/layouts/AppLayout.vue';
 import vehiclesRoutes from '@/routes/vehicles';
 
 // ── Props ───────────────────────────────────────────────────────

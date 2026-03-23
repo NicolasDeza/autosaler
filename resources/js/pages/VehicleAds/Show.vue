@@ -1,10 +1,8 @@
 <template>
     <Head :title="`${ad.brand?.name} ${ad.model?.name}`" />
 
-    <AppLayout>
-        <div
-            class="mx-auto w-full max-w-7xl space-y-8 p-4 pb-32 lg:p-8 lg:pb-8"
-        >
+    <AppContent>
+        <div class="mx-auto w-full space-y-8 py-4 pb-32 lg:py-8 lg:pb-8">
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
                 <div class="col-span-1 space-y-8 lg:col-span-2">
                     <div
@@ -261,6 +259,7 @@
                             <div class="text-sm">
                                 <div
                                     class="flex items-center justify-between border-b py-2.5"
+                                    healthiest="true"
                                 >
                                     <span class="text-muted-foreground">{{
                                         __('vehicleAd.displacement')
@@ -798,7 +797,7 @@
                 </div>
             </div>
         </template>
-    </AppLayout>
+    </AppContent>
 
     <DealerContactModal
         v-model:open="showContactModal"
@@ -832,6 +831,7 @@ import {
     Mail,
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
+import AppContent from '@/components/AppContent.vue';
 import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -841,7 +841,6 @@ import DealerContactModal from '@/components/VehicleAds/DealerContactModal.vue';
 import VehicleGallery from '@/components/VehicleAds/VehicleGallery.vue';
 import { useComparison } from '@/composables/useComparison';
 import { useTranslation } from '@/composables/useTranslation';
-import AppLayout from '@/layouts/AppLayout.vue';
 import { kwToHp } from '@/lib/utils';
 import {
     edit as vehicleEdit,

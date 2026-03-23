@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
 import { Home, PlusCircle, User, Car } from 'lucide-vue-next';
-import { computed, useSlots } from 'vue';
+import { computed } from 'vue';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
@@ -13,7 +13,6 @@ import type { ExtendedPageProps } from '@/types/inertia';
 
 const { __ } = useTranslation();
 const page = usePage<ExtendedPageProps>();
-const slots = useSlots();
 const { isCurrentUrl } = useCurrentUrl();
 const { hasRole } = usePermissions();
 
@@ -27,11 +26,6 @@ const canCreateAd = computed(() => {
     if (page.url.startsWith('/vehicles/create')) return false;
     return true;
 });
-
-const hasContextualTools = computed(() => !!slots.default);
-const hasToolsTier = computed(
-    () => hasContextualTools.value || canCreateAd.value,
-);
 
 /**
  * Intelligent helper to determine if a nav item should be marked as active.
@@ -87,7 +81,12 @@ const navItems = computed<NavItem[]>(() => {
 
     return items;
 });
+
+const activeIndex = computed(() => {
+    return navItems.value.findIndex((item) => isActiveItem(item));
+});
 </script>
+
 
 <template>
     <div
@@ -97,74 +96,67 @@ const navItems = computed<NavItem[]>(() => {
         <div
             class="pointer-events-auto relative mx-4 flex w-full max-w-lg flex-col overflow-hidden rounded-3xl border border-sidebar-border/80 bg-background shadow-[0_25px_50px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]"
         >
-            <!-- TIER 1: TOOLS & ACTIONS (EXPANDABLE) -->
-            <Transition
-                enter-active-class="transition-all duration-500 delay-150 ease-[cubic-bezier(0.32,0.72,0,1)]"
-                enter-from-class="max-h-0 opacity-0 transform translate-y-4"
-                enter-to-class="max-h-60 opacity-100 transform translate-y-0"
-                leave-active-class="transition-all duration-300 ease-in"
-                leave-from-class="max-h-60 opacity-100 transform translate-y-0"
-                leave-to-class="max-h-0 opacity-0 transform translate-y-2"
+            <!-- TIER 1: TOOLS & ACTIONS (ALWAYS TARGET FOR TELEPORTS) -->
+            <div
+                class="relative z-10 w-full overflow-hidden border-b border-white/5 empty:hidden"
             >
                 <div
-                    v-if="hasToolsTier"
-                    class="relative z-10 w-full overflow-hidden border-b border-white/5 px-3 pt-2"
+                    class="mb-1 flex w-full flex-row items-center gap-2 px-3 pt-2 pb-1"
                 >
+                    <!-- Left: Global Quick Actions (Create Ad) -->
                     <div
-                        class="mb-1 flex w-full flex-row items-center gap-2 py-1"
+                        v-if="canCreateAd"
+                        class="shrink-0 border-r border-white/10 pr-2 pl-3"
                     >
-                        <!-- Left: Global Quick Actions (Create Ad) -->
-                        <div
-                            v-if="canCreateAd"
-                            class="shrink-0 border-r border-white/10 pr-2"
+                        <Link
+                            :href="vehicles.create().url"
+                            class="flex h-10 items-center gap-2 rounded-xl bg-white/5 px-3 transition-all hover:bg-white/10 active:scale-95"
                         >
-                            <Link
-                                :href="vehicles.create().url"
-                                class="flex h-10 items-center gap-2 rounded-xl bg-white/5 px-3 transition-all hover:bg-white/10 active:scale-95"
+                            <PlusCircle class="size-4 text-primary" />
+                            <span
+                                class="text-[10px] font-black tracking-widest text-white uppercase"
+                                >{{ __('dealer.create_ad') }}</span
                             >
-                                <PlusCircle class="size-4 text-primary" />
-                                <span
-                                    class="text-[10px] font-black tracking-widest text-white uppercase"
-                                    >{{ __('dealer.create_ad') }}</span
-                                >
-                            </Link>
-                        </div>
+                        </Link>
+                    </div>
 
 
-                        <!-- Right/Next: Contextual Tools from Slot -->
-                        <div
-                            v-if="hasContextualTools"
-                            class="flex flex-1 items-center justify-center"
-                        >
-                            <slot />
-                        </div>
+                    <!-- Right/Next: Contextual Tools from Slot -->
+                    <div
+                        class="flex flex-1 items-center justify-center empty:hidden"
+                    >
+                        <slot name="sticky-bottom-mobile" />
                     </div>
                 </div>
-            </Transition>
+            </div>
 
             <!-- TIER 2: MAIN NAVIGATION FLOW -->
             <nav
                 class="relative z-20 flex h-16 w-full items-center justify-around px-2"
             >
+                <!-- Sliding Background Capsule -->
+                <div
+                    class="pointer-events-none absolute inset-y-2 z-0 rounded-2xl bg-white shadow-lg transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+                    :style="{
+                        width: `${100 / navItems.length - 2}%`,
+                        left: `${(activeIndex * 100) / navItems.length + 1}%`,
+                    }"
+                ></div>
+
                 <Link
                     v-for="item in navItems"
                     :key="item.title"
                     :href="item.href"
-                    class="relative flex flex-1 flex-col items-center justify-center gap-1.5 transition-all duration-300"
+                    class="relative z-10 flex flex-1 flex-col items-center justify-center gap-1.5 transition-all duration-300"
                     :class="[
                         isActiveItem(item)
                             ? 'scale-105 opacity-100'
                             : 'text-neutral-400 opacity-60 hover:opacity-100',
                     ]"
                 >
-                    <!-- Visual Capsule for active state -->
+                    <!-- Nav Item Content -->
                     <div
-                        class="relative flex flex-col items-center px-4 py-1.5 transition-all duration-300"
-                        :class="[
-                            isActiveItem(item)
-                                ? 'rounded-2xl bg-foreground text-background shadow-lg'
-                                : 'rounded-2xl bg-transparent',
-                        ]"
+                        class="relative flex flex-col items-center px-4 py-1.5 transition-all duration-500"
                     >
                         <component
                             :is="item.icon"
@@ -172,7 +164,8 @@ const navItems = computed<NavItem[]>(() => {
                             :class="isActiveItem(item) ? 'text-red-500' : ''"
                         />
                         <span
-                            class="font-heading text-[9px] font-black tracking-tight whitespace-nowrap uppercase"
+                            class="font-heading text-[9px] font-black tracking-tight whitespace-nowrap uppercase transition-colors"
+                            :class="isActiveItem(item) ? 'text-neutral-900' : ''"
                         >
                             {{ item.title }}
                         </span>
@@ -185,6 +178,7 @@ const navItems = computed<NavItem[]>(() => {
                     ></div>
                 </Link>
             </nav>
+
         </div>
     </div>
 </template>

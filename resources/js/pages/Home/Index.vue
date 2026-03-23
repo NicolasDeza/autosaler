@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Head, Deferred } from '@inertiajs/vue3';
+import AppContent from '@/components/AppContent.vue';
 import BrandsSection from '@/components/BrandsSection.vue';
 import HeroSection from '@/components/HeroSection.vue';
 import HomeSearchFilter from '@/components/HomeSearchFilter.vue';
 import RecentVehiclesSection from '@/components/RecentVehiclesSection.vue';
-import AppLayout from '@/layouts/AppLayout.vue';
 
 interface Vehicle {
     id: number;
@@ -29,17 +29,17 @@ defineProps<{
 <template>
     <Head title="Véhicules d'occasion et neufs" />
 
-    <AppLayout>
-        <template #full-width>
-            <HeroSection />
-        </template>
+    <HeroSection />
+
+    <AppContent>
         <Deferred data="brands">
             <template #fallback>
                 <HomeSearchFilter :brands="[]" />
             </template>
             <HomeSearchFilter :brands="brands" />
         </Deferred>
+
         <RecentVehiclesSection :vehicles="recentVehicles" />
         <BrandsSection />
-    </AppLayout>
+    </AppContent>
 </template>
