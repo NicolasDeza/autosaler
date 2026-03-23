@@ -32,6 +32,7 @@ const className = computed(() => props.class);
 
         <Teleport
             v-if="$slots['sticky-bottom']"
+            defer
             to="#sticky-bottom-mobile-portal"
         >
             <slot name="sticky-bottom" />
@@ -39,6 +40,7 @@ const className = computed(() => props.class);
 
         <Teleport
             v-if="$slots['sticky-bottom']"
+            defer
             to="#sticky-bottom-desktop-portal"
         >
             <slot name="sticky-bottom" />
