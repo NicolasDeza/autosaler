@@ -20,10 +20,20 @@ const auth = computed(() => page.props.auth);
 
 // Check if user is a dealer and hide if on creation page
 const canCreateAd = computed(() => {
-    if (!auth.value?.user) return false;
-    if (!hasRole('dealer')) return false;
-    // Don't show create button if we are already on the create page
-    if (page.url.startsWith('/vehicles/create')) return false;
+    if (!auth.value?.user) {
+        return false;
+    }
+    if (!hasRole('dealer')) {
+        return false;
+    }
+    // Don't show create button if we are already on the create or edit page
+    const isCreatePage = page.url.startsWith('/vehicles/create');
+    const isEditPage = page.url.match(/^\/vehicles\/.*\/edit/);
+
+    if (isCreatePage || isEditPage) {
+        return false;
+    }
+
     return true;
 });
 
@@ -87,7 +97,6 @@ const activeIndex = computed(() => {
 });
 </script>
 
-
 <template>
     <div
         class="dark pointer-events-none fixed inset-x-0 bottom-0 z-50 flex flex-col items-center justify-end px-2 pb-4 md:hidden lg:hidden"
@@ -110,16 +119,12 @@ const activeIndex = computed(() => {
                     >
                         <Link
                             :href="vehicles.create().url"
-                            class="flex h-10 items-center gap-2 rounded-xl bg-white/5 px-3 transition-all hover:bg-white/10 active:scale-95"
+                            class="bottom-bar-tool-btn"
                         >
-                            <PlusCircle class="size-4 text-primary" />
-                            <span
-                                class="text-[10px] font-black tracking-widest text-white uppercase"
-                                >{{ __('dealer.create_ad') }}</span
-                            >
+                            <PlusCircle />
+                            <span>{{ __('dealer.create_ad') }}</span>
                         </Link>
                     </div>
-
 
                     <!-- Right/Next: Contextual Tools from Slot -->
                     <div
@@ -165,7 +170,9 @@ const activeIndex = computed(() => {
                         />
                         <span
                             class="font-heading text-[9px] font-black tracking-tight whitespace-nowrap uppercase transition-colors"
-                            :class="isActiveItem(item) ? 'text-neutral-900' : ''"
+                            :class="
+                                isActiveItem(item) ? 'text-neutral-900' : ''
+                            "
                         >
                             {{ item.title }}
                         </span>
@@ -178,7 +185,6 @@ const activeIndex = computed(() => {
                     ></div>
                 </Link>
             </nav>
-
         </div>
     </div>
 </template>
@@ -189,5 +195,25 @@ const activeIndex = computed(() => {
     transition:
         height 0.7s cubic-bezier(0.32, 0.72, 0, 1),
         width 0.7s cubic-bezier(0.32, 0.72, 0, 1);
+}
+</style>
+
+<style>
+@reference "../../css/app.css";
+/* 
+ * Global standard styles for tools injected into the bottom bar.
+ * This ensures any button/link has the same premium "Dock" aesthetic.
+ * Usage: <button class="bottom-bar-tool-btn"><Icon /><span>Text</span></button>
+ */
+.bottom-bar-tool-btn {
+    @apply flex h-12 items-center justify-center gap-2 rounded-xl bg-white/5 px-3 transition-all outline-none hover:bg-white/10 active:scale-95;
+}
+
+.bottom-bar-tool-btn svg {
+    @apply size-4 shrink-0 text-primary;
+}
+
+.bottom-bar-tool-btn span {
+    @apply truncate text-[10px] font-black tracking-widest text-white uppercase;
 }
 </style>

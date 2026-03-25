@@ -72,48 +72,78 @@
                             class="flex items-center justify-between gap-2 lg:justify-end lg:gap-3"
                         >
                             <div class="flex items-center gap-2">
-                                <Button
+                                <button
                                     type="button"
-                                    variant="outline"
-                                    class="h-10 w-10 cursor-pointer border-border/40 p-0 hover:bg-white/10 lg:h-10 lg:w-auto lg:px-4"
+                                    class="bottom-bar-tool-btn lg:hidden!"
                                     @click="
                                         () => router.visit(vehiclesIndex.url())
                                     "
                                 >
-                                    <ChevronLeft class="h-4 w-4 lg:mr-2" />
-                                    <span class="hidden lg:inline">{{
-                                        __('ui.cancel')
-                                    }}</span>
-                                </Button>
-                                <Button
+                                    <ChevronLeft />
+                                    <span>{{ __('ui.cancel') }}</span>
+                                </button>
+                                <button
                                     type="button"
-                                    variant="secondary"
-                                    class="h-10 w-10 cursor-pointer bg-muted/20 p-0 hover:bg-muted/30 lg:h-10 lg:w-auto lg:px-4"
+                                    class="bottom-bar-tool-btn lg:hidden!"
                                     :disabled="form.processing"
                                     @click.prevent="submit('draft')"
                                 >
                                     <Loader2
                                         v-if="form.processing"
-                                        class="h-4 w-4 animate-spin"
+                                        class="animate-spin"
                                     />
                                     <template v-else>
-                                        <FileText class="h-4 w-4 lg:mr-2" />
-                                        <span class="hidden lg:inline">{{
+                                        <FileText />
+                                        <span>{{
                                             __('vehicleAd.save_draft')
                                         }}</span>
                                     </template>
-                                </Button>
+                                </button>
+
+                                <!-- Desktop Secondary Buttons -->
+                                <div class="hidden items-center gap-3 lg:flex">
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        @click="
+                                            () =>
+                                                router.visit(
+                                                    vehiclesIndex.url(),
+                                                )
+                                        "
+                                    >
+                                        <ChevronLeft class="mr-2 h-4 w-4" />
+                                        <span>{{ __('ui.cancel') }}</span>
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        :disabled="form.processing"
+                                        @click.prevent="submit('draft')"
+                                    >
+                                        <Loader2
+                                            v-if="form.processing"
+                                            class="mr-2 h-4 w-4 animate-spin"
+                                        />
+                                        <template v-else>
+                                            <FileText class="mr-2 h-4 w-4" />
+                                            <span>{{
+                                                __('vehicleAd.save_draft')
+                                            }}</span>
+                                        </template>
+                                    </Button>
+                                </div>
                             </div>
 
                             <Button
                                 type="submit"
-                                class="h-10 flex-1 cursor-pointer bg-red-600 font-bold hover:bg-red-700 lg:h-11 lg:flex-none lg:px-8"
+                                class="h-12 flex-1 cursor-pointer bg-red-600 font-bold shadow-lg shadow-red-500/20 active:scale-95 lg:h-11 lg:flex-none lg:px-8"
                                 :disabled="form.processing"
                                 @click.prevent="submit('active')"
                             >
                                 <Loader2
                                     v-if="form.processing"
-                                    class="h-4 w-4 animate-spin"
+                                    class="mr-2 h-4 w-4 animate-spin"
                                 />
                                 <template v-else>
                                     {{ __('vehicleAd.save_and_publish') }}

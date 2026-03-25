@@ -758,7 +758,7 @@
                         <a
                             v-if="ad.user?.company?.phone"
                             :href="`tel:${ad.user.company.phone}`"
-                            class="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-primary/10 py-3 transition-all hover:bg-primary/25 active:scale-95"
+                            class="flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-primary/10 transition-all hover:bg-primary/25 active:scale-95"
                             :title="__('ui.call')"
                         >
                             <Phone class="size-5 text-primary" />
@@ -769,7 +769,7 @@
                             :href="`https://wa.me/${ad.user.company.phone?.replace(/\D/g, '')}?text=${encodeURIComponent(__('vehicleAd.whatsapp_message'))}`"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#25D366]/10 text-[#25D366] ring-1 ring-[#25D366]/20 transition-all hover:bg-[#25D366]/20 active:scale-95"
+                            class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#25D366]/10 text-[#25D366] ring-1 ring-[#25D366]/20 transition-all hover:bg-[#25D366]/20 active:scale-95"
                             title="WhatsApp"
                         >
                             <svg
@@ -785,7 +785,7 @@
                         <Button
                             type="button"
                             size="sm"
-                            class="h-10 rounded-xl bg-primary px-4 font-black tracking-tight text-white uppercase shadow-lg shadow-primary/20 active:scale-95"
+                            class="h-12 rounded-xl bg-primary px-4 font-black tracking-tight text-white uppercase shadow-lg shadow-primary/20 active:scale-95"
                             @click="openContactModal"
                         >
                             <Mail class="size-4" />

@@ -11,7 +11,6 @@
                 v-model:models="models"
                 v-model:form="form"
                 :brands="brands"
-
                 :fuel-types="fuelTypes"
                 :body-types="bodyTypes"
                 :transmission-types="transmissionTypes"
@@ -186,23 +185,21 @@
         </div>
 
         <template #sticky-bottom>
-            <div class="flex h-12 w-full items-center gap-2 lg:hidden px-4 mb-4">
-                <Button
-                    variant="ghost"
-                    class="group h-full w-full gap-3 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 px-6 transition-all hover:bg-black/90 active:scale-95"
+            <div class="flex w-full items-center gap-2 lg:hidden">
+                <button
+                    class="bottom-bar-tool-btn w-full"
+                    type="button"
                     @click="isFilterSheetOpen = !isFilterSheetOpen"
                 >
-                    <SlidersHorizontal class="size-5 text-primary" />
-                    <span class="text-xs font-black tracking-widest text-white uppercase">
-                        {{ __('ui.filters') }}
-                    </span>
+                    <SlidersHorizontal />
+                    <span>{{ __('ui.filters') }}</span>
                     <span
                         v-if="activeFilterCount > 0"
-                        class="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-white shadow-sm ring-1 ring-primary/20"
+                        class="flex size-5! items-center justify-center rounded-full bg-primary text-[10px]! font-bold text-white! shadow-sm ring-1 ring-primary/20"
                     >
                         {{ activeFilterCount }}
                     </span>
-                </Button>
+                </button>
             </div>
         </template>
     </AppContent>
