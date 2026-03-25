@@ -75,17 +75,21 @@
                                 <button
                                     type="button"
                                     class="bottom-bar-tool-btn lg:hidden!"
+                                    :title="__('ui.cancel')"
                                     @click="
                                         () => router.visit(vehiclesIndex.url())
                                     "
                                 >
                                     <ChevronLeft />
-                                    <span>{{ __('ui.cancel') }}</span>
+                                    <span class="hidden sm:inline">{{
+                                        __('ui.cancel')
+                                    }}</span>
                                 </button>
                                 <button
                                     type="button"
                                     class="bottom-bar-tool-btn lg:hidden!"
                                     :disabled="form.processing"
+                                    :title="__('vehicleAd.save_draft')"
                                     @click.prevent="submit('draft')"
                                 >
                                     <Loader2
@@ -94,7 +98,7 @@
                                     />
                                     <template v-else>
                                         <FileText />
-                                        <span>{{
+                                        <span class="hidden sm:inline">{{
                                             __('vehicleAd.save_draft')
                                         }}</span>
                                     </template>
@@ -146,7 +150,7 @@
                                     class="mr-2 h-4 w-4 animate-spin"
                                 />
                                 <template v-else>
-                                    {{ __('vehicleAd.save_and_publish') }}
+                                    {{ __('vehicleAd.save_publish') }}
                                 </template>
                             </Button>
                         </div>

@@ -81,11 +81,15 @@
                             <button
                                 type="button"
                                 class="bottom-bar-tool-btn lg:hidden! bg-red-500/10! hover:bg-red-500/20!"
-                                :title="__('vehicleAd.delete_ad')"
                                 @click="destroyAd"
                             >
-                                <Trash2 class="text-red-500!" />
-                                <span>{{ __('vehicleAd.delete_ad') }}</span>
+                                <Trash2
+                                    class="text-red-500!"
+                                    :title="__('vehicleAd.delete_ad')"
+                                />
+                                <span class="hidden sm:inline">{{
+                                    __('vehicleAd.delete_ad')
+                                }}</span>
                             </button>
 
                             <Button
@@ -111,7 +115,9 @@
                                     "
                                 >
                                     <ChevronLeft />
-                                    <span>{{ __('ui.cancel') }}</span>
+                                    <span class="hidden sm:inline">{{
+                                        __('ui.cancel')
+                                    }}</span>
                                 </button>
 
                                 <button
@@ -126,7 +132,7 @@
                                     />
                                     <template v-else>
                                         <FileText />
-                                        <span>{{
+                                        <span class="hidden sm:inline">{{
                                             __('vehicleAd.save_draft')
                                         }}</span>
                                     </template>
