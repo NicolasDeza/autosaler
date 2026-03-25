@@ -141,7 +141,7 @@
 
                             <Button
                                 type="submit"
-                                class="h-12 flex-1 cursor-pointer bg-red-600 font-bold shadow-lg shadow-red-500/20 active:scale-95 lg:h-11 lg:flex-none lg:px-8"
+                                class="h-12 flex-1 cursor-pointer bg-primary/90 font-bold text-foreground shadow-lg active:scale-95 lg:h-11 lg:flex-none lg:px-8"
                                 :disabled="form.processing"
                                 @click.prevent="submit('active')"
                             >

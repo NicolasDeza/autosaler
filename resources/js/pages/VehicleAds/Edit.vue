@@ -80,7 +80,7 @@
                             <!-- Delete button (Desktop: Left, Mobile: Tool style) -->
                             <button
                                 type="button"
-                                class="bottom-bar-tool-btn lg:hidden! bg-red-500/10! hover:bg-red-500/20!"
+                                class="bottom-bar-tool-btn bg-red-500/10! hover:bg-red-500/20! lg:hidden!"
                                 @click="destroyAd"
                             >
                                 <Trash2
@@ -174,8 +174,7 @@
 
                                 <Button
                                     type="button"
-                                    class="h-12 flex-1 cursor-pointer px-4 font-bold shadow-lg shadow-red-500/20 active:scale-95 lg:h-10 lg:w-auto lg:flex-none"
-                                    variant="destructive"
+                                    class="h-12 flex-1 cursor-pointer bg-primary/90 font-bold text-foreground shadow-lg active:scale-95 lg:h-10 lg:w-auto lg:flex-none"
                                     :disabled="form.processing"
                                     @click="submit('active')"
                                 >

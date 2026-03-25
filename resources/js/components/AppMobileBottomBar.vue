@@ -110,20 +110,23 @@ const activeIndex = computed(() => {
                 class="relative z-10 w-full overflow-hidden border-b border-white/5 empty:hidden"
             >
                 <div
-                    class="mb-1 flex w-full flex-row items-center gap-2 px-3 pt-2 pb-1"
+                    class="mb-1 flex w-full flex-row items-center gap-2 px-2 pt-2 pb-1"
                 >
                     <!-- Left: Global Quick Actions (Create Ad) -->
                     <div
                         v-if="canCreateAd"
-                        class="shrink-0 border-r border-white/10 pr-2 pl-3"
+                        class="flex shrink-0 items-center gap-1 border-r border-white/10 pr-2"
                     >
                         <Link
                             :href="vehicles.create().url"
                             class="bottom-bar-tool-btn"
                         >
                             <PlusCircle />
-                            <span>{{ __('dealer.create_ad') }}</span>
+                            <span class="hidden sm:inline">{{
+                                __('dealer.create_ad')
+                            }}</span>
                         </Link>
+                        <div id="sticky-bottom-mobile-left-portal" />
                     </div>
 
                     <!-- Right/Next: Contextual Tools from Slot -->

@@ -54,9 +54,7 @@ onMounted(() => {
         <!-- Mobile Dynamic Dock Bar / Bottom Bar -->
         <AppMobileBottomBar>
             <template #sticky-bottom-mobile>
-                <div id="sticky-bottom-mobile-portal" class="flex-1">
-                    <slot v-if="$slots['sticky-bottom']" name="sticky-bottom" />
-                </div>
+                <div id="sticky-bottom-mobile-portal" class="flex-1" />
             </template>
         </AppMobileBottomBar>
 

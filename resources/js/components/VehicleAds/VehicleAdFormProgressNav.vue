@@ -136,7 +136,7 @@
     </aside>
 
     <!-- Mobile: sleek segmented progress navigation -->
-    <div v-if="!desktopOnly" class="dark relative z-40 px-3 py-1.5 lg:hidden">
+    <div v-if="!desktopOnly" class="dark relative z-40 px-2 py-1.5 lg:hidden">
         <div class="flex flex-col">
             <!-- Header: Current Step & Global % -->
             <div class="flex items-end justify-between px-0.5 pb-2">

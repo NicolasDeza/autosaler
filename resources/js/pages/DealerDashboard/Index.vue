@@ -226,21 +226,23 @@
         </div>
 
         <template #sticky-bottom>
-            <div class="flex w-full items-center gap-2 lg:hidden">
-                <button
-                    class="bottom-bar-tool-btn w-full"
-                    type="button"
-                    @click="showFilters = !showFilters"
-                >
-                    <SlidersHorizontal />
-                    <span>Filtres</span>
-                    <span
-                        v-if="activeFiltersCount > 0"
-                        class="flex size-5! items-center justify-center rounded-full bg-primary text-[10px]! font-bold text-white! shadow-sm ring-1 ring-primary/20"
+            <div class="px-2 py-2 lg:hidden">
+                <div class="flex w-full items-center gap-2">
+                    <button
+                        class="bottom-bar-tool-btn w-full"
+                        type="button"
+                        @click="showFilters = !showFilters"
                     >
-                        {{ activeFiltersCount }}
-                    </span>
-                </button>
+                        <SlidersHorizontal />
+                        <span>Filtres</span>
+                        <span
+                            v-if="activeFiltersCount > 0"
+                            class="flex size-5! items-center justify-center rounded-full bg-primary text-[10px]! font-bold text-white! shadow-sm ring-1 ring-primary/20"
+                        >
+                            {{ activeFiltersCount }}
+                        </span>
+                    </button>
+                </div>
             </div>
         </template>
     </AppContent>

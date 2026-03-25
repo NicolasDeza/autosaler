@@ -513,28 +513,6 @@
                             {{ ad.description }}
                         </p>
                     </div>
-
-                    <!-- Ad Management for mobile -->
-                    <Card
-                        v-if="canEdit"
-                        class="mb-8 border-2 border-dashed bg-muted/10 p-4 shadow-none lg:hidden"
-                    >
-                        <h3
-                            class="mb-3 text-[10px] font-black tracking-[0.2em] text-muted-foreground/70 uppercase"
-                        >
-                            {{ __('vehicleAd.ad_management') }}
-                        </h3>
-                        <Button
-                            variant="outline"
-                            class="w-full cursor-pointer justify-start gap-2 rounded border-border/50 bg-background"
-                            @click="router.visit(vehicleEdit.url(ad.id))"
-                        >
-                            <Edit class="h-3.5 w-3.5 text-primary" />
-                            <span class="text-xs font-bold">{{
-                                __('vehicleAd.edit_ad')
-                            }}</span>
-                        </Button>
-                    </Card>
                 </div>
 
                 <!-- Contact Sidebar (Desktop) -->
@@ -715,41 +693,36 @@
 
         <template #sticky-bottom>
             <!-- Mobile Sticky Contact Bar -->
-            <div
-                class="dark border-t bg-background p-4 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl lg:hidden"
-            >
+            <div class="px-2 py-2 lg:hidden">
                 <div class="flex items-center justify-between">
                     <div class="flex min-w-0 flex-col gap-0.5">
                         <h2
-                            class="truncate text-sm font-bold tracking-tight text-foreground"
+                            class="flex items-center gap-1 text-sm font-bold tracking-tight text-foreground"
                         >
-                            {{
-                                ad.user?.company?.name ??
-                                ad.user?.first_name + ' ' + ad.user?.last_name
-                            }}
+                            <span class="truncate">
+                                {{
+                                    ad.user?.company?.name ??
+                                    ad.user?.first_name +
+                                        ' ' +
+                                        ad.user?.last_name
+                                }}
+                            </span>
+                            <CheckCircle
+                                class="size-3.5 shrink-0 text-green-500"
+                            />
                         </h2>
-                        <div class="flex items-center gap-1.5">
-                            <div class="flex items-center gap-1">
-                                <CheckCircle class="size-2.5 text-green-500" />
-                                <span
-                                    class="text-[9px] font-black tracking-widest text-muted-foreground uppercase"
-                                    >{{ __('ui.verified') || 'Vérifié' }}</span
-                                >
-                            </div>
-                            <span
-                                v-if="ad.user?.company?.city"
-                                class="flex items-center gap-1 text-[9px] font-bold text-muted-foreground uppercase"
-                            >
-                                <span class="opacity-30">•</span>
-                                <MapPin class="size-2.5" />
-                                <span class="sm:hidden">{{
-                                    ad.user.company.city.code
-                                }}</span>
-                                <span class="hidden sm:inline">
-                                    {{ ad.user.company.address }},
-                                    {{ ad.user.company.city.zip_code }}
-                                    {{ ad.user.company.city.code }}
-                                </span>
+                        <div
+                            v-if="ad.user?.company?.city"
+                            class="flex items-center gap-1 text-[10px] font-bold text-muted-foreground uppercase"
+                        >
+                            <MapPin class="size-3 shrink-0" />
+                            <span class="truncate sm:hidden">{{
+                                ad.user.company.city.code
+                            }}</span>
+                            <span class="hidden truncate sm:inline">
+                                {{ ad.user.company.address }},
+                                {{ ad.user.company.city.zip_code }}
+                                {{ ad.user.company.city.code }}
                             </span>
                         </div>
                     </div>
@@ -758,7 +731,7 @@
                         <a
                             v-if="ad.user?.company?.phone"
                             :href="`tel:${ad.user.company.phone}`"
-                            class="flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-primary/10 transition-all hover:bg-primary/25 active:scale-95"
+                            class="flex h-12 items-center justify-center rounded-xl border border-border bg-primary/10 px-2 transition-all hover:bg-primary/25 active:scale-95"
                             :title="__('ui.call')"
                         >
                             <Phone class="size-5 text-primary" />
@@ -769,7 +742,7 @@
                             :href="`https://wa.me/${ad.user.company.phone?.replace(/\D/g, '')}?text=${encodeURIComponent(__('vehicleAd.whatsapp_message'))}`"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#25D366]/10 text-[#25D366] ring-1 ring-[#25D366]/20 transition-all hover:bg-[#25D366]/20 active:scale-95"
+                            class="flex h-12 items-center justify-center rounded-xl bg-[#25D366]/10 px-2 text-[#25D366] ring-1 ring-[#25D366]/20 transition-all hover:bg-[#25D366]/20 active:scale-95"
                             title="WhatsApp"
                         >
                             <svg
@@ -809,10 +782,21 @@
         :title="__('vehicleAd.favorites.add')"
         :description="__('vehicleAd.favorites.login_required')"
     />
+
+    <!-- Edit button (Seller only, Teleported to the left next to '+' button) -->
+    <Teleport v-if="canEdit" defer to="#sticky-bottom-mobile-left-portal">
+        <Link
+            :href="vehicleEdit.url(ad.id)"
+            class="bottom-bar-tool-btn ml-1"
+            :title="__('vehicleAd.edit_ad')"
+        >
+            <Edit />
+        </Link>
+    </Teleport>
 </template>
 
 <script setup lang="ts">
-import { Head, router, usePage } from '@inertiajs/vue3';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import {
     CheckCircle,
     AlertTriangle,
