@@ -9,7 +9,7 @@ return [
 
     'stats' => [
         'total_vehicles' => 'Total Véhicules',
-        'active' => 'Actifs',
+        'active' => 'Publiés',
         'draft' => 'Brouillons',
         'pending' => 'En attente',
         'total_users' => 'Total Utilisateurs',
