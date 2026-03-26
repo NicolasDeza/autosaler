@@ -36,6 +36,7 @@ test('authenticated user can update company information', function () {
     $response->assertSessionHasNoErrors();
     $response->assertSessionHas('status', 'company-updated');
     $this->assertEquals('New Company Name', $this->company->fresh()->name);
+    $this->assertEquals('new@example.com', $this->company->fresh()->email);
 });
 
 test('authenticated user can upload a logo', function () {

@@ -227,6 +227,21 @@ const handleBackgroundChange = (e: Event) => {
                         <InputError class="mt-2" :message="errors.name" />
                     </div>
 
+                    <div class="grid gap-2">
+                        <Label for="email">{{
+                            __('settings.company_email')
+                        }}</Label>
+                        <Input
+                            id="email"
+                            type="email"
+                            class="mt-1 block w-full"
+                            name="email"
+                            :default-value="company.email"
+                            required
+                        />
+                        <InputError class="mt-2" :message="errors.email" />
+                    </div>
+
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div class="grid gap-2">
                             <Label for="address">{{

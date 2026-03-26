@@ -16,6 +16,7 @@ class CompanyUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
             'address' => ['required', 'string', 'max:255'],
             'city_id' => ['required', 'exists:cities,id'],
             'country_id' => ['required', 'exists:countries,id'],
