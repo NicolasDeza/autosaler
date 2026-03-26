@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { Home, PlusCircle, User, Car } from 'lucide-vue-next';
+import { Home, PlusCircle, User, Car, Shield } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
 import { login } from '@/routes';
+import admin from '@/routes/admin';
 import dealer from '@/routes/dealer';
 import vehicles from '@/routes/vehicles';
 import type { NavItem } from '@/types';
@@ -14,7 +15,7 @@ import type { ExtendedPageProps } from '@/types/inertia';
 const { __ } = useTranslation();
 const page = usePage<ExtendedPageProps>();
 const { isCurrentUrl } = useCurrentUrl();
-const { hasRole } = usePermissions();
+const { hasRole, can } = usePermissions();
 
 const auth = computed(() => page.props.auth);
 
@@ -52,8 +53,15 @@ const isActiveItem = (item: NavItem) => {
     }
 
     // Dashboard: check for nested dashboard routes
-    if (item.title === __('nav.nav_dashboard')) {
-        return url.startsWith('/dealer/dashboard');
+    if (
+        item.title === __('nav.nav_dashboard') ||
+        item.title === __('nav.admin_dashboard') ||
+        item.title === __('nav.dealer_dashboard')
+    ) {
+        return (
+            url.startsWith('/dealer/dashboard') ||
+            url.startsWith('/admin/dashboard')
+        );
     }
 
     // Default to the standard isCurrentUrl for Home and Login
@@ -76,10 +84,24 @@ const navItems = computed<NavItem[]>(() => {
 
     // Profile item (login or dashboard/account)
     if (auth.value?.user) {
+        let dashboardHref = dealer.dashboard().url;
+        let dashboardIcon = User;
+        let dashboardTitle = __('nav.nav_dashboard');
+
+        if (can('view_admin_dashboard')) {
+            dashboardHref = admin.dashboard().url;
+            dashboardIcon = Shield;
+            dashboardTitle = __('nav.admin_dashboard') || __('nav.nav_dashboard');
+        } else if (can('view_dealer_dashboard')) {
+            dashboardHref = dealer.dashboard().url;
+            dashboardIcon = Shield;
+            dashboardTitle = __('nav.dealer_dashboard') || __('nav.nav_dashboard');
+        }
+
         items.push({
-            title: __('nav.nav_dashboard'),
-            href: dealer.dashboard().url,
-            icon: User,
+            title: dashboardTitle,
+            href: dashboardHref,
+            icon: dashboardIcon,
         });
     } else {
         items.push({
