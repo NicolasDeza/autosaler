@@ -34,6 +34,16 @@ class CompanyController extends Controller
 
         $company->update($request->validated());
 
+        if ($request->hasFile('logo')) {
+            $company->addMediaFromRequest('logo')
+                ->toMediaCollection('logo');
+        }
+
+        if ($request->hasFile('background')) {
+            $company->addMediaFromRequest('background')
+                ->toMediaCollection('background');
+        }
+
         return to_route('company.edit')->with('status', 'company-updated');
     }
 }

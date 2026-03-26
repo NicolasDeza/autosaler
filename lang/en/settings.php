@@ -58,6 +58,7 @@ return [
     'company_title' => 'Company Information',
     'company_description' => 'Manage your company information like name, address, and VAT number',
     'company_name' => 'Company Name',
+    'company_email' => 'Email Address',
     'company_address' => 'Address',
     'company_tva_number' => 'VAT Number',
     'company_phone' => 'Phone',
@@ -65,4 +66,11 @@ return [
     'company_country' => 'Country',
     'company_save' => 'Save',
     'company_updated' => 'Company information updated.',
+
+    'company_logo' => 'Company Logo',
+    'company_logo_placeholder' => 'Add a logo',
+    'company_logo_help' => 'Square format recommended. Max 2MB.',
+    'company_background' => 'Cover Image',
+    'company_background_placeholder' => 'Add a cover image',
+    'company_background_help' => '2:1 ratio recommended (e.g. 800x400). Max 5MB.',
 ];

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Form, Head } from '@inertiajs/vue3';
 import axios from 'axios';
-import { MapPin } from 'lucide-vue-next';
+import { MapPin, UploadCloud } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import CompanyController from '@/actions/App/Http/Controllers/Settings/CompanyController';
 import AppContent from '@/components/AppContent.vue';
@@ -87,6 +87,23 @@ watch(searchTerm, (newVal) => {
         selectedCityId.value = '';
     }
 });
+
+const logoPreview = ref(props.company.logo_url);
+const backgroundPreview = ref(props.company.background_url);
+
+const handleLogoChange = (e: Event) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) {
+        logoPreview.value = URL.createObjectURL(file);
+    }
+};
+
+const handleBackgroundChange = (e: Event) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) {
+        backgroundPreview.value = URL.createObjectURL(file);
+    }
+};
 </script>
 
 <template>
@@ -110,6 +127,91 @@ watch(searchTerm, (newVal) => {
                     v-slot="{ errors, processing, recentlySuccessful }"
                 >
                     <input type="hidden" name="country_id" value="1" />
+
+                    <!-- Company Profile Images -->
+                    <div class="grid gap-6 sm:grid-cols-2">
+                        <!-- Logo Upload -->
+                        <div class="space-y-3">
+                            <Label>{{ __('settings.company_logo') }}</Label>
+                            <div
+                                class="group relative flex h-40 w-40 items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-muted-foreground/25 bg-muted/30 transition-all hover:bg-muted/50"
+                            >
+                                <img
+                                    v-if="logoPreview"
+                                    :src="logoPreview"
+                                    class="h-full w-full object-contain p-4"
+                                    alt="Logo preview"
+                                />
+                                <div
+                                    v-else
+                                    class="flex flex-col items-center space-y-2 text-center text-muted-foreground"
+                                >
+                                    <UploadCloud class="h-8 w-8" />
+                                    <span class="px-2 text-xs font-medium">{{
+                                        __('settings.company_logo_placeholder')
+                                    }}</span>
+                                </div>
+                                <input
+                                    type="file"
+                                    name="logo"
+                                    accept="image/*"
+                                    class="absolute inset-0 cursor-pointer opacity-0"
+                                    @change="handleLogoChange"
+                                />
+                                <div
+                                    v-if="logoPreview"
+                                    class="absolute inset-x-0 bottom-0 bg-black/50 p-1 text-center text-[10px] text-white opacity-0 transition-opacity group-hover:opacity-100"
+                                >
+                                    {{ __('ui.click_to_change') }}
+                                </div>
+                            </div>
+                            <p class="text-[10px] text-muted-foreground">
+                                {{ __('settings.company_logo_help') }}
+                            </p>
+                            <InputError :message="errors.logo" />
+                        </div>
+
+                        <!-- Background Upload -->
+                        <div class="space-y-3">
+                            <Label>{{ __('settings.company_background') }}</Label>
+                            <div
+                                class="group relative flex aspect-2/1 w-full items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-muted-foreground/25 bg-muted/30 transition-all hover:bg-muted/50"
+                            >
+                                <img
+                                    v-if="backgroundPreview"
+                                    :src="backgroundPreview"
+                                    class="h-full w-full object-cover"
+                                    alt="Background preview"
+                                />
+                                <div
+                                    v-else
+                                    class="flex flex-col items-center space-y-2 text-center text-muted-foreground"
+                                >
+                                    <UploadCloud class="h-8 w-8" />
+                                    <span class="px-2 text-xs font-medium">{{
+                                        __('settings.company_background_placeholder')
+                                    }}</span>
+                                </div>
+                                <input
+                                    type="file"
+                                    name="background"
+                                    accept="image/*"
+                                    class="absolute inset-0 cursor-pointer opacity-0"
+                                    @change="handleBackgroundChange"
+                                />
+                                <div
+                                    v-if="backgroundPreview"
+                                    class="absolute inset-x-0 bottom-0 bg-black/50 p-1 text-center text-[10px] text-white opacity-0 transition-opacity group-hover:opacity-100"
+                                >
+                                    {{ __('ui.click_to_change') }}
+                                </div>
+                            </div>
+                            <p class="text-[10px] text-muted-foreground">
+                                {{ __('settings.company_background_help') }}
+                            </p>
+                            <InputError :message="errors.background" />
+                        </div>
+                    </div>
 
                     <div class="grid gap-2">
                         <Label for="name">{{

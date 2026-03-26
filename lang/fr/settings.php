@@ -58,6 +58,7 @@ return [
     'company_title' => 'Informations de l\'entreprise',
     'company_description' => 'Gérer les informations de votre entreprise comme le nom, l\'adresse et le numéro de TVA',
     'company_name' => 'Nom de l\'entreprise',
+    'company_email' => 'Adresse e-mail',
     'company_address' => 'Adresse',
     'company_tva_number' => 'Numéro de TVA',
     'company_phone' => 'Téléphone',
@@ -65,4 +66,11 @@ return [
     'company_country' => 'Pays',
     'company_save' => 'Enregistrer',
     'company_updated' => 'Informations de l\'entreprise mises à jour.',
+
+    'company_logo' => 'Logo de l\'entreprise',
+    'company_logo_placeholder' => 'Ajouter un logo',
+    'company_logo_help' => 'Format carré recommandé. Max 2 Mo.',
+    'company_background' => 'Image de couverture',
+    'company_background_placeholder' => 'Ajouter une image',
+    'company_background_help' => 'Ratio 2:1 recommandé (ex: 800x400). Max 5 Mo.',
 ];

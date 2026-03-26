@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Settings;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CompanyUpdateRequest extends FormRequest
@@ -9,7 +10,7 @@ class CompanyUpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -20,6 +21,8 @@ class CompanyUpdateRequest extends FormRequest
             'country_id' => ['required', 'exists:countries,id'],
             'tva_number' => ['nullable', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
+            'logo' => ['nullable', 'image', 'max:2048'],
+            'background' => ['nullable', 'image', 'max:5120'],
         ];
     }
 }
