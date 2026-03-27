@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -27,6 +28,8 @@ class Company extends Model implements HasMedia
     protected $appends = [
         'logo_url',
         'background_url',
+        'original_logo_url',
+        'original_background_url',
     ];
 
     public function getLogoUrlAttribute(): ?string
@@ -43,6 +46,20 @@ class Company extends Model implements HasMedia
         return $url ? parse_url($url, PHP_URL_PATH) : null;
     }
 
+    public function getOriginalLogoUrlAttribute(): ?string
+    {
+        $url = $this->getFirstMediaUrl('logo');
+
+        return $url ? parse_url($url, PHP_URL_PATH) : null;
+    }
+
+    public function getOriginalBackgroundUrlAttribute(): ?string
+    {
+        $url = $this->getFirstMediaUrl('background');
+
+        return $url ? parse_url($url, PHP_URL_PATH) : null;
+    }
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('logo')
@@ -54,17 +71,27 @@ class Company extends Model implements HasMedia
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        $this->addMediaConversion('thumb')
-            ->performOnCollections('logo')
-            ->width(300)
-            ->height(300)
+        $logoConversion = $this->addMediaConversion('thumb')
+            ->performOnCollections('logo');
+
+        if ($media && $media->hasCustomProperty('crop')) {
+            $crop = $media->getCustomProperty('crop');
+            $logoConversion->manualCrop($crop['width'], $crop['height'], $crop['left'], $crop['top']);
+        }
+
+        $logoConversion->fit(Fit::Crop, 300, 300)
             ->sharpen(10)
             ->nonQueued();
 
-        $this->addMediaConversion('bg_optimized')
-            ->performOnCollections('background')
-            ->width(800)
-            ->height(400)
+        $bgConversion = $this->addMediaConversion('bg_optimized')
+            ->performOnCollections('background');
+
+        if ($media && $media->hasCustomProperty('crop')) {
+            $crop = $media->getCustomProperty('crop');
+            $bgConversion->manualCrop($crop['width'], $crop['height'], $crop['left'], $crop['top']);
+        }
+
+        $bgConversion->fit(Fit::Crop, 800, 400)
             ->quality(80)
             ->nonQueued();
     }

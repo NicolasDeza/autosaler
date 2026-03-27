@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { Form, Head } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 import axios from 'axios';
-import { MapPin, UploadCloud } from 'lucide-vue-next';
+import { Crop, MapPin, UploadCloud } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import CompanyController from '@/actions/App/Http/Controllers/Settings/CompanyController';
 import AppContent from '@/components/AppContent.vue';
 import Heading from '@/components/Heading.vue';
+import ImageCropper from '@/components/ImageCropper.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,6 +31,22 @@ const breadcrumbItems: BreadcrumbItem[] = [
 ];
 
 const { __ } = useTranslation();
+
+// Form logic
+const companyForm = useForm({
+    _method: 'PATCH',
+    name: props.company.name,
+    email: props.company.email,
+    address: props.company.address,
+    city_id: props.company.city_id,
+    country_id: props.company.country_id,
+    tva_number: props.company.tva_number,
+    phone: props.company.phone,
+    logo: null as File | null,
+    background: null as File | null,
+    logo_crop: null as any,
+    background_crop: null as any,
+});
 
 // City search logic
 const showCities = ref(false);
@@ -73,6 +90,7 @@ const searchCities = (query: string) => {
 const selectCity = (city: any) => {
     searchTerm.value = city.zip_code + ' ' + city.code;
     selectedCityId.value = city.id;
+    companyForm.city_id = city.id;
     showCities.value = false;
 };
 
@@ -85,31 +103,101 @@ const handleCityBlur = () => {
 watch(searchTerm, (newVal) => {
     if (!newVal) {
         selectedCityId.value = '';
+        companyForm.city_id = '';
     }
 });
 
 const logoPreview = ref(props.company.logo_url);
 const backgroundPreview = ref(props.company.background_url);
+const originalLogoFile = ref<File | null>(null);
+const originalBackgroundFile = ref<File | null>(null);
+
+// Cropper logic
+const cropperOpen = ref(false);
+const imageToCrop = ref<string | null>(null);
+const cropTarget = ref<'logo' | 'background' | null>(null);
+const cropAspect = ref(1);
+
+const openCropper = (target: 'logo' | 'background') => {
+    cropTarget.value = target;
+    cropAspect.value = target === 'logo' ? 1 : 2;
+
+    // Use current freshly uploaded original file if exists, otherwise original model URL
+    const originalFile =
+        target === 'logo'
+            ? originalLogoFile.value
+            : originalBackgroundFile.value;
+
+    if (originalFile) {
+        imageToCrop.value = URL.createObjectURL(originalFile);
+    } else {
+        imageToCrop.value =
+            target === 'logo'
+                ? props.company.original_logo_url
+                : props.company.original_background_url;
+    }
+
+    if (imageToCrop.value) {
+        cropperOpen.value = true;
+    }
+};
 
 const handleLogoChange = (e: Event) => {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (file) {
-        logoPreview.value = URL.createObjectURL(file);
+        originalLogoFile.value = file;
+        imageToCrop.value = URL.createObjectURL(file);
+        cropTarget.value = 'logo';
+        cropAspect.value = 1;
+        cropperOpen.value = true;
     }
 };
 
 const handleBackgroundChange = (e: Event) => {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (file) {
-        backgroundPreview.value = URL.createObjectURL(file);
+        originalBackgroundFile.value = file;
+        imageToCrop.value = URL.createObjectURL(file);
+        cropTarget.value = 'background';
+        cropAspect.value = 2 / 1; // 800/400
+        cropperOpen.value = true;
     }
+};
+
+const handleCropConfirm = ({
+    blob,
+    coordinates,
+}: {
+    blob: Blob;
+    coordinates: any;
+}) => {
+    if (cropTarget.value === 'logo') {
+        logoPreview.value = URL.createObjectURL(blob);
+        companyForm.logo = originalLogoFile.value;
+        companyForm.logo_crop = coordinates;
+    } else {
+        backgroundPreview.value = URL.createObjectURL(blob);
+        companyForm.background = originalBackgroundFile.value;
+        companyForm.background_crop = coordinates;
+    }
+
+    cropperOpen.value = false;
+};
+
+const submit = () => {
+    companyForm.post(CompanyController.update.url(), {
+        onSuccess: () => {
+            // Optional: reset file inputs if needed
+            originalLogoFile.value = null;
+            originalBackgroundFile.value = null;
+        },
+    });
 };
 </script>
 
 <template>
     <AppContent :breadcrumbs="breadcrumbItems">
         <Head :title="__('settings.company_title')" />
-        <Head :title="__('settings.menu_company')" />
 
         <h1 class="sr-only">{{ __('settings.company_title') }}</h1>
 
@@ -121,13 +209,7 @@ const handleBackgroundChange = (e: Event) => {
                     :description="__('settings.company_description')"
                 />
 
-                <Form
-                    v-bind="CompanyController.update.form()"
-                    class="space-y-6"
-                    v-slot="{ errors, processing, recentlySuccessful }"
-                >
-                    <input type="hidden" name="country_id" value="1" />
-
+                <form @submit.prevent="submit" class="space-y-6">
                     <!-- Company Profile Images -->
                     <div class="grid gap-6 sm:grid-cols-2">
                         <!-- Logo Upload -->
@@ -151,29 +233,48 @@ const handleBackgroundChange = (e: Event) => {
                                         __('settings.company_logo_placeholder')
                                     }}</span>
                                 </div>
-                                <input
-                                    type="file"
-                                    name="logo"
-                                    accept="image/*"
-                                    class="absolute inset-0 cursor-pointer opacity-0"
-                                    @change="handleLogoChange"
-                                />
+
+                                <!-- Overlay Tools -->
                                 <div
-                                    v-if="logoPreview"
-                                    class="absolute inset-x-0 bottom-0 bg-black/50 p-1 text-center text-[10px] text-white opacity-0 transition-opacity group-hover:opacity-100"
+                                    class="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-2 bg-black/60 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100"
                                 >
-                                    {{ __('ui.click_to_change') }}
+                                    <div class="flex gap-2">
+                                        <div
+                                            class="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white text-black transition-transform hover:scale-110"
+                                        >
+                                            <UploadCloud :size="16" />
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                class="absolute inset-0 cursor-pointer opacity-0"
+                                                @change="handleLogoChange"
+                                            />
+                                        </div>
+                                        <button
+                                            v-if="logoPreview"
+                                            type="button"
+                                            class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white text-black transition-transform hover:scale-110"
+                                            @click="openCropper('logo')"
+                                        >
+                                            <Crop :size="16" />
+                                        </button>
+                                    </div>
+                                    <p class="text-[10px] font-medium text-white">
+                                        {{ logoPreview ? __('ui.edit') : __('ui.add_photos') }}
+                                    </p>
                                 </div>
                             </div>
                             <p class="text-[10px] text-muted-foreground">
                                 {{ __('settings.company_logo_help') }}
                             </p>
-                            <InputError :message="errors.logo" />
+                            <InputError :message="companyForm.errors.logo" />
                         </div>
 
                         <!-- Background Upload -->
                         <div class="space-y-3">
-                            <Label>{{ __('settings.company_background') }}</Label>
+                            <Label>{{
+                                __('settings.company_background')
+                            }}</Label>
                             <div
                                 class="group relative flex aspect-2/1 w-full items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-muted-foreground/25 bg-muted/30 transition-all hover:bg-muted/50"
                             >
@@ -192,24 +293,43 @@ const handleBackgroundChange = (e: Event) => {
                                         __('settings.company_background_placeholder')
                                     }}</span>
                                 </div>
-                                <input
-                                    type="file"
-                                    name="background"
-                                    accept="image/*"
-                                    class="absolute inset-0 cursor-pointer opacity-0"
-                                    @change="handleBackgroundChange"
-                                />
+
+                                <!-- Overlay Tools -->
                                 <div
-                                    v-if="backgroundPreview"
-                                    class="absolute inset-x-0 bottom-0 bg-black/50 p-1 text-center text-[10px] text-white opacity-0 transition-opacity group-hover:opacity-100"
+                                    class="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-2 bg-black/60 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100"
                                 >
-                                    {{ __('ui.click_to_change') }}
+                                    <div class="flex gap-2">
+                                        <div
+                                            class="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white text-black transition-transform hover:scale-110"
+                                        >
+                                            <UploadCloud :size="16" />
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                class="absolute inset-0 cursor-pointer opacity-0"
+                                                @change="handleBackgroundChange"
+                                            />
+                                        </div>
+                                        <button
+                                            v-if="backgroundPreview"
+                                            type="button"
+                                            class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white text-black transition-transform hover:scale-110"
+                                            @click="openCropper('background')"
+                                        >
+                                            <Crop :size="16" />
+                                        </button>
+                                    </div>
+                                    <p class="text-[10px] font-medium text-white">
+                                        {{ backgroundPreview ? __('ui.edit') : __('ui.add_photos') }}
+                                    </p>
                                 </div>
                             </div>
                             <p class="text-[10px] text-muted-foreground">
                                 {{ __('settings.company_background_help') }}
                             </p>
-                            <InputError :message="errors.background" />
+                            <InputError
+                                :message="companyForm.errors.background"
+                            />
                         </div>
                     </div>
 
@@ -219,12 +339,14 @@ const handleBackgroundChange = (e: Event) => {
                         }}</Label>
                         <Input
                             id="name"
+                            v-model="companyForm.name"
                             class="mt-1 block w-full"
-                            name="name"
-                            :default-value="company.name"
                             required
                         />
-                        <InputError class="mt-2" :message="errors.name" />
+                        <InputError
+                            class="mt-2"
+                            :message="companyForm.errors.name"
+                        />
                     </div>
 
                     <div class="grid gap-2">
@@ -233,13 +355,15 @@ const handleBackgroundChange = (e: Event) => {
                         }}</Label>
                         <Input
                             id="email"
+                            v-model="companyForm.email"
                             type="email"
                             class="mt-1 block w-full"
-                            name="email"
-                            :default-value="company.email"
                             required
                         />
-                        <InputError class="mt-2" :message="errors.email" />
+                        <InputError
+                            class="mt-2"
+                            :message="companyForm.errors.email"
+                        />
                     </div>
 
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -249,14 +373,13 @@ const handleBackgroundChange = (e: Event) => {
                             }}</Label>
                             <Input
                                 id="address"
+                                v-model="companyForm.address"
                                 class="mt-1 block w-full"
-                                name="address"
-                                :default-value="company.address"
                                 required
                             />
                             <InputError
                                 class="mt-2"
-                                :message="errors.address"
+                                :message="companyForm.errors.address"
                             />
                         </div>
 
@@ -288,7 +411,7 @@ const handleBackgroundChange = (e: Event) => {
                             <input
                                 type="hidden"
                                 name="city_id"
-                                :value="selectedCityId"
+                                :value="companyForm.city_id"
                             />
 
                             <!-- Suggestions List -->
@@ -327,7 +450,7 @@ const handleBackgroundChange = (e: Event) => {
                             </div>
                             <InputError
                                 class="mt-2"
-                                :message="errors.city_id"
+                                :message="companyForm.errors.city_id"
                             />
                         </div>
                     </div>
@@ -339,12 +462,14 @@ const handleBackgroundChange = (e: Event) => {
                             }}</Label>
                             <Input
                                 id="phone"
+                                v-model="companyForm.phone"
                                 class="mt-1 block w-full"
-                                name="phone"
-                                :default-value="company.phone"
                                 required
                             />
-                            <InputError class="mt-2" :message="errors.phone" />
+                            <InputError
+                                class="mt-2"
+                                :message="companyForm.errors.phone"
+                            />
                         </div>
 
                         <div class="grid gap-2">
@@ -353,20 +478,19 @@ const handleBackgroundChange = (e: Event) => {
                             }}</Label>
                             <Input
                                 id="tva_number"
+                                v-model="companyForm.tva_number"
                                 class="mt-1 block w-full"
-                                name="tva_number"
-                                :default-value="company.tva_number"
                             />
                             <InputError
                                 class="mt-2"
-                                :message="errors.tva_number"
+                                :message="companyForm.errors.tva_number"
                             />
                         </div>
                     </div>
 
                     <div class="flex items-center gap-4">
                         <Button
-                            :disabled="processing"
+                            :disabled="companyForm.processing"
                             class="hover:cursor-pointer"
                             >{{ __('settings.company_save') }}</Button
                         >
@@ -378,15 +502,28 @@ const handleBackgroundChange = (e: Event) => {
                             leave-to-class="opacity-0"
                         >
                             <p
-                                v-show="recentlySuccessful"
+                                v-show="companyForm.recentlySuccessful"
                                 class="text-sm text-neutral-600"
                             >
                                 {{ __('settings.company_updated') }}
                             </p>
                         </Transition>
                     </div>
-                </Form>
+                </form>
             </div>
         </SettingsLayout>
+
+        <ImageCropper
+            :open="cropperOpen"
+            :image="imageToCrop"
+            :stencil-aspect-ratio="cropAspect"
+            :title="
+                cropTarget === 'logo'
+                    ? __('settings.company_logo')
+                    : __('settings.company_background')
+            "
+            @close="cropperOpen = false"
+            @confirm="handleCropConfirm"
+        />
     </AppContent>
 </template>

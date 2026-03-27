@@ -23,7 +23,17 @@ class CompanyUpdateRequest extends FormRequest
             'tva_number' => ['nullable', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
             'logo' => ['nullable', 'image', 'max:2048'],
+            'logo_crop' => ['nullable', 'array'],
+            'logo_crop.width' => ['required_with:logo_crop', 'numeric'],
+            'logo_crop.height' => ['required_with:logo_crop', 'numeric'],
+            'logo_crop.left' => ['required_with:logo_crop', 'numeric'],
+            'logo_crop.top' => ['required_with:logo_crop', 'numeric'],
             'background' => ['nullable', 'image', 'max:5120'],
+            'background_crop' => ['nullable', 'array'],
+            'background_crop.width' => ['required_with:background_crop', 'numeric'],
+            'background_crop.height' => ['required_with:background_crop', 'numeric'],
+            'background_crop.left' => ['required_with:background_crop', 'numeric'],
+            'background_crop.top' => ['required_with:background_crop', 'numeric'],
         ];
     }
 }
