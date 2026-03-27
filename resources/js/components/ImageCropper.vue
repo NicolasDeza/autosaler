@@ -9,6 +9,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogFooter,
+    DialogDescription,
 } from '@/components/ui/dialog';
 import { useTranslation } from '@/composables/useTranslation';
 
@@ -51,6 +52,9 @@ const handleConfirm = () => {
         <DialogContent class="max-w-xl">
             <DialogHeader>
                 <DialogTitle>{{ title }}</DialogTitle>
+                <DialogDescription class="sr-only">
+                    {{ __('ui.crop_image_instruction', { default: 'Ajustez votre image' }) }}
+                </DialogDescription>
             </DialogHeader>
 
             <div class="overflow-hidden rounded-lg bg-black/5 flex items-center justify-center min-h-[300px]">
