@@ -34,6 +34,8 @@ class CompanyUpdateRequest extends FormRequest
             'background_crop.height' => ['required_with:background_crop', 'numeric'],
             'background_crop.left' => ['required_with:background_crop', 'numeric'],
             'background_crop.top' => ['required_with:background_crop', 'numeric'],
+            'remove_logo' => ['nullable', 'boolean'],
+            'remove_background' => ['nullable', 'boolean'],
         ];
     }
 }

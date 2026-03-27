@@ -35,6 +35,16 @@ class CompanyController extends Controller
 
         $company->update($request->validated());
 
+        if ($request->boolean('remove_logo')) {
+            $company->clearMediaCollection('logo');
+            $company->clearMediaCollection('logo_source');
+        }
+
+        if ($request->boolean('remove_background')) {
+            $company->clearMediaCollection('background');
+            $company->clearMediaCollection('background_source');
+        }
+
         if ($request->hasFile('logo')) {
             $adder = $company->addMediaFromRequest('logo');
             if ($request->filled('logo_crop')) {

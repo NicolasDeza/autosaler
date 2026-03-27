@@ -67,6 +67,7 @@ return [
     'company_save' => 'Enregistrer',
     'company_updated' => 'Informations de l\'entreprise mises à jour.',
 
+    'company_preview' => 'Aperçu',
     'company_logo' => 'Logo de l\'entreprise',
     'company_logo_placeholder' => 'Ajouter un logo',
     'company_logo_help' => 'Format carré recommandé. Max 2 Mo.',

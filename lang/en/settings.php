@@ -67,6 +67,7 @@ return [
     'company_save' => 'Save',
     'company_updated' => 'Company information updated.',
 
+    'company_preview' => 'Preview',
     'company_logo' => 'Company Logo',
     'company_logo_placeholder' => 'Add a logo',
     'company_logo_help' => 'Square format recommended. Max 2MB.',
