@@ -18,6 +18,13 @@ defineProps<{
     stencilAspectRatio: number;
     open: boolean;
     title: string;
+    // New prop to restore previous crop
+    defaultCoordinates?: {
+        width: number;
+        height: number;
+        left: number;
+        top: number;
+    } | null;
 }>();
 
 const emit = defineEmits(['close', 'confirm']);
@@ -66,6 +73,8 @@ const handleConfirm = () => {
                     :stencil-props="{
                         aspectRatio: stencilAspectRatio,
                     }"
+                    :default-size="defaultCoordinates || undefined"
+                    :default-position="defaultCoordinates || undefined"
                 />
                 <div v-else class="text-muted-foreground p-8">
                     {{ __('ui.loading') }}

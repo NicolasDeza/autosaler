@@ -117,8 +117,10 @@ const cropperOpen = ref(false);
 const imageToCrop = ref<string | null>(null);
 const cropTarget = ref<'logo' | 'background' | null>(null);
 const cropAspect = ref(1);
+const cropCoords = ref<any>(null);
 
 const openCropper = (target: 'logo' | 'background') => {
+    cropCoords.value = null;
     cropTarget.value = target;
     cropAspect.value = target === 'logo' ? 1 : 2;
 
@@ -138,6 +140,12 @@ const openCropper = (target: 'logo' | 'background') => {
     }
 
     if (imageToCrop.value) {
+        // Find existing crop coordinates if available
+        cropCoords.value =
+            target === 'logo'
+                ? props.company.logo_crop_coords
+                : props.company.background_crop_coords;
+
         cropperOpen.value = true;
     }
 };
@@ -145,6 +153,7 @@ const openCropper = (target: 'logo' | 'background') => {
 const handleLogoChange = (e: Event) => {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (file) {
+        cropCoords.value = null;
         originalLogoFile.value = file;
         imageToCrop.value = URL.createObjectURL(file);
         cropTarget.value = 'logo';
@@ -156,6 +165,7 @@ const handleLogoChange = (e: Event) => {
 const handleBackgroundChange = (e: Event) => {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (file) {
+        cropCoords.value = null;
         originalBackgroundFile.value = file;
         imageToCrop.value = URL.createObjectURL(file);
         cropTarget.value = 'background';
@@ -517,6 +527,7 @@ const submit = () => {
             :open="cropperOpen"
             :image="imageToCrop"
             :stencil-aspect-ratio="cropAspect"
+            :default-coordinates="cropCoords"
             :title="
                 cropTarget === 'logo'
                     ? __('settings.company_logo')

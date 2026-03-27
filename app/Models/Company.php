@@ -30,6 +30,8 @@ class Company extends Model implements HasMedia
         'background_url',
         'original_logo_url',
         'original_background_url',
+        'logo_crop_coords',
+        'background_crop_coords',
     ];
 
     public function getLogoUrlAttribute(): ?string
@@ -58,6 +60,16 @@ class Company extends Model implements HasMedia
         $url = $this->getFirstMediaUrl('background');
 
         return $url ? parse_url($url, PHP_URL_PATH) : null;
+    }
+
+    public function getLogoCropCoordsAttribute(): ?array
+    {
+        return $this->getFirstMedia('logo')?->getCustomProperty('crop');
+    }
+
+    public function getBackgroundCropCoordsAttribute(): ?array
+    {
+        return $this->getFirstMedia('background')?->getCustomProperty('crop');
     }
 
     public function registerMediaCollections(): void
