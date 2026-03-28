@@ -18,6 +18,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
+import FilterSearchSelect from '@/components/VehicleAds/Filters/Partials/FilterSearchSelect.vue';
 import { useTranslation } from '@/composables/useTranslation';
 import vehiclesRoutes from '@/routes/vehicles';
 
@@ -185,36 +186,22 @@ const years = computed(() => {
                         @submit.prevent="submitSearch"
                     >
                         <!-- Ligne 1 : Marque / Modèle / Prix range -->
-                        <div class="flex flex-col gap-3 lg:flex-row">
-                            <div class="w-full lg:flex-1">
-                                <Select v-model="filters.brand">
-                                    <SelectTrigger
-                                        class="h-10! w-full cursor-pointer border-border bg-card! text-foreground"
-                                    >
-                                        <SelectValue
-                                            :placeholder="
-                                                __(
-                                                    'homeFilter.brand_placeholder',
-                                                )
-                                            "
-                                        />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="all">{{
-                                            __('homeFilter.brand_placeholder')
-                                        }}</SelectItem>
-                                        <SelectItem
-                                            v-for="brand in brands"
-                                            :key="brand.id"
-                                            :value="String(brand.id)"
-                                        >
-                                            {{ brand.name }}
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
+                        <div
+                            class="grid grid-cols-2 gap-2 lg:grid-cols-3 lg:gap-3"
+                        >
+                            <div class="col-span-1">
+                                <FilterSearchSelect
+                                    v-model="filters.brand"
+                                    :options="brands ?? []"
+                                    option-label="name"
+                                    trigger-class="h-10! w-full cursor-pointer border-border bg-card! text-foreground"
+                                    :placeholder="
+                                        __('homeFilter.brand_placeholder')
+                                    "
+                                />
                             </div>
 
-                            <div class="w-full lg:flex-1">
+                            <div class="col-span-1">
                                 <Select
                                     v-model="filters.model"
                                     :disabled="isModelDisabled"
@@ -249,7 +236,7 @@ const years = computed(() => {
                                 </Select>
                             </div>
 
-                            <div class="w-full lg:flex-1">
+                            <div class="col-span-2 lg:col-span-1">
                                 <Popover>
                                     <PopoverTrigger as-child>
                                         <button

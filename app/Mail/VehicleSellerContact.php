@@ -6,6 +6,7 @@ use App\Models\VehicleAd;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -43,12 +44,12 @@ class VehicleSellerContact extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.vehicle-seller-contact',
+            view: 'mail.vehicle-seller-contact',
         );
     }
 
     /**
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {

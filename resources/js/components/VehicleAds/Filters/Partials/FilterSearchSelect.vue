@@ -18,12 +18,16 @@ const props = withDefaults(
         optionLabel?: string;
         placeholder?: string;
         disabled?: boolean;
+        triggerClass?: string;
+        contentClass?: string;
     }>(),
     {
         optionLabel: 'code',
         placeholder: 'Tous',
         disabled: false,
         options: () => [],
+        triggerClass: '',
+        contentClass: '',
     },
 );
 
@@ -59,11 +63,19 @@ const stopPropagation = (e: Event) => {
             :disabled="disabled"
         >
             <SelectTrigger
-                class="w-full border-input bg-background text-foreground disabled:opacity-50"
+                :class="[
+                    'w-full border-input bg-background text-foreground disabled:opacity-50',
+                    triggerClass,
+                ]"
             >
                 <SelectValue :placeholder="placeholder" />
             </SelectTrigger>
-            <SelectContent class="border-border bg-popover text-popover-foreground">
+            <SelectContent
+                :class="[
+                    'border-border bg-popover text-popover-foreground',
+                    contentClass,
+                ]"
+            >
                 <div
                     class="sticky top-0 z-10 border-b border-border bg-popover p-2"
                 >

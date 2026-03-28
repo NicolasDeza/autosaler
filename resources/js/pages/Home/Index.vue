@@ -40,6 +40,6 @@ defineProps<{
         </Deferred>
 
         <RecentVehiclesSection :vehicles="recentVehicles" />
-        <BrandsSection />
-    </AppContent>
+        <BrandsSection :brands="brands" />
+    </Appcontent>
 </template>

@@ -75,7 +75,7 @@ const mainNavItems = computed<NavItem[]>(() => {
             icon: Home,
         },
         {
-            title: 'Véhicules',
+            title: __('nav.search'),
             href: vehicles.index().url,
             icon: Car,
         },

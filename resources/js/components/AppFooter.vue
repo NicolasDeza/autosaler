@@ -102,7 +102,7 @@
                         — {{ __('nav.all_rights_reserved') }}
                     </p>
                     <p class="text-xs text-muted-foreground">
-                        Site réalisé par
+                        {{ __('nav.made_by') }}
                         <a
                             href="https://www.nicolasdeza.com/"
                             target="_blank"
