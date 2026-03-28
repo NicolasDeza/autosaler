@@ -125,7 +125,7 @@ const cropCoords = ref<any>(null);
 const openCropper = (target: 'logo' | 'background') => {
     cropCoords.value = null;
     cropTarget.value = target;
-    cropAspect.value = target === 'logo' ? 1 : 2;
+    cropAspect.value = target === 'logo' ? 1 : 3;
 
     // Use current freshly uploaded original file if exists, otherwise original model URL
     const originalFile =
@@ -181,7 +181,7 @@ const handleBackgroundChange = (e: Event) => {
         originalBackgroundFile.value = file;
         imageToCrop.value = URL.createObjectURL(file);
         cropTarget.value = 'background';
-        cropAspect.value = 2 / 1; // 800/400
+        cropAspect.value = 3 / 1; // 1200/400 or any 3:1 ratio
         cropperOpen.value = true;
         companyForm.remove_background = false; // Reset removal if new file selected
     }

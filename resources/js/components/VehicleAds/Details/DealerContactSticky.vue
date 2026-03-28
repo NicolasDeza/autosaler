@@ -24,12 +24,12 @@ const openContactModal = () => {
                 <h2
                     class="flex items-center gap-1.5 text-sm font-bold tracking-tight text-foreground"
                 >
-                    <Avatar class="size-5 border border-border/50">
+                    <Avatar class="size-5 border border-border/50 bg-white">
                         <AvatarImage
                             v-if="ad.user?.company?.logo_url"
                             :src="ad.user.company.logo_url"
                             :alt="ad.user?.company?.name"
-                            class="object-contain p-0.5"
+                            class="object-cover"
                         />
                         <AvatarFallback
                             class="bg-primary/10 text-[8px] font-bold text-primary"

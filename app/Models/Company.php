@@ -103,7 +103,7 @@ class Company extends Model implements HasMedia
             $bgConversion->manualCrop($crop['width'], $crop['height'], $crop['left'], $crop['top']);
         }
 
-        $bgConversion->fit(Fit::Crop, 800, 400)
+        $bgConversion->fit(Fit::Crop, 900, 300)
             ->quality(80)
             ->nonQueued();
     }
