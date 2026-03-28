@@ -23,6 +23,12 @@ return [
 
     // footer
     'footer_description' => 'Vehicle Selling Platform with 100% confidence.',
+    'footer_platform' => 'Platform',
+    'footer_legal' => 'Legal',
+    'footer_contact' => 'Contact',
+    'footer_contact_description' => 'Need help? Our team is here for you.',
+    'footer_contact_button' => 'Contact us',
+    'footer_vehicles' => 'Vehicles',
     'all_rights_reserved' => 'All rights reserved.',
     'made_by' => 'Made by',
 ];
