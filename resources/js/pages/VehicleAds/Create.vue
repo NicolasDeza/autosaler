@@ -1,9 +1,9 @@
 <template>
     <Head :title="__('vehicleAd.create_ad')" />
 
-    <AppLayout>
+    <AppContent>
         <div
-            class="mx-auto flex w-full max-w-7xl flex-col gap-8 p-4 pb-48 md:p-8 lg:flex-row lg:items-start lg:pb-8"
+            class="mx-auto flex w-full flex-col gap-8 py-4 pb-48 md:py-8 lg:flex-row lg:items-start lg:pb-8"
         >
             <!-- Progress sidebar -->
             <VehicleAdFormProgressNav
@@ -51,73 +51,114 @@
                         @toggle-feature="toggleFeature"
                         @close-processing="isProcessingImages = false"
                     />
-
                 </form>
             </main>
         </div>
 
         <template #sticky-bottom>
-            <VehicleAdFormProgressNav
-                :sections="progressSections"
-                :active-section="activeSection"
-                :global-completion="globalCompletion"
-                mobile-only
-            />
-            <!-- Actions Bar (sticky before footer, full width via slot container) -->
-            <div
-                class="dark relative z-50 border-t-0 border-border/40 bg-background shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.3)] backdrop-blur-md"
-            >
-                <div class="mx-auto max-w-7xl px-4 py-3 md:px-8 md:py-4">
-                    <div class="flex items-center justify-between gap-2 md:justify-end md:gap-3">
-                        <div class="flex items-center gap-2">
+            <div class="flex w-full flex-col lg:gap-0">
+                <VehicleAdFormProgressNav
+                    :sections="progressSections"
+                    :active-section="activeSection"
+                    :global-completion="globalCompletion"
+                    mobile-only
+                />
+                <!-- Actions Bar (simplified for dock on mobile) -->
+                <div
+                    class="dark relative z-50 transition-all lg:border-t lg:border-border/40 lg:bg-background lg:shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.3)] lg:backdrop-blur-md"
+                >
+                    <div class="mx-auto max-w-7xl px-2 py-2 lg:px-8 lg:py-4">
+                        <div
+                            class="flex items-center justify-between gap-2 lg:justify-end lg:gap-3"
+                        >
+                            <div class="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    class="bottom-bar-tool-btn lg:hidden!"
+                                    :title="__('ui.cancel')"
+                                    @click="
+                                        () => router.visit(vehiclesIndex.url())
+                                    "
+                                >
+                                    <ChevronLeft />
+                                    <span class="hidden sm:inline">{{
+                                        __('ui.cancel')
+                                    }}</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    class="bottom-bar-tool-btn lg:hidden!"
+                                    :disabled="form.processing"
+                                    :title="__('vehicleAd.save_draft')"
+                                    @click.prevent="submit('draft')"
+                                >
+                                    <Loader2
+                                        v-if="form.processing"
+                                        class="animate-spin"
+                                    />
+                                    <template v-else>
+                                        <FileText />
+                                        <span class="hidden sm:inline">{{
+                                            __('vehicleAd.save_draft')
+                                        }}</span>
+                                    </template>
+                                </button>
+
+                                <!-- Desktop Secondary Buttons -->
+                                <div class="hidden items-center gap-3 lg:flex">
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        @click="
+                                            () =>
+                                                router.visit(
+                                                    vehiclesIndex.url(),
+                                                )
+                                        "
+                                    >
+                                        <ChevronLeft class="mr-2 h-4 w-4" />
+                                        <span>{{ __('ui.cancel') }}</span>
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        :disabled="form.processing"
+                                        @click.prevent="submit('draft')"
+                                    >
+                                        <Loader2
+                                            v-if="form.processing"
+                                            class="mr-2 h-4 w-4 animate-spin"
+                                        />
+                                        <template v-else>
+                                            <FileText class="mr-2 h-4 w-4" />
+                                            <span>{{
+                                                __('vehicleAd.save_draft')
+                                            }}</span>
+                                        </template>
+                                    </Button>
+                                </div>
+                            </div>
+
                             <Button
-                                type="button"
-                                variant="outline"
-                                class="h-10 w-10 cursor-pointer border-border/40 p-0 hover:bg-white/10 md:h-10 md:w-auto md:px-4"
-                                @click="() => router.visit(vehiclesIndex.url())"
-                            >
-                                <ChevronLeft class="h-4 w-4 md:mr-2" />
-                                <span class="hidden md:inline">{{ __('ui.cancel') }}</span>
-                            </Button>
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                class="h-10 w-10 cursor-pointer bg-muted/20 p-0 hover:bg-muted/30 md:h-10 md:w-auto md:px-4"
+                                type="submit"
+                                class="h-12 flex-1 cursor-pointer bg-primary/90 font-bold text-foreground shadow-lg active:scale-95 lg:h-11 lg:flex-none lg:px-8"
                                 :disabled="form.processing"
-                                @click.prevent="submit('draft')"
+                                @click.prevent="submit('active')"
                             >
                                 <Loader2
                                     v-if="form.processing"
-                                    class="h-4 w-4 animate-spin"
+                                    class="mr-2 h-4 w-4 animate-spin"
                                 />
                                 <template v-else>
-                                    <FileText class="h-4 w-4 md:mr-2" />
-                                    <span class="hidden md:inline">{{ __('vehicleAd.save_draft') }}</span>
+                                    {{ __('vehicleAd.save_publish') }}
                                 </template>
                             </Button>
                         </div>
-
-                        <Button
-                            type="button"
-                            class="h-10 flex-1 cursor-pointer px-4 md:flex-none md:w-auto"
-                            :disabled="form.processing"
-                            @click="submit('active')"
-                        >
-                            <Loader2
-                                v-if="form.processing"
-                                class="mr-2 h-4 w-4 animate-spin"
-                            />
-                            {{
-                                form.processing
-                                    ? __('vehicleAd.processing')
-                                    : __('vehicleAd.publish_ad')
-                            }}
-                        </Button>
                     </div>
                 </div>
             </div>
         </template>
-    </AppLayout>
+    </AppContent>
 </template>
 
 <script setup lang="ts">
@@ -134,6 +175,7 @@ import {
     Loader2,
 } from 'lucide-vue-next';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import AppContent from '@/components/AppContent.vue';
 import { Button } from '@/components/ui/button';
 import VehicleAdFormProgressNav, {
     type FormSection,
@@ -141,7 +183,6 @@ import VehicleAdFormProgressNav, {
 import { SECTION_IDS } from '@/components/VehicleAds/VehicleAdFormSectionIds';
 import VehicleAdFormSections from '@/components/VehicleAds/VehicleAdFormSections.vue';
 import { useTranslation } from '@/composables/useTranslation';
-import AppLayout from '@/layouts/AppLayout.vue';
 import {
     index as vehiclesIndex,
     store as vehicleStore,

@@ -9,7 +9,7 @@ return [
 
     'stats' => [
         'total_vehicles' => 'Total Vehicles',
-        'active' => 'Active',
+        'active' => 'Published',
         'draft' => 'Drafts',
         'pending' => 'Pending',
         'total_users' => 'Total Users',

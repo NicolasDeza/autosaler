@@ -30,7 +30,6 @@ import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import { useTranslation } from '@/composables/useTranslation';
 
 interface Props {
-    open: boolean;
     filters: {
         search?: string;
         brand_id?: string | number;
@@ -44,7 +43,8 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits(['update:filters', 'reset', 'update:open']);
+const isOpen = defineModel<boolean>('open', { default: false });
+const emit = defineEmits(['update:filters', 'reset']);
 
 const { __ } = useTranslation();
 const breakpoints = useBreakpoints(breakpointsTailwind);
@@ -113,9 +113,6 @@ const handleReset = () => {
     emit('reset');
 };
 
-const handleOpenChange = (val: boolean) => {
-    emit('update:open', val);
-};
 
 const isSearchActive = computed(() => internalSearch.value.trim() !== '');
 const isBrandActive = computed(() => brandFilter.value !== 'all');
@@ -271,9 +268,9 @@ const isDateActive = computed(
     <!-- Mobile Layout: Left-side Dark Sheet with "Attached" Floating Button -->
     <template v-else>
         <SheetMenu
-            :open="open"
-            @update:open="handleOpenChange"
-            side="left"
+            v-model:open="isOpen"
+            side="top"
+
             :title="__('ui.filters')"
             :icon="SlidersHorizontal"
             with-floating-button

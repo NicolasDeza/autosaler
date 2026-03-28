@@ -1,12 +1,13 @@
 <template>
     <Head :title="__('vehicleAd.listing_title')" />
 
-    <AppLayout>
+    <AppContent>
         <div
-            class="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4 md:flex-row md:items-start md:p-8"
+            class="mx-auto flex w-full flex-col gap-6 py-4 md:flex-row md:items-start md:py-8"
         >
             <!-- Filters Sidebar -->
             <FilterSidebar
+                v-model:open="isFilterSheetOpen"
                 v-model:models="models"
                 v-model:form="form"
                 :brands="brands"
@@ -182,13 +183,36 @@
                 />
             </main>
         </div>
-    </AppLayout>
+
+        <template #sticky-bottom>
+            <div class="px-2 py-2 lg:hidden">
+                <div class="flex w-full items-center gap-2">
+                    <button
+                        class="bottom-bar-tool-btn w-full"
+                        type="button"
+                        @click="isFilterSheetOpen = !isFilterSheetOpen"
+                    >
+                        <SlidersHorizontal />
+                        <span>{{ __('ui.filters') }}</span>
+                        <span
+                            v-if="activeFilterCount > 0"
+                            class="flex size-5! items-center justify-center rounded-full bg-primary text-[10px]! font-bold text-white! shadow-sm ring-1 ring-primary/20"
+                        >
+                            {{ activeFilterCount }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </template>
+    </AppContent>
 </template>
 
 <script setup lang="ts">
 import { router, Head } from '@inertiajs/vue3';
-import { CarIcon, RefreshCw, Search } from 'lucide-vue-next';
+import { CarIcon, RefreshCw, Search, SlidersHorizontal } from 'lucide-vue-next';
 import { ref, watch, onUnmounted, computed } from 'vue';
+
+import AppContent from '@/components/AppContent.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import AppPagination from '@/components/AppPagination.vue';
 import { Button } from '@/components/ui/button';
@@ -203,7 +227,6 @@ import FilterSidebar from '@/components/VehicleAds/FilterSidebar.vue';
 import SortSelect from '@/components/VehicleAds/SortSelect.vue';
 import VehicleAdCard from '@/components/VehicleAds/VehicleAdCard.vue';
 import { useTranslation } from '@/composables/useTranslation';
-import AppLayout from '@/layouts/AppLayout.vue';
 import vehiclesRoutes from '@/routes/vehicles';
 
 // ── Props ───────────────────────────────────────────────────────
@@ -232,7 +255,10 @@ const props = defineProps<{
     filters?: Record<string, any>;
 }>();
 
+const isFilterSheetOpen = ref(false);
+
 // ── Form state ──────────────────────────────────────────────────
+
 const currentYear = new Date().getFullYear();
 const f = props.filters || {};
 const toArr = (v: any): string[] =>

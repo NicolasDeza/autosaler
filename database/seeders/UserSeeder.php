@@ -45,7 +45,7 @@ class UserSeeder extends Seeder
                     'company' => [
                         'name' => 'John\'s Garage',
                         'tva_number' => '123456789',
-                        'email' => 'john@johngarage.com',
+                        'email' => 'contact@johngarage.com',
                         'phone' => '123456789',
                         'address' => '240 Avenue Louise',
                         'country_id' => 1,
@@ -61,7 +61,7 @@ class UserSeeder extends Seeder
                     'company' => [
                         'name' => 'Jane\'s Garage',
                         'tva_number' => '123456789',
-                        'email' => 'jane@janegarage.com',
+                        'email' => 'contact@janegarage.com',
                         'phone' => '123456789',
                         'address' => '123 Chaussee de Bruxelles',
                         'country_id' => 1,
