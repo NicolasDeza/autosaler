@@ -28,7 +28,6 @@ import {
     NavigationMenu,
     NavigationMenuItem,
     NavigationMenuList,
-    navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import {
     Tooltip,
@@ -64,7 +63,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const auth = computed(() => page.props.auth);
-const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
+const { isCurrentUrl } = useCurrentUrl();
 
 const { can } = usePermissions();
 
@@ -132,14 +131,55 @@ const handleFavoritesClick = () => {
 //     href: 'https://laravel.com/docs/starter-kits#vue',
 //     icon: BookOpen,
 // },
+
+const isNavItemActive = (item: NavItem) => {
+    const url = page.url;
+
+    // Vehicles: check for any /vehicles path, but exclude if it's favorites
+    if (item.title === 'Véhicules') {
+        const isVehiclePath = url.startsWith('/vehicles');
+        const isFavorites = url.includes('favorites_only=1');
+        return isVehiclePath && !isFavorites;
+    }
+
+    // Dashboard: check for nested dashboard routes
+    if (
+        item.title === __('nav.dealer_dashboard') ||
+        item.title === __('nav.admin_dashboard')
+    ) {
+        return (
+            url.startsWith('/dealer/dashboard') ||
+            url.startsWith('/admin/dashboard')
+        );
+    }
+
+    // Default to the standard isCurrentUrl
+    return isCurrentUrl(item.href);
+};
+
+const activeNavItemRefs = ref<Record<number, HTMLElement>>({});
+const indicatorStyle = computed(() => {
+    const activeIndex = mainNavItems.value.findIndex((item) =>
+        isNavItemActive(item),
+    );
+    const el = activeNavItemRefs.value[activeIndex];
+
+    if (!el) return { opacity: 0, width: '0px', left: '0px' };
+
+    return {
+        left: `${el.offsetLeft}px`,
+        width: `${el.offsetWidth}px`,
+        opacity: 1,
+    };
+});
 </script>
 
 <template>
     <header class="dark sticky top-0 z-50 text-foreground print:hidden">
         <div class="border-b border-sidebar-border/80 bg-background">
             <div class="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
-                <!-- Mobile Menu -->
-                <div class="lg:hidden">
+                <!-- Mobile Menu (Now Hidden as we use Bottom Dock) -->
+                <div class="hidden">
                     <SheetMenu side="left">
                         <template #trigger>
                             <Button
@@ -191,9 +231,9 @@ const handleFavoritesClick = () => {
                                     class="group relative w-full justify-start gap-4 rounded-xl px-4 py-8 transition-all duration-300"
                                     :class="{
                                         'bg-primary/10 text-primary hover:bg-primary/15':
-                                            isCurrentUrl(item.href),
+                                            isNavItemActive(item),
                                         'text-muted-foreground hover:bg-muted/50 hover:text-foreground':
-                                            !isCurrentUrl(item.href),
+                                            !isNavItemActive(item),
                                     }"
                                 >
                                     <div
@@ -237,46 +277,59 @@ const handleFavoritesClick = () => {
                 <Link href="/" class="flex items-center gap-x-2">
                     <AppLogo />
                 </Link>
-
                 <!-- Desktop Menu -->
                 <div class="hidden h-full lg:flex lg:flex-1">
                     <NavigationMenu class="ml-10 flex h-full items-stretch">
                         <NavigationMenuList
-                            class="flex h-full items-stretch space-x-2"
+                            class="relative flex h-full items-stretch space-x-2"
                         >
+                            <!-- Sliding Background Capsule -->
+                            <div
+                                class="pointer-events-none absolute inset-y-3 z-0 rounded bg-white shadow-lg transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+                                :style="{
+                                    left: indicatorStyle.left,
+                                    width: indicatorStyle.width,
+                                    opacity: indicatorStyle.opacity,
+                                }"
+                            ></div>
+
+                            <!-- Sliding Indicator Underline (Primary Color) -->
+                            <div
+                                class="absolute bottom-0 h-0.5 bg-primary transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+                                :style="indicatorStyle"
+                            ></div>
+
                             <NavigationMenuItem
                                 v-for="(item, index) in mainNavItems"
                                 :key="index"
-                                class="relative flex h-full items-center"
+                                class="relative z-10 flex h-full items-center"
+                                :ref="
+                                    (el: any) => {
+                                        activeNavItemRefs[index] = el?.$el;
+                                    }
+                                "
                             >
                                 <Link
                                     :class="[
-                                        navigationMenuTriggerStyle(),
-                                        whenCurrentUrl(
-                                            item.href,
-                                            'text-neutral-900 dark:bg-foreground dark:text-background',
-                                        ),
-                                        'h-9 cursor-pointer px-3 hover:bg-foreground/90 hover:text-background/90',
+                                        isNavItemActive(item)
+                                            ? 'font-bold text-neutral-900'
+                                            : 'text-neutral-400',
+                                        'group relative flex h-9 cursor-pointer items-center justify-center rounded-xl px-4 text-sm transition-all duration-300 hover:text-white',
                                     ]"
                                     :href="item.href"
                                 >
                                     <component
                                         v-if="item.icon"
                                         :is="item.icon"
-                                        class="mr-2 h-4 w-4"
-                                        :class="[
-                                            whenCurrentUrl(
-                                                item.href,
-                                                'text-red-500',
-                                            ),
-                                        ]"
+                                        class="mr-2 h-4 w-4 transition-colors duration-300"
+                                        :class="
+                                            isNavItemActive(item)
+                                                ? 'text-primary'
+                                                : 'group-hover:text-primary/70'
+                                        "
                                     />
                                     {{ item.title }}
                                 </Link>
-                                <div
-                                    v-if="isCurrentUrl(item.href)"
-                                    class="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-red-500"
-                                ></div>
                             </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>

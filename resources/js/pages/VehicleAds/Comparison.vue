@@ -21,10 +21,10 @@ import {
     Users,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
+import AppContent from '@/components/AppContent.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/composables/useTranslation';
-import AppLayout from '@/layouts/AppLayout.vue';
 import { kwToHp } from '@/lib/utils';
 import vehiclesRoutes from '@/routes/vehicles';
 
@@ -197,9 +197,9 @@ const removeAndReload = (id: number) => {
 <template>
     <Head :title="__('vehicleAd.comparison_title')" />
 
-    <AppLayout>
-        <div class="min-h-screen bg-background pb-20">
-            <div class="px-4 pt-8 md:px-8">
+    <AppContent>
+        <div class="min-h-screen bg-background py-8 pb-20">
+            <div class="mb-4">
                 <button
                     class="group flex cursor-pointer items-center gap-2 text-[10px] font-black tracking-[0.3em] text-muted-foreground uppercase transition-colors hover:text-primary"
                     @click="router.visit(vehiclesRoutes.index.url())"
@@ -211,17 +211,18 @@ const removeAndReload = (id: number) => {
                 </button>
             </div>
 
-            <div class="px-4 py-4 md:px-8">
-                <!-- Comparison Table -->
-                <div
-                    class="relative overflow-hidden rounded-4xl border border-border bg-card shadow-[0_32px_64px_-12px_rgba(0,0,0,0.1)]"
-                >
-                    <div class="ring-1 ring-border">
+            <!-- Comparison Table -->
+            <div
+                class="relative overflow-hidden rounded-4xl border border-border bg-card shadow-[0_32px_64px_-12px_rgba(0,0,0,0.1)]"
+            >
+                <div class="ring-1 ring-border">
+                    <div class="overflow-x-auto">
                         <!-- Grid Header -->
                         <div
                             class="grid border-collapse divide-border"
                             :style="{
                                 gridTemplateColumns: `minmax(200px, 15%) repeat(${props.vehicles.length}, 1fr)`,
+                                minWidth: `${200 + props.vehicles.length * 250}px`,
                             }"
                         >
                             <!-- Sticky Corner -->
@@ -432,55 +433,53 @@ const removeAndReload = (id: number) => {
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Footer Call to Action -->
+            <!-- Footer Call to Action -->
+            <div
+                v-if="props.vehicles.length < 4"
+                class="group relative mt-16 overflow-hidden rounded-[3rem] border border-white/5 bg-black p-16 transition-all duration-500 hover:border-primary/20"
+            >
+                <!-- Background Decorative Pattern -->
+                <div class="absolute inset-0 opacity-5">
+                    <div
+                        class="absolute h-full w-full bg-[radial-gradient(#e11d48_1px,transparent_1px)] bg-size-[24px_24px]"
+                    ></div>
+                </div>
+
                 <div
-                    v-if="props.vehicles.length < 4"
-                    class="group relative mt-16 overflow-hidden rounded-[3rem] border border-white/5 bg-black p-16 transition-all duration-500 hover:border-primary/20"
+                    class="absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+                />
+
+                <div
+                    class="relative flex flex-col items-center justify-center text-center"
                 >
-                    <!-- Background Decorative Pattern -->
-                    <div class="absolute inset-0 opacity-5">
-                        <div
-                            class="absolute h-full w-full bg-[radial-gradient(#e11d48_1px,transparent_1px)] bg-size-[24px_24px]"
-                        ></div>
-                    </div>
-
                     <div
-                        class="absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-                    />
-
-                    <div
-                        class="relative flex flex-col items-center justify-center text-center"
+                        class="mb-8 flex size-20 items-center justify-center rounded-3xl bg-white/5 ring-1 ring-white/10 transition-transform duration-500 group-hover:scale-110 group-hover:bg-white/10"
                     >
-                        <div
-                            class="mb-8 flex size-20 items-center justify-center rounded-3xl bg-white/5 ring-1 ring-white/10 transition-transform duration-500 group-hover:scale-110 group-hover:bg-white/10"
-                        >
-                            <Plus class="size-10 text-primary" />
-                        </div>
-                        <h3
-                            class="text-4xl font-black tracking-tighter text-white uppercase italic md:text-5xl"
-                        >
-                            {{ __('vehicleAd.complete_duel') }}
-                        </h3>
-                        <p
-                            class="mt-4 max-w-lg text-lg font-medium text-white/40"
-                        >
-                            {{ __('vehicleAd.complete_duel_desc') }}
-                        </p>
-
-                        <Button
-                            size="lg"
-                            class="mt-10 h-14 gap-3 rounded-full bg-primary px-10 text-base font-black tracking-widest text-white uppercase shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-primary/90"
-                            @click="router.visit(vehiclesRoutes.index.url())"
-                        >
-                            {{ __('vehicleAd.back_to_catalog').toUpperCase() }}
-                            <ArrowRight class="size-5" />
-                        </Button>
+                        <Plus class="size-10 text-primary" />
                     </div>
+                    <h3
+                        class="text-4xl font-black tracking-tighter text-white uppercase italic md:text-5xl"
+                    >
+                        {{ __('vehicleAd.complete_duel') }}
+                    </h3>
+                    <p class="mt-4 max-w-lg text-lg font-medium text-white/40">
+                        {{ __('vehicleAd.complete_duel_desc') }}
+                    </p>
+
+                    <Button
+                        size="lg"
+                        class="mt-10 h-14 gap-3 rounded-full bg-primary px-10 text-base font-black tracking-widest text-white uppercase shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-primary/90"
+                        @click="router.visit(vehiclesRoutes.index.url())"
+                    >
+                        {{ __('vehicleAd.back_to_catalog').toUpperCase() }}
+                        <ArrowRight class="size-5" />
+                    </Button>
                 </div>
             </div>
         </div>
-    </AppLayout>
+    </AppContent>
 </template>
 
 <style scoped>

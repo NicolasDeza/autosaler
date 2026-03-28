@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
+import AppContent from '@/components/AppContent.vue';
 import { useTranslation } from '@/composables/useTranslation';
-import AppLayout from '@/layouts/AppLayout.vue';
 import { privacy } from '@/routes/legal';
 
 const { __ } = useTranslation();
@@ -10,7 +10,7 @@ const { __ } = useTranslation();
 <template>
     <Head :title="__('cookies.page_title')" />
 
-    <AppLayout>
+    <AppContent>
         <!-- Page Header -->
         <div class="relative overflow-hidden border-b border-border/50 30 px-6 py-16 text-center">
             <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-red-500 to-transparent" />
@@ -258,5 +258,5 @@ const { __ } = useTranslation();
             </section>
 
         </div>
-    </AppLayout>
+    </AppContent>
 </template>

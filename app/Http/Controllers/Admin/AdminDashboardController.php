@@ -31,6 +31,30 @@ class AdminDashboardController extends Controller
 
     protected function statsTab(Request $request): Response
     {
+        $last7Days = collect(range(6, 0))->map(function ($days) {
+            return now()->subDays($days)->format('Y-m-d');
+        });
+
+        $adsCount = VehicleAd::selectRaw('DATE(created_at) as date, count(*) as count')
+            ->where('created_at', '>=', now()->subDays(6)->startOfDay())
+            ->groupBy('date')
+            ->pluck('count', 'date');
+
+        $usersCount = User::selectRaw('DATE(created_at) as date, count(*) as count')
+            ->where('created_at', '>=', now()->subDays(6)->startOfDay())
+            ->groupBy('date')
+            ->pluck('count', 'date');
+
+        $adsEvolution = $last7Days->map(fn ($date) => [
+            'date' => $date,
+            'count' => $adsCount->get($date, 0),
+        ]);
+
+        $usersEvolution = $last7Days->map(fn ($date) => [
+            'date' => $date,
+            'count' => $usersCount->get($date, 0),
+        ]);
+
         $stats = [
             'vehicles' => [
                 'total' => VehicleAd::count(),
@@ -40,9 +64,16 @@ class AdminDashboardController extends Controller
             ],
             'users' => [
                 'total' => User::count(),
+                'total_non_admin' => User::whereDoesntHave('roles', function ($q) {
+                    $q->where('name', 'admin');
+                })->count(),
                 'users' => User::role('user')->count(),
                 'dealers' => User::role('dealer')->count(),
                 'admins' => User::role('admin')->count(),
+            ],
+            'evolution' => [
+                'ads' => $adsEvolution,
+                'users' => $usersEvolution,
             ],
             'companies' => [
                 'total' => Company::count(),

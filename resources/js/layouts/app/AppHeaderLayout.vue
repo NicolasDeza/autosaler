@@ -2,6 +2,7 @@
 import AppContent from '@/components/AppContent.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import AppHeader from '@/components/AppHeader.vue';
+import AppMobileBottomBar from '@/components/AppMobileBottomBar.vue';
 import AppShell from '@/components/AppShell.vue';
 import CookieBanner from '@/components/CookieBanner.vue';
 import type { BreadcrumbItem } from '@/types';
@@ -22,9 +23,22 @@ withDefaults(defineProps<Props>(), {
         <AppContent>
             <slot />
         </AppContent>
-        <div id="sticky-bottom-container" class="sticky bottom-0 z-50 w-full">
+
+        <!-- Desktop Persistent Bottom Slot -->
+        <div
+            id="sticky-bottom-container"
+            class="sticky bottom-0 z-50 hidden w-full lg:block"
+        >
             <slot name="sticky-bottom" />
         </div>
+
+        <!-- Mobile Dynamic Dock Bar -->
+        <AppMobileBottomBar>
+            <template v-if="$slots['sticky-bottom']">
+                <slot name="sticky-bottom" />
+            </template>
+        </AppMobileBottomBar>
+
         <AppFooter />
         <CookieBanner />
     </AppShell>

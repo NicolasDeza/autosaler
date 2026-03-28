@@ -41,4 +41,7 @@ return [
     'verified' => 'Vérifié',
     'member_since' => 'Membre depuis',
     'add_photos' => 'Ajouter des photos',
+    'click_to_change' => 'Cliquez pour modifier',
+    'crop' => 'Recadrer',
+    'confirm_crop' => 'Confirmer le recadrage',
 ];
