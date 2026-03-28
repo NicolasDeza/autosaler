@@ -7,7 +7,7 @@ return [
 
     'title2' => 'Boostez vos ventes de véhicules',
     'subtitle2' => 'Une plateforme dédiée aux professionnels de l’automobile.',
-    'cta2' => 'Commencer à Vendre',
+    'cta2' => 'Rejoindre la plateforme',
 
     'carousel_label' => 'Carousel de présentation',
     'prev_slide' => 'Diapositive précédente',

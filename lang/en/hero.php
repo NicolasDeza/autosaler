@@ -7,7 +7,7 @@ return [
 
     'title2' => 'Boost your vehicle sales',
     'subtitle2' => 'A platform dedicated to automotive professionals.',
-    'cta2' => 'Start Selling',
+    'cta2' => 'Join the platform',
 
     'carousel_label' => 'Presentation carousel',
     'prev_slide' => 'Previous slide',
