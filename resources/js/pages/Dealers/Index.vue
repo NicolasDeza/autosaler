@@ -37,7 +37,7 @@ const openDealerRegistrationModal = (
                     <img
                         :src="hero2"
                         :alt="__('dealerPage.heading')"
-                        class="h-full w-full object-cover opacity-40"
+                        class="h-full w-full object-cover"
                     />
                 </div>
 

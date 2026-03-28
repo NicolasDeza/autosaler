@@ -10,6 +10,7 @@ return [
     'dealerPage' => 'Dealers',
     'dealer_dashboard' => 'Dealer Dashboard',
     'admin_dashboard' => 'Admin Dashboard',
+    'search' => 'Search',
     'favorites' => 'Favorites',
     'login' => 'Login',
     'logout' => 'Logout',

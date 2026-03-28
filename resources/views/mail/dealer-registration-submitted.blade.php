@@ -124,10 +124,10 @@
                             <tr>
                                 <td align="center">
                                     <a
-                                        href="{{ config('app.url') }}"
+                                        href="{{ route('admin.dashboard') }}"
                                         style="display:inline-block;padding:11px 18px;background:#1c2631;color:#ffffff;text-decoration:none;border-radius:8px;font-size:14px;font-weight:700;"
                                     >
-                                        Accéder au site
+                                        Accéder à l'administration
                                     </a>
                                 </td>
                             </tr>

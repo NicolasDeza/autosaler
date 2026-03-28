@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'title1' => 'Trouvez la voiture de vos rêves',
-    'subtitle1' => 'Parcourez des milliers de véhicules vérifiés aux meilleurs prix.',
+    'title1' => 'Trouvez votre prochaine voiture',
+    'subtitle1' => 'Parcouez tous nos véhicules aux meilleurs prix.',
     'cta1' => 'Explorer les Véhicules',
 
-    'title2' => 'Vendez en toute confiance',
-    'subtitle2' => 'Publiez votre véhicule et touchez des milliers d\'acheteurs instantanément.',
+    'title2' => 'Boostez vos ventes de véhicules',
+    'subtitle2' => 'Une plateforme dédiée aux professionnels de l’automobile.',
     'cta2' => 'Commencer à Vendre',
 
     'carousel_label' => 'Carousel de présentation',

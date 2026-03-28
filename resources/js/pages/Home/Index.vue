@@ -40,6 +40,6 @@ defineProps<{
             <HomeSearchFilter :brands="brands" />
         </Deferred>
         <RecentVehiclesSection :vehicles="recentVehicles" />
-        <BrandsSection />
+        <BrandsSection :brands="brands" />
     </AppLayout>
 </template>

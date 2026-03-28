@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import hero1 from '@assets/images/hero.jpg';
-import hero2 from '@assets/images/hero2.jpg';
+import hero1 from '@assets/images/hero-1.jpg';
+import hero2 from '@assets/images/hero-4.jpg';
+import { Link } from '@inertiajs/vue3';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/composables/useTranslation';
+import dealers from '@/routes/dealers';
+import vehicles from '@/routes/vehicles';
 
 const { __ } = useTranslation();
 
@@ -13,12 +16,14 @@ const slides = computed(() => [
         title: __('hero.title1'),
         subtitle: __('hero.subtitle1'),
         cta: __('hero.cta1'),
+        ctaHref: vehicles.index().url,
     },
     {
         image: hero2,
         title: __('hero.title2'),
         subtitle: __('hero.subtitle2'),
         cta: __('hero.cta2'),
+        ctaHref: dealers.index().url,
     },
 ]);
 
@@ -127,10 +132,19 @@ onUnmounted(() => {
                         ? 'scale-105 opacity-100'
                         : 'scale-110 opacity-0'
                 "
+                :loading="i === current ? 'eager' : 'lazy'"
+                :fetchpriority="i === current ? 'high' : 'auto'"
+                width="2000"
+                height="1100"
             />
         </div>
 
         <!-- Contenu centré -->
+        <div
+            class="pointer-events-none absolute inset-0 z-1 bg-linear-to-b from-black/55 via-black/45 to-black/70"
+            aria-hidden="true"
+        />
+
         <div
             class="absolute inset-0 z-10 flex items-center justify-center px-6 pb-32 sm:pb-40"
         >
@@ -146,7 +160,7 @@ onUnmounted(() => {
             >
                 <!-- Titre -->
                 <h1
-                    class="mb-5 text-4xl leading-[1.05] font-black text-white sm:text-5xl md:text-6xl lg:text-7xl"
+                    class="mb-5 text-4xl leading-[1.05] font-black text-white sm:text-5xl md:text-6xl lg:text-6xl"
                 >
                     {{ slide.title }}
                 </h1>
@@ -161,6 +175,8 @@ onUnmounted(() => {
                 <!-- CTA -->
                 <div class="flex justify-center">
                     <Button
+                        :as="slide.ctaHref ? Link : 'button'"
+                        :href="slide.ctaHref"
                         size="lg"
                         class="group relative inline-flex cursor-pointer items-center overflow-hidden px-8 py-7 text-base font-bold transition-all duration-300 hover:-translate-y-0.5 md:text-lg"
                     >
@@ -249,38 +265,5 @@ onUnmounted(() => {
                 <path d="M8 5v14l11-7z" />
             </svg>
         </button>
-
-        <!-- Barres de progression + compteur -->
-        <div
-            class="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3"
-        >
-            <button
-                v-for="(slide, i) in slides"
-                :key="'bar-' + i"
-                @click="goTo(i)"
-                :aria-label="`${__('hero.go_to_slide')} ${i + 1}`"
-                :aria-current="i === current ? 'true' : undefined"
-                class="relative h-0.5 cursor-pointer overflow-hidden rounded-full transition-all duration-300"
-                :class="
-                    i === current
-                        ? 'w-16 bg-white/20'
-                        : 'w-8 bg-white/20 hover:bg-white/40'
-                "
-            >
-                <div
-                    v-if="i === current"
-                    class="absolute inset-0 origin-left bg-red-500"
-                    :style="{ animation: 'progress 5s linear forwards' }"
-                ></div>
-                <div
-                    v-else-if="i < current"
-                    class="absolute inset-0 bg-white/50"
-                ></div>
-            </button>
-            <span class="font-mono text-xs text-white/40">
-                {{ String(current + 1).padStart(2, '0') }} /
-                {{ String(slides.length).padStart(2, '0') }}
-            </span>
-        </div>
     </div>
 </template>

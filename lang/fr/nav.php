@@ -11,6 +11,7 @@ return [
     'dealerPage' => 'Professionnels',
     'dealer_dashboard' => 'Tableau de bord',
     'admin_dashboard' => 'Tableau de bord',
+    'search' => 'Rechercher',
     'favorites' => 'Favoris',
     'login' => 'Connexion',
     'logout' => 'Déconnexion',
