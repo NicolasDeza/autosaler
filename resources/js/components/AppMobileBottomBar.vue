@@ -27,12 +27,13 @@ const canCreateAd = computed(() => {
     if (!hasRole('dealer')) {
         return false;
     }
-    // Don't show create button if we are already on the create, edit, or show page
+    // Don't show create button if we are on create, edit, show, or settings pages
     const isCreatePage = page.url.startsWith('/vehicles/create');
     const isEditPage = page.url.match(/^\/vehicles\/.*\/edit/);
     const isShowPage = page.component === 'VehicleAds/Show';
+    const isSettingsPage = page.url.startsWith('/settings');
 
-    if (isCreatePage || isEditPage || isShowPage) {
+    if (isCreatePage || isEditPage || isShowPage || isSettingsPage) {
         return false;
     }
 
@@ -142,7 +143,7 @@ const activeIndex = computed(() => {
         >
             <!-- TIER 1: TOOLS & ACTIONS (ALWAYS TARGET FOR TELEPORTS) -->
             <div
-                class="relative z-10 w-full overflow-hidden border-b border-white/5 empty:hidden"
+                class="relative z-10 w-full overflow-hidden border-b border-white/5"
             >
                 <div
                     class="mb-1 flex w-full flex-row items-center gap-2 px-2 pt-2 pb-1"
@@ -181,7 +182,7 @@ const activeIndex = computed(() => {
 
                     <!-- Right/Next: Contextual Tools from Slot -->
                     <div
-                        class="flex flex-1 items-center justify-center empty:hidden"
+                        class="flex flex-1 items-center justify-center"
                     >
                         <slot name="sticky-bottom-mobile" />
                     </div>

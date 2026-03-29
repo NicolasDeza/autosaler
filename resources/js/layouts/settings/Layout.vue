@@ -7,7 +7,7 @@ import {
     User,
     Settings as SettingsIcon,
 } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { usePermissions } from '@/composables/usePermissions';
@@ -22,6 +22,11 @@ import { type NavItem } from '@/types';
 
 const { __ } = useTranslation();
 const { hasRole } = usePermissions();
+
+const isMounted = ref(false);
+onMounted(() => {
+    isMounted.value = true;
+});
 
 const sidebarNavItems = computed<NavItem[]>(() => [
     {
@@ -58,7 +63,7 @@ const { isCurrentUrl } = useCurrentUrl();
         class="flex min-h-[calc(100vh-64px)] flex-col bg-linear-to-b from-background to-muted/20 lg:flex-row lg:gap-8 lg:p-8"
     >
         <!-- Mobile Menu (Teleported to Bottom Bar) -->
-        <Teleport to="#sticky-bottom-mobile-portal">
+        <Teleport v-if="isMounted" to="#sticky-bottom-mobile-portal">
             <div class="flex h-full w-full items-center justify-around gap-1 px-1 py-1">
                 <Link
                     v-for="item in sidebarNavItems"
