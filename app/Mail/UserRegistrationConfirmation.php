@@ -19,7 +19,7 @@ class UserRegistrationConfirmation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Inscription confirmée sur AutoSaler',
+            subject: __('registrationMail.subject'),
         );
     }
 

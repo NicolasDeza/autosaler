@@ -33,7 +33,16 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $input['password'],
         ]);
 
-        Mail::to($user->email)->send(new UserRegistrationConfirmation($user));
+        $locale = app()->getLocale();
+        $availableLocales = config('app.available_locales', ['en', 'fr']);
+
+        if (! in_array($locale, $availableLocales, true)) {
+            $locale = config('app.fallback_locale', 'en');
+        }
+
+        Mail::to($user->email)
+            ->locale($locale)
+            ->send(new UserRegistrationConfirmation($user));
 
         return $user;
     }

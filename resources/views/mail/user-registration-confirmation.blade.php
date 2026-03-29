@@ -16,11 +16,11 @@
 @endphp
 
 <!doctype html>
-<html lang="fr">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Inscription confirmée</title>
+    <title>{{ __('registrationMail.subject') }}</title>
 </head>
 <body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,Helvetica,sans-serif;color:#111827;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f3f4f6;padding:24px 12px;">
@@ -51,12 +51,12 @@
                 </tr>
                 <tr>
                     <td style="padding:24px;">
-                        <p style="margin:0 0 8px 0;font-size:32px;font-weight:700;line-height:1.2;">Inscription confirmée</p>
+                        <p style="margin:0 0 8px 0;font-size:32px;font-weight:700;line-height:1.2;">{{ __('registrationMail.title') }}</p>
                         <p style="margin:0 0 16px 0;font-size:15px;line-height:1.6;color:#4b5563;">
-                            Bonjour {{ $fullName !== '' ? $fullName : 'et bienvenue' }}, votre compte AutoSaler a bien été créé.
+                            {{ $fullName !== '' ? __('registrationMail.greeting_named', ['name' => $fullName]) : __('registrationMail.greeting_generic') }}
                         </p>
                         <p style="margin:0 0 24px 0;font-size:14px;line-height:1.7;color:#374151;">
-                            Vous pouvez dès maintenant vous connecter, enregistrer vos favoris et commencer à explorer les annonces.
+                            {{ __('registrationMail.body') }}
                         </p>
                         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top:4px;">
                             <tr>
@@ -65,7 +65,7 @@
                                         href="{{ route('vehicles.index') }}"
                                         style="display:inline-block;padding:11px 18px;background:#1c2631;color:#ffffff;text-decoration:none;border-radius:8px;font-size:14px;font-weight:700;"
                                     >
-                                        Voir les véhicules
+                                        {{ __('registrationMail.cta') }}
                                     </a>
                                 </td>
                             </tr>
@@ -75,7 +75,7 @@
                 <tr>
                     <td style="background:#1c2631;border-top:3px solid #f43f5e;padding:14px 24px;text-align:center;">
                         <p style="margin:0;font-size:12px;line-height:1.5;color:#cbd5e1;">
-                            &copy; {{ now()->year }} AutoSaler - Tous droits réservés.
+                            {{ __('registrationMail.copyright', ['year' => now()->year]) }}
                         </p>
                     </td>
                 </tr>
