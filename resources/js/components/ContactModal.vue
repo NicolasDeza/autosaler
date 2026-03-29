@@ -100,7 +100,9 @@ const submitContact = (): void => {
 
             <form class="space-y-4" @submit.prevent="submitContact">
                 <div class="space-y-2">
-                    <Label for="contact_topic">{{ __('nav.contact_topic_label') }} *</Label>
+                    <Label for="contact_topic">
+                        {{ __('nav.contact_topic_label') }} <span class="text-primary">*</span>
+                    </Label>
                     <Select v-model="contactForm.topic">
                         <SelectTrigger id="contact_topic" class="w-full">
                             <SelectValue :placeholder="__('nav.contact_topic_label')" />
@@ -115,7 +117,9 @@ const submitContact = (): void => {
                 </div>
 
                 <div class="space-y-2">
-                    <Label for="contact_message">{{ __('nav.contact_message_label') }} *</Label>
+                    <Label for="contact_message">
+                        {{ __('nav.contact_message_label') }} <span class="text-primary">*</span>
+                    </Label>
                     <Textarea
                         id="contact_message"
                         v-model="contactForm.message"
@@ -159,7 +163,9 @@ const submitContact = (): void => {
 
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div class="space-y-2">
-                        <Label for="contact_email">{{ __('ui.email') }} *</Label>
+                        <Label for="contact_email">
+                            {{ __('ui.email') }} <span class="text-primary">*</span>
+                        </Label>
                         <Input
                             id="contact_email"
                             v-model="contactForm.email"

@@ -234,18 +234,23 @@ const confirmSuccessModal = (): void => {
 <template>
     <Dialog :open="isOpen" @update:open="handleOpenChange">
         <DialogContent class="max-h-[90svh] overflow-y-auto sm:max-w-2xl">
-            <DialogHeader>
-                <DialogTitle>{{ __('dealerPage.registration_modal_title') }}</DialogTitle>
-                <DialogDescription>
+            <DialogHeader class="-mx-6 -mt-6 bg-[#1c2631] px-6 py-5">
+                <DialogTitle class="text-white">
+                    {{ __('dealerPage.registration_modal_title') }}
+                </DialogTitle>
+                <DialogDescription class="text-white/80">
                     {{ __('dealerPage.registration_modal_description') }}
                 </DialogDescription>
             </DialogHeader>
 
-            <form class="space-y-5" @submit.prevent="submit">
-                <div class="space-y-3">
+            <form class="flex flex-col gap-5" @submit.prevent="submit">
+                <div class="order-2 space-y-3">
                     <h3 class="text-sm font-bold tracking-wide text-foreground/80 uppercase">
                         {{ __('dealerPage.registration_section_company') }}
                     </h3>
+                    <p class="text-xs leading-relaxed text-muted-foreground">
+                        {{ __('dealerPage.registration_section_company_description') }}
+                    </p>
 
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div class="space-y-2 sm:col-span-2">
@@ -344,10 +349,13 @@ const confirmSuccessModal = (): void => {
                     </div>
                 </div>
 
-                <div class="space-y-3">
+                <div class="order-1 space-y-3">
                     <h3 class="text-sm font-bold tracking-wide text-foreground/80 uppercase">
                         {{ __('dealerPage.registration_section_user') }}
                     </h3>
+                    <p class="text-xs leading-relaxed text-muted-foreground">
+                        {{ __('dealerPage.registration_section_user_description') }}
+                    </p>
 
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div class="space-y-2">
@@ -401,11 +409,13 @@ const confirmSuccessModal = (): void => {
                     </div>
                 </div>
 
-                <div class="rounded-md border border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
+                <div
+                    class="order-3 rounded-md border border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground"
+                >
                     {{ selectedPlanLabel || __('dealerPage.placeholder_plan') }}
                 </div>
 
-                <DialogFooter>
+                <DialogFooter class="order-4">
                     <Button type="button" variant="outline" @click="isOpen = false">
                         {{ __('dealerPage.modal_cancel') }}
                     </Button>

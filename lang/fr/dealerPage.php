@@ -27,7 +27,9 @@ return [
     'registration_modal_title' => 'Inscription professionnelle',
     'registration_modal_description' => 'Remplissez vos informations entreprise et utilisateur. Notre équipe validera ensuite votre statut professionnel.',
     'registration_section_company' => 'Entreprise',
+    'registration_section_company_description' => 'Renseignez les coordonnées de votre société pour la vérification professionnelle.',
     'registration_section_user' => 'Compte utilisateur',
+    'registration_section_user_description' => 'Ce compte sera utilisé pour vous connecter et gérer vos annonces.',
 
     'field_company_name' => 'Nom de l\'entreprise',
     'field_company_email' => 'E-mail entreprise',

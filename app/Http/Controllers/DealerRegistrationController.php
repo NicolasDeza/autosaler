@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Dealer\RegisterDealerLead;
 use App\Http\Requests\DealerRegistrationRequest;
 use App\Mail\DealerRegistrationSubmitted;
+use App\Mail\UserRegistrationConfirmation;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,17 @@ class DealerRegistrationController extends Controller
 
         Mail::to(config('mail.admin_address', config('mail.from.address')))
             ->send(new DealerRegistrationSubmitted($registration));
+
+        $locale = app()->getLocale();
+        $availableLocales = config('app.available_locales', ['en', 'fr']);
+
+        if (! in_array($locale, $availableLocales, true)) {
+            $locale = config('app.fallback_locale', 'en');
+        }
+
+        Mail::to($registration['user']->email)
+            ->locale($locale)
+            ->send(new UserRegistrationConfirmation($registration['user']));
 
         event(new Registered($registration['user']));
         Auth::login($registration['user']);
