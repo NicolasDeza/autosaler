@@ -132,16 +132,25 @@ const handleOpenChange = (val: boolean) => {
                     </Button>
                 </div>
 
-                <SheetHeader
-                    v-if="title || description || icon || $slots.headerBranding"
-                    class="dark mb-0 bg-background p-6"
-                    :class="[
-                        side === 'top' || side === 'bottom'
-                            ? 'rounded-t-3xl border-b border-border/10'
-                            : '',
-                    ]"
-                >
-                    <div class="flex items-center justify-between">
+                <SheetHeader class="p-0">
+                    <!-- Fallback accessible items for Radix/Shadcn compliance -->
+                    <div class="sr-only">
+                        <SheetTitle v-if="!title">Menu sidebar</SheetTitle>
+                        <SheetDescription v-if="!description">
+                            Navigation sidebar
+                        </SheetDescription>
+                    </div>
+
+                    <div
+                        v-if="title || description || icon || $slots.headerBranding"
+                        class="dark mb-0 bg-background p-6"
+                        :class="[
+                            side === 'top' || side === 'bottom'
+                                ? 'rounded-t-3xl border-b border-border/10'
+                                : '',
+                        ]"
+                    >
+                        <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <!-- Custom Branding Slot (often for Logo) -->
                             <div v-if="$slots.headerBranding" class="flex-1">
@@ -200,6 +209,7 @@ const handleOpenChange = (val: boolean) => {
                                 <X class="h-5 w-5" />
                                 <span class="sr-only">Close</span>
                             </SheetClose>
+                        </div>
                         </div>
                     </div>
                 </SheetHeader>
