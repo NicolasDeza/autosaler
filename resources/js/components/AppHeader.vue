@@ -7,6 +7,7 @@ import {
     Menu,
     Shield,
     Car,
+    MessageCircle,
     Star,
     Warehouse,
     User,
@@ -15,6 +16,7 @@ import { computed, ref } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import ContactModal from '@/components/ContactModal.vue';
 import InstallButton from '@/components/PWA/InstallButton.vue';
 import SheetMenu from '@/components/SheetMenu.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -53,6 +55,9 @@ import LanguageSelector from './LanguageSelector.vue';
 
 const { __ } = useTranslation();
 const page = usePage<ExtendedPageProps>();
+type HeaderNavItem = NavItem & {
+    opensContactModal?: boolean;
+};
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];
@@ -67,8 +72,8 @@ const { isCurrentUrl } = useCurrentUrl();
 
 const { can } = usePermissions();
 
-const mainNavItems = computed<NavItem[]>(() => {
-    const items: NavItem[] = [
+const mainNavItems = computed<HeaderNavItem[]>(() => {
+    const items: HeaderNavItem[] = [
         {
             title: __('nav.nav_home'),
             href: '/',
@@ -83,6 +88,12 @@ const mainNavItems = computed<NavItem[]>(() => {
             title: __('nav.professionals'),
             href: dealers.index().url,
             icon: Warehouse,
+        },
+        {
+            title: __('nav.footer_contact'),
+            href: '#contact-modal',
+            icon: MessageCircle,
+            opensContactModal: true,
         },
         // {
         //     title: __('nav.nav_dashboard'),
@@ -113,6 +124,7 @@ const mainNavItems = computed<NavItem[]>(() => {
 const rightNavItems: NavItem[] = [];
 
 const showLoginModal = ref(false);
+const showContactModal = ref(false);
 
 const handleFavoritesClick = () => {
     if (!auth.value?.user) {
@@ -120,6 +132,10 @@ const handleFavoritesClick = () => {
         return;
     }
     router.get(vehicles.index({ query: { favorites_only: '1' } }).url);
+};
+
+const openContactModal = (): void => {
+    showContactModal.value = true;
 };
 // {
 //     title: 'Repository',
@@ -132,8 +148,12 @@ const handleFavoritesClick = () => {
 //     icon: BookOpen,
 // },
 
-const isNavItemActive = (item: NavItem) => {
+const isNavItemActive = (item: HeaderNavItem) => {
     const url = page.url;
+
+    if (item.opensContactModal) {
+        return false;
+    }
 
     // Vehicles: check for any /vehicles path, but exclude if it's favorites
     if (item.title === 'Véhicules') {
@@ -222,35 +242,61 @@ const indicatorStyle = computed(() => {
                                     <div class="my-4 h-px bg-border/40" />
                                 </template>
 
-                                <Button
+                                <template
                                     v-for="item in mainNavItems"
                                     :key="item.title"
-                                    :as="Link"
-                                    :href="item.href"
-                                    variant="ghost"
-                                    class="group relative w-full justify-start gap-4 rounded-xl px-4 py-8 transition-all duration-300"
-                                    :class="{
-                                        'bg-primary/10 text-primary hover:bg-primary/15':
-                                            isNavItemActive(item),
-                                        'text-muted-foreground hover:bg-muted/50 hover:text-foreground':
-                                            !isNavItemActive(item),
-                                    }"
                                 >
-                                    <div
-                                        class="flex h-10 w-10 items-center justify-center rounded-lg bg-background shadow-xs transition-colors group-hover:bg-muted/10"
+                                    <Button
+                                        v-if="item.opensContactModal"
+                                        type="button"
+                                        variant="ghost"
+                                        class="group relative w-full justify-start gap-4 rounded-xl px-4 py-8 text-muted-foreground transition-all duration-300 hover:bg-muted/50 hover:text-foreground"
+                                        @click="openContactModal"
                                     >
-                                        <component
-                                            v-if="item.icon"
-                                            :is="item.icon"
-                                            class="h-5 w-5"
-                                        />
-                                    </div>
-                                    <span
-                                        class="font-heading text-sm font-bold tracking-widest uppercase"
+                                        <div
+                                            class="flex h-10 w-10 items-center justify-center rounded-lg bg-background shadow-xs transition-colors group-hover:bg-muted/10"
+                                        >
+                                            <component
+                                                v-if="item.icon"
+                                                :is="item.icon"
+                                                class="h-5 w-5"
+                                            />
+                                        </div>
+                                        <span
+                                            class="font-heading text-sm font-bold tracking-widest uppercase"
+                                        >
+                                            {{ item.title }}
+                                        </span>
+                                    </Button>
+                                    <Button
+                                        v-else
+                                        :as="Link"
+                                        :href="item.href"
+                                        variant="ghost"
+                                        class="group relative w-full justify-start gap-4 rounded-xl px-4 py-8 transition-all duration-300"
+                                        :class="{
+                                            'bg-primary/10 text-primary hover:bg-primary/15':
+                                                isNavItemActive(item),
+                                            'text-muted-foreground hover:bg-muted/50 hover:text-foreground':
+                                                !isNavItemActive(item),
+                                        }"
                                     >
-                                        {{ item.title }}
-                                    </span>
-                                </Button>
+                                        <div
+                                            class="flex h-10 w-10 items-center justify-center rounded-lg bg-background shadow-xs transition-colors group-hover:bg-muted/10"
+                                        >
+                                            <component
+                                                v-if="item.icon"
+                                                :is="item.icon"
+                                                class="h-5 w-5"
+                                            />
+                                        </div>
+                                        <span
+                                            class="font-heading text-sm font-bold tracking-widest uppercase"
+                                        >
+                                            {{ item.title }}
+                                        </span>
+                                    </Button>
+                                </template>
                             </nav>
                             <div class="flex flex-col space-y-4">
                                 <a
@@ -309,7 +355,31 @@ const indicatorStyle = computed(() => {
                                     }
                                 "
                             >
+                                <button
+                                    v-if="item.opensContactModal"
+                                    type="button"
+                                    :class="[
+                                        isNavItemActive(item)
+                                            ? 'font-bold text-neutral-900'
+                                            : 'text-neutral-400',
+                                        'group relative flex h-9 cursor-pointer items-center justify-center rounded-xl px-4 text-sm transition-all duration-300 hover:text-white',
+                                    ]"
+                                    @click="openContactModal"
+                                >
+                                    <component
+                                        v-if="item.icon"
+                                        :is="item.icon"
+                                        class="mr-2 h-4 w-4 transition-colors duration-300"
+                                        :class="
+                                            isNavItemActive(item)
+                                                ? 'text-primary'
+                                                : 'group-hover:text-primary/70'
+                                        "
+                                    />
+                                    {{ item.title }}
+                                </button>
                                 <Link
+                                    v-else
                                     :class="[
                                         isNavItemActive(item)
                                             ? 'font-bold text-neutral-900'
@@ -376,7 +446,6 @@ const indicatorStyle = computed(() => {
                             </template>
                         </div>
                     </div>
-
                     <TooltipProvider :delay-duration="0">
                         <Tooltip>
                             <TooltipTrigger as-child>
@@ -471,6 +540,7 @@ const indicatorStyle = computed(() => {
             title="Coup de cœur ?"
             description="Connectez-vous pour accéder à vos favoris et ne plus jamais perdre une annonce."
         />
+        <ContactModal v-model:open="showContactModal" />
 
         <div
             v-if="props.breadcrumbs.length > 1"

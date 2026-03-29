@@ -110,6 +110,7 @@
                             <Button
                                 type="button"
                                 class="group relative inline-flex h-9 w-fit cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-primary/30 px-5 text-[10px] font-bold tracking-widest text-white uppercase transition-all hover:border-primary hover:bg-primary active:scale-95"
+                                @click="openContactModal"
                             >
                                 {{ __('nav.footer_contact_button') }}
                             </Button>
@@ -153,13 +154,16 @@
                 </div>
             </div>
         </div>
+
+        <ContactModal v-model:open="isContactModalOpen" />
     </footer>
 </template>
 
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { Facebook } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import ContactModal from '@/components/ContactModal.vue';
 import { Button } from '@/components/ui/button';
 import { usePermissions } from '@/composables/usePermissions';
 import { useTranslation } from '@/composables/useTranslation';
@@ -174,8 +178,13 @@ import AppLogoLg from './AppLogoLg.vue';
 
 const { __ } = useTranslation();
 const { can } = usePermissions();
+const isContactModalOpen = ref(false);
 
 const socialLinks = [{ label: 'Facebook', href: '#', icon: 'facebook' }];
+
+const openContactModal = (): void => {
+    isContactModalOpen.value = true;
+};
 
 const menuItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
