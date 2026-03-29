@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link, usePage, router } from '@inertiajs/vue3';
+import { useResizeObserver } from '@vueuse/core';
 import {
     // BookOpen,
     // Folder,
@@ -11,7 +12,7 @@ import {
     Warehouse,
     User,
 } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import LoginRequiredModal from '@/components/Auth/LoginRequiredModal.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
@@ -136,7 +137,7 @@ const isNavItemActive = (item: NavItem) => {
     const url = page.url;
 
     // Vehicles: check for any /vehicles path, but exclude if it's favorites
-    if (item.title === 'Véhicules') {
+    if (item.href === vehicles.index().url) {
         const isVehiclePath = url.startsWith('/vehicles');
         const isFavorites = url.includes('favorites_only=1');
         return isVehiclePath && !isFavorites;
@@ -144,8 +145,8 @@ const isNavItemActive = (item: NavItem) => {
 
     // Dashboard: check for nested dashboard routes
     if (
-        item.title === __('nav.dealer_dashboard') ||
-        item.title === __('nav.admin_dashboard')
+        item.href === dealer.dashboard().url ||
+        item.href === admin.dashboard().url
     ) {
         return (
             url.startsWith('/dealer/dashboard') ||
@@ -157,14 +158,40 @@ const isNavItemActive = (item: NavItem) => {
     return isCurrentUrl(item.href);
 };
 
+// Force indicator recalculation when layout changes
+const menuListRef = ref<HTMLElement | null>(null);
 const activeNavItemRefs = ref<Record<number, HTMLElement>>({});
+const refreshCounter = ref(0);
+
+useResizeObserver(menuListRef, () => {
+    refreshCounter.value++;
+});
+
+// Watch for nav items or URL changes to refresh the indicator position
+watch(
+    [() => mainNavItems.value, () => page.url],
+    async () => {
+        await nextTick();
+        refreshCounter.value++;
+    },
+    { deep: true },
+);
+
 const indicatorStyle = computed(() => {
+    // Adding refreshCounter.value as a dependency to force re-calculation
+    // when layout changes (e.g., language change, window resize)
+    if (refreshCounter.value < 0) {
+        return { opacity: 0, width: '0px', left: '0px' };
+    }
+
     const activeIndex = mainNavItems.value.findIndex((item) =>
         isNavItemActive(item),
     );
     const el = activeNavItemRefs.value[activeIndex];
 
-    if (!el) return { opacity: 0, width: '0px', left: '0px' };
+    if (!el) {
+        return { opacity: 0, width: '0px', left: '0px' };
+    }
 
     return {
         left: `${el.offsetLeft}px`,
@@ -281,6 +308,7 @@ const indicatorStyle = computed(() => {
                 <div class="hidden h-full lg:flex lg:flex-1">
                     <NavigationMenu class="ml-10 flex h-full items-stretch">
                         <NavigationMenuList
+                            ref="menuListRef"
                             class="relative flex h-full items-stretch space-x-2"
                         >
                             <!-- Sliding Background Capsule -->
@@ -312,9 +340,9 @@ const indicatorStyle = computed(() => {
                                 <Link
                                     :class="[
                                         isNavItemActive(item)
-                                            ? 'font-bold text-neutral-900'
+                                            ? 'font-bold text-background'
                                             : 'text-neutral-400',
-                                        'group relative flex h-9 cursor-pointer items-center justify-center rounded-xl px-4 text-sm transition-all duration-300 hover:text-white',
+                                        'group relative flex h-9 cursor-pointer items-center justify-center rounded-xl px-4 text-sm transition-all duration-300',
                                     ]"
                                     :href="item.href"
                                 >
@@ -328,7 +356,15 @@ const indicatorStyle = computed(() => {
                                                 : 'group-hover:text-primary/70'
                                         "
                                     />
-                                    {{ item.title }}
+                                    <span
+                                        :class="
+                                            isNavItemActive(item)
+                                                ? 'group-hover:text-background'
+                                                : 'hover:text-white'
+                                        "
+                                    >
+                                        {{ item.title }}
+                                    </span>
                                 </Link>
                             </NavigationMenuItem>
                         </NavigationMenuList>
