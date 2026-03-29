@@ -58,14 +58,16 @@ const handleOpenChange = (val: boolean) => {
     <div class="contents">
         <!-- TRIGGER: Floating Button (only when closed) -->
         <div
-            v-if="withFloatingButton && !isOpen && !hideFloatingButtonWhenClosed"
+            v-if="
+                withFloatingButton && !isOpen && !hideFloatingButtonWhenClosed
+            "
             class="pointer-events-auto fixed bottom-6 z-40 flex transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] lg:hidden"
             :class="[side === 'left' ? 'left-6' : 'right-6']"
         >
             <Button
                 size="lg"
                 type="button"
-                class="dark group flex h-14 w-14 items-center justify-center rounded-full p-0 shadow-lg transition-all hover:scale-110 hover:ring-2 hover:ring-primary bg-background active:scale-95"
+                class="dark group flex h-14 w-14 items-center justify-center rounded-full bg-background p-0 shadow-lg transition-all hover:scale-110 hover:ring-2 hover:ring-primary active:scale-95"
                 @click="isOpen = true"
             >
                 <component
@@ -91,12 +93,15 @@ const handleOpenChange = (val: boolean) => {
                 :side="side"
                 :class="
                     cn(
-                        'flex flex-col gap-0 bg-card p-0 z-60 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
-                        (side === 'left' || side === 'right') && 'w-[85vw] sm:max-w-md',
+                        'z-50 flex flex-col gap-0 bg-card p-0 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
+                        (side === 'left' || side === 'right') &&
+                            'w-[85vw] sm:max-w-md',
                         side === 'left' && 'border-r-primary',
                         side === 'right' && 'border-l-primary',
-                        side === 'bottom' && 'inset-x-4 bottom-4 h-[85vh] sm:h-[80vh] border border-sidebar-border/80 rounded-3xl shadow-2xl backdrop-blur-xl',
-                        side === 'top' && 'inset-x-4 top-4 h-[85vh] sm:h-[80vh] border border-sidebar-border/80 rounded-3xl shadow-2xl backdrop-blur-xl',
+                        side === 'bottom' &&
+                            'inset-x-4 bottom-4 h-[85vh] rounded-3xl border border-sidebar-border/80 shadow-2xl backdrop-blur-xl sm:h-[80vh]',
+                        side === 'top' &&
+                            'inset-x-4 top-4 h-[85vh] rounded-3xl border border-sidebar-border/80 shadow-2xl backdrop-blur-xl sm:h-[80vh]',
                         props.class,
                     )
                 "
@@ -107,11 +112,11 @@ const handleOpenChange = (val: boolean) => {
                     class="absolute flex transition-all lg:hidden"
                     :class="[
                         side === 'left'
-                            ? 'right-0 translate-x-1/2 bottom-6'
+                            ? 'right-0 bottom-6 translate-x-1/2'
                             : side === 'right'
-                              ? 'left-0 -translate-x-1/2 bottom-6'
+                              ? 'bottom-6 left-0 -translate-x-1/2'
                               : side === 'bottom'
-                                ? 'right-6 top-0 -translate-y-1/2'
+                                ? 'top-0 right-6 -translate-y-1/2'
                                 : side === 'top'
                                   ? 'right-6 bottom-0 translate-y-1/2'
                                   : '',
@@ -120,7 +125,7 @@ const handleOpenChange = (val: boolean) => {
                     <Button
                         size="lg"
                         type="button"
-                        class="dark group z-100 flex h-14 w-14 items-center justify-center rounded-full p-0 shadow-lg bg-primary text-white ring-2 ring-primary transition-all hover:bg-primary/90 active:scale-90"
+                        class="dark group z-100 flex h-14 w-14 items-center justify-center rounded-full bg-primary p-0 text-white shadow-lg ring-2 ring-primary transition-all hover:bg-primary/90 active:scale-90"
                         @click="isOpen = false"
                     >
                         <X class="h-6 w-6" />
@@ -130,7 +135,11 @@ const handleOpenChange = (val: boolean) => {
                 <SheetHeader
                     v-if="title || description || icon || $slots.headerBranding"
                     class="dark mb-0 bg-background p-6"
-                    :class="[ (side === 'top' || side === 'bottom') ? 'rounded-t-3xl border-b border-border/10' : '']"
+                    :class="[
+                        side === 'top' || side === 'bottom'
+                            ? 'rounded-t-3xl border-b border-border/10'
+                            : '',
+                    ]"
                 >
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
@@ -204,7 +213,11 @@ const handleOpenChange = (val: boolean) => {
                 <SheetFooter
                     v-if="$slots.footer"
                     class="mt-auto border-t border-border/10 bg-background/50 p-6"
-                    :class="[ (side === 'top' || side === 'bottom') ? 'rounded-b-3xl' : '']"
+                    :class="[
+                        side === 'top' || side === 'bottom'
+                            ? 'rounded-b-3xl'
+                            : '',
+                    ]"
                 >
                     <slot name="footer" />
                 </SheetFooter>
