@@ -19,51 +19,51 @@ const openContactModal = () => {
 
 <template>
     <div class="px-2 py-2 lg:hidden">
-        <div class="flex items-center justify-between">
-            <div class="flex min-w-0 flex-col gap-0.5">
-                <h2
-                    class="flex items-center gap-1.5 text-sm font-bold tracking-tight text-foreground"
-                >
-                    <Avatar class="size-5 border border-border/50 bg-white">
-                        <AvatarImage
-                            v-if="ad.user?.company?.logo_url"
-                            :src="ad.user.company.logo_url"
-                            :alt="ad.user?.company?.name"
-                            class="object-cover"
-                        />
-                        <AvatarFallback
-                            class="bg-primary/10 text-[8px] font-bold text-primary"
-                        >
-                            {{
-                                (
-                                    ad.user?.company?.name ||
-                                    ad.user?.first_name ||
-                                    'U'
-                                ).charAt(0)
-                            }}
-                        </AvatarFallback>
-                    </Avatar>
-                    <span class="truncate">
+        <div class="flex items-center justify-between gap-3">
+            <div class="flex min-w-0 items-center gap-3">
+                <!-- Enlarged Logo -->
+                <Avatar class="size-11 shrink-0 border border-border/50 bg-white shadow-sm">
+                    <AvatarImage
+                        v-if="ad.user?.company?.logo_url"
+                        :src="ad.user.company.logo_url"
+                        :alt="ad.user?.company?.name"
+                        class="object-cover"
+                    />
+                    <AvatarFallback
+                        class="bg-primary/10 text-xs font-black text-primary"
+                    >
                         {{
-                            ad.user?.company?.name ??
-                            ad.user?.first_name + ' ' + ad.user?.last_name
+                            (
+                                ad.user?.company?.name ||
+                                ad.user?.first_name ||
+                                'U'
+                            ).charAt(0)
                         }}
-                    </span>
-                    <CheckCircle class="size-3 shrink-0 text-green-500" />
-                </h2>
-                <div
-                    v-if="ad.user?.company?.city"
-                    class="flex items-center gap-1 text-[10px] font-bold text-muted-foreground uppercase"
-                >
-                    <MapPin class="size-3 shrink-0" />
-                    <span class="truncate sm:hidden">{{
-                        ad.user.company.city.code
-                    }}</span>
-                    <span class="hidden truncate sm:inline">
-                        {{ ad.user.company.address }},
-                        {{ ad.user.company.city.zip_code }}
-                        {{ ad.user.company.city.code }}
-                    </span>
+                    </AvatarFallback>
+                </Avatar>
+
+                <!-- Dealer Info Column -->
+                <div class="flex min-w-0 flex-col justify-center">
+                    <h2
+                        class="flex items-center gap-1.5 text-sm font-black tracking-tight text-foreground"
+                    >
+                        <span class="truncate">
+                            {{
+                                ad.user?.company?.name ??
+                                ad.user?.first_name + ' ' + ad.user?.last_name
+                            }}
+                        </span>
+                        <CheckCircle class="size-3 shrink-0 text-green-500" />
+                    </h2>
+                    <div
+                        v-if="ad.user?.company?.city"
+                        class="flex items-center gap-1 text-[10px] font-bold text-muted-foreground uppercase transition-colors"
+                    >
+                        <MapPin class="size-3 shrink-0" />
+                        <span class="truncate">{{
+                            ad.user.company.city.code
+                        }}</span>
+                    </div>
                 </div>
             </div>
 

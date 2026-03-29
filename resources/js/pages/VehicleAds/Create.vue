@@ -67,7 +67,7 @@
                 <div
                     class="dark relative z-50 transition-all lg:border-t lg:border-border/40 lg:bg-background lg:shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.3)] lg:backdrop-blur-md"
                 >
-                    <div class="mx-auto max-w-7xl px-2 py-2 lg:px-8 lg:py-4">
+                    <div class="mx-auto max-w-7xl lg:px-8 lg:py-4">
                         <div
                             class="flex items-center justify-between gap-2 lg:justify-end lg:gap-3"
                         >

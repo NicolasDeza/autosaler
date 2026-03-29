@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import {
     Building2,
     Lock,
@@ -7,8 +7,7 @@ import {
     User,
     Settings as SettingsIcon,
 } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
-import SheetMenu from '@/components/SheetMenu.vue';
+import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { usePermissions } from '@/composables/usePermissions';
@@ -20,13 +19,9 @@ import { edit as editProfile } from '@/routes/profile';
 import { show } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { type NavItem } from '@/types';
-import { type ExtendedPageProps } from '@/types/inertia';
 
 const { __ } = useTranslation();
 const { hasRole } = usePermissions();
-const page = usePage<ExtendedPageProps>();
-
-const isOpen = ref(false);
 
 const sidebarNavItems = computed<NavItem[]>(() => [
     {
@@ -62,69 +57,33 @@ const { isCurrentUrl } = useCurrentUrl();
     <div
         class="flex min-h-[calc(100vh-64px)] flex-col bg-linear-to-b from-background to-muted/20 lg:flex-row lg:gap-8 lg:p-8"
     >
-        <!-- Mobile/Tablet Sheet Menu -->
-        <div class="lg:hidden">
-            <SheetMenu
-                v-model:open="isOpen"
-                side="left"
-                :title="__('settings.page_title')"
-                :icon="SettingsIcon"
-                with-floating-button
-            >
-                <nav class="space-y-1.5">
-                    <Button
-                        v-for="item in sidebarNavItems"
-                        :key="toUrl(item.href)"
-                        variant="ghost"
-                        class="group relative w-full justify-start gap-4 rounded-xl px-4 py-8 transition-all duration-300"
-                        :class="{
-                            'bg-primary/10 text-primary hover:bg-primary/15':
-                                isCurrentUrl(item.href),
-                            'text-muted-foreground hover:bg-muted/50 hover:text-foreground':
-                                !isCurrentUrl(item.href),
-                        }"
-                        as-child
+        <!-- Mobile Menu (Teleported to Bottom Bar) -->
+        <Teleport to="#sticky-bottom-mobile-portal">
+            <div class="flex h-full w-full items-center justify-around gap-1 px-1 py-1">
+                <Link
+                    v-for="item in sidebarNavItems"
+                    :key="toUrl(item.href)"
+                    :href="item.href"
+                    class="bottom-bar-tool-btn relative flex-1"
+                    :class="isCurrentUrl(item.href) ? 'bg-white/15!' : 'opacity-70'"
+                >
+                    <component
+                        :is="item.icon"
+                        :class="isCurrentUrl(item.href) ? 'text-white' : ''"
+                    />
+                    <span
+                        class="hidden"
+                        :class="isCurrentUrl(item.href) ? 'text-white' : ''"
+                        >{{ item.title }}</span
                     >
-                        <Link :href="item.href" @click="isOpen = false">
-                            <div
-                                class="flex h-10 w-10 items-center justify-center rounded-lg bg-background shadow-xs transition-colors group-hover:bg-muted/10"
-                            >
-                                <component :is="item.icon" class="h-5 w-5" />
-                            </div>
-                            <span
-                                class="font-heading text-sm font-bold tracking-widest uppercase"
-                            >
-                                {{ item.title }}
-                            </span>
-                        </Link>
-                    </Button>
-                </nav>
-
-                <template #footer>
+                    <!-- Active Indicator -->
                     <div
-                        class="flex w-full items-center gap-4 rounded-xl border border-border/40 bg-muted/30 p-4 backdrop-blur-sm"
-                    >
-                        <div
-                            class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 font-bold text-primary"
-                        >
-                            {{ page.props.auth.user.first_name?.[0]
-                            }}{{ page.props.auth.user.last_name?.[0] }}
-                        </div>
-                        <div class="flex-1 overflow-hidden text-left">
-                            <p class="truncate text-xs font-bold">
-                                {{ page.props.auth.user.first_name }}
-                                {{ page.props.auth.user.last_name }}
-                            </p>
-                            <p
-                                class="text-[10px] font-medium text-muted-foreground"
-                            >
-                                {{ page.props.auth.user.email }}
-                            </p>
-                        </div>
-                    </div>
-                </template>
-            </SheetMenu>
-        </div>
+                        v-if="isCurrentUrl(item.href)"
+                        class="absolute -bottom-1 left-1/2 h-0.5 w-6 -translate-x-1/2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+                    ></div>
+                </Link>
+            </div>
+        </Teleport>
 
         <aside
             class="sticky top-24 hidden h-fit w-full shrink-0 overflow-hidden rounded-2xl bg-card shadow-xl ring-1 ring-border/50 backdrop-blur-xl lg:block lg:w-80"

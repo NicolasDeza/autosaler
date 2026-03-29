@@ -185,7 +185,7 @@
         </div>
 
         <template #sticky-bottom>
-            <div class="px-2 py-2 lg:hidden">
+            <div class="lg:hidden">
                 <div class="flex w-full items-center gap-2">
                     <button
                         class="bottom-bar-tool-btn w-full"

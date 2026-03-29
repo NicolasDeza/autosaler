@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { Home, PlusCircle, User, Car, Shield } from 'lucide-vue-next';
+import { Home, PlusCircle, User, Car, Shield, Pencil } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { usePermissions } from '@/composables/usePermissions';
@@ -27,16 +27,27 @@ const canCreateAd = computed(() => {
     if (!hasRole('dealer')) {
         return false;
     }
-    // Don't show create button if we are already on the create or edit page
+    // Don't show create button if we are already on the create, edit, or show page
     const isCreatePage = page.url.startsWith('/vehicles/create');
     const isEditPage = page.url.match(/^\/vehicles\/.*\/edit/);
+    const isShowPage = page.component === 'VehicleAds/Show';
 
-    if (isCreatePage || isEditPage) {
+    if (isCreatePage || isEditPage || isShowPage) {
         return false;
     }
 
     return true;
 });
+
+// Check if we are on a Show page and the user can edit this specific ad
+const canEditCurrentAd = computed(() => {
+    const isShowPage = page.component === 'VehicleAds/Show';
+    const ad = page.props.ad as any;
+    return isShowPage && ad && auth.value?.user?.id === ad.user_id;
+});
+
+const showMainAction = computed(() => canCreateAd.value || canEditCurrentAd.value);
+
 
 /**
  * Intelligent helper to determine if a nav item should be marked as active.
@@ -76,7 +87,7 @@ const navItems = computed<NavItem[]>(() => {
             icon: Home,
         },
         {
-            title: __('ui.vehicles') || 'Véhicules',
+            title: __('nav.search'),
             href: vehicles.index().url,
             icon: Car,
         },
@@ -91,11 +102,13 @@ const navItems = computed<NavItem[]>(() => {
         if (can('view_admin_dashboard')) {
             dashboardHref = admin.dashboard().url;
             dashboardIcon = Shield;
-            dashboardTitle = __('nav.admin_dashboard') || __('nav.nav_dashboard');
+            dashboardTitle =
+                __('nav.admin_dashboard') || __('nav.nav_dashboard');
         } else if (can('view_dealer_dashboard')) {
             dashboardHref = dealer.dashboard().url;
             dashboardIcon = Shield;
-            dashboardTitle = __('nav.dealer_dashboard') || __('nav.nav_dashboard');
+            dashboardTitle =
+                __('nav.dealer_dashboard') || __('nav.nav_dashboard');
         }
 
         items.push({
@@ -134,12 +147,27 @@ const activeIndex = computed(() => {
                 <div
                     class="mb-1 flex w-full flex-row items-center gap-2 px-2 pt-2 pb-1"
                 >
-                    <!-- Left: Global Quick Actions (Create Ad) -->
+                    <!-- Left: Global Quick Actions (Create or Edit Ad) -->
                     <div
-                        v-if="canCreateAd"
+                        v-if="showMainAction"
                         class="flex shrink-0 items-center gap-1 border-r border-white/10 pr-2"
                     >
                         <Link
+                            v-if="canEditCurrentAd"
+                            :href="
+                                vehicles.edit({
+                                    vehicleAd: (page.props.ad as any).id,
+                                }).url
+                            "
+                            class="bottom-bar-tool-btn"
+                        >
+                            <Pencil />
+                            <span class="hidden sm:inline">{{
+                                __('ui.edit')
+                            }}</span>
+                        </Link>
+                        <Link
+                            v-else
                             :href="vehicles.create().url"
                             class="bottom-bar-tool-btn"
                         >
