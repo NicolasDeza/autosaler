@@ -100,6 +100,8 @@ return [
     'phone_optional' => 'Phone (optional)',
     'sending' => 'Sending...',
     'send_message' => 'Send message',
+    'contact_seller_success_title' => 'Message sent successfully',
+    'contact_seller_success_description' => 'The seller has received your request.',
     'whatsapp_message' => 'Hello, I am interested in your ad on Autosaler. Is it still available?',
 
     // Favorites

@@ -2,6 +2,7 @@
 import { useForm } from '@inertiajs/vue3';
 import { Send } from 'lucide-vue-next';
 import { watch } from 'vue';
+import { toast } from 'vue-sonner';
 import VehicleAdContactController from '@/actions/App/Http/Controllers/VehicleAdContactController';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
@@ -62,6 +63,12 @@ const submitSellerContact = (): void => {
             onSuccess: () => {
                 resetForm();
                 isOpen.value = false;
+
+                window.setTimeout(() => {
+                    toast.success(__('vehicleAd.contact_seller_success_title'), {
+                        description: __('vehicleAd.contact_seller_success_description'),
+                    });
+                }, 120);
             },
         },
     );
