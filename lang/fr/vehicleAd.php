@@ -101,6 +101,8 @@ return [
     'phone_optional' => 'Téléphone (facultatif)',
     'sending' => 'Envoi...',
     'send_message' => 'Envoyer le message',
+    'contact_seller_success_title' => 'Message bien envoyé',
+    'contact_seller_success_description' => 'Le vendeur a bien reçu votre demande.',
     'whatsapp_message' => 'Bonjour, je suis intéressé par votre annonce sur Autosaler. Est-elle toujours disponible ?',
 
     // Favorites

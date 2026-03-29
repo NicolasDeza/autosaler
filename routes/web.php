@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\CitySearchController;
+use App\Http\Controllers\ContactAdminController;
 use App\Http\Controllers\DealerDashboardController;
 use App\Http\Controllers\DealerRegistrationController;
 use App\Http\Controllers\DealersPageController;
@@ -32,6 +33,7 @@ Route::get('/vehicles/{vehicleAd}', [VehicleAdController::class, 'show'])->name(
 Route::post('/vehicles/{vehicleAd}/contact', VehicleAdContactController::class)->name('vehicles.contact')->whereNumber('vehicleAd');
 Route::get('/dealers', [DealersPageController::class, 'index'])->name('dealers.index');
 Route::post('/dealers/register', DealerRegistrationController::class)->name('dealers.register');
+Route::post('/contact', ContactAdminController::class)->name('contact.send');
 
 Route::middleware(['auth', 'verified', 'role:admin|dealer'])->group(function () {
     Route::post('/vehicles/{vehicleAd}/favorite', [VehicleAdController::class, 'toggleFavorite'])->name('vehicles.favorite');

@@ -27,7 +27,9 @@ return [
     'registration_modal_title' => 'Professional registration',
     'registration_modal_description' => 'Fill in your company and user details. Our team will then validate your professional status.',
     'registration_section_company' => 'Company',
+    'registration_section_company_description' => 'Provide your company details so we can verify your professional profile.',
     'registration_section_user' => 'User account',
+    'registration_section_user_description' => 'This account will be used to sign in and manage your listings.',
 
     'field_company_name' => 'Company name',
     'field_company_email' => 'Company email',

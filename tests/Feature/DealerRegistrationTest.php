@@ -1,6 +1,7 @@
 <?php
 
 use App\Mail\DealerRegistrationSubmitted;
+use App\Mail\UserRegistrationConfirmation;
 use App\Models\City;
 use App\Models\Company;
 use App\Models\SubscriptionPlan;
@@ -114,6 +115,12 @@ it('registers a dealer lead, logs user in, and notifies admin', function () {
         return $mail->registration['company']->id === $company?->id
             && $mail->registration['user']->id === $user?->id
             && $mail->registration['subscription_plan']->key === 'pro';
+    });
+
+    Mail::assertSent(UserRegistrationConfirmation::class, function (UserRegistrationConfirmation $mail) use ($user): bool {
+        return $user !== null
+            && $mail->hasTo($user->email)
+            && $mail->user->is($user);
     });
 });
 
