@@ -112,7 +112,7 @@ const openContactModal = () => {
 
                     <Button
                         type="button"
-                        class="col-span-full group relative flex h-16 w-full items-center justify-center overflow-hidden rounded-xl bg-primary px-6 font-black tracking-tight text-white uppercase shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] hover:shadow-primary/40 active:scale-[0.98]"
+                        class="col-span-full group relative flex h-16 w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-primary px-6 font-black tracking-tight text-white uppercase shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] hover:shadow-primary/40 active:scale-[0.98]"
                         @click="openContactModal"
                     >
                         <div

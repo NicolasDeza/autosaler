@@ -95,7 +95,7 @@ const openContactModal = () => {
                 <Button
                     type="button"
                     size="sm"
-                    class="h-12 rounded-xl bg-primary px-4 font-black tracking-tight text-white uppercase shadow-lg shadow-primary/20 active:scale-95"
+                    class="h-12 cursor-pointer rounded-xl bg-primary px-4 font-black tracking-tight text-white uppercase shadow-lg shadow-primary/20 active:scale-95"
                     @click="openContactModal"
                 >
                     <Mail class="size-4" />
