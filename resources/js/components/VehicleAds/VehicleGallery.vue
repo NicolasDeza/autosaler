@@ -121,7 +121,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
 </script>
 
 <template>
-    <div class="relative flex flex-col gap-4">
+    <div class="relative flex w-full flex-col gap-4 overflow-hidden">
         <!-- Main Stage -->
         <div
             class="group/gallery relative aspect-video min-h-0 w-full overflow-hidden rounded-3xl border border-border bg-muted/30 shadow-xl"
@@ -141,6 +141,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
                         {{ selectedIndex + 1 }} / {{ images.length }}
                     </div>
                     <Button
+                        v-if="images && images.length > 0"
                         variant="secondary"
                         size="icon"
                         @click="toggleLightbox"
@@ -213,7 +214,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
         <div
             v-if="images && images.length > 1"
             ref="thumbScrollRef"
-            class="scrollbar-hide flex items-center gap-3 overflow-x-auto"
+            class="scrollbar-thin flex w-full items-center gap-3 overflow-x-auto pb-3 scrollbar-thumb-primary/40 scrollbar-track-transparent hover:scrollbar-thumb-primary"
         >
             <button
                 v-for="(image, index) in images"
@@ -312,11 +313,11 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
                     <!-- 3. Bottom Thumbnails -->
                     <div
                         v-if="images && images.length > 1"
-                        class="flex w-full flex-col items-center justify-center border-t border-border bg-background/95 px-8 backdrop-blur"
+                        class="flex w-full flex-col items-center border-t border-border bg-background/95 px-8 py-4 backdrop-blur"
                     >
                         <div
                             ref="lightboxThumbScrollRef"
-                            class="scrollbar-hide flex max-w-4xl items-center gap-4 overflow-x-auto"
+                            class="scrollbar-thin flex w-full max-w-4xl items-center gap-4 overflow-x-auto pb-3 scrollbar-thumb-primary/40 scrollbar-track-transparent hover:scrollbar-thumb-primary"
                         >
                             <button
                                 v-for="(image, index) in images"
@@ -347,13 +348,3 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
         </Dialog>
     </div>
 </template>
-
-<style scoped>
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
-}
-.scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-</style>
