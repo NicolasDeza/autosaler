@@ -90,17 +90,6 @@ const mainNavItems = computed<HeaderNavItem[]>(() => {
             href: dealers.index().url,
             icon: Warehouse,
         },
-        {
-            title: __('nav.footer_contact'),
-            href: '#contact-modal',
-            icon: MessageCircle,
-            opensContactModal: true,
-        },
-        // {
-        //     title: __('nav.nav_dashboard'),
-        //     href: dashboard(),
-        //     icon: LayoutGrid,
-        // },
     ];
 
     if (can('view_dealer_dashboard')) {
@@ -118,6 +107,13 @@ const mainNavItems = computed<HeaderNavItem[]>(() => {
             icon: Shield,
         });
     }
+
+    items.push({
+        title: __('nav.contact'),
+        href: '#contact-modal',
+        icon: MessageCircle,
+        opensContactModal: true,
+    });
 
     return items;
 });

@@ -8,6 +8,7 @@ return [
     'home' => 'Home',
     'professionals' => 'Professionals',
     'dealerPage' => 'Dealers',
+    'contact' => 'Contact',
     'dealer_dashboard' => 'Dealer Dashboard',
     'admin_dashboard' => 'Admin Dashboard',
     'search' => 'Search',

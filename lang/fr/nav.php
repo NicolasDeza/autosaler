@@ -9,6 +9,7 @@ return [
     'home' => 'Accueil',
     'professionals' => 'Professionnels',
     'dealerPage' => 'Professionnels',
+    'contact' => 'Contact',
     'dealer_dashboard' => 'Tableau de bord',
     'admin_dashboard' => 'Tableau de bord',
     'search' => 'Rechercher',
