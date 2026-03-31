@@ -77,16 +77,16 @@ const submitSellerContact = (): void => {
 
 <template>
     <Dialog :open="isOpen" @update:open="handleOpenChange">
-        <DialogContent class="sm:max-w-xl">
-            <DialogHeader>
-                <DialogTitle>{{ __('vehicleAd.contact_seller') }}</DialogTitle>
-                <DialogDescription>
+        <DialogContent class="max-h-[90svh] overflow-y-auto border-0 p-0 sm:max-w-xl">
+            <DialogHeader class="border-b-2 border-primary bg-[#1c2631] px-6 py-5">
+                <DialogTitle class="text-white">{{ __('vehicleAd.contact_seller') }}</DialogTitle>
+                <DialogDescription class="text-white/80">
                     {{ __('vehicleAd.contact_seller_desc') }}
                 </DialogDescription>
             </DialogHeader>
 
             <form
-                class="space-y-4"
+                class="space-y-4 p-6"
                 autocomplete="off"
                 @submit.prevent="submitSellerContact"
             >

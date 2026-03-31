@@ -20,7 +20,7 @@
     $cityLabel = $company->city?->code ?? '-';
     $countryLabel = $company->country?->code ?? $company->city?->country?->code ?? '-';
     $planListings = (int) ($subscriptionPlan?->listing_limit ?? 0);
-    $planName = match ($subscriptionPlan?->key) {
+    $planName = match ($subscriptionPlan?->key ?? null) {
         'starter' => 'Starter',
         'pro' => 'Pro',
         'business' => 'Business',
@@ -47,11 +47,7 @@
                             <tr>
                                 @if ($logoSrc)
                                     <td style="padding-right:8px;vertical-align:middle;">
-                                        <img
-                                            src="{{ $logoSrc }}"
-                                            alt=""
-                                            style="display:block;height:26px;width:auto;"
-                                        >
+                                        <img src="{{ $logoSrc }}" alt="" style="display:block;height:26px;width:auto;">
                                     </td>
                                 @endif
                                 <td style="vertical-align:middle;">
@@ -67,7 +63,9 @@
                 <tr>
                     <td style="padding:24px;">
                         <p style="margin:0 0 6px 0;font-size:32px;font-weight:700;line-height:1.2;">Nouvelle inscription professionnelle</p>
-                        <p style="margin:0 0 20px 0;font-size:15px;line-height:1.55;color:#4b5563;">Un nouveau professionnel vient de soumettre une demande d'inscription.</p>
+                        <p style="margin:0 0 20px 0;font-size:15px;line-height:1.55;color:#4b5563;">
+                            Un nouveau professionnel vient de soumettre une demande d'inscription.
+                        </p>
 
                         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:16px;">
                             <tr>
@@ -138,7 +136,7 @@
                 <tr>
                     <td style="background:#1c2631;border-top:3px solid #f43f5e;padding:14px 24px;text-align:center;">
                         <p style="margin:0;font-size:12px;line-height:1.5;color:#cbd5e1;">
-                            © 2026 AutoSaler — Tous droits réservés.
+                            © {{ now()->year }} AutoSaler - Tous droits réservés.
                         </p>
                     </td>
                 </tr>

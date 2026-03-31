@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Actions\Dealer\RegisterDealerLead;
 use App\Http\Requests\DealerRegistrationRequest;
+use App\Mail\DealerRegistrationConfirmation;
 use App\Mail\DealerRegistrationSubmitted;
-use App\Mail\UserRegistrationConfirmation;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +32,11 @@ class DealerRegistrationController extends Controller
 
         Mail::to($registration['user']->email)
             ->locale($locale)
-            ->send(new UserRegistrationConfirmation($registration['user']));
+            ->send(new DealerRegistrationConfirmation(
+                $registration['user'],
+                $registration['company'],
+                $registration['subscription_plan'],
+            ));
 
         event(new Registered($registration['user']));
         Auth::login($registration['user']);

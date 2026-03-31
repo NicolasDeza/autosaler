@@ -55,6 +55,9 @@
                         <p style="margin:0 0 16px 0;font-size:15px;line-height:1.6;color:#4b5563;">
                             {{ $fullName !== '' ? __('registrationMail.greeting_named', ['name' => $fullName]) : __('registrationMail.greeting_generic') }}
                         </p>
+                        <p style="margin:0 0 14px 0;font-size:14px;line-height:1.7;color:#374151;">
+                            {{ __('registrationMail.intro') }}
+                        </p>
                         <p style="margin:0 0 24px 0;font-size:14px;line-height:1.7;color:#374151;">
                             {{ __('registrationMail.body') }}
                         </p>

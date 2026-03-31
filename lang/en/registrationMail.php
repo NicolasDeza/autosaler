@@ -1,11 +1,12 @@
 <?php
 
 return [
-    'subject' => 'Registration confirmed on AutoSaler',
+    'subject' => 'Welcome to AutoSaler',
     'title' => 'Registration confirmed',
-    'greeting_named' => 'Hello :name, your AutoSaler account has been created successfully.',
-    'greeting_generic' => 'Hello and welcome, your AutoSaler account has been created successfully.',
-    'body' => 'You can now log in, save favorites, and start exploring vehicle listings.',
+    'greeting_named' => 'Hello :name,',
+    'greeting_generic' => 'Hello,',
+    'intro' => 'Your AutoSaler account has been created successfully.',
+    'body' => 'You can now save favorites, compare vehicles, and contact sellers with ease.',
     'cta' => 'View vehicles',
     'copyright' => '© :year AutoSaler - All rights reserved.',
 ];

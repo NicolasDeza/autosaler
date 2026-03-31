@@ -33,11 +33,15 @@ it('sends a french confirmation mail when registration locale is french', functi
     expect($user)->not->toBeNull();
 
     Mail::assertSent(UserRegistrationConfirmation::class, function (UserRegistrationConfirmation $mail): bool {
+        $html = $mail->render();
+
         return $mail->locale === 'fr'
             && $mail->hasTo('nicolas@example.com')
             && $mail->user->first_name === 'Nicolas'
             && $mail->user->last_name === 'Martin'
-            && str_contains($mail->render(), 'Inscription confirmee');
+            && str_contains($html, 'Inscription confirmée')
+            && ! str_contains($html, 'Ã')
+            && ! str_contains($html, 'Â©');
     });
 });
 
@@ -58,9 +62,13 @@ it('sends an english confirmation mail when registration locale is english', fun
     expect($user)->not->toBeNull();
 
     Mail::assertSent(UserRegistrationConfirmation::class, function (UserRegistrationConfirmation $mail): bool {
+        $html = $mail->render();
+
         return $mail->locale === 'en'
             && $mail->hasTo('john@example.com')
-            && str_contains($mail->render(), 'Registration confirmed');
+            && str_contains($html, 'Registration confirmed')
+            && ! str_contains($html, 'Ã')
+            && ! str_contains($html, 'Â©');
     });
 
     expect(User::query()->count())->toBe(1);
