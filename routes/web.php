@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\VehicleBrandController as AdminVehicleBrandController;
+use App\Http\Controllers\Admin\VehicleModelController as AdminVehicleModelController;
 use App\Http\Controllers\CitySearchController;
 use App\Http\Controllers\ContactAdminController;
 use App\Http\Controllers\DealerDashboardController;
@@ -54,6 +56,10 @@ Route::middleware(['auth', 'verified', 'role:admin|dealer'])->group(function () 
 
     Route::middleware('permission:view_admin_dashboard')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+        Route::apiResource('vehicle-brands', AdminVehicleBrandController::class)->except(['index', 'show']);
+        Route::apiResource('vehicle-models', AdminVehicleModelController::class)->except(['index', 'show']);
+
         Route::patch('/users/{user}/subscription', [AdminDashboardController::class, 'updateSubscription'])->name('users.update_subscription');
         Route::delete('/users/{user}/subscription', [AdminDashboardController::class, 'cancelSubscription'])->name('users.cancel_subscription');
         Route::patch('/users/{user}/status', [AdminDashboardController::class, 'updateStatus'])->name('users.update_status');

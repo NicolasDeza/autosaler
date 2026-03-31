@@ -23,7 +23,7 @@ class AdminDashboardController extends Controller
         $tab = $request->query('tab', 'stats');
 
         return match ($tab) {
-            'vehicles' => $this->vehiclesTab($request),
+            'catalog' => $this->catalogTab($request),
             'users' => $this->usersTab($request),
             default => $this->statsTab($request),
         };
@@ -90,42 +90,19 @@ class AdminDashboardController extends Controller
         ]);
     }
 
-    protected function vehiclesTab(Request $request): Response
+    protected function catalogTab(Request $request): Response
     {
-        $query = VehicleAd::with(['brand', 'model', 'vehicleVersion', 'stat', 'user.company']);
-
-        if ($request->filled('company_id')) {
-            $query->whereHas('user', function ($q) use ($request) {
-                $q->where('company_id', $request->company_id);
-            });
-        }
-
-        if ($request->filled('brand_id')) {
-            $query->where('brand_id', $request->brand_id);
-        }
-
-        if ($request->filled('model_id')) {
-            $query->where('model_id', $request->model_id);
-        }
-
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $ads = $query->search($request->search)
-            ->sort($request->sort ?? 'latest')
-            ->paginate($request->per_page ?? 10)
-            ->withQueryString();
+        $brands = VehicleBrand::withCount('models')
+            ->orderBy('name')
+            ->get();
 
         return Inertia::render('AdminDashboard/Index', [
-            'tab' => 'vehicles',
-            'ads' => $ads,
-            'filters' => $request->only(['search', 'sort', 'per_page', 'brand_id', 'model_id', 'status', 'company_id']),
-            'companies' => Company::orderBy('name')->get(['id', 'name']),
-            'brands' => VehicleBrand::orderBy('name')->get(['id', 'name']),
+            'tab' => 'catalog',
+            'brands' => $brands,
             'models' => $request->filled('brand_id')
-                ? VehicleModel::where('brand_id', $request->brand_id)->orderBy('name')->get(['id', 'name', 'brand_id'])
+                ? VehicleModel::where('brand_id', $request->brand_id)->orderBy('name')->get()
                 : [],
+            'filters' => $request->only(['brand_id']),
         ]);
     }
 

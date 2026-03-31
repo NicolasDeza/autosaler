@@ -6,7 +6,7 @@
             class="flex min-h-[calc(100vh-64px)] flex-col bg-linear-to-b from-background to-muted/20 lg:flex-row lg:gap-8 lg:py-8"
         >
             <!-- Mobile Menu (Teleported to Bottom Bar) -->
-            <Teleport to="#sticky-bottom-mobile-portal">
+            <Teleport to="#sticky-bottom-mobile-portal" defer>
                 <div class="flex h-full w-full items-center justify-around gap-1 px-1 py-1">
                     <button
                         v-for="item in navItems"
@@ -115,13 +115,11 @@
                                 <DashboardStats :stats="stats || {}" />
                             </template>
 
-                            <template v-else-if="tab === 'vehicles'">
-                                <VehiclesList
-                                    :ads="ads || {}"
-                                    :filters="filters || {}"
-                                    :companies="companies || []"
+                            <template v-else-if="tab === 'catalog'">
+                                <VehicleCatalog
                                     :brands="brands || []"
                                     :models="models || []"
+                                    :filters="filters || {}"
                                 />
                             </template>
 
@@ -150,18 +148,16 @@ import { computed } from 'vue';
 import { index as adminDashboardIndex } from '@/actions/App/Http/Controllers/Admin/AdminDashboardController';
 import DashboardStats from '@/components/Admin/DashboardStats.vue';
 import UsersList from '@/components/Admin/UsersList.vue';
-import VehiclesList from '@/components/Admin/VehiclesList.vue';
+import VehicleCatalog from '@/components/Admin/VehicleCatalog.vue';
 import AppContent from '@/components/AppContent.vue';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/composables/useTranslation';
 
 interface Props {
-    tab: 'stats' | 'vehicles' | 'users';
+    tab: 'stats' | 'catalog' | 'users';
     stats?: any;
-    ads?: any;
     users?: any;
     filters?: any;
-    companies?: any[];
     brands?: any[];
     models?: any[];
     roles?: any[];
@@ -174,7 +170,7 @@ const page = usePage();
 
 const navItems = computed(() => [
     { id: 'stats', label: __('admin.tab_stats'), icon: LayoutDashboard },
-    { id: 'vehicles', label: __('admin.tab_vehicles'), icon: CarFront },
+    { id: 'catalog', label: __('admin.tab_catalog'), icon: CarFront },
     { id: 'users', label: __('admin.tab_users'), icon: Users },
 ]);
 
