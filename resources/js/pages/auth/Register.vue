@@ -136,6 +136,7 @@ const { __ } = useTranslation();
                     :href="login()"
                     class="underline underline-offset-4"
                     :tabindex="6"
+                    replace
                     >{{ __('auth.register_login_link') }}</TextLink
                 >
             </div>

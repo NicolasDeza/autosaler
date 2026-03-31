@@ -9,10 +9,9 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
-import { toUrl } from '@/lib/utils';
 import { home } from '@/routes';
 
-const props = defineProps<{
+defineProps<{
     title?: string;
     description?: string;
     closeHref?: NonNullable<InertiaLinkProps['href']>;
@@ -23,12 +22,15 @@ const handleOpenChange = (open: boolean): void => {
         return;
     }
 
-    const destination = toUrl(props.closeHref ?? home());
-
-    router.visit(destination, {
-        replace: true,
-        preserveScroll: true,
-    });
+    // Utiliser l'historique du navigateur empêche les boucles de redirection
+    // si l'utilisateur a été redirigé vers /login depuis une route protégée.
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        router.visit(home(), {
+            replace: true,
+        });
+    }
 };
 </script>
 

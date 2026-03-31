@@ -70,6 +70,7 @@ const { __ } = useTranslation();
                             :href="request()"
                             class="text-sm"
                             :tabindex="5"
+                            replace
                         >
                             {{ __('auth.login_forgot_password_link') }}
                         </TextLink>
@@ -110,7 +111,7 @@ const { __ } = useTranslation();
                 v-if="canRegister"
             >
                 {{ __('auth.login_no_account') }}
-                <TextLink :href="register()" :tabindex="5">{{
+                <TextLink :href="register()" :tabindex="5" replace>{{
                     __('auth.login_signup_link')
                 }}</TextLink>
             </div>
