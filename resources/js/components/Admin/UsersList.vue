@@ -210,14 +210,25 @@
                             </TableCell>
 
                             <TableCell class="py-5 pr-8 text-right">
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    class="font-heading h-9 w-9 border-border/40 bg-background/50 p-0 text-foreground/60 transition-all duration-300 hover:border-primary/50 hover:bg-primary/5 hover:text-primary"
-                                    @click="openEditModal(user)"
-                                >
-                                    <Edit2 class="h-4 w-4" />
-                                </Button>
+                                <div class="flex items-center justify-end gap-2">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        class="font-heading h-9 w-9 border-border/40 bg-background/50 p-0 text-foreground/60 transition-all duration-300 hover:border-primary/50 hover:bg-primary/5 hover:text-primary"
+                                        @click="openEditModal(user)"
+                                    >
+                                        <Edit2 class="h-4 w-4" />
+                                    </Button>
+                                    <Button
+                                        v-if="user.id !== auth?.user.id"
+                                        variant="outline"
+                                        size="sm"
+                                        class="font-heading h-9 w-9 border-border/40 bg-background/50 p-0 text-destructive/60 transition-all duration-300 hover:border-destructive/50 hover:bg-destructive/5 hover:text-destructive"
+                                        @click="deleteUser(user)"
+                                    >
+                                        <Trash2 class="h-4 w-4" />
+                                    </Button>
+                                </div>
                             </TableCell>
                         </TableRow>
 
@@ -392,15 +403,16 @@
 </template>
 
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 import { useDebounceFn } from '@vueuse/core';
 import { Search, Building2, Edit2, Trash2, Users } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import {
     index as adminDashboardIndex,
     updateSubscription as updateUserSubscription,
     cancelSubscription as cancelUserSubscription,
     updateStatus as updateUserStatus,
+    destroyUser as destroyUserAction,
 } from '@/actions/App/Http/Controllers/Admin/AdminDashboardController';
 import AppPagination from '@/components/AppPagination.vue';
 import { Badge } from '@/components/ui/badge';
@@ -448,6 +460,8 @@ const props = defineProps<{
 }>();
 
 const { __ } = useTranslation();
+const page = usePage();
+const auth = computed(() => (page.props as any).auth);
 
 const search = ref(props.filters.search || '');
 const roleFilter = ref(props.filters.role || 'all');
@@ -456,6 +470,14 @@ const selectedUser = ref<any>(null);
 const selectedUserStatus = ref<string>('active');
 const selectedPlanId = ref<string>('');
 const processing = ref(false);
+
+const deleteUser = (user: any) => {
+    if (confirm(__('admin.confirm_user_deletion', { name: `${user.first_name} ${user.last_name}` }))) {
+        router.delete(destroyUserAction.url(user.id), {
+            preserveScroll: true,
+        });
+    }
+};
 
 const getStatusColor = (status: string) => {
     switch (status) {

@@ -63,6 +63,7 @@ Route::middleware(['auth', 'verified', 'role:admin|dealer'])->group(function () 
         Route::patch('/users/{user}/subscription', [AdminDashboardController::class, 'updateSubscription'])->name('users.update_subscription');
         Route::delete('/users/{user}/subscription', [AdminDashboardController::class, 'cancelSubscription'])->name('users.cancel_subscription');
         Route::patch('/users/{user}/status', [AdminDashboardController::class, 'updateStatus'])->name('users.update_status');
+        Route::delete('/users/{user}', [AdminDashboardController::class, 'destroyUser'])->name('users.destroy');
     });
 });
 

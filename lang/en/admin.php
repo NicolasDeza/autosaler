@@ -101,4 +101,5 @@ return [
     'status_user_banned' => 'Banned',
     'cancel_subscription' => 'Cancel',
     'confirm_cancel_subscription' => 'Are you sure you want to cancel this subscription?',
+    'confirm_user_deletion' => 'Are you sure you want to delete user :name? This action is irreversible.',
 ];

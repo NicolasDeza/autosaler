@@ -101,4 +101,5 @@ return [
     'status_user_banned' => 'Banni',
     'cancel_subscription' => 'Résilier',
     'confirm_cancel_subscription' => 'Êtes-vous sûr de vouloir résilier cet abonnement ?',
+    'confirm_user_deletion' => 'Êtes-vous sûr de vouloir supprimer l\'utilisateur :name ? Cette action est irréversible.',
 ];

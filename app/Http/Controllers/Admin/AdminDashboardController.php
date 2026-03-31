@@ -175,4 +175,15 @@ class AdminDashboardController extends Controller
 
         return back()->with('success', 'Statut de l\'utilisateur mis à jour avec succès.');
     }
+
+    public function destroyUser(User $user)
+    {
+        if ($user->id === auth()->id()) {
+            return back()->with('error', 'Vous ne pouvez pas supprimer votre propre compte.');
+        }
+
+        $user->delete();
+
+        return back()->with('success', 'Utilisateur supprimé avec succès.');
+    }
 }
