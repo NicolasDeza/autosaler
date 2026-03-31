@@ -8,6 +8,7 @@ import type { DealerSubscriptionPlan } from '@/types/dealers';
 
 const props = defineProps<{
     plans: DealerSubscriptionPlan[];
+    proOnlySelection?: boolean;
 }>();
 
 const { __ } = useTranslation();
@@ -97,9 +98,25 @@ function planLabel(plan: PricingPlan): string {
     return __(`pricing.${plan.labelKey}`);
 }
 
-function selectPlan(subscriptionPlanId: number): void {
-    selected.value = subscriptionPlanId;
-    emit('select-plan', subscriptionPlanId);
+function shouldShowFreeProPrice(plan: PricingPlan): boolean {
+    return Boolean(props.proOnlySelection && plan.key === 'pro');
+}
+
+function isSelectablePlan(plan: PricingPlan): boolean {
+    if (!props.proOnlySelection) {
+        return true;
+    }
+
+    return plan.key === 'pro';
+}
+
+function selectPlan(plan: PricingPlan): void {
+    if (!isSelectablePlan(plan)) {
+        return;
+    }
+
+    selected.value = plan.id;
+    emit('select-plan', plan.id);
 }
 </script>
 
@@ -188,7 +205,18 @@ function selectPlan(subscriptionPlanId: number): void {
                             </span>
                         </div>
 
-                        <div class="mb-5 flex items-start gap-1">
+                        <div
+                            v-if="shouldShowFreeProPrice(plan)"
+                            class="mb-5 flex flex-wrap items-end gap-2"
+                        >
+                            <span class="text-2xl font-extrabold text-muted-foreground line-through">
+                                {{ Number(plan.price).toFixed(2) }} &euro;
+                            </span>
+                            <span class="rounded-md bg-primary px-2.5 py-1 text-xl font-black tracking-wide text-primary-foreground uppercase">
+                                {{ __('pricing.free_label') }}
+                            </span>
+                        </div>
+                        <div v-else class="mb-5 flex items-start gap-1">
                             <span
                                 class="text-4xl font-[1000] tracking-tight text-foreground tabular-nums"
                             >
@@ -241,13 +269,14 @@ function selectPlan(subscriptionPlanId: number): void {
                         </div>
 
                         <Button
+                            :disabled="!isSelectablePlan(plan)"
                             :variant="plan.featured ? 'default' : 'outline'"
-                            @click="selectPlan(plan.id)"
-                            class="mt-8 h-11 w-full cursor-pointer rounded-lg text-sm font-black tracking-[0.08em] uppercase transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2"
+                            @click="selectPlan(plan)"
+                            class="mt-8 h-11 w-full cursor-pointer rounded-lg text-sm font-black tracking-[0.08em] uppercase transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-pointer disabled:opacity-45"
                             :class="
                                 plan.featured
-                                    ? 'border-transparent!'
-                                    : 'border-transparent! bg-foreground text-background hover:bg-foreground/90 hover:text-background'
+                                    ? 'border-transparent! disabled:bg-primary disabled:text-primary-foreground'
+                                    : 'border-transparent! bg-foreground text-background hover:bg-foreground/90 hover:text-background disabled:bg-muted disabled:text-muted-foreground'
                             "
                         >
                             {{ __('pricing.cta_paid') }}

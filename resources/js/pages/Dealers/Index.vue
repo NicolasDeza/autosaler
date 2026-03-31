@@ -103,6 +103,7 @@ const openDealerRegistrationModal = (
     <AppContent>
         <PriceCard
             :plans="props.plans"
+            :pro-only-selection="true"
             @select-plan="openDealerRegistrationModal"
         />
     </AppContent>
