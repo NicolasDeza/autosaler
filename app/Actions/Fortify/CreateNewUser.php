@@ -33,6 +33,8 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $input['password'],
         ]);
 
+        $user->assignRole('user');
+
         $locale = app()->getLocale();
         $availableLocales = config('app.available_locales', ['en', 'fr']);
 

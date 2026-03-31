@@ -44,6 +44,8 @@ class RegisterDealerLead
                 'password' => (string) $payload['password'],
             ]);
 
+            $user->assignRole('dealer');
+
             return [
                 'company' => $company,
                 'user' => $user,
