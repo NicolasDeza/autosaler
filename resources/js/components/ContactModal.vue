@@ -90,15 +90,15 @@ const submitContact = (): void => {
 
 <template>
     <Dialog :open="isOpen" @update:open="handleOpenChange">
-        <DialogContent class="max-h-[90svh] overflow-y-auto sm:max-w-xl">
-            <DialogHeader>
-                <DialogTitle>{{ __('nav.contact_modal_title') }}</DialogTitle>
-                <DialogDescription>
+        <DialogContent class="max-h-[90svh] overflow-y-auto border-0 p-0 sm:max-w-xl">
+            <DialogHeader class="border-b-2 border-primary bg-[#1c2631] px-6 py-5">
+                <DialogTitle class="text-white">{{ __('nav.contact_modal_title') }}</DialogTitle>
+                <DialogDescription class="text-white/80">
                     {{ __('nav.contact_modal_description') }}
                 </DialogDescription>
             </DialogHeader>
 
-            <form class="space-y-4" @submit.prevent="submitContact">
+            <form class="space-y-4 p-6" @submit.prevent="submitContact">
                 <div class="space-y-2">
                     <Label for="contact_topic">
                         {{ __('nav.contact_topic_label') }} <span class="text-primary">*</span>

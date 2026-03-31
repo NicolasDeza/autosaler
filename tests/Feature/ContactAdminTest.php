@@ -29,10 +29,17 @@ it('sends a contact message to the admin email', function () {
         ->assertSessionHas('success', true);
 
     Mail::assertSent(ContactAdminMessage::class, function (ContactAdminMessage $mail): bool {
+        $html = $mail->render();
+
         return $mail->hasTo('admin@example.com')
             && $mail->contact['topic'] === 'bug'
             && $mail->contact['email'] === 'nicolas@example.com'
-            && $mail->contact['message'] === 'Le bouton contact du footer ne repond pas.';
+            && $mail->contact['message'] === 'Le bouton contact du footer ne repond pas.'
+            && str_contains($html, 'Détails de la demande')
+            && str_contains($html, 'Téléphone')
+            && str_contains($html, 'Message envoyé depuis le formulaire de contact du site.')
+            && ! str_contains($html, 'Ã')
+            && ! str_contains($html, 'Â©');
     });
 });
 
@@ -62,8 +69,11 @@ it('accepts a message with only first name and no phone', function () {
     $response->assertRedirect();
 
     Mail::assertSent(ContactAdminMessage::class, function (ContactAdminMessage $mail): bool {
+        $html = $mail->render();
+
         return $mail->hasTo('admin@example.com')
             && $mail->contact['topic'] === 'info'
-            && $mail->contact['first_name'] === 'Nicolas';
+            && $mail->contact['first_name'] === 'Nicolas'
+            && str_contains($html, 'Information');
     });
 });

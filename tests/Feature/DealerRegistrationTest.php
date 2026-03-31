@@ -1,7 +1,7 @@
 <?php
 
+use App\Mail\DealerRegistrationConfirmation;
 use App\Mail\DealerRegistrationSubmitted;
-use App\Mail\UserRegistrationConfirmation;
 use App\Models\City;
 use App\Models\Company;
 use App\Models\SubscriptionPlan;
@@ -112,15 +112,29 @@ it('registers a dealer lead, logs user in, and notifies admin', function () {
     $this->assertAuthenticatedAs($user);
 
     Mail::assertSent(DealerRegistrationSubmitted::class, function (DealerRegistrationSubmitted $mail) use ($company, $user): bool {
+        $html = $mail->render();
+
         return $mail->registration['company']->id === $company?->id
             && $mail->registration['user']->id === $user?->id
-            && $mail->registration['subscription_plan']->key === 'pro';
+            && $mail->registration['subscription_plan']->key === 'pro'
+            && ! str_contains($html, 'Ã')
+            && ! str_contains($html, 'Â©');
     });
 
-    Mail::assertSent(UserRegistrationConfirmation::class, function (UserRegistrationConfirmation $mail) use ($user): bool {
+    Mail::assertSent(DealerRegistrationConfirmation::class, function (DealerRegistrationConfirmation $mail) use ($user, $company): bool {
+        $html = $mail->render();
+
         return $user !== null
             && $mail->hasTo($user->email)
-            && $mail->user->is($user);
+            && $mail->user->is($user)
+            && $company !== null
+            && $mail->company->is($company)
+            && (
+                str_contains($html, 'Demande d’inscription professionnelle reçue')
+                || str_contains($html, 'Professional registration request received')
+            )
+            && ! str_contains($html, 'Ã')
+            && ! str_contains($html, 'Â©');
     });
 });
 

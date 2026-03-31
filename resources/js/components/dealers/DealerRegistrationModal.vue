@@ -233,8 +233,8 @@ const confirmSuccessModal = (): void => {
 
 <template>
     <Dialog :open="isOpen" @update:open="handleOpenChange">
-        <DialogContent class="max-h-[90svh] overflow-y-auto sm:max-w-2xl">
-            <DialogHeader class="-mx-6 -mt-6 bg-[#1c2631] px-6 py-5">
+        <DialogContent class="max-h-[90svh] overflow-y-auto border-0 p-0 sm:max-w-2xl">
+            <DialogHeader class="border-b-2 border-primary bg-[#1c2631] px-6 py-5">
                 <DialogTitle class="text-white">
                     {{ __('dealerPage.registration_modal_title') }}
                 </DialogTitle>
@@ -243,7 +243,7 @@ const confirmSuccessModal = (): void => {
                 </DialogDescription>
             </DialogHeader>
 
-            <form class="flex flex-col gap-5" @submit.prevent="submit">
+            <form class="flex flex-col gap-5 p-6" @submit.prevent="submit">
                 <div class="order-2 space-y-3">
                     <h3 class="text-sm font-bold tracking-wide text-foreground/80 uppercase">
                         {{ __('dealerPage.registration_section_company') }}

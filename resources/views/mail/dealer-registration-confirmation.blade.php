@@ -12,18 +12,12 @@
     }
 
     $logoSrc = isset($message) && $logoPath !== null ? $message->embed($logoPath) : null;
-
-    $contactName = trim(sprintf(
-        '%s %s',
-        (string) ($contact['first_name'] ?? ''),
-        (string) ($contact['last_name'] ?? ''),
-    ));
-
-    $topicLabel = match ($contact['topic'] ?? null) {
-        'info' => __('contactAdminMail.topics.info'),
-        'bug' => __('contactAdminMail.topics.bug'),
-        default => __('contactAdminMail.topics.other'),
-    };
+    $fullName = trim(sprintf('%s %s', (string) $user->first_name, (string) $user->last_name));
+    $planTranslationKey = 'dealerRegistrationMail.plan_names.' . $subscriptionPlan->key;
+    $translatedPlanName = __($planTranslationKey);
+    $planName = str_starts_with($translatedPlanName, 'dealerRegistrationMail.plan_names.')
+        ? ucfirst((string) $subscriptionPlan->key)
+        : $translatedPlanName;
 @endphp
 
 <!doctype html>
@@ -31,7 +25,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ __('contactAdminMail.title') }}</title>
+    <title>{{ __('dealerRegistrationMail.subject') }}</title>
 </head>
 <body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,Helvetica,sans-serif;color:#111827;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f3f4f6;padding:24px 12px;">
@@ -58,55 +52,56 @@
                 </tr>
                 <tr>
                     <td style="padding:24px;">
-                        <p style="margin:0 0 6px 0;font-size:32px;font-weight:700;line-height:1.2;">{{ __('contactAdminMail.title') }}</p>
-                        <p style="margin:0 0 20px 0;font-size:15px;line-height:1.55;color:#4b5563;">
-                            {{ __('contactAdminMail.intro') }}
+                        <p style="margin:0 0 8px 0;font-size:30px;font-weight:700;line-height:1.2;">
+                            {{ __('dealerRegistrationMail.title') }}
+                        </p>
+                        <p style="margin:0 0 14px 0;font-size:15px;line-height:1.6;color:#4b5563;">
+                            {{ $fullName !== '' ? __('dealerRegistrationMail.greeting_named', ['name' => $fullName]) : __('dealerRegistrationMail.greeting_generic') }}
+                        </p>
+                        <p style="margin:0 0 14px 0;font-size:14px;line-height:1.7;color:#374151;">
+                            {{ __('dealerRegistrationMail.intro', ['company' => $company->name]) }}
+                        </p>
+                        <p style="margin:0 0 18px 0;font-size:14px;line-height:1.7;color:#374151;">
+                            {{ __('dealerRegistrationMail.review_timeline') }}
                         </p>
 
-                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:16px;">
+                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:18px;">
                             <tr>
-                                <td style="padding:14px 16px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-weight:700;">{{ __('contactAdminMail.details_title') }}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding:14px 16px;font-size:14px;line-height:1.7;">
-                                    <strong>{{ __('contactAdminMail.labels.topic') }}</strong> {{ $topicLabel }}<br>
-                                    <strong>{{ __('contactAdminMail.labels.name') }}</strong> {{ $contactName !== '' ? $contactName : '-' }}<br>
-                                    <strong>{{ __('contactAdminMail.labels.email') }}</strong> {{ $contact['email'] }}<br>
-                                    <strong>{{ __('contactAdminMail.labels.phone') }}</strong> {{ $contact['phone'] ?? '-' }}
+                                <td style="padding:12px 16px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-size:14px;font-weight:700;">
+                                    {{ __('dealerRegistrationMail.next_steps_title') }}
                                 </td>
-                            </tr>
-                        </table>
-
-                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:20px;">
-                            <tr>
-                                <td style="padding:14px 16px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-weight:700;">{{ __('contactAdminMail.message_title') }}</td>
                             </tr>
                             <tr>
                                 <td style="padding:14px 16px;font-size:14px;line-height:1.7;color:#374151;">
-                                    {!! nl2br(e($contact['message'])) !!}
+                                    • {{ __('dealerRegistrationMail.step_1') }}<br>
+                                    • {{ __('dealerRegistrationMail.step_2') }}<br>
+                                    • {{ __('dealerRegistrationMail.step_3') }}
                                 </td>
                             </tr>
                         </table>
+
+                        <p style="margin:0 0 18px 0;font-size:14px;line-height:1.7;color:#374151;">
+                            {{ __('dealerRegistrationMail.plan_summary', ['plan' => $planName, 'listings' => (int) $subscriptionPlan->listing_limit]) }}
+                        </p>
 
                         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top:4px;">
                             <tr>
                                 <td align="center">
                                     <a
-                                        href="{{ route('home') }}"
+                                        href="{{ route('vehicles.index') }}"
                                         style="display:inline-block;padding:11px 18px;background:#1c2631;color:#ffffff;text-decoration:none;border-radius:8px;font-size:14px;font-weight:700;"
                                     >
-                                        {{ __('contactAdminMail.cta') }}
+                                        {{ __('dealerRegistrationMail.cta') }}
                                     </a>
                                 </td>
                             </tr>
                         </table>
                     </td>
                 </tr>
-
                 <tr>
                     <td style="background:#1c2631;border-top:3px solid #f43f5e;padding:14px 24px;text-align:center;">
                         <p style="margin:0;font-size:12px;line-height:1.5;color:#cbd5e1;">
-                            {{ __('contactAdminMail.copyright', ['year' => now()->year]) }}
+                            {{ __('dealerRegistrationMail.copyright', ['year' => now()->year]) }}
                         </p>
                     </td>
                 </tr>

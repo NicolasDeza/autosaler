@@ -27,7 +27,7 @@ class ContactAdminMessage extends Mailable
         );
 
         return new Envelope(
-            subject: sprintf('Nouveau message de contact (%s)', $this->topicLabel()),
+            subject: __('contactAdminMail.subject', ['topic' => $this->topicLabel()]),
             replyTo: [
                 new Address(
                     $this->contact['email'],
@@ -57,9 +57,9 @@ class ContactAdminMessage extends Mailable
     protected function topicLabel(): string
     {
         return match ($this->contact['topic'] ?? null) {
-            'info' => 'Information',
-            'bug' => 'Bug',
-            default => 'Autre',
+            'info' => __('contactAdminMail.topics.info'),
+            'bug' => __('contactAdminMail.topics.bug'),
+            default => __('contactAdminMail.topics.other'),
         };
     }
 }
