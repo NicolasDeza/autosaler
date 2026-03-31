@@ -11,6 +11,15 @@
                     {{ __('admin.catalog_description') }}
                 </p>
             </div>
+            <Button
+                size="sm"
+                class="hidden h-9 gap-2 shadow-sm transition-all hover:scale-105 active:scale-95 lg:flex"
+                @click="openBrandDialog()"
+            >
+                <Plus class="h-4 w-4" />
+                <span class="hidden sm:inline">{{ __('admin.brand_add') }}</span>
+                <span class="sm:hidden">Marque</span>
+            </Button>
         </div>
 
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -29,7 +38,7 @@
                     </CardTitle>
                     <Button
                         size="sm"
-                        class="h-8 gap-2 border-border/40 text-xs font-bold transition-all hover:border-primary/40 hover:bg-primary/5"
+                        class="h-8 gap-2 border-border/40 text-xs font-bold transition-all hover:border-primary/40 hover:bg-primary/5 lg:hidden"
                         @click="openBrandDialog()"
                     >
                         <Plus class="h-3.5 w-3.5" />

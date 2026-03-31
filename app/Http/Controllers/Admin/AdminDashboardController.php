@@ -47,12 +47,12 @@ class AdminDashboardController extends Controller
 
         $adsEvolution = $last7Days->map(fn ($date) => [
             'date' => $date,
-            'count' => $adsCount->get($date, 0),
+            'count' => (int) $adsCount->get($date, 0),
         ]);
 
         $usersEvolution = $last7Days->map(fn ($date) => [
             'date' => $date,
-            'count' => $usersCount->get($date, 0),
+            'count' => (int) $usersCount->get($date, 0),
         ]);
 
         $stats = [
