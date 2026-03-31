@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import VehicleAdCard from '@/components/VehicleAds/VehicleAdCard.vue';
 import { useTranslation } from '@/composables/useTranslation';
+import vehiclesRoutes from '@/routes/vehicles';
 
 const { __ } = useTranslation();
 
@@ -57,10 +59,13 @@ defineProps<{
 
             <div class="mt-8 flex justify-center">
                 <Button
+                    as-child
                     size="lg"
                     class="cursor-pointer px-4 py-4 text-base font-semibold"
                 >
-                    {{ __('recentVehicles.search_button') }}
+                    <Link :href="vehiclesRoutes.index().url">
+                        {{ __('recentVehicles.search_button') }}
+                    </Link>
                 </Button>
             </div>
         </div>
