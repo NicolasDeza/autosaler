@@ -110,8 +110,18 @@ class AdminDashboardController extends Controller
     {
         $query = User::with(['roles', 'company', 'subscriptions.plan']);
 
-        if ($request->filled('role')) {
-            $query->role($request->role);
+        $showAdmins = $request->has('show_admins') && ($request->show_admins === 'true' || $request->show_admins === '1' || $request->show_admins === true);
+        
+        if ($showAdmins) {
+            $query->role('admin');
+        } else {
+            $query->whereDoesntHave('roles', function ($q) {
+                $q->where('name', 'admin');
+            });
+
+            if ($request->filled('role')) {
+                $query->role($request->role);
+            }
         }
 
         if ($request->filled('search')) {
@@ -123,14 +133,41 @@ class AdminDashboardController extends Controller
             });
         }
 
+        // Sorting logic
+        $sort = $request->query('sort', 'created_at');
+        $direction = $request->query('direction', 'desc');
+
+        match ($sort) {
+            'name' => $query->orderBy('last_name', $direction)->orderBy('first_name', $direction),
+            'role' => $query->orderBy(
+                \Spatie\Permission\Models\Role::select('name')
+                    ->join('model_has_roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->whereColumn('model_has_roles.model_id', 'users.id')
+                    ->where('model_has_roles.model_type', User::class)
+                    ->limit(1),
+                $direction
+            ),
+            'subscription' => $query->orderBy(
+                SubscriptionPlan::select('key')
+                    ->join('subscriptions', 'subscription_plans.id', '=', 'subscriptions.subscription_plan_id')
+                    ->whereColumn('subscriptions.user_id', 'users.id')
+                    ->where('subscriptions.status', 'active')
+                    ->limit(1),
+                $direction
+            ),
+            default => $query->orderBy($sort, $direction),
+        };
+
         $users = $query->paginate($request->per_page ?? 10)
             ->withQueryString();
 
         return Inertia::render('AdminDashboard/Index', [
             'tab' => 'users',
             'users' => $users,
-            'filters' => $request->only(['search', 'role', 'per_page']),
-            'roles' => Role::all(['id', 'name']),
+            'filters' => array_merge($request->only(['search', 'role', 'per_page', 'sort', 'direction']), [
+                'show_admins' => $showAdmins
+            ]),
+            'roles' => Role::where('name', '!=', 'admin')->get(['id', 'name']),
             'subscription_plans' => SubscriptionPlan::all(),
         ]);
     }

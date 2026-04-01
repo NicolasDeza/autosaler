@@ -73,6 +73,8 @@ return [
     'actions' => 'Actions',
     'no_active_subscription' => 'Aucun abonnement actif',
     'edit_subscription' => 'Modifier abonnement',
+    'registered_at' => 'Inscrit le',
+    'show_admins_only' => 'Afficher uniquement les admins',
     'no_users_found' => 'Aucun utilisateur trouvé.',
     'users_label' => 'utilisateurs',
 
