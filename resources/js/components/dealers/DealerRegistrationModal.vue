@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
-import { LoaderCircle, Send } from 'lucide-vue-next';
+import { LoaderCircle, Send, X } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 import DealerRegistrationController from '@/actions/App/Http/Controllers/DealerRegistrationController';
@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import {
     Dialog,
     DialogContent,
+    DialogClose,
     DialogDescription,
     DialogFooter,
     DialogHeader,
@@ -233,14 +234,25 @@ const confirmSuccessModal = (): void => {
 
 <template>
     <Dialog :open="isOpen" @update:open="handleOpenChange">
-        <DialogContent class="max-h-[90svh] overflow-y-auto border-0 p-0 sm:max-w-2xl">
-            <DialogHeader class="border-b-2 border-primary bg-[#1c2631] px-6 py-5">
+        <DialogContent
+            :show-close-button="false"
+            class="max-h-[90svh] overflow-y-auto border-0 p-0 sm:max-w-2xl"
+        >
+            <DialogHeader
+                class="sticky top-0 z-20 border-b-2 border-primary bg-[#1c2631] px-6 py-5 pr-16"
+            >
                 <DialogTitle class="text-white">
                     {{ __('dealerPage.registration_modal_title') }}
                 </DialogTitle>
                 <DialogDescription class="text-white/80">
                     {{ __('dealerPage.registration_modal_description') }}
                 </DialogDescription>
+                <DialogClose
+                    class="absolute top-4 right-4 inline-flex size-9 cursor-pointer items-center justify-center rounded-md text-white/85 transition-colors hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:outline-none"
+                >
+                    <X class="size-5" />
+                    <span class="sr-only">{{ __('ui.close') || 'Close' }}</span>
+                </DialogClose>
             </DialogHeader>
 
             <form class="flex flex-col gap-5 p-6" @submit.prevent="submit">
@@ -490,7 +502,12 @@ const confirmSuccessModal = (): void => {
                 </div>
 
                 <DialogFooter class="order-4">
-                    <Button type="button" variant="outline" @click="isOpen = false">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        class="cursor-pointer"
+                        @click="isOpen = false"
+                    >
                         {{ __('dealerPage.modal_cancel') }}
                     </Button>
                     <Button

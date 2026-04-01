@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
-import { Send } from 'lucide-vue-next';
+import { Send, X } from 'lucide-vue-next';
 import { watch } from 'vue';
 import { toast } from 'vue-sonner';
 import VehicleAdContactController from '@/actions/App/Http/Controllers/VehicleAdContactController';
@@ -8,6 +8,7 @@ import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -77,12 +78,23 @@ const submitSellerContact = (): void => {
 
 <template>
     <Dialog :open="isOpen" @update:open="handleOpenChange">
-        <DialogContent class="max-h-[90svh] overflow-y-auto border-0 p-0 sm:max-w-xl">
-            <DialogHeader class="border-b-2 border-primary bg-[#1c2631] px-6 py-5">
+        <DialogContent
+            :show-close-button="false"
+            class="max-h-[90svh] overflow-y-auto border-0 p-0 sm:max-w-xl"
+        >
+            <DialogHeader
+                class="sticky top-0 z-20 border-b-2 border-primary bg-[#1c2631] px-6 py-5 pr-16"
+            >
                 <DialogTitle class="text-white">{{ __('vehicleAd.contact_seller') }}</DialogTitle>
                 <DialogDescription class="text-white/80">
                     {{ __('vehicleAd.contact_seller_desc') }}
                 </DialogDescription>
+                <DialogClose
+                    class="absolute top-4 right-4 inline-flex size-9 cursor-pointer items-center justify-center rounded-md text-white/85 transition-colors hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:outline-none"
+                >
+                    <X class="size-5" />
+                    <span class="sr-only">{{ __('ui.close') || 'Close' }}</span>
+                </DialogClose>
             </DialogHeader>
 
             <form
