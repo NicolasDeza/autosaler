@@ -257,7 +257,12 @@ const confirmSuccessModal = (): void => {
                             <Label for="company_name">
                                 {{ __('dealerPage.field_company_name') }} <span class="text-primary">*</span>
                             </Label>
-                            <Input id="company_name" v-model="form.company_name" />
+                            <Input
+                                id="company_name"
+                                v-model="form.company_name"
+                                name="company_name"
+                                autocomplete="organization"
+                            />
                             <InputError :message="form.errors.company_name" />
                         </div>
 
@@ -265,7 +270,13 @@ const confirmSuccessModal = (): void => {
                             <Label for="company_email">
                                 {{ __('dealerPage.field_company_email') }} <span class="text-primary">*</span>
                             </Label>
-                            <Input id="company_email" type="email" v-model="form.company_email" />
+                            <Input
+                                id="company_email"
+                                type="email"
+                                v-model="form.company_email"
+                                name="company_email"
+                                autocomplete="email"
+                            />
                             <InputError :message="form.errors.company_email" />
                         </div>
 
@@ -273,13 +284,24 @@ const confirmSuccessModal = (): void => {
                             <Label for="company_phone">
                                 {{ __('dealerPage.field_company_phone') }} <span class="text-primary">*</span>
                             </Label>
-                            <Input id="company_phone" type="tel" v-model="form.company_phone" />
+                            <Input
+                                id="company_phone"
+                                type="tel"
+                                v-model="form.company_phone"
+                                name="company_phone"
+                                autocomplete="tel"
+                            />
                             <InputError :message="form.errors.company_phone" />
                         </div>
 
                         <div class="space-y-2">
                             <Label for="tva_number">{{ __('dealerPage.field_tva_number') }}</Label>
-                            <Input id="tva_number" v-model="form.tva_number" />
+                            <Input
+                                id="tva_number"
+                                v-model="form.tva_number"
+                                name="tva_number"
+                                autocomplete="off"
+                            />
                             <InputError :message="form.errors.tva_number" />
                         </div>
 
@@ -287,7 +309,10 @@ const confirmSuccessModal = (): void => {
                             <Label for="subscription_plan_id">
                                 {{ __('dealerPage.field_plan') }} <span class="text-primary">*</span>
                             </Label>
-                            <Select v-model="form.subscription_plan_id">
+                            <Select
+                                v-model="form.subscription_plan_id"
+                                name="subscription_plan_id"
+                            >
                                 <SelectTrigger id="subscription_plan_id" class="w-full">
                                     <SelectValue :placeholder="__('dealerPage.placeholder_plan')" />
                                 </SelectTrigger>
@@ -308,7 +333,12 @@ const confirmSuccessModal = (): void => {
                             <Label for="company_address">
                                 {{ __('dealerPage.field_company_address') }} <span class="text-primary">*</span>
                             </Label>
-                            <Input id="company_address" v-model="form.company_address" />
+                            <Input
+                                id="company_address"
+                                v-model="form.company_address"
+                                name="company_address"
+                                autocomplete="street-address"
+                            />
                             <InputError :message="form.errors.company_address" />
                         </div>
 
@@ -319,11 +349,25 @@ const confirmSuccessModal = (): void => {
                             <Input
                                 id="city_query"
                                 v-model="cityQuery"
+                                name="city_query"
                                 :placeholder="__('dealerPage.placeholder_city')"
+                                autocomplete="address-level2"
                                 @input="searchCities(cityQuery)"
                                 @focus="cityQuery.length >= 2 ? (showCityResults = true) : null"
                                 @blur="handleCityBlur"
                             />
+                            <input
+                                id="city_id"
+                                v-model="form.city_id"
+                                type="hidden"
+                                name="city_id"
+                            >
+                            <input
+                                id="subscription_plan_id_value"
+                                v-model="form.subscription_plan_id"
+                                type="hidden"
+                                name="subscription_plan_id"
+                            >
                             <InputError :message="form.errors.city_id" />
 
                             <div
@@ -362,7 +406,12 @@ const confirmSuccessModal = (): void => {
                             <Label for="first_name">
                                 {{ __('dealerPage.field_first_name') }} <span class="text-primary">*</span>
                             </Label>
-                            <Input id="first_name" v-model="form.first_name" />
+                            <Input
+                                id="first_name"
+                                v-model="form.first_name"
+                                name="first_name"
+                                autocomplete="given-name"
+                            />
                             <InputError :message="form.errors.first_name" />
                         </div>
 
@@ -370,7 +419,12 @@ const confirmSuccessModal = (): void => {
                             <Label for="last_name">
                                 {{ __('dealerPage.field_last_name') }} <span class="text-primary">*</span>
                             </Label>
-                            <Input id="last_name" v-model="form.last_name" />
+                            <Input
+                                id="last_name"
+                                v-model="form.last_name"
+                                name="last_name"
+                                autocomplete="family-name"
+                            />
                             <InputError :message="form.errors.last_name" />
                         </div>
 
@@ -378,7 +432,13 @@ const confirmSuccessModal = (): void => {
                             <Label for="email">
                                 {{ __('dealerPage.field_user_email') }} <span class="text-primary">*</span>
                             </Label>
-                            <Input id="email" type="email" v-model="form.email" />
+                            <Input
+                                id="email"
+                                type="email"
+                                v-model="form.email"
+                                name="email"
+                                autocomplete="email"
+                            />
                             <InputError :message="form.errors.email" />
                         </div>
 
@@ -386,7 +446,13 @@ const confirmSuccessModal = (): void => {
                             <Label for="password">
                                 {{ __('dealerPage.field_password') }} <span class="text-primary">*</span>
                             </Label>
-                            <Input id="password" type="password" v-model="form.password" />
+                            <Input
+                                id="password"
+                                type="password"
+                                v-model="form.password"
+                                name="password"
+                                autocomplete="new-password"
+                            />
                             <InputError :message="form.errors.password" />
                         </div>
 
@@ -398,12 +464,20 @@ const confirmSuccessModal = (): void => {
                                 id="password_confirmation"
                                 type="password"
                                 v-model="form.password_confirmation"
+                                name="password_confirmation"
+                                autocomplete="new-password"
                             />
                         </div>
 
                         <div class="space-y-2 sm:col-span-2">
                             <Label for="message">{{ __('dealerPage.field_message') }}</Label>
-                            <Textarea id="message" v-model="form.message" rows="3" />
+                            <Textarea
+                                id="message"
+                                v-model="form.message"
+                                name="message"
+                                autocomplete="off"
+                                rows="3"
+                            />
                             <InputError :message="form.errors.message" />
                         </div>
                     </div>

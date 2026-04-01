@@ -103,7 +103,10 @@ const submitContact = (): void => {
                     <Label for="contact_topic">
                         {{ __('nav.contact_topic_label') }} <span class="text-primary">*</span>
                     </Label>
-                    <Select v-model="contactForm.topic">
+                    <Select
+                        v-model="contactForm.topic"
+                        name="topic"
+                    >
                         <SelectTrigger id="contact_topic" class="w-full">
                             <SelectValue :placeholder="__('nav.contact_topic_label')" />
                         </SelectTrigger>
@@ -113,6 +116,12 @@ const submitContact = (): void => {
                             <SelectItem value="other">{{ __('nav.contact_topic_other') }}</SelectItem>
                         </SelectContent>
                     </Select>
+                    <input
+                        id="contact_topic_value"
+                        v-model="contactForm.topic"
+                        type="hidden"
+                        name="topic"
+                    >
                     <InputError :message="contactForm.errors.topic" />
                 </div>
 
@@ -123,8 +132,10 @@ const submitContact = (): void => {
                     <Textarea
                         id="contact_message"
                         v-model="contactForm.message"
+                        name="message"
                         rows="5"
                         required
+                        autocomplete="off"
                         :placeholder="__('nav.contact_message_placeholder')"
                     />
                     <InputError :message="contactForm.errors.message" />
@@ -137,7 +148,8 @@ const submitContact = (): void => {
                         <Input
                             id="contact_last_name"
                             v-model="contactForm.last_name"
-                            autocomplete="off"
+                            name="last_name"
+                            autocomplete="family-name"
                             autocorrect="off"
                             autocapitalize="off"
                             spellcheck="false"
@@ -151,7 +163,8 @@ const submitContact = (): void => {
                         <Input
                             id="contact_first_name"
                             v-model="contactForm.first_name"
-                            autocomplete="off"
+                            name="first_name"
+                            autocomplete="given-name"
                             autocorrect="off"
                             autocapitalize="off"
                             spellcheck="false"
@@ -170,8 +183,9 @@ const submitContact = (): void => {
                             id="contact_email"
                             v-model="contactForm.email"
                             type="email"
+                            name="email"
                             required
-                            autocomplete="off"
+                            autocomplete="email"
                             autocorrect="off"
                             autocapitalize="off"
                             spellcheck="false"
@@ -186,6 +200,8 @@ const submitContact = (): void => {
                             id="contact_phone"
                             v-model="contactForm.phone"
                             type="tel"
+                            name="phone"
+                            autocomplete="tel"
                             placeholder="+32 4XX XX XX XX"
                         />
                         <InputError :message="contactForm.errors.phone" />
