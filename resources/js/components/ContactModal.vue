@@ -93,10 +93,10 @@ const submitContact = (): void => {
     <Dialog :open="isOpen" @update:open="handleOpenChange">
         <DialogContent
             :show-close-button="false"
-            class="max-h-[90svh] overflow-y-auto border-0 p-0 sm:max-w-xl"
+            class="flex max-h-[90svh] flex-col overflow-hidden border-0 p-0 sm:max-w-xl"
         >
             <DialogHeader
-                class="sticky top-0 z-20 border-b-2 border-primary bg-[#1c2631] px-6 py-5 pr-16"
+                class="z-20 border-b-2 border-primary bg-[#1c2631] px-6 py-5 pr-16"
             >
                 <DialogTitle class="text-white">{{ __('nav.contact_modal_title') }}</DialogTitle>
                 <DialogDescription class="text-white/80">
@@ -110,7 +110,10 @@ const submitContact = (): void => {
                 </DialogClose>
             </DialogHeader>
 
-            <form class="space-y-4 p-6" @submit.prevent="submitContact">
+            <form
+                class="min-h-0 space-y-4 overflow-y-auto p-6"
+                @submit.prevent="submitContact"
+            >
                 <div class="space-y-2">
                     <Label for="contact_topic">
                         {{ __('nav.contact_topic_label') }} <span class="text-primary">*</span>
