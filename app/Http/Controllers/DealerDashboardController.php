@@ -18,7 +18,7 @@ class DealerDashboardController extends Controller
 
         $dealerId = auth()->id();
 
-        $query = VehicleAd::with(['brand', 'model', 'vehicleVersion', 'stat'])
+        $query = VehicleAd::with(['brand', 'model', 'vehicleVersion', 'stat', 'media'])
             ->where('user_id', $dealerId);
 
         // Filters
