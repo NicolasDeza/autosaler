@@ -38,6 +38,7 @@ const toggleComparison = (ad: any) => {
             vehicle_version_name:
                 ad.vehicle_version_name || ad.vehicle_version?.name,
             price: Number(ad.price),
+            image: ad.primary_image?.thumb,
         });
     }
 };
