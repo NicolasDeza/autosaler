@@ -160,6 +160,17 @@
                                 <div class="flex items-center gap-5">
                                     <div class="relative">
                                         <div
+                                            v-if="user.company?.logo_url"
+                                            class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-background shadow-xs transition-all duration-500 group-hover:rotate-3 group-hover:scale-105 group-hover:rounded-xl"
+                                        >
+                                            <img
+                                                :src="user.company.logo_url"
+                                                :alt="user.company.name"
+                                                class="h-full w-full object-cover"
+                                            />
+                                        </div>
+                                        <div
+                                            v-else
                                             class="font-heading flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-primary/15 to-primary/5 text-sm font-bold text-primary shadow-xs transition-all duration-500 group-hover:rotate-3 group-hover:rounded-xl"
                                         >
                                             {{ user.first_name?.[0]
