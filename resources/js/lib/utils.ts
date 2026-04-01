@@ -14,6 +14,10 @@ export function kwToHp(kw: number): number {
     return Math.round(kw * 1.35962);
 }
 
+export function hpToKw(hp: number): number {
+    return Math.round(hp / 1.35962);
+}
+
 export function formatNumber(value: number): string {
     return new Intl.NumberFormat('fr-FR').format(value);
 }
