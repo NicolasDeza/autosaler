@@ -30,44 +30,25 @@
                         <Label for="brand_id"
                             >{{ __('vehicleAd.brand') }} *</Label
                         >
-                        <Select v-model="form.brand_id" required>
-                            <SelectTrigger
-                                ><SelectValue
-                                    :placeholder="__('ui.select')"
-                            /></SelectTrigger>
-                            <SelectContent>
-                                <SelectItem
-                                    v-for="brand in brands"
-                                    :key="brand.id"
-                                    :value="String(brand.id)"
-                                    >{{ brand.name }}</SelectItem
-                                >
-                            </SelectContent>
-                        </Select>
+                        <SearchSelect
+                            v-model="form.brand_id"
+                            :options="brands"
+                            :show-all-option="false"
+                            :placeholder="__('ui.select')"
+                        />
                         <InputError :message="form.errors.brand_id" />
                     </div>
                     <div class="space-y-2">
                         <Label for="model_id"
                             >{{ __('vehicleAd.model') }} *</Label
                         >
-                        <Select
+                        <SearchSelect
                             v-model="form.model_id"
+                            :options="models"
                             :disabled="!form.brand_id || models.length === 0"
-                            required
-                        >
-                            <SelectTrigger
-                                ><SelectValue
-                                    :placeholder="__('ui.select')"
-                            /></SelectTrigger>
-                            <SelectContent>
-                                <SelectItem
-                                    v-for="model in models"
-                                    :key="model.id"
-                                    :value="String(model.id)"
-                                    >{{ model.name }}</SelectItem
-                                >
-                            </SelectContent>
-                        </Select>
+                            :show-all-option="false"
+                            :placeholder="__('ui.select')"
+                        />
                         <InputError :message="form.errors.model_id" />
                     </div>
                     <div class="space-y-2">
@@ -718,6 +699,7 @@ import {
 import { computed } from 'vue';
 import DatePicker from '@/components/DatePicker.vue';
 import InputError from '@/components/InputError.vue';
+import SearchSelect from '@/components/SearchSelect.vue';
 import {
     Card,
     CardHeader,

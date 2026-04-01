@@ -14,6 +14,7 @@ import {
     Car,
 } from 'lucide-vue-next';
 import { ref, watch, computed } from 'vue';
+import SearchSelect from '@/components/SearchSelect.vue';
 import SheetMenu from '@/components/SheetMenu.vue';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible';
@@ -136,31 +137,14 @@ const isDateActive = computed(
                             class="text-[10px] font-bold tracking-wider text-muted-foreground/60 uppercase"
                             >{{ __('dealer.brand') }}</Label
                         >
-                        <Select v-model="brandFilter" :disabled="!brands">
-                            <SelectTrigger
-                                class="h-9 border-border/40 bg-background/50 text-xs transition-all focus:ring-1 focus:ring-primary/20"
-                            >
-                                <SelectValue
-                                    :placeholder="
-                                        !brands
-                                            ? __('ui.loading')
-                                            : __('dealer.all_brands')
-                                    "
-                                />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">{{
-                                    __('dealer.all_brands')
-                                }}</SelectItem>
-                                <SelectItem
-                                    v-for="brand in brands"
-                                    :key="brand.id"
-                                    :value="brand.id.toString()"
-                                >
-                                    {{ brand.name }}
-                                </SelectItem>
-                            </SelectContent>
-                        </Select>
+                        <SearchSelect
+                            v-model="brandFilter"
+                            :options="brands"
+                            option-label="name"
+                            :disabled="!brands"
+                            :placeholder="!brands ? __('ui.loading') : __('dealer.all_brands')"
+                            trigger-class="h-9 border-border/40 bg-background/50 text-xs transition-all focus:ring-1 focus:ring-primary/20"
+                        />
                     </div>
 
                     <div class="flex-1 space-y-1.5">
@@ -168,31 +152,14 @@ const isDateActive = computed(
                             class="text-[10px] font-bold tracking-wider text-muted-foreground/60 uppercase"
                             >{{ __('dealer.model') }}</Label
                         >
-                        <Select v-model="modelFilter" :disabled="!models">
-                            <SelectTrigger
-                                class="h-9 border-border/40 bg-background/50 text-xs transition-all focus:ring-1 focus:ring-primary/20"
-                            >
-                                <SelectValue
-                                    :placeholder="
-                                        !models
-                                            ? __('ui.loading')
-                                            : __('dealer.all_models')
-                                    "
-                                />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">{{
-                                    __('dealer.all_models')
-                                }}</SelectItem>
-                                <SelectItem
-                                    v-for="model in models"
-                                    :key="model.id"
-                                    :value="model.id.toString()"
-                                >
-                                    {{ model.name }}
-                                </SelectItem>
-                            </SelectContent>
-                        </Select>
+                        <SearchSelect
+                            v-model="modelFilter"
+                            :options="models"
+                            option-label="name"
+                            :disabled="!models || brandFilter === 'all'"
+                            :placeholder="!models ? __('ui.loading') : __('dealer.all_models')"
+                            trigger-class="h-9 border-border/40 bg-background/50 text-xs transition-all focus:ring-1 focus:ring-primary/20"
+                        />
                     </div>
 
                     <div class="flex-1 space-y-1.5">
@@ -309,31 +276,15 @@ const isDateActive = computed(
                         :icon="Car"
                         :is-active="isBrandActive"
                     >
-                        <Select v-model="brandFilter" :disabled="!brands">
-                            <SelectTrigger
-                                class="h-10 border-input bg-background text-sm transition-all focus:ring-1 focus:ring-primary/20"
-                            >
-                                <SelectValue
-                                    :placeholder="
-                                        !brands
-                                            ? __('ui.loading')
-                                            : __('dealer.all_brands')
-                                    "
-                                />
-                            </SelectTrigger>
-                            <SelectContent class="border-border">
-                                <SelectItem value="all">{{
-                                    __('dealer.all_brands')
-                                }}</SelectItem>
-                                <SelectItem
-                                    v-for="brand in brands"
-                                    :key="brand.id"
-                                    :value="brand.id.toString()"
-                                >
-                                    {{ brand.name }}
-                                </SelectItem>
-                            </SelectContent>
-                        </Select>
+                        <SearchSelect
+                            v-model="brandFilter"
+                            :options="brands"
+                            option-label="name"
+                            :disabled="!brands"
+                            :placeholder="!brands ? __('ui.loading') : __('dealer.all_brands')"
+                            trigger-class="h-10 border-input bg-background text-sm transition-all focus:ring-1 focus:ring-primary/20"
+                            content-class="border-border"
+                        />
                     </FilterGroup>
 
                     <!-- Model Selection -->
@@ -343,34 +294,15 @@ const isDateActive = computed(
                         :is-active="isModelActive"
                         :disabled="brandFilter === 'all'"
                     >
-                        <Select
+                        <SearchSelect
                             v-model="modelFilter"
+                            :options="models"
+                            option-label="name"
                             :disabled="!models || brandFilter === 'all'"
-                        >
-                            <SelectTrigger
-                                class="h-10 border-input bg-background text-sm transition-all focus:ring-1 focus:ring-primary/20"
-                            >
-                                <SelectValue
-                                    :placeholder="
-                                        !models
-                                            ? __('ui.loading')
-                                            : __('dealer.all_models')
-                                    "
-                                />
-                            </SelectTrigger>
-                            <SelectContent class="border-border">
-                                <SelectItem value="all">{{
-                                    __('dealer.all_models')
-                                }}</SelectItem>
-                                <SelectItem
-                                    v-for="model in models"
-                                    :key="model.id"
-                                    :value="model.id.toString()"
-                                >
-                                    {{ model.name }}
-                                </SelectItem>
-                            </SelectContent>
-                        </Select>
+                            :placeholder="!models ? __('ui.loading') : __('dealer.all_models')"
+                            trigger-class="h-10 border-input bg-background text-sm transition-all focus:ring-1 focus:ring-primary/20"
+                            content-class="border-border"
+                        />
                     </FilterGroup>
 
                     <!-- Status Section -->

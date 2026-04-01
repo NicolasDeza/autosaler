@@ -3,6 +3,7 @@ import { router, Link } from '@inertiajs/vue3';
 import axios from 'axios';
 import { Search, Car, MapPin, Settings2, ChevronDown } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
+import SearchSelect from '@/components/SearchSelect.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -18,7 +19,6 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import FilterSearchSelect from '@/components/VehicleAds/Filters/Partials/FilterSearchSelect.vue';
 import { useTranslation } from '@/composables/useTranslation';
 import vehiclesRoutes from '@/routes/vehicles';
 
@@ -190,7 +190,7 @@ const years = computed(() => {
                             class="grid grid-cols-2 gap-2 lg:grid-cols-3 lg:gap-3"
                         >
                             <div class="col-span-1">
-                                <FilterSearchSelect
+                                <SearchSelect
                                     v-model="filters.brand"
                                     :options="brands ?? []"
                                     option-label="name"
@@ -202,38 +202,14 @@ const years = computed(() => {
                             </div>
 
                             <div class="col-span-1">
-                                <Select
+                                <SearchSelect
                                     v-model="filters.model"
+                                    :options="models"
+                                    option-label="name"
                                     :disabled="isModelDisabled"
-                                >
-                                    <SelectTrigger
-                                        class="h-10! w-full cursor-pointer border-border bg-card! text-foreground"
-                                        :class="{
-                                            'cursor-not-allowed! opacity-50':
-                                                isModelDisabled,
-                                        }"
-                                    >
-                                        <SelectValue
-                                            :placeholder="
-                                                __(
-                                                    'homeFilter.model_placeholder',
-                                                )
-                                            "
-                                        />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="all">{{
-                                            __('homeFilter.model_placeholder')
-                                        }}</SelectItem>
-                                        <SelectItem
-                                            v-for="model in models"
-                                            :key="model.id"
-                                            :value="String(model.id)"
-                                        >
-                                            {{ model.name }}
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
+                                    :trigger-class="`h-10! w-full border-border bg-card! text-foreground ${isModelDisabled ? 'cursor-not-allowed! opacity-50' : 'cursor-pointer'}`"
+                                    :placeholder="__('homeFilter.model_placeholder')"
+                                />
                             </div>
 
                             <div class="col-span-2 lg:col-span-1">

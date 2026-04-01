@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { CarFront } from 'lucide-vue-next';
 import { computed } from 'vue';
+import SearchSelect from '@/components/SearchSelect.vue';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import { useTranslation } from '@/composables/useTranslation';
-import FilterSelect from './Partials/FilterSelect.vue';
 
 const { __ } = useTranslation();
 
@@ -30,7 +30,7 @@ const isDisabled = computed(
         :is-active="isModelActive"
         :disabled="isDisabled"
     >
-        <FilterSelect
+        <SearchSelect
             v-model="form.model_id"
             :options="models"
             option-label="name"

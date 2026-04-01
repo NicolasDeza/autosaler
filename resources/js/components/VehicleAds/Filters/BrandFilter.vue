@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Car } from 'lucide-vue-next';
 import { computed } from 'vue';
+import SearchSelect from '@/components/SearchSelect.vue';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import { useTranslation } from '@/composables/useTranslation';
-import FilterSearchSelect from './Partials/FilterSearchSelect.vue';
 
 const { __ } = useTranslation();
 
@@ -22,7 +22,7 @@ const isBrandActive = computed(() => form.value.brand_id !== 'all');
         :icon="Car"
         :is-active="isBrandActive"
     >
-        <FilterSearchSelect
+        <SearchSelect
             v-model="form.brand_id"
             :options="brands"
             option-label="name"
