@@ -30,44 +30,25 @@
                         <Label for="brand_id"
                             >{{ __('vehicleAd.brand') }} *</Label
                         >
-                        <Select v-model="form.brand_id" required>
-                            <SelectTrigger
-                                ><SelectValue
-                                    :placeholder="__('ui.select')"
-                            /></SelectTrigger>
-                            <SelectContent>
-                                <SelectItem
-                                    v-for="brand in brands"
-                                    :key="brand.id"
-                                    :value="String(brand.id)"
-                                    >{{ brand.name }}</SelectItem
-                                >
-                            </SelectContent>
-                        </Select>
+                        <SearchSelect
+                            v-model="form.brand_id"
+                            :options="brands"
+                            :show-all-option="false"
+                            :placeholder="__('ui.select')"
+                        />
                         <InputError :message="form.errors.brand_id" />
                     </div>
                     <div class="space-y-2">
                         <Label for="model_id"
                             >{{ __('vehicleAd.model') }} *</Label
                         >
-                        <Select
+                        <SearchSelect
                             v-model="form.model_id"
+                            :options="models"
                             :disabled="!form.brand_id || models.length === 0"
-                            required
-                        >
-                            <SelectTrigger
-                                ><SelectValue
-                                    :placeholder="__('ui.select')"
-                            /></SelectTrigger>
-                            <SelectContent>
-                                <SelectItem
-                                    v-for="model in models"
-                                    :key="model.id"
-                                    :value="String(model.id)"
-                                    >{{ model.name }}</SelectItem
-                                >
-                            </SelectContent>
-                        </Select>
+                            :show-all-option="false"
+                            :placeholder="__('ui.select')"
+                        />
                         <InputError :message="form.errors.model_id" />
                     </div>
                     <div class="space-y-2">
@@ -278,8 +259,21 @@
                             v-model="form.power_kw"
                             type="number"
                             min="0"
+                            @input="(e: Event) => updateHpFromKw((e.target as HTMLInputElement).value)"
                         />
                         <InputError :message="form.errors.power_kw" />
+                    </div>
+                    <div class="space-y-2">
+                        <Label for="power_hp">{{
+                            __('vehicleAd.power_hp')
+                        }}</Label>
+                        <Input
+                            id="power_hp"
+                            v-model="powerHp"
+                            type="number"
+                            min="0"
+                            @input="(e: Event) => updateKwFromHp((e.target as HTMLInputElement).value)"
+                        />
                     </div>
                     <div class="space-y-2">
                         <Label for="engine_displacement">{{
@@ -659,6 +653,7 @@
             v-model="form.images"
             :existing-media="existingMedia"
             :errors="form.errors"
+            :image-limit="imageLimit"
             @update:media-order="
                 (ids: number[]) => emit('update:media-order', ids)
             "
@@ -715,9 +710,10 @@ import {
     ListChecks,
     FileText,
 } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import DatePicker from '@/components/DatePicker.vue';
 import InputError from '@/components/InputError.vue';
+import SearchSelect from '@/components/SearchSelect.vue';
 import {
     Card,
     CardHeader,
@@ -740,6 +736,7 @@ import AdProcessingProgress from '@/components/VehicleAds/AdProcessingProgress.v
 import GalleryManager from '@/components/VehicleAds/GalleryManager.vue';
 import { SECTION_IDS } from '@/components/VehicleAds/VehicleAdFormSectionIds';
 import { useTranslation } from '@/composables/useTranslation';
+import { kwToHp, hpToKw } from '@/lib/utils';
 
 const { __ } = useTranslation();
 
@@ -773,6 +770,7 @@ const props = defineProps<{
     isProcessingImages?: boolean;
     vehicleId?: number | null;
     mode?: 'create' | 'edit';
+    imageLimit?: number;
 }>();
 
 const emit = defineEmits<{
@@ -817,4 +815,57 @@ const stateChecks = computed(() => [
         label: __('vehicleAd.technical_inspection'),
     },
 ]);
+
+const powerHp = ref<number | undefined>(
+    props.form.power_kw ? kwToHp(Number(props.form.power_kw)) : undefined,
+);
+
+// Sync powerHp when form.power_kw changes from outside (e.g. data load)
+watch(
+    () => props.form.power_kw,
+    (newVal) => {
+        if (newVal !== null && newVal !== undefined && newVal !== '') {
+            const calculatedHp = kwToHp(Number(newVal));
+            if (powerHp.value !== calculatedHp) {
+                powerHp.value = calculatedHp;
+            }
+        } else {
+            powerHp.value = undefined;
+        }
+    },
+);
+
+const updateHpFromKw = (val: string | number | null) => {
+    if (val === null || val === '') {
+        // eslint-disable-next-line vue/no-mutating-props
+        props.form.power_kw = null;
+        powerHp.value = undefined;
+        return;
+    }
+    const kw = Number(val);
+    const hp = kwToHp(kw);
+    powerHp.value = hp;
+    // eslint-disable-next-line vue/no-mutating-props
+    props.form.power_kw = kw;
+};
+
+const updateKwFromHp = (val: string | number | null) => {
+    if (val === null || val === '') {
+        // eslint-disable-next-line vue/no-mutating-props
+        props.form.power_kw = null;
+        powerHp.value = undefined;
+        return;
+    }
+    const hp = Number(val);
+    const kw = hpToKw(hp);
+    // eslint-disable-next-line vue/no-mutating-props
+    props.form.power_kw = kw;
+    powerHp.value = hp;
+};
+
+onMounted(() => {
+    if (props.form.power_kw) {
+        powerHp.value = kwToHp(Number(props.form.power_kw));
+    }
+});
 </script>

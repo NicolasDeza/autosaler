@@ -45,4 +45,15 @@ class Subscription extends Model
     {
         return $this->hasMany(SubscriptionUsage::class);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active')
+            ->where(fn ($q) => $q->whereNull('ends_at')->orWhere('ends_at', '>', now()));
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === 'active' && ($this->ends_at === null || $this->ends_at->isFuture());
+    }
 }

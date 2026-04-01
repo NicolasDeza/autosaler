@@ -17,7 +17,7 @@
                     </CardDescription>
                 </div>
 
-                <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+                <div class="flex flex-col gap-6 sm:flex-row sm:items-end">
                     <div class="space-y-1.5">
                         <Label
                             class="font-heading ml-1 text-[10px] font-bold tracking-widest text-muted-foreground uppercase"
@@ -25,6 +25,7 @@
                         >
                         <Select
                             v-model="roleFilter"
+                            :disabled="showAdmins"
                             @update:model-value="updateFilters"
                         >
                             <SelectTrigger
@@ -49,7 +50,7 @@
                         </Select>
                     </div>
 
-                    <div class="flex-1 space-y-1.5 sm:w-80">
+                    <div class="flex-1 space-y-1.5 sm:min-w-[300px]">
                         <Label
                             class="font-heading ml-1 text-[10px] font-bold tracking-widest text-muted-foreground uppercase"
                             >{{ __('admin.search') }}</Label
@@ -69,6 +70,20 @@
                             />
                         </div>
                     </div>
+
+                    <div class="flex items-center gap-2 pb-2.5">
+                        <Checkbox
+                            id="show_admins"
+                            :model-value="showAdmins"
+                            @update:model-value="handleShowAdminsToggle"
+                        />
+                        <Label
+                            for="show_admins"
+                            class="text-xs font-bold tracking-wider text-muted-foreground uppercase cursor-pointer select-none"
+                        >
+                            {{ __('admin.show_admins_only') }}
+                        </Label>
+                    </div>
                 </div>
             </div>
         </CardHeader>
@@ -81,19 +96,52 @@
                             class="border-b border-border/40 bg-muted/30 transition-none"
                         >
                             <TableHead
-                                class="font-heading px-8 py-5 text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase"
+                                class="font-heading cursor-pointer px-8 py-5 text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase transition-colors hover:text-primary"
+                                @click="handleSort('name')"
                             >
-                                {{ __('admin.user_info') }}
+                                <div class="flex items-center gap-2">
+                                    {{ __('admin.user_info') }}
+                                    <component
+                                        :is="getSortIcon('name')"
+                                        class="h-3.5 w-3.5"
+                                    />
+                                </div>
                             </TableHead>
                             <TableHead
-                                class="font-heading py-5 text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase"
+                                class="font-heading cursor-pointer py-5 text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase transition-colors hover:text-primary"
+                                @click="handleSort('role')"
                             >
-                                {{ __('admin.role') }}
+                                <div class="flex items-center gap-2">
+                                    {{ __('admin.role') }}
+                                    <component
+                                        :is="getSortIcon('role')"
+                                        class="h-3.5 w-3.5"
+                                    />
+                                </div>
                             </TableHead>
                             <TableHead
-                                class="font-heading py-5 text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase"
+                                class="font-heading cursor-pointer py-5 text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase transition-colors hover:text-primary"
+                                @click="handleSort('subscription')"
                             >
-                                {{ __('admin.company_subscription') }}
+                                <div class="flex items-center gap-2">
+                                    {{ __('admin.company_subscription') }}
+                                    <component
+                                        :is="getSortIcon('subscription')"
+                                        class="h-3.5 w-3.5"
+                                    />
+                                </div>
+                            </TableHead>
+                            <TableHead
+                                class="font-heading cursor-pointer py-5 text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase transition-colors hover:text-primary"
+                                @click="handleSort('created_at')"
+                            >
+                                <div class="flex items-center gap-2">
+                                    {{ __('admin.registered_at') }}
+                                    <component
+                                        :is="getSortIcon('created_at')"
+                                        class="h-3.5 w-3.5"
+                                    />
+                                </div>
                             </TableHead>
                             <TableHead
                                 class="font-heading py-5 pr-8 text-right text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase"
@@ -112,6 +160,17 @@
                                 <div class="flex items-center gap-5">
                                     <div class="relative">
                                         <div
+                                            v-if="user.company?.logo_url"
+                                            class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-background shadow-xs transition-all duration-500 group-hover:rotate-3 group-hover:scale-105 group-hover:rounded-xl"
+                                        >
+                                            <img
+                                                :src="user.company.logo_url"
+                                                :alt="user.company.name"
+                                                class="h-full w-full object-cover"
+                                            />
+                                        </div>
+                                        <div
+                                            v-else
                                             class="font-heading flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-primary/15 to-primary/5 text-sm font-bold text-primary shadow-xs transition-all duration-500 group-hover:rotate-3 group-hover:rounded-xl"
                                         >
                                             {{ user.first_name?.[0]
@@ -154,7 +213,7 @@
                             <TableCell class="py-5">
                                 <div
                                     v-if="user.company"
-                                    class="flex flex-col gap-2"
+                                    class="flex flex-col gap-1.5"
                                 >
                                     <div
                                         class="font-heading flex items-center gap-2 text-xs font-bold text-foreground/80"
@@ -201,7 +260,7 @@
                                         {{ __('admin.no_active_subscription') }}
                                     </div>
                                 </div>
-                                <div v-else class="w-10 text-center">
+                                <div v-else class="w-10">
                                     <span
                                         class="text-xs font-bold text-muted-foreground/20"
                                         >--</span
@@ -209,31 +268,56 @@
                                 </div>
                             </TableCell>
 
+                            <TableCell class="py-5">
+                                <span class="text-xs font-medium text-muted-foreground">
+                                    {{ new Date(user.created_at).toLocaleDateString() }}
+                                </span>
+                            </TableCell>
+
                             <TableCell class="py-5 pr-8 text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        class="font-heading h-9 w-9 border-border/40 bg-background/50 p-0 text-foreground/60 transition-all duration-300 hover:border-primary/50 hover:bg-primary/5 hover:text-primary"
-                                        @click="openEditModal(user)"
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            class="h-9 w-9 p-0 transition-all hover:bg-background hover:shadow-sm"
+                                        >
+                                            <span class="sr-only">{{ __('ui.open_menu') }}</span>
+                                            <MoreHorizontal class="h-5 w-5" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent
+                                        align="end"
+                                        class="w-48 shadow-lg"
                                     >
-                                        <Edit2 class="h-4 w-4" />
-                                    </Button>
-                                    <Button
-                                        v-if="user.id !== auth?.user.id"
-                                        variant="outline"
-                                        size="sm"
-                                        class="font-heading h-9 w-9 border-border/40 bg-background/50 p-0 text-destructive/60 transition-all duration-300 hover:border-destructive/50 hover:bg-destructive/5 hover:text-destructive"
-                                        @click="deleteUser(user)"
-                                    >
-                                        <Trash2 class="h-4 w-4" />
-                                    </Button>
-                                </div>
+                                        <DropdownMenuLabel
+                                            class="px-3 py-2 text-xs font-bold tracking-widest text-muted-foreground/60 uppercase"
+                                            >{{ __('ui.actions') }}</DropdownMenuLabel
+                                        >
+                                        <DropdownMenuItem
+                                            class="cursor-pointer px-3 py-2 font-medium"
+                                            @click="openEditModal(user)"
+                                        >
+                                            <Edit2 class="mr-2 h-4 w-4 text-muted-foreground" />
+                                            {{ __('ui.edit') }}
+                                        </DropdownMenuItem>
+                                        <template v-if="user.id !== auth?.user.id">
+                                            <div class="my-1 h-px bg-muted"></div>
+                                            <DropdownMenuItem
+                                                class="cursor-pointer px-3 py-2 font-bold text-destructive focus:bg-destructive/5 focus:text-destructive"
+                                                @click="deleteUser(user)"
+                                            >
+                                                <Trash2 class="mr-2 h-4 w-4" />
+                                                {{ __('ui.delete') }}
+                                            </DropdownMenuItem>
+                                        </template>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
                             </TableCell>
                         </TableRow>
 
                         <TableRow v-if="users.data.length === 0">
-                            <TableCell colspan="4" class="py-32 text-center">
+                            <TableCell colspan="5" class="py-32 text-center">
                                 <div
                                     class="flex flex-col items-center gap-4 opacity-30"
                                 >
@@ -405,7 +489,17 @@
 <script setup lang="ts">
 import { router, usePage } from '@inertiajs/vue3';
 import { useDebounceFn } from '@vueuse/core';
-import { Search, Building2, Edit2, Trash2, Users } from 'lucide-vue-next';
+import {
+    Search,
+    Building2,
+    Edit2,
+    Trash2,
+    Users,
+    MoreHorizontal,
+    ArrowUpDown,
+    ArrowUp,
+    ArrowDown,
+} from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import {
     index as adminDashboardIndex,
@@ -424,6 +518,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
     Dialog,
     DialogContent,
@@ -432,6 +527,13 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -465,6 +567,10 @@ const auth = computed(() => (page.props as any).auth);
 
 const search = ref(props.filters.search || '');
 const roleFilter = ref(props.filters.role || 'all');
+const showAdmins = ref(!!props.filters.show_admins);
+const currentSort = ref(props.filters.sort || 'created_at');
+const currentDirection = ref(props.filters.direction || 'desc');
+
 const showModal = ref(false);
 const selectedUser = ref<any>(null);
 const selectedUserStatus = ref<string>('active');
@@ -499,6 +605,9 @@ const updateFilters = () => {
                 tab: 'users',
                 search: search.value,
                 role: roleFilter.value === 'all' ? undefined : roleFilter.value,
+                show_admins: showAdmins.value ? '1' : undefined,
+                sort: currentSort.value,
+                direction: currentDirection.value,
                 per_page: props.users?.per_page,
             },
         }),
@@ -512,6 +621,30 @@ const updateFilters = () => {
 };
 
 const debouncedSearch = useDebounceFn(updateFilters, 500);
+
+const handleShowAdminsToggle = (checked: boolean | string) => {
+    const isChecked = checked === true;
+    showAdmins.value = isChecked;
+    if (isChecked) {
+        roleFilter.value = 'all';
+    }
+    updateFilters();
+};
+
+const handleSort = (column: string) => {
+    if (currentSort.value === column) {
+        currentDirection.value = currentDirection.value === 'asc' ? 'desc' : 'asc';
+    } else {
+        currentSort.value = column;
+        currentDirection.value = 'asc';
+    }
+    updateFilters();
+};
+
+const getSortIcon = (column: string) => {
+    if (currentSort.value !== column) return ArrowUpDown;
+    return currentDirection.value === 'asc' ? ArrowUp : ArrowDown;
+};
 
 const activeSubscription = (user: any) => {
     return user?.subscriptions?.find((s: any) => s.status === 'active');

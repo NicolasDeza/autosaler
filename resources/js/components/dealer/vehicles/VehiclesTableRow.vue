@@ -60,7 +60,14 @@ const handleStatusChange = (checked: boolean) => {
                 <div
                     class="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted shadow-inner ring-1 ring-border/50 transition-all group-hover:shadow-md md:h-12 md:w-16 print:hidden"
                 >
+                    <img
+                        v-if="ad.primary_image?.thumb"
+                        :src="ad.primary_image.thumb"
+                        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        :alt="`${ad.brand?.name} ${ad.model?.name}`"
+                    />
                     <ImageIcon
+                        v-else
                         class="h-5 w-5 text-muted-foreground/50 transition-transform group-hover:scale-110 md:h-6 md:w-6"
                     />
                 </div>

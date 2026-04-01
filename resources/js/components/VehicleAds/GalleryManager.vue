@@ -39,6 +39,7 @@ const props = defineProps<{
     existingMedia?: any[];
     modelValue: File[];
     errors?: Record<string, string>;
+    imageLimit?: number;
 }>();
 
 const emit = defineEmits<{
@@ -82,9 +83,52 @@ const onFileSelected = (event: Event) => {
 
 // Common file handler
 const handleFiles = (files: File[]) => {
-    files.forEach((file) => {
+    const limit = props.imageLimit ?? 999;
+    const currentCount = items.value.length;
+    const availableSlots = Math.max(0, limit - currentCount);
+
+    if (availableSlots <= 0) {
+        toast.error(__('vehicleAd.gallery.limit_reached', { limit }));
+        return;
+    }
+
+    const filesToAdd = files.slice(0, availableSlots);
+
+    if (files.length > availableSlots) {
+        toast.warning(
+            __(
+                'vehicleAd.gallery.partial_upload_limit',
+                {
+                    count: availableSlots,
+                    limit: limit,
+                },
+            ),
+        );
+    }
+
+    filesToAdd.forEach((file) => {
         if (!file.type.startsWith('image/')) {
-            toast.error(`${file.name} is not an image`);
+            toast.error(
+                __(
+                    'vehicleAd.gallery.invalid_file_type',
+                    { filename: file.name },
+                ),
+            );
+            return;
+        }
+
+        // Limit per file size (e.g. 5MB)
+        const maxFileSize = 5 * 1024 * 1024;
+        if (file.size > maxFileSize) {
+            toast.error(
+                __(
+                    'vehicleAd.gallery.file_too_large',
+                    {
+                        filename: file.name,
+                        maxMo: maxFileSize / 1024 / 1024,
+                    },
+                ),
+            );
             return;
         }
 
@@ -195,9 +239,18 @@ watch(
                             </Button>
                         </div>
                         <CardDescription class="text-xs">
-                            {{ __('vehicleAd.photos_desc') }}
+                            {{
+                                __('vehicleAd.photos_desc', {
+                                    limit: imageLimit ?? 20,
+                                })
+                            }}
                         </CardDescription>
                     </div>
+                </div>
+                <div v-if="imageLimit" class="flex flex-col items-end gap-1">
+                    <Badge variant="outline" class="font-mono">
+                        {{ items.length }} / {{ imageLimit }}
+                    </Badge>
                 </div>
             </div>
         </CardHeader>

@@ -73,6 +73,8 @@ return [
     'actions' => 'Actions',
     'no_active_subscription' => 'No active subscription',
     'edit_subscription' => 'Edit subscription',
+    'registered_at' => 'Registered at',
+    'show_admins_only' => 'Show admins only',
     'no_users_found' => 'No users found.',
     'users_label' => 'users',
 

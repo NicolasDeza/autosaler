@@ -50,6 +50,7 @@ const toggleComparison = () => {
             vehicle_version_name:
                 props.ad.vehicle_version_name || props.ad.vehicle_version?.name,
             price: Number(props.ad.price),
+            image: props.ad.primary_image?.thumb,
         });
     }
 };

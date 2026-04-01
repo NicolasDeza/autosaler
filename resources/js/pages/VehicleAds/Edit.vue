@@ -47,6 +47,7 @@
                         :existing-media="images"
                         :is-processing-images="isProcessingImages"
                         :vehicle-id="ad.id"
+                        :image-limit="imageLimit"
                         :mode="processingMode"
                         @toggle-feature="toggleFeature"
                         @close-processing="isProcessingImages = false"
@@ -255,6 +256,7 @@ const props = defineProps<{
     featureCategories: FeatureCategoryOption[];
     selectedFeatureIds: string[];
     images: any[];
+    imageLimit: number;
 }>();
 
 const formatDate = (date: any): string => {

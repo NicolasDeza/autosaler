@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { usePage, Link } from '@inertiajs/vue3';
-import { X, ArrowRight, Trash2, Car } from 'lucide-vue-next';
+import { usePage, Link, router } from '@inertiajs/vue3';
+import { X, ArrowRight, Trash2, Car, Eye } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
 import { useComparison } from '@/composables/useComparison';
@@ -41,18 +41,23 @@ const compareUrl = computed(() => {
     >
         <div
             v-if="isVisible"
-            class="fixed bottom-8 left-1/2 z-50 hidden w-max -translate-x-1/2 lg:block"
+            class="fixed bottom-8 left-1/2 z-50 hidden w-full max-w-7xl -translate-x-1/2 px-4 lg:block"
         >
             <div
-                class="flex min-w-[640px] flex-row items-center justify-between gap-10 rounded-2xl border border-white/10 bg-foreground p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-2xl lg:flex"
+                class="mx-auto flex w-max flex-row items-center justify-between gap-6 rounded-2xl border border-white/10 bg-foreground p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-2xl lg:flex"
             >
                 <!-- Selection Area -->
-                <div class="flex flex-1 items-center gap-3 px-2">
-                    <div class="flex gap-2.5">
+                <div class="flex flex-1 items-center gap-2 px-2">
+                    <div class="flex gap-2">
                         <div
                             v-for="vehicle in state.vehicles"
                             :key="vehicle.id"
-                            class="group relative flex w-64 items-center gap-4 overflow-hidden rounded-xl border border-white/5 bg-white/5 p-2 transition-all duration-300 hover:scale-[1.02] hover:bg-white/10 active:scale-[0.98]"
+                            class="group relative flex w-60 cursor-pointer items-center gap-3 overflow-hidden rounded-xl border border-white/5 bg-white/5 p-2 transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:bg-white/10 active:scale-[0.98]"
+                            @click="
+                                router.visit(
+                                    vehiclesRoutes.show.url(vehicle.id),
+                                )
+                            "
                         >
                             <!-- Image/Placeholder Container -->
                             <div
@@ -61,7 +66,21 @@ const compareUrl = computed(() => {
                                 <div
                                     class="flex h-full w-full items-center justify-center transition-transform duration-500 group-hover:scale-110"
                                 >
+                                    <!-- View Indicator Overlay -->
+                                    <div
+                                        class="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                                    >
+                                        <Eye class="size-4 text-white" />
+                                    </div>
+
+                                    <img
+                                        v-if="vehicle.image"
+                                        :src="vehicle.image"
+                                        class="h-full w-full object-cover"
+                                        :alt="`${vehicle.brand} ${vehicle.model}`"
+                                    />
                                     <Car
+                                        v-else
                                         class="size-8 text-muted-foreground/30"
                                     />
                                 </div>
@@ -94,8 +113,8 @@ const compareUrl = computed(() => {
 
                             <!-- Remove Button Overlay -->
                             <button
-                                @click="removeVehicle(vehicle.id)"
-                                class="absolute top-1 right-1 flex size-5 items-center justify-center rounded-full bg-background/80 text-muted-foreground opacity-0 backdrop-blur-md transition-all duration-300 group-hover:opacity-100 hover:bg-destructive hover:text-destructive-foreground"
+                                @click.stop="removeVehicle(vehicle.id)"
+                                class="absolute top-1 right-1 flex size-5 cursor-pointer items-center justify-center rounded-full bg-background/80 text-muted-foreground opacity-0 backdrop-blur-md transition-all duration-300 group-hover:opacity-100 hover:bg-destructive hover:text-destructive-foreground"
                             >
                                 <X class="size-3" />
                             </button>
@@ -103,11 +122,11 @@ const compareUrl = computed(() => {
                     </div>
 
                     <!-- Placeholder Slots -->
-                    <div v-if="state.vehicles.length < 4" class="flex gap-2.5">
+                    <div v-if="state.vehicles.length < 4" class="flex gap-2">
                         <div
                             v-for="i in 4 - state.vehicles.length"
                             :key="`empty-${i}`"
-                            class="flex h-20 w-32 items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/5 transition-colors hover:bg-white/10"
+                            class="flex h-20 w-24 items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/5 transition-colors hover:bg-white/10"
                         >
                             <span
                                 class="text-[9px] font-black tracking-[0.2em] text-white/20 uppercase"
@@ -120,12 +139,12 @@ const compareUrl = computed(() => {
 
                 <!-- Action Side -->
                 <div
-                    class="flex shrink-0 flex-col items-center justify-center gap-1.5 border-l border-white/10 pr-4 pl-6"
+                    class="flex shrink-0 flex-col items-center justify-center gap-1.5 border-l border-white/10 pr-3 pl-5"
                 >
                     <Link :href="compareUrl">
                         <Button
                             size="sm"
-                            class="h-11 gap-2 rounded-xl bg-primary px-8 font-black tracking-tighter text-white uppercase shadow-lg shadow-primary/20 transition-all hover:scale-105 hover:bg-primary/90 hover:shadow-primary/40 active:scale-95"
+                            class="h-10 cursor-pointer gap-2 rounded-xl bg-primary px-6 font-black tracking-tighter text-white uppercase shadow-lg shadow-primary/20 transition-all hover:scale-105 hover:bg-primary/90 hover:shadow-primary/40 active:scale-95"
                         >
                             {{ __('vehicleAd.compare') }}
                             <ArrowRight class="size-4" />
@@ -134,7 +153,7 @@ const compareUrl = computed(() => {
                     <Button
                         variant="ghost"
                         size="sm"
-                        class="h-8 rounded-lg px-4 text-[10px] font-black tracking-[0.2em] text-white/40 uppercase transition-colors hover:bg-white/10 hover:text-destructive"
+                        class="h-7 cursor-pointer rounded-lg px-3 text-[9px] font-black tracking-[0.2em] text-white/40 uppercase transition-colors hover:bg-white/10 hover:text-destructive"
                         @click="clearSelection"
                     >
                         <Trash2 class="mr-1.5 size-3" />

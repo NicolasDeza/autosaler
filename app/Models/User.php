@@ -4,7 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\UserStatus;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -12,7 +15,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable;
 
     /**
@@ -61,12 +64,12 @@ class User extends Authenticatable
         return $this->belongsTo(Company::class);
     }
 
-    public function vehicleAds(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function vehicleAds(): HasMany
     {
         return $this->hasMany(VehicleAd::class);
     }
 
-    public function favoriteVehicleAds(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function favoriteVehicleAds(): BelongsToMany
     {
         return $this->belongsToMany(
             VehicleAd::class,
@@ -79,5 +82,24 @@ class User extends Authenticatable
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
+    }
+
+    public function activeSubscription(): ?Subscription
+    {
+        return $this->subscriptions()->active()->first();
+    }
+
+    public function hasActiveSubscription(): bool
+    {
+        return $this->activeSubscription() !== null;
+    }
+
+    public function imageLimit(): int
+    {
+        if ($this->hasRole('admin')) {
+            return 100; // Large enough limit for admins
+        }
+
+        return (int) ($this->activeSubscription()?->plan?->image_limit_per_vehicle ?? 0);
     }
 }

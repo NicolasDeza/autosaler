@@ -24,11 +24,13 @@ import { computed } from 'vue';
 import AppContent from '@/components/AppContent.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useComparison } from '@/composables/useComparison';
 import { useTranslation } from '@/composables/useTranslation';
 import { kwToHp } from '@/lib/utils';
 import vehiclesRoutes from '@/routes/vehicles';
 
 const { __ } = useTranslation();
+const { removeVehicle } = useComparison();
 
 const props = defineProps<{
     vehicles: any[];
@@ -177,6 +179,8 @@ const groupedFeatures = computed(() => {
 });
 
 const removeAndReload = (id: number) => {
+    removeVehicle(id);
+
     const newIds = props.vehicles
         .filter((v) => v.id !== id)
         .map((v) => v.id)
@@ -252,7 +256,14 @@ const removeAndReload = (id: number) => {
                                         <div
                                             class="flex h-full w-full items-center justify-center bg-muted/50 transition-transform duration-1000 group-hover:scale-110"
                                         >
+                                            <img
+                                                v-if="vehicle.primary_image"
+                                                :src="vehicle.primary_image.card"
+                                                class="h-full w-full object-cover"
+                                                :alt="`${vehicle.brand?.name} ${vehicle.model?.name}`"
+                                            />
                                             <Car
+                                                v-else
                                                 class="size-20 text-muted-foreground/5"
                                             />
                                         </div>
