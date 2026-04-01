@@ -233,6 +233,7 @@ class VehicleAdController extends Controller
             'interiorTypes' => fn () => InteriorType::orderBy('code')->get(['id', 'code']),
             'euroNorms' => fn () => EuroNorm::orderBy('code')->get(['id', 'code']),
             'featureCategories' => fn () => $this->activeFeatureCategories(),
+            'imageLimit' => auth()->user()->imageLimit(),
         ]);
     }
 
@@ -258,8 +259,11 @@ class VehicleAdController extends Controller
         }
 
         if ($request->hasFile('images')) {
+            $limit = $request->user()->imageLimit();
+            $files = array_slice($request->file('images'), 0, $limit);
+
             $order = 1;
-            foreach ($request->file('images') as $file) {
+            foreach ($files as $file) {
                 if ($file->isValid()) {
                     $vehicleAd->addMedia($file)
                         ->setOrder($order++)
@@ -341,6 +345,7 @@ class VehicleAdController extends Controller
                 ->pluck('features.id')
                 ->map(fn (int $featureId): string => (string) $featureId)
                 ->values(),
+            'imageLimit' => auth()->user()->imageLimit(),
         ]);
     }
 
@@ -383,10 +388,23 @@ class VehicleAdController extends Controller
 
         // Add new media
         if ($request->hasFile('images')) {
+            $currentCount = $vehicleAd->getMedia('gallery')->count();
+
+            // Account for deletions happening in the same request
+            if ($request->filled('media_to_delete')) {
+                $deletedCount = $vehicleAd->media()->whereIn('id', $request->media_to_delete)->count();
+                $currentCount = max(0, $currentCount - $deletedCount);
+            }
+
+            $limit = $request->user()->imageLimit();
+            $remainingSlots = max(0, $limit - $currentCount);
+
+            $filesToAdd = array_slice($request->file('images'), 0, $remainingSlots);
+
             // Get the current max order to increment correctly in the loop
             $lastOrder = $vehicleAd->getMedia('gallery')->max('order_column') ?? 0;
 
-            foreach ($request->file('images') as $file) {
+            foreach ($filesToAdd as $file) {
                 if ($file->isValid()) {
                     $vehicleAd->addMedia($file)
                         ->setOrder(++$lastOrder)

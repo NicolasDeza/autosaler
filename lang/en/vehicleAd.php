@@ -80,7 +80,7 @@ return [
     'equipment_options' => 'Equipment & options',
     'equipment_options_desc' => 'Select the options available on this vehicle.',
     'photos' => 'Photos',
-    'photos_desc' => 'Add up to 20 photos. Drag and drop to reorder. The first image will be the main image.',
+    'photos_desc' => 'Add up to :limit photos. Drag and drop to reorder. The first image will be the main image.',
     'description' => 'Description',
     'detailed_description' => 'Detailed Description',
     'detailed_description_desc' => 'The text of your ad.',
@@ -150,5 +150,11 @@ return [
         'action_continue' => 'OK',
         'action_skip' => 'Skip and continue',
         'footer_version' => 'Media Engine V2.1',
+    ],
+    'gallery' => [
+        'limit_reached' => 'Image limit reached (:limit)',
+        'partial_upload_limit' => 'Only the first :count images were added (limit: :limit)',
+        'invalid_file_type' => ':filename is not an image',
+        'file_too_large' => ':filename is too large (max :maxMo MB)',
     ],
 ];

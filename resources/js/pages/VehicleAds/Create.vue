@@ -47,6 +47,7 @@
                         :existing-media="[]"
                         :is-processing-images="isProcessingImages"
                         :vehicle-id="null"
+                        :image-limit="imageLimit"
                         mode="create"
                         @toggle-feature="toggleFeature"
                         @close-processing="isProcessingImages = false"
@@ -214,6 +215,7 @@ defineProps<{
     interiorTypes: any[];
     euroNorms: any[];
     featureCategories: FeatureCategoryOption[];
+    imageLimit: number;
 }>();
 
 const form = useForm({

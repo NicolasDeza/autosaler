@@ -81,7 +81,7 @@ return [
     'equipment_options' => 'Equipements & options',
     'equipment_options_desc' => 'Sélectionnez les options disponibles sur ce véhicule.',
     'photos' => 'Photos',
-    'photos_desc' => "Ajoutez jusqu'à 20 photos. Glissez-déposez pour réorganiser. La première image sera l'image principale.",
+    'photos_desc' => "Ajoutez jusqu'à :limit photos. Glissez-déposez pour réorganiser. La première image sera l'image principale.",
     'description' => 'Description',
     'detailed_description' => 'Description détaillée',
     'detailed_description_desc' => 'Le texte de votre annonce.',
@@ -151,5 +151,11 @@ return [
         'action_continue' => 'OK',
         'action_skip' => 'Ignorer et continuer',
         'footer_version' => 'Media Engine V2.1',
+    ],
+    'gallery' => [
+        'limit_reached' => "Limite d'images atteinte (:limit)",
+        'partial_upload_limit' => 'Seules les :count premières images ont été ajoutées (limite de :limit)',
+        'invalid_file_type' => ":filename n'est pas une image",
+        'file_too_large' => ':filename est trop volumineux (max :maxMo Mo)',
     ],
 ];

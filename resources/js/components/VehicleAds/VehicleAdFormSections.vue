@@ -653,6 +653,7 @@
             v-model="form.images"
             :existing-media="existingMedia"
             :errors="form.errors"
+            :image-limit="imageLimit"
             @update:media-order="
                 (ids: number[]) => emit('update:media-order', ids)
             "
@@ -769,6 +770,7 @@ const props = defineProps<{
     isProcessingImages?: boolean;
     vehicleId?: number | null;
     mode?: 'create' | 'edit';
+    imageLimit?: number;
 }>();
 
 const emit = defineEmits<{
