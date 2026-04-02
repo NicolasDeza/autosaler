@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { ArrowRight, Building2, MapPin } from 'lucide-vue-next';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { MapPin, Warehouse } from 'lucide-vue-next';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useTranslation } from '@/composables/useTranslation';
@@ -25,10 +25,6 @@ defineProps<{
 }>();
 
 const { __ } = useTranslation();
-
-const getInitial = (name: string): string => {
-    return name.trim().charAt(0).toUpperCase() || 'G';
-};
 </script>
 
 <template>
@@ -70,7 +66,7 @@ const getInitial = (name: string): string => {
                                 v-else
                                 class="flex h-full w-full items-center justify-center bg-linear-to-br from-muted/95 via-muted/80 to-muted/60"
                             >
-                                <Building2 class="size-11 text-muted-foreground/55" />
+                                <Warehouse class="size-11 text-muted-foreground/55" />
                             </div>
 
                             <div
@@ -78,7 +74,10 @@ const getInitial = (name: string): string => {
                                 class="absolute inset-0 bg-linear-to-t from-black/80 via-black/35 to-transparent"
                             />
 
-                            <div class="absolute bottom-2.5 left-2.5">
+                            <div
+                                v-if="garage.logo_url"
+                                class="absolute bottom-2.5 left-2.5"
+                            >
                                 <Avatar
                                     :class="
                                         garage.background_url
@@ -87,20 +86,10 @@ const getInitial = (name: string): string => {
                                     "
                                 >
                                     <AvatarImage
-                                        v-if="garage.logo_url"
                                         :src="garage.logo_url"
                                         :alt="garage.name"
                                         class="object-cover"
                                     />
-                                    <AvatarFallback
-                                        :class="
-                                            garage.background_url
-                                                ? 'bg-white/10 text-xs font-bold text-white'
-                                                : 'bg-background text-xs font-bold text-foreground'
-                                        "
-                                    >
-                                        {{ getInitial(garage.name) }}
-                                    </AvatarFallback>
                                 </Avatar>
                             </div>
 
@@ -129,13 +118,6 @@ const getInitial = (name: string): string => {
                                 </span>
                             </p>
 
-                            <div
-                                class="flex items-center justify-end border-t border-border/70 pt-2.5 text-sm font-semibold text-foreground"
-                            >
-                                <ArrowRight
-                                    class="size-4 transition-transform group-hover:translate-x-1 group-hover:text-primary"
-                                />
-                            </div>
                         </div>
                     </Card>
                 </Link>

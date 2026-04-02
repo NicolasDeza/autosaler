@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Head, Link, router } from '@inertiajs/vue3';
-import { ArrowRight, Building2, MapPin } from 'lucide-vue-next';
-import { computed, ref, watch } from 'vue';
+import { MapPin, Warehouse } from 'lucide-vue-next';
+import { ref, watch } from 'vue';
 import AppContent from '@/components/AppContent.vue';
 import AppPagination from '@/components/AppPagination.vue';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { useTranslation } from '@/composables/useTranslation';
 import garageRoutes from '@/routes/garages';
@@ -40,10 +40,6 @@ const props = defineProps<{
 
 const { __ } = useTranslation();
 
-const getInitial = (name: string): string => {
-    return name.trim().charAt(0).toUpperCase() || 'G';
-};
-
 const perPage = ref<string>(String(props.garages.per_page ?? 15));
 
 const scrollToTop = (): void => {
@@ -52,12 +48,6 @@ const scrollToTop = (): void => {
         behavior: 'smooth',
     });
 };
-
-const visibleStockCount = computed<number>(() => {
-    return props.garages.data.reduce((total, garage) => {
-        return total + garage.active_vehicle_ads_count;
-    }, 0);
-});
 
 const visitGaragesPage = (page: number): void => {
     scrollToTop();
@@ -101,57 +91,25 @@ watch(
     <AppContent>
         <section class="space-y-7 py-10 md:py-12">
             <header
-                class="relative overflow-hidden rounded-2xl border border-border/60 bg-card/70 p-5 shadow-sm backdrop-blur-sm sm:p-7"
+                class="relative overflow-hidden rounded-2xl bg-card p-5 shadow-sm sm:p-7"
             >
-                <div
-                    class="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
-                >
+                <div class="relative z-10 space-y-3">
                     <div class="space-y-2">
                         <h1
                             class="text-3xl font-black tracking-tight text-balance text-foreground md:text-4xl"
                         >
-                            {{ __('garage.hero_title') }}
+                            {{ __('garage.hero_title_prefix') }}
+                            <span class="text-primary">
+                                {{ __('garage.hero_title_highlight') }}
+                            </span>
                         </h1>
                         <p
                             class="max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base"
                         >
                             {{ __('garage.hero_description') }}
                         </p>
-                        <div class="flex flex-wrap items-center gap-2 pt-1">
-                            <span
-                                class="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary"
-                            >
-                                {{ __('garage.hero_highlight_2') }}
-                            </span>
-                        </div>
                     </div>
-
-                    <div class="grid grid-cols-2 gap-2">
-                        <div
-                            class="rounded-xl border border-border/70 bg-background/80 px-3 py-2.5"
-                        >
-                            <p
-                                class="text-[11px] font-semibold text-muted-foreground uppercase"
-                            >
-                                {{ __('garage.stat_total_garages') }}
-                            </p>
-                            <p class="text-lg font-black text-foreground">
-                                {{ props.garages.total }}
-                            </p>
-                        </div>
-                        <div
-                            class="rounded-xl border border-border/70 bg-background/80 px-3 py-2.5"
-                        >
-                            <p
-                                class="text-[11px] font-semibold text-muted-foreground uppercase"
-                            >
-                                {{ __('garage.stat_total_vehicles') }}
-                            </p>
-                            <p class="text-lg font-black text-foreground">
-                                {{ visibleStockCount }}
-                            </p>
-                        </div>
-                    </div>
+                    <div class="h-1 w-20 rounded-full bg-primary" />
                 </div>
             </header>
 
@@ -184,7 +142,7 @@ watch(
                                 v-else
                                 class="flex h-full w-full items-center justify-center bg-linear-to-br from-muted/95 via-muted/80 to-muted/60"
                             >
-                                <Building2 class="size-11 text-muted-foreground/55" />
+                                <Warehouse class="size-11 text-muted-foreground/55" />
                             </div>
 
                             <div
@@ -192,7 +150,10 @@ watch(
                                 class="absolute inset-0 bg-linear-to-t from-black/80 via-black/35 to-transparent"
                             />
 
-                            <div class="absolute bottom-2.5 left-2.5">
+                            <div
+                                v-if="garage.logo_url"
+                                class="absolute bottom-2.5 left-2.5"
+                            >
                                 <Avatar
                                     :class="
                                         garage.background_url
@@ -201,20 +162,10 @@ watch(
                                     "
                                 >
                                     <AvatarImage
-                                        v-if="garage.logo_url"
                                         :src="garage.logo_url"
                                         :alt="garage.name"
                                         class="object-cover"
                                     />
-                                    <AvatarFallback
-                                        :class="
-                                            garage.background_url
-                                                ? 'bg-white/10 text-xs font-bold text-white'
-                                                : 'bg-background text-xs font-bold text-foreground'
-                                        "
-                                    >
-                                        {{ getInitial(garage.name) }}
-                                    </AvatarFallback>
                                 </Avatar>
                             </div>
 
@@ -230,9 +181,6 @@ watch(
                                 <span class="font-black text-primary">
                                     {{ garage.active_vehicle_ads_count }}
                                 </span>
-                                <span class="text-foreground">
-                                    {{ ` ${__('garage.stock_label')}` }}
-                                </span>
                             </p>
                             <p
                                 class="flex items-start gap-2 text-[15px] leading-snug text-muted-foreground"
@@ -247,13 +195,6 @@ watch(
                                 </span>
                             </p>
 
-                            <div
-                                class="flex items-center justify-end border-t border-border/70 pt-2.5 text-sm font-semibold text-foreground"
-                            >
-                                <ArrowRight
-                                    class="size-4 transition-transform group-hover:translate-x-1 group-hover:text-primary"
-                                />
-                            </div>
                         </div>
                     </Card>
                 </Link>
