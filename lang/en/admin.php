@@ -101,7 +101,12 @@ return [
     'status_user_inactive' => 'Inactive',
     'status_user_suspended' => 'Suspended',
     'status_user_banned' => 'Banned',
-    'cancel_subscription' => 'Cancel',
+    'cancel_subscription_title' => 'Cancel Subscription',
     'confirm_cancel_subscription' => 'Are you sure you want to cancel this subscription?',
+    'confirm_user_deletion_title' => 'Delete User',
     'confirm_user_deletion' => 'Are you sure you want to delete user :name? This action is irreversible.',
+    'confirm_delete_brand' => 'Delete brand',
+    'confirm_delete_brand_desc' => 'Are you sure you want to delete brand :name? All associated models will also be affected.',
+    'confirm_delete_model' => 'Delete model',
+    'confirm_delete_model_desc' => 'Are you sure you want to delete model :name?',
 ];

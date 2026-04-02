@@ -1,12 +1,25 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import {
     MoreHorizontal,
     Image as ImageIcon,
     Eye,
     MessageCircle,
     Star,
+    Trash2,
 } from 'lucide-vue-next';
+import { ref } from 'vue';
+
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -29,10 +42,20 @@ interface Props {
     ad: any;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 const emit = defineEmits(['status-change']);
 
 const { __ } = useTranslation();
+const isDeleteDialogOpen = ref(false);
+
+const deleteAd = () => {
+    router.delete(vehicleDestroy.url(props.ad.id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            isDeleteDialogOpen.value = false;
+        },
+    });
+};
 
 const formatPrice = (price: number) => {
     return new Intl.NumberFormat('fr-FR', {
@@ -119,16 +142,13 @@ const handleStatusChange = (checked: boolean) => {
                                     </DropdownMenuItem>
                                     <div class="my-1 h-px bg-muted"></div>
                                     <DropdownMenuItem
-                                        asChild
-                                        class="font-bold text-destructive"
+                                        class="font-bold text-destructive focus:bg-destructive/10 focus:text-destructive"
+                                        @select.prevent="
+                                            isDeleteDialogOpen = true
+                                        "
                                     >
-                                        <Link
-                                            :href="vehicleDestroy.url(ad.id)"
-                                            method="delete"
-                                            as="button"
-                                            class="w-full text-left"
-                                            >{{ __('ui.delete') }}</Link
-                                        >
+                                        <Trash2 class="mr-2 h-4 w-4" />
+                                        {{ __('ui.delete') }}
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
@@ -299,21 +319,44 @@ const handleStatusChange = (checked: boolean) => {
                     </DropdownMenuItem>
                     <div class="my-1 h-px bg-muted"></div>
                     <DropdownMenuItem
-                        asChild
-                        class="cursor-pointer px-3 py-2 font-bold text-destructive focus:bg-destructive/5 focus:text-destructive"
+                        class="cursor-pointer px-3 py-2 font-bold text-destructive focus:bg-destructive/10 focus:text-destructive"
+                        @select.prevent="isDeleteDialogOpen = true"
                     >
-                        <Link
-                            :href="vehicleDestroy.url(ad.id)"
-                            method="delete"
-                            as="button"
-                            preserve-scroll
-                            class="w-full text-left"
-                        >
-                            {{ __('ui.delete') }}
-                        </Link>
+                        <Trash2 class="mr-2 h-4 w-4" />
+                        {{ __('ui.delete') }}
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </TableCell>
     </TableRow>
+
+    <AlertDialog
+        :open="isDeleteDialogOpen"
+        @update:open="isDeleteDialogOpen = $event"
+    >
+        <AlertDialogContent>
+            <AlertDialogHeader>
+                <AlertDialogTitle>{{
+                    __('ui.confirm_delete_title') || __('ui.delete')
+                }}</AlertDialogTitle>
+                <AlertDialogDescription>
+                    {{
+                        __('ui.confirm_delete_description') ||
+                        __('ui.confirm_delete')
+                    }}
+                </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+                <AlertDialogCancel @click="isDeleteDialogOpen = false">
+                    {{ __('ui.cancel') }}
+                </AlertDialogCancel>
+                <AlertDialogAction
+                    @click="deleteAd"
+                    class="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                    {{ __('ui.delete') }}
+                </AlertDialogAction>
+            </AlertDialogFooter>
+        </AlertDialogContent>
+    </AlertDialog>
 </template>

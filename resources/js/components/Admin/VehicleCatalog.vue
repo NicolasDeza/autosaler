@@ -83,7 +83,7 @@
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    class="h-8 w-8 rounded-full"
+                                    class="h-8 w-8 cursor-pointer rounded-full"
                                     @click="openBrandDialog(brand)"
                                 >
                                     <Pencil class="h-3.5 w-3.5" />
@@ -91,7 +91,7 @@
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    class="h-8 w-8 rounded-full text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                    class="h-8 w-8 cursor-pointer rounded-full text-destructive hover:bg-destructive/10 hover:text-destructive"
                                     @click="confirmDeleteBrand(brand)"
                                 >
                                     <Trash2 class="h-3.5 w-3.5" />
@@ -175,7 +175,7 @@
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    class="h-8 w-8 rounded-full"
+                                    class="h-8 w-8 cursor-pointer rounded-full"
                                     @click="openModelDialog(model)"
                                 >
                                     <Pencil class="h-3.5 w-3.5" />
@@ -183,7 +183,7 @@
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    class="h-8 w-8 rounded-full text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                    class="h-8 w-8 cursor-pointer rounded-full text-destructive hover:bg-destructive/10 hover:text-destructive"
                                     @click="confirmDeleteModel(model)"
                                 >
                                     <Trash2 class="h-3.5 w-3.5" />
@@ -333,6 +333,48 @@
                 </form>
             </DialogContent>
         </Dialog>
+
+        <!-- Delete Confirmation Dialog -->
+        <AlertDialog v-model:open="isDeleteDialogOpen">
+            <AlertDialogContent class="font-body">
+                <AlertDialogHeader>
+                    <AlertDialogTitle class="font-heading text-xl">
+                        {{
+                            deleteType === 'brand'
+                                ? __('admin.confirm_delete_brand')
+                                : __('admin.confirm_delete_model')
+                        }}
+                    </AlertDialogTitle>
+                    <AlertDialogDescription
+                        class="font-body text-sm leading-relaxed"
+                    >
+                        {{
+                            deleteType === 'brand'
+                                ? __('admin.confirm_delete_brand_desc', {
+                                      name: itemToDelete?.name,
+                                  })
+                                : __('admin.confirm_delete_model_desc', {
+                                      name: itemToDelete?.name,
+                                  })
+                        }}
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel
+                        @click="isDeleteDialogOpen = false"
+                        class="cursor-pointer"
+                    >
+                        {{ __('ui.cancel') }}
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                        @click="handleConfirmDelete"
+                        class="cursor-pointer bg-destructive text-destructive-foreground transition-all hover:bg-destructive/90 active:scale-95"
+                    >
+                        {{ __('ui.delete') }}
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     </div>
 </template>
 
@@ -359,6 +401,16 @@ import {
     update as updateModel,
     destroy as destroyModel,
 } from '@/actions/App/Http/Controllers/Admin/VehicleModelController';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -450,15 +502,24 @@ const saveBrand = () => {
     }
 };
 
+const isDeleteDialogOpen = ref(false);
+const itemToDelete = ref<any>(null);
+const deleteType = ref<'brand' | 'model'>('brand');
+
 const confirmDeleteBrand = (brand: any) => {
-    if (
-        confirm(
-            __('admin.confirm_delete_brand') ||
-                `Supprimer la marque ${brand.name} ?`,
-        )
-    ) {
-        router.delete(destroyBrand.url(brand.id));
-    }
+    itemToDelete.value = brand;
+    deleteType.value = 'brand';
+    isDeleteDialogOpen.value = true;
+};
+
+const deleteBrand = () => {
+    if (!itemToDelete.value) return;
+    router.delete(destroyBrand.url(itemToDelete.value.id), {
+        onSuccess: () => {
+            isDeleteDialogOpen.value = false;
+            itemToDelete.value = null;
+        },
+    });
 };
 
 // Model Management
@@ -493,13 +554,26 @@ const saveModel = () => {
 };
 
 const confirmDeleteModel = (model: any) => {
-    if (
-        confirm(
-            __('admin.confirm_delete_model') ||
-                `Supprimer le modèle ${model.name} ?`,
-        )
-    ) {
-        router.delete(destroyModel.url(model.id));
+    itemToDelete.value = model;
+    deleteType.value = 'model';
+    isDeleteDialogOpen.value = true;
+};
+
+const deleteModel = () => {
+    if (!itemToDelete.value) return;
+    router.delete(destroyModel.url(itemToDelete.value.id), {
+        onSuccess: () => {
+            isDeleteDialogOpen.value = false;
+            itemToDelete.value = null;
+        },
+    });
+};
+
+const handleConfirmDelete = () => {
+    if (deleteType.value === 'brand') {
+        deleteBrand();
+    } else {
+        deleteModel();
     }
 };
 </script>

@@ -21,6 +21,8 @@ return [
     'select_date' => 'Select date',
     'cancel' => 'Cancel',
     'confirm_delete' => 'Are you sure you want to delete this item?',
+    'confirm_delete_title' => 'Delete Ad',
+    'confirm_delete_description' => 'Are you sure you want to delete this ad? This action cannot be undone.',
     'first_name' => 'First Name',
     'last_name' => 'Last Name',
     'email' => 'Email',

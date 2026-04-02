@@ -21,6 +21,8 @@ return [
     'select_date' => 'Sélectionner une date',
     'cancel' => 'Annuler',
     'confirm_delete' => 'Êtes-vous sûr de vouloir supprimer cet élément ?',
+    'confirm_delete_title' => "Supprimer l'annonce",
+    'confirm_delete_description' => 'Êtes-vous sûr de vouloir supprimer cette annonce ? Cette action est irréversible.',
     'first_name' => 'Prénom',
     'last_name' => 'Nom',
     'email' => 'Email',

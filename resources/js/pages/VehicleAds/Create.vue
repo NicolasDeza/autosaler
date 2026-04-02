@@ -75,7 +75,7 @@
                             <div class="flex items-center gap-2">
                                 <button
                                     type="button"
-                                    class="bottom-bar-tool-btn lg:hidden!"
+                                    class="bottom-bar-tool-btn cursor-pointer lg:hidden!"
                                     :title="__('ui.cancel')"
                                     @click="
                                         () => router.visit(vehiclesIndex.url())
@@ -88,7 +88,7 @@
                                 </button>
                                 <button
                                     type="button"
-                                    class="bottom-bar-tool-btn lg:hidden!"
+                                    class="bottom-bar-tool-btn cursor-pointer lg:hidden!"
                                     :disabled="form.processing"
                                     :title="__('vehicleAd.save_draft')"
                                     @click.prevent="submit('draft')"
@@ -110,6 +110,7 @@
                                     <Button
                                         type="button"
                                         variant="outline"
+                                        class="cursor-pointer"
                                         @click="
                                             () =>
                                                 router.visit(
@@ -123,6 +124,7 @@
                                     <Button
                                         type="button"
                                         variant="secondary"
+                                        class="cursor-pointer"
                                         :disabled="form.processing"
                                         @click.prevent="submit('draft')"
                                     >
@@ -142,7 +144,7 @@
 
                             <Button
                                 type="submit"
-                                class="h-12 flex-1 cursor-pointer bg-primary/90 font-bold text-foreground shadow-lg active:scale-95 lg:h-11 lg:flex-none lg:px-8"
+                                class="h-12 flex-1 cursor-pointer font-bold text-foreground shadow-lg active:scale-95 lg:h-11 lg:flex-none lg:px-8"
                                 :disabled="form.processing"
                                 @click.prevent="submit('active')"
                             >

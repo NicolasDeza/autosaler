@@ -484,6 +484,69 @@
             </DialogFooter>
         </DialogContent>
     </Dialog>
+
+    <!-- Delete Confirmation Dialog -->
+    <AlertDialog v-model:open="isDeleteDialogOpen">
+        <AlertDialogContent class="font-body">
+            <AlertDialogHeader>
+                <AlertDialogTitle class="font-heading text-xl">
+                    {{ __('admin.confirm_user_deletion_title') }}
+                </AlertDialogTitle>
+                <AlertDialogDescription class="font-body text-sm leading-relaxed">
+                    {{
+                        __('admin.confirm_user_deletion', {
+                            name:
+                                userToDelete?.first_name +
+                                ' ' +
+                                userToDelete?.last_name,
+                        })
+                    }}
+                </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+                <AlertDialogCancel
+                    @click="isDeleteDialogOpen = false"
+                    class="cursor-pointer"
+                >
+                    {{ __('ui.cancel') }}
+                </AlertDialogCancel>
+                <AlertDialogAction
+                    @click="confirmDelete"
+                    class="cursor-pointer bg-destructive text-destructive-foreground transition-all hover:bg-destructive/90 active:scale-95"
+                >
+                    {{ __('ui.delete') }}
+                </AlertDialogAction>
+            </AlertDialogFooter>
+        </AlertDialogContent>
+    </AlertDialog>
+
+    <!-- Subscription Cancellation Dialogue -->
+    <AlertDialog v-model:open="isCancelSubscriptionDialogOpen">
+        <AlertDialogContent class="font-body">
+            <AlertDialogHeader>
+                <AlertDialogTitle class="font-heading text-xl">
+                    {{ __('admin.cancel_subscription_title') }}
+                </AlertDialogTitle>
+                <AlertDialogDescription class="font-body text-sm leading-relaxed">
+                    {{ __('admin.confirm_cancel_subscription') }}
+                </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+                <AlertDialogCancel
+                    @click="isCancelSubscriptionDialogOpen = false"
+                    class="cursor-pointer"
+                >
+                    {{ __('ui.cancel') }}
+                </AlertDialogCancel>
+                <AlertDialogAction
+                    @click="confirmCancelSubscription"
+                    class="cursor-pointer bg-destructive text-destructive-foreground transition-all hover:bg-destructive/90 active:scale-95"
+                >
+                    {{ __('admin.cancel_subscription_title') }}
+                </AlertDialogAction>
+            </AlertDialogFooter>
+        </AlertDialogContent>
+    </AlertDialog>
 </template>
 
 <script setup lang="ts">
@@ -509,6 +572,16 @@ import {
     destroyUser as destroyUserAction,
 } from '@/actions/App/Http/Controllers/Admin/AdminDashboardController';
 import AppPagination from '@/components/AppPagination.vue';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -576,13 +649,26 @@ const selectedUser = ref<any>(null);
 const selectedUserStatus = ref<string>('active');
 const selectedPlanId = ref<string>('');
 const processing = ref(false);
+const isDeleteDialogOpen = ref(false);
+const isCancelSubscriptionDialogOpen = ref(false);
+const userToDelete = ref<any>(null);
+const userToCancelSubscription = ref<any>(null);
 
 const deleteUser = (user: any) => {
-    if (confirm(__('admin.confirm_user_deletion', { name: `${user.first_name} ${user.last_name}` }))) {
-        router.delete(destroyUserAction.url(user.id), {
-            preserveScroll: true,
-        });
-    }
+    userToDelete.value = user;
+    isDeleteDialogOpen.value = true;
+};
+
+const confirmDelete = () => {
+    if (!userToDelete.value) return;
+
+    router.delete(destroyUserAction.url(userToDelete.value.id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            isDeleteDialogOpen.value = false;
+            userToDelete.value = null;
+        },
+    });
 };
 
 const getStatusColor = (status: string) => {
@@ -720,19 +806,28 @@ const saveUserSettings = async () => {
 
 const cancelSubscription = () => {
     if (!selectedUser.value) return;
+    userToCancelSubscription.value = selectedUser.value;
+    isCancelSubscriptionDialogOpen.value = true;
+};
 
-    if (confirm(__('admin.confirm_cancel_subscription'))) {
-        processing.value = true;
-        router.delete(cancelUserSubscription.url(selectedUser.value.id), {
+const confirmCancelSubscription = () => {
+    if (!userToCancelSubscription.value) return;
+
+    processing.value = true;
+    router.delete(
+        cancelUserSubscription.url(userToCancelSubscription.value.id),
+        {
             onSuccess: () => {
                 showModal.value = false;
+                isCancelSubscriptionDialogOpen.value = false;
+                userToCancelSubscription.value = null;
                 processing.value = false;
             },
             onError: () => {
                 processing.value = false;
             },
-        });
-    }
+        },
+    );
 };
 
 const handlePageChange = (page: number) => {

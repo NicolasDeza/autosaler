@@ -81,7 +81,7 @@
                             <!-- Delete button (Desktop: Left, Mobile: Tool style) -->
                             <button
                                 type="button"
-                                class="bottom-bar-tool-btn bg-red-500/10! hover:bg-red-500/20! lg:hidden!"
+                                class="bottom-bar-tool-btn cursor-pointer bg-red-500/10! hover:bg-red-500/20! lg:hidden!"
                                 @click="destroyAd"
                             >
                                 <Trash2
@@ -96,7 +96,7 @@
                             <Button
                                 type="button"
                                 variant="destructive"
-                                class="hidden lg:flex"
+                                class="hidden cursor-pointer lg:flex"
                                 @click="destroyAd"
                             >
                                 <Trash2 class="mr-2 h-4 w-4" />
@@ -109,7 +109,7 @@
                             >
                                 <button
                                     type="button"
-                                    class="bottom-bar-tool-btn lg:hidden!"
+                                    class="bottom-bar-tool-btn cursor-pointer lg:hidden!"
                                     @click="
                                         () =>
                                             router.visit(vehicleShow.url(ad.id))
@@ -123,7 +123,7 @@
 
                                 <button
                                     type="button"
-                                    class="bottom-bar-tool-btn lg:hidden!"
+                                    class="bottom-bar-tool-btn cursor-pointer lg:hidden!"
                                     :disabled="form.processing"
                                     @click.prevent="submit('draft')"
                                 >
@@ -144,6 +144,7 @@
                                     <Button
                                         type="button"
                                         variant="outline"
+                                        class="cursor-pointer"
                                         @click="
                                             () =>
                                                 router.visit(
@@ -157,6 +158,7 @@
                                     <Button
                                         type="button"
                                         variant="secondary"
+                                        class="cursor-pointer"
                                         :disabled="form.processing"
                                         @click.prevent="submit('draft')"
                                     >
@@ -175,7 +177,7 @@
 
                                 <Button
                                     type="button"
-                                    class="h-12 flex-1 cursor-pointer bg-primary/90 font-bold text-foreground shadow-lg active:scale-95 lg:h-10 lg:w-auto lg:flex-none"
+                                    class="h-12 flex-1 cursor-pointer font-bold text-foreground shadow-lg active:scale-95 lg:h-10 lg:w-auto lg:flex-none"
                                     :disabled="form.processing"
                                     @click="submit('active')"
                                 >
@@ -196,6 +198,39 @@
             </div>
         </template>
     </AppContent>
+
+    <AlertDialog
+        :open="isDeleteDialogOpen"
+        @update:open="isDeleteDialogOpen = $event"
+    >
+        <AlertDialogContent>
+            <AlertDialogHeader>
+                <AlertDialogTitle>
+                    {{ __('ui.confirm_delete_title') || __('ui.delete') }}
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                    {{
+                        __('ui.confirm_delete_description') ||
+                        __('ui.confirm_delete')
+                    }}
+                </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+                <AlertDialogCancel
+                    @click="isDeleteDialogOpen = false"
+                    class="cursor-pointer"
+                >
+                    {{ __('ui.cancel') }}
+                </AlertDialogCancel>
+                <AlertDialogAction
+                    @click="confirmDelete"
+                    class="cursor-pointer bg-destructive text-destructive-foreground transition-all hover:bg-destructive/90 active:scale-95"
+                >
+                    {{ __('ui.delete') }}
+                </AlertDialogAction>
+            </AlertDialogFooter>
+        </AlertDialogContent>
+    </AlertDialog>
 </template>
 
 <script setup lang="ts">
@@ -214,6 +249,16 @@ import {
 } from 'lucide-vue-next';
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import AppContent from '@/components/AppContent.vue';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import VehicleAdFormProgressNav, {
     type FormSection,
@@ -229,6 +274,8 @@ import {
 import type { ExtendedPageProps } from '@/types/inertia';
 
 const { __ } = useTranslation();
+
+const isDeleteDialogOpen = ref(false);
 
 type FeatureOption = {
     id: number | string;
@@ -430,10 +477,13 @@ const submit = (status: 'active' | 'draft'): void => {
     })).post(vehicleUpdate.url(props.ad.id));
 };
 
+const confirmDelete = (): void => {
+    isDeleteDialogOpen.value = false;
+    router.delete(vehicleDestroy.url(props.ad.id));
+};
+
 const destroyAd = (): void => {
-    if (confirm(__('ui.confirm_delete'))) {
-        router.delete(vehicleDestroy.url(props.ad.id));
-    }
+    isDeleteDialogOpen.value = true;
 };
 
 const page = usePage<ExtendedPageProps>();

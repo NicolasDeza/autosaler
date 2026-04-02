@@ -101,7 +101,12 @@ return [
     'status_user_inactive' => 'Inactif',
     'status_user_suspended' => 'Suspendu',
     'status_user_banned' => 'Banni',
-    'cancel_subscription' => 'Résilier',
+    'cancel_subscription_title' => 'Résilier l\'abonnement',
     'confirm_cancel_subscription' => 'Êtes-vous sûr de vouloir résilier cet abonnement ?',
+    'confirm_user_deletion_title' => 'Supprimer l\'utilisateur',
     'confirm_user_deletion' => 'Êtes-vous sûr de vouloir supprimer l\'utilisateur :name ? Cette action est irréversible.',
+    'confirm_delete_brand' => 'Supprimer la marque',
+    'confirm_delete_brand_desc' => 'Êtes-vous sûr de vouloir supprimer la marque :name ? Tous les modèles associés seront également impactés.',
+    'confirm_delete_model' => 'Supprimer le modèle',
+    'confirm_delete_model_desc' => 'Êtes-vous sûr de vouloir supprimer le modèle :name ?',
 ];
