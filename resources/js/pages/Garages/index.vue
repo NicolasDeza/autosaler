@@ -192,7 +192,7 @@ watch(
                                 class="absolute inset-0 bg-linear-to-t from-black/80 via-black/35 to-transparent"
                             />
 
-                            <div class="absolute top-2.5 left-2.5">
+                            <div class="absolute bottom-2.5 left-2.5">
                                 <Avatar
                                     :class="
                                         garage.background_url
