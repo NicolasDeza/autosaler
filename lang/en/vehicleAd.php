@@ -54,7 +54,9 @@ return [
     'consumption_avg' => 'Avg consumption (L/100)',
     'co2_emissions' => 'CO2 emissions (g/km)',
     'co2_consumption' => 'CO2 / Consumption',
+    'taxes' => 'Taxes',
     'vat_included' => 'VAT incl.',
+    'vat_excluded' => 'VAT excl.',
     'previous_owners' => 'Previous owners',
     'purchase_date' => 'Purchase date',
 

@@ -81,7 +81,12 @@ const toggleComparison = () => emit('toggleComparison');
                     <span
                         class="pb-0.5 text-[10px] font-semibold tracking-[0.18em] text-white/80 uppercase sm:pb-1 sm:text-[11px]"
                     >
-                        {{ __('vehicleAd.vat_included') }}
+                        {{
+                            String(ad.vat_mode ?? '').toLowerCase() ===
+                            'htva'
+                                ? __('vehicleAd.vat_excluded')
+                                : __('vehicleAd.vat_included')
+                        }}
                     </span>
                 </div>
             </div>

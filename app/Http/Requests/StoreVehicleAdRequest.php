@@ -40,6 +40,7 @@ class StoreVehicleAdRequest extends FormRequest
 
             'vehicle_version_name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
+            'vat_mode' => 'required|in:tvac,htva',
             'mileage' => 'required|integer|min:0',
             'power_kw' => 'nullable|integer|min:0',
             'engine_displacement' => 'nullable|integer|min:0',

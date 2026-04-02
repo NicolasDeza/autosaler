@@ -177,9 +177,10 @@ const toggleFavorite = (adId: number) => {
                                     ]"
                                 >
                                     {{
-                                        variant === 'list'
-                                            ? __('vehicleAd.vat_included')
-                                            : 'TVAC'
+                                        String(ad.vat_mode ?? '')
+                                            .toLowerCase() === 'htva'
+                                            ? __('vehicleAd.vat_excluded')
+                                            : __('vehicleAd.vat_included')
                                     }}
                                 </span>
                             </div>

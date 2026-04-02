@@ -77,6 +77,7 @@ class GarageController extends Controller
                 'transmission_type_id',
                 'vehicle_version_name',
                 'price',
+                'vat_mode',
                 'mileage',
                 'first_registration_date',
             ])
@@ -102,6 +103,7 @@ class GarageController extends Controller
                 ] : null,
                 'vehicle_version_name' => $vehicleAd->vehicle_version_name,
                 'price' => (float) $vehicleAd->price,
+                'vat_mode' => $vehicleAd->vat_mode,
                 'mileage' => $vehicleAd->mileage,
                 'first_registration_date' => $vehicleAd->first_registration_date,
                 'user' => [

@@ -55,7 +55,9 @@ return [
     'consumption_avg' => 'Conso moy (L/100)',
     'co2_emissions' => 'Émission CO2 (g/km)',
     'co2_consumption' => 'CO2 / Conso',
+    'taxes' => 'Taxes',
     'vat_included' => 'TVAC',
+    'vat_excluded' => 'HTVA',
     'previous_owners' => 'Propriétaires préc.',
     'purchase_date' => "Date d'achat",
 
