@@ -45,6 +45,7 @@ class VehicleAd extends Model implements HasMedia
 
         'vehicle_version_name',
         'price',
+        'vat_mode',
         'mileage',
         'power_kw',
         'engine_displacement',

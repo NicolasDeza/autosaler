@@ -225,6 +225,7 @@ const form = useForm({
     vehicle_version_id: '',
     vehicle_version_name: '',
     price: '',
+    vat_mode: 'tvac',
     mileage: '',
     first_registration_date: '',
     purchase_date: '',
