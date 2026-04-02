@@ -44,7 +44,7 @@ class GarageController extends Controller
                 'active_vehicle_ads_count' => (int) ($company->active_vehicle_ads_count ?? 0),
             ]);
 
-        return Inertia::render('Garages/index', [
+        return Inertia::render('Garages/Index', [
             'garages' => $garages,
         ]);
     }
@@ -112,7 +112,7 @@ class GarageController extends Controller
                 'primary_image' => $vehicleAd->primary_image,
             ]);
 
-        return Inertia::render('Garages/show', [
+        return Inertia::render('Garages/Show', [
             'garage' => [
                 'id' => $company->id,
                 'name' => $company->name,

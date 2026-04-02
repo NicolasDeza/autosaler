@@ -14,7 +14,7 @@ test('garages index page can be rendered', function () {
     $response
         ->assertSuccessful()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Garages/index')
+            ->component('Garages/Index')
             ->has('garages.data', 1)
             ->has('garages.data.0.logo_url')
             ->has('garages.data.0.background_url')
@@ -29,7 +29,7 @@ test('garage show page can be rendered', function () {
     $response
         ->assertSuccessful()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Garages/show')
+            ->component('Garages/Show')
             ->has('garage.logo_url')
             ->has('garage.background_url')
             ->where('garage.id', $company->id));
