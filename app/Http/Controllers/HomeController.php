@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\VehicleAd;
 use App\Models\VehicleBrand;
 use Inertia\Inertia;
@@ -21,8 +22,30 @@ class HomeController extends Controller
             ->limit(8)
             ->get();
 
+        $featuredGarages = Company::query()
+            ->with(['city:id,code,zip_code', 'media'])
+            ->withCount([
+                'vehicleAds as active_vehicle_ads_count' => fn ($query) => $query->where('vehicle_ads.status', 'active'),
+            ])
+            ->inRandomOrder()
+            ->limit(4)
+            ->get()
+            ->map(fn (Company $company): array => [
+                'id' => $company->id,
+                'name' => $company->name,
+                'address' => $company->address,
+                'city' => $company->city ? [
+                    'code' => $company->city->code,
+                    'zip_code' => $company->city->zip_code,
+                ] : null,
+                'logo_url' => $company->logo_url,
+                'background_url' => $company->background_url,
+                'active_vehicle_ads_count' => (int) ($company->active_vehicle_ads_count ?? 0),
+            ]);
+
         return Inertia::render('Home/Index', [
             'recentVehicles' => $recentVehicles,
+            'featuredGarages' => $featuredGarages,
             'brands' => Inertia::defer(fn () => VehicleBrand::orderBy('name')->get(['id', 'name']))->once(),
         ]);
     }

@@ -43,6 +43,7 @@ return [
     'contact_modal_success_title' => 'Message sent successfully',
     'contact_modal_success_description' => 'Thanks, our team will get back to you shortly.',
     'footer_vehicles' => 'Vehicles',
+    'footer_garages' => 'Dealerships',
     'all_rights_reserved' => 'All rights reserved.',
     'made_by' => 'Made by',
 ];

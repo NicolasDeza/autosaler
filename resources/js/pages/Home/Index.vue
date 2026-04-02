@@ -2,6 +2,7 @@
 import { Head, Deferred } from '@inertiajs/vue3';
 import AppContent from '@/components/AppContent.vue';
 import BrandsSection from '@/components/BrandsSection.vue';
+import GarageHome from '@/components/GarageHome.vue';
 import HeroSection from '@/components/HeroSection.vue';
 import HomeSearchFilter from '@/components/HomeSearchFilter.vue';
 import RecentVehiclesSection from '@/components/RecentVehiclesSection.vue';
@@ -20,8 +21,19 @@ interface Vehicle {
     user: { company: { name: string } | null } | null;
 }
 
+interface FeaturedGarage {
+    id: number;
+    name: string;
+    address: string;
+    city: { code: string; zip_code: string } | null;
+    logo_url: string | null;
+    background_url: string | null;
+    active_vehicle_ads_count: number;
+}
+
 defineProps<{
     recentVehicles: Vehicle[];
+    featuredGarages: FeaturedGarage[];
     brands?: any[];
 }>();
 </script>
@@ -40,6 +52,7 @@ defineProps<{
         </Deferred>
 
         <RecentVehiclesSection :vehicles="recentVehicles" />
+        <GarageHome :garages="featuredGarages" />
         <BrandsSection :brands="brands" />
-    </Appcontent>
+    </AppContent>
 </template>

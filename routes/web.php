@@ -8,6 +8,7 @@ use App\Http\Controllers\ContactAdminController;
 use App\Http\Controllers\DealerDashboardController;
 use App\Http\Controllers\DealerRegistrationController;
 use App\Http\Controllers\DealersPageController;
+use App\Http\Controllers\GarageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VehicleAdContactController;
 use App\Http\Controllers\VehicleAdController;
@@ -34,6 +35,8 @@ Route::get('/vehicles/compare', [VehicleAdController::class, 'compare'])->name('
 Route::get('/vehicles/{vehicleAd}', [VehicleAdController::class, 'show'])->name('vehicles.show')->whereNumber('vehicleAd');
 Route::post('/vehicles/{vehicleAd}/contact', VehicleAdContactController::class)->name('vehicles.contact')->whereNumber('vehicleAd');
 Route::get('/dealers', [DealersPageController::class, 'index'])->name('dealers.index');
+Route::get('/garages', [GarageController::class, 'index'])->name('garages.index');
+Route::get('/garages/{company}', [GarageController::class, 'show'])->name('garages.show')->whereNumber('company');
 Route::post('/dealers/register', DealerRegistrationController::class)->name('dealers.register');
 Route::post('/contact', ContactAdminController::class)->name('contact.send');
 
