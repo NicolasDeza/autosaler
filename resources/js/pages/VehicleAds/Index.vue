@@ -29,9 +29,7 @@
                 <header
                     class="flex flex-col gap-3 rounded-xl border border-border/30 bg-card/40 p-3 shadow-sm backdrop-blur-sm sm:gap-4 sm:px-6 sm:py-4"
                 >
-                    <div
-                        class="flex items-center justify-between gap-3 overflow-hidden"
-                    >
+                    <div class="flex items-center justify-between gap-3">
                         <div class="flex min-w-0 items-center gap-2 sm:gap-4">
                             <!-- Mobile Icon-based Count -->
                             <div class="flex items-center gap-1.5 sm:hidden">
@@ -63,7 +61,21 @@
                             </span>
                         </div>
 
-                        <div class="flex shrink-0 items-center gap-2 sm:gap-3">
+                        <div
+                            class="flex flex-1 shrink-0 items-center justify-end gap-2 sm:gap-3 lg:flex-none"
+                        >
+                            <div class="group relative hidden lg:block lg:w-40">
+                                <Search
+                                    class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground/60 transition-colors group-focus-within:text-primary"
+                                />
+                                <Input
+                                    v-model="form.search"
+                                    :placeholder="__('admin.search')"
+                                    autocomplete="off"
+                                    class="h-9 border-border/20 bg-background/30 pl-10 text-sm transition-all focus-visible:bg-background focus-visible:ring-primary/20"
+                                />
+                            </div>
+
                             <span
                                 class="hidden text-[10px] font-bold tracking-widest text-muted-foreground uppercase lg:inline-block"
                             >
@@ -71,9 +83,21 @@
                             </span>
                             <SortSelect
                                 v-model="form.sort"
-                                class="h-8 w-[105px] text-[10px] sm:h-9 sm:w-[200px] sm:text-sm"
+                                class="h-9 w-full max-w-40 text-[10px] sm:text-sm"
                             />
                         </div>
+                    </div>
+
+                    <div class="group relative block w-full lg:hidden">
+                        <Search
+                            class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground/60 transition-colors group-focus-within:text-primary"
+                        />
+                        <Input
+                            v-model="form.search"
+                            :placeholder="__('admin.search')"
+                            autocomplete="off"
+                            class="h-9 border-border/20 bg-background/30 pl-10 text-sm transition-all focus-visible:bg-background focus-visible:ring-primary/20"
+                        />
                     </div>
 
                     <ActiveFilters
@@ -222,6 +246,7 @@ import {
     CardDescription,
     CardTitle,
 } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import ActiveFilters from '@/components/VehicleAds/ActiveFilters.vue';
 import FilterSidebar from '@/components/VehicleAds/FilterSidebar.vue';
 import SortSelect from '@/components/VehicleAds/SortSelect.vue';
@@ -297,6 +322,7 @@ interface FilterForm {
     power_unit: 'kw' | 'ch';
     features: string[];
     favorites_only: boolean;
+    search: string;
 }
 
 const form = ref<FilterForm>({
@@ -355,6 +381,7 @@ const form = ref<FilterForm>({
     power_unit: f.power_unit || 'ch',
     features: toArr(f.features),
     favorites_only: f.favorites_only === '1' || f.favorites_only === true,
+    search: f.search ? String(f.search) : '',
 });
 
 const activeFilterCount = computed(() => {
@@ -379,6 +406,7 @@ const activeFilterCount = computed(() => {
         Number(v.min_price) > 0 || Number(v.max_price) < 200000,
         Number(v.min_year) > 1980 || Number(v.max_year) < currentYear,
         !!(v.min_power || v.max_power),
+        !!v.search,
     ].filter(Boolean).length;
 
     const multiFilters = [
@@ -470,6 +498,7 @@ const getFilterParams = () => {
     if (v.power_unit && v.power_unit !== 'ch') q.power_unit = v.power_unit;
     if (v.features.length) q.features = [...v.features];
     if (v.favorites_only) q.favorites_only = '1';
+    if (v.search) q.search = v.search;
 
     return q;
 };

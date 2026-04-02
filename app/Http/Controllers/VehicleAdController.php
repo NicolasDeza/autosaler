@@ -158,6 +158,22 @@ class VehicleAdController extends Controller
             }
         }
 
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('brand', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                })
+                    ->orWhereHas('model', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhere('vehicle_version_name', 'like', "%{$search}%")
+                    ->orWhereHas('exteriorColor', function ($q) use ($search) {
+                        $q->where('code', 'like', "%{$search}%");
+                    });
+            });
+        }
+
         if ($request->boolean('favorites_only')) {
             if (auth()->check()) {
                 $query->whereHas('favoredByUsers', function ($q) {
@@ -211,7 +227,7 @@ class VehicleAdController extends Controller
                 'is_damaged', 'has_accident', 'complete_maintenance_book', 'non_smoker',
                 'city_id', 'per_page',
                 'version', 'min_power', 'max_power', 'power_unit', 'features',
-                'favorites_only',
+                'favorites_only', 'search',
             ]) + ['sort' => $request->input('sort', 'latest')],
         ]);
     }
