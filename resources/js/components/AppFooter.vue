@@ -171,6 +171,7 @@ import { home } from '@/routes';
 import admin from '@/routes/admin';
 import dealer from '@/routes/dealer';
 import dealers from '@/routes/dealers';
+import garages from '@/routes/garages';
 import { notices, privacy, cookies } from '@/routes/legal';
 import vehicles from '@/routes/vehicles';
 import type { NavItem } from '@/types';
@@ -195,6 +196,10 @@ const menuItems = computed<NavItem[]>(() => {
         {
             title: __('nav.footer_vehicles'),
             href: vehicles.index().url,
+        },
+        {
+            title: __('nav.footer_garages'),
+            href: garages.index().url,
         },
         {
             title: __('dealerPage.heading'),

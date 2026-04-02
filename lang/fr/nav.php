@@ -44,6 +44,7 @@ return [
     'contact_modal_success_title' => 'Message bien envoyé',
     'contact_modal_success_description' => 'Merci, notre équipe vous répondra rapidement.',
     'footer_vehicles' => 'Vehicules',
+    'footer_garages' => 'Concessionnaires',
     'all_rights_reserved' => 'Tous droits réservés.',
     'made_by' => 'Site réalisé par',
 ];
