@@ -33,6 +33,7 @@ return [
     'all_materials' => 'All materials',
     'any' => 'Any',
     'sorting' => [
+        'sort_by' => 'Sort by',
         'latest' => 'Latest',
         'oldest' => 'Oldest',
         'price_asc' => 'Lowest price',
@@ -42,4 +43,6 @@ return [
     'member_since' => 'Member since',
     'add_photos' => 'Add photos',
     'click_to_change' => 'Click to change',
+    'crop' => 'Crop',
+    'confirm_crop_btn' => 'Confirm crop',
 ];
