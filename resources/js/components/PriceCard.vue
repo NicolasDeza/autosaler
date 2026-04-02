@@ -156,7 +156,7 @@ function selectPlan(plan: PricingPlan): void {
 
             <div
                 v-if="pricingPlans.length > 0"
-                class="grid gap-6 md:grid-cols-2 xl:grid-cols-4"
+                class="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
             >
                 <Card
                     v-for="plan in pricingPlans"
