@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Mail, MapPin, Phone, User, CheckCircle, Globe } from 'lucide-vue-next';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Mail, MapPin, Phone, CheckCircle, Globe } from 'lucide-vue-next';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { useTranslation } from '@/composables/useTranslation';
@@ -14,7 +14,7 @@ const { __ } = useTranslation();
 
 <template>
     <Card
-        class="group !mb-none relative overflow-hidden border-none bg-slate-950 p-0 shadow-2xl transition-all duration-500"
+        class="group relative mb-0! overflow-hidden border-none bg-slate-950 p-0 shadow-2xl transition-all duration-500"
     >
         <!-- Background Layer -->
         <div class="absolute inset-0 z-0">
@@ -39,21 +39,15 @@ const { __ } = useTranslation();
             <div
                 class="flex flex-1 items-center gap-6 px-6 py-8 lg:px-10 lg:py-8"
             >
-                <div class="relative shrink-0">
+                <div v-if="company.logo_url" class="relative shrink-0">
                     <Avatar
                         class="relative size-20 border-4 border-white/20 bg-white p-0 shadow-2xl lg:size-28"
                     >
                         <AvatarImage
-                            v-if="company.logo_url"
                             :src="company.logo_url"
                             :alt="company.name"
                             class="object-cover"
                         />
-                        <AvatarFallback
-                            class="bg-primary/5 text-4xl font-black text-primary uppercase"
-                        >
-                            {{ company.name?.charAt(0) || 'D' }}
-                        </AvatarFallback>
                     </Avatar>
                 </div>
 

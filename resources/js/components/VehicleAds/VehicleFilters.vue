@@ -113,17 +113,17 @@ watch(
                 <!-- Marque -->
                 <BrandFilter v-model:form="form" :brands="brands ?? []" />
 
-                <!-- Société -->
-                <CompanyFilter
-                    v-model:form="form"
-                    :companies="companies ?? []"
-                />
-
                 <!-- Modèle -->
                 <ModelFilter v-model:form="form" :models="models ?? []" />
 
                 <!-- Version -->
                 <VersionFilter v-model:form="form" :versions="versions" />
+
+                <!-- Société -->
+                <CompanyFilter
+                    v-model:form="form"
+                    :companies="companies ?? []"
+                />
 
                 <!-- Emplacement -->
                 <LocationFilter
