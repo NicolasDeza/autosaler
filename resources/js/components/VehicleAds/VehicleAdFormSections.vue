@@ -116,6 +116,25 @@
                         <InputError :message="form.errors.price" />
                     </div>
                     <div class="space-y-2">
+                        <Label for="vat_mode"
+                            >{{ __('vehicleAd.taxes') }} *</Label
+                        >
+                        <Select v-model="form.vat_mode">
+                            <SelectTrigger id="vat_mode">
+                                <SelectValue :placeholder="__('ui.select')" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="tvac">{{
+                                    __('vehicleAd.vat_included')
+                                }}</SelectItem>
+                                <SelectItem value="htva">{{
+                                    __('vehicleAd.vat_excluded')
+                                }}</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <InputError :message="form.errors.vat_mode" />
+                    </div>
+                    <div class="space-y-2">
                         <Label for="mileage"
                             >{{ __('vehicleAd.mileage_km') }} *</Label
                         >

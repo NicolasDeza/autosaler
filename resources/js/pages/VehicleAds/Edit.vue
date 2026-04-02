@@ -313,6 +313,7 @@ const form = useForm({
         : '',
     vehicle_version_name: props.ad.vehicle_version_name ?? '',
     price: props.ad.price ?? '',
+    vat_mode: props.ad.vat_mode ?? 'tvac',
     mileage: props.ad.mileage ?? '',
     first_registration_date: formatDate(props.ad.first_registration_date),
     purchase_date: formatDate(props.ad.purchase_date),

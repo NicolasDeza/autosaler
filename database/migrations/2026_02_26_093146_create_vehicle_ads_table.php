@@ -77,6 +77,7 @@ return new class extends Migration
             // TECHNICAL Infos
             $table->string('vehicle_version_name');
             $table->decimal('price', 10, 2)->index();
+            $table->string('vat_mode', 10)->default('tvac');
             $table->unsignedInteger('mileage')->index();
             $table->unsignedInteger('power_kw')->nullable();
             $table->unsignedInteger('engine_displacement')->nullable(); // cm³ cylindrée
