@@ -19,12 +19,29 @@
                 :interior-colors="interiorColors"
                 :interior-types="interiorTypes"
                 :features="features"
+                :companies="companies"
                 :badge-count="activeFilterCount"
                 @reset-filters="resetFilters"
             />
 
             <!-- Main Content -->
             <main class="flex min-w-0 flex-1 flex-col gap-6">
+                <!-- Company Info Card -->
+                <Transition
+                    enter-from-class="opacity-0 translate-y-2"
+                    enter-active-class="transition-all duration-300 ease-out"
+                    enter-to-class="opacity-100 translate-y-0"
+                    leave-from-class="opacity-100 translate-y-0"
+                    leave-active-class="transition-all duration-300 ease-in"
+                    leave-to-class="opacity-0 -translate-y-2"
+                >
+                    <CompanyInfoCard
+                        v-if="activeCompany"
+                        :company="activeCompany"
+                        class="mb-6"
+                    />
+                </Transition>
+
                 <!-- Results Header & Active Filters (Compact) -->
                 <header
                     class="flex flex-col gap-3 rounded-xl border border-border/30 bg-card/40 p-3 shadow-sm backdrop-blur-sm sm:gap-4 sm:px-6 sm:py-4"
@@ -113,13 +130,14 @@
                         :features="features"
                         :models="models"
                         :current-year="currentYear"
-                        class="hidden border-t border-border/10 pt-3 sm:block"
+                        class="hidden border-t border-border/10 sm:block"
                         @reset-all="resetFilters"
                         @update-filter="updateFilter"
                         @update-price="onPriceChange"
                         @update-year="onYearChange"
                     />
                 </header>
+
                 <!-- Vehicles List -->
                 <Transition
                     mode="out-in"
@@ -248,6 +266,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import ActiveFilters from '@/components/VehicleAds/ActiveFilters.vue';
+import CompanyInfoCard from '@/components/VehicleAds/CompanyInfoCard.vue';
 import FilterSidebar from '@/components/VehicleAds/FilterSidebar.vue';
 import SortSelect from '@/components/VehicleAds/SortSelect.vue';
 import VehicleAdCard from '@/components/VehicleAds/VehicleAdCard.vue';
@@ -277,6 +296,8 @@ const props = defineProps<{
     interiorColors?: any[];
     interiorTypes?: any[];
     features?: any[];
+    companies?: any[];
+    activeCompany?: any;
     filters?: Record<string, any>;
 }>();
 
@@ -314,6 +335,7 @@ interface FilterForm {
     non_smoker: boolean | null;
     city: string;
     city_id: string;
+    company_id: string;
     per_page: string;
     sort: string;
     version: string;
@@ -327,6 +349,7 @@ interface FilterForm {
 
 const form = ref<FilterForm>({
     brand_id: f.brand_id ? String(f.brand_id) : 'all',
+    company_id: f.company_id ? String(f.company_id) : 'all',
     model_id: f.model_id ? String(f.model_id) : 'all',
     min_price: f.min_price ? Number(f.min_price) : 0,
     max_price: f.max_price ? Number(f.max_price) : 200000,
@@ -388,6 +411,7 @@ const activeFilterCount = computed(() => {
     const v = form.value;
     const simpleFilters = [
         v.brand_id !== 'all',
+        v.company_id !== 'all' && !!v.company_id,
         v.model_id !== 'all',
         !!v.city,
         v.max_mileage !== 'all',
@@ -464,6 +488,7 @@ const getFilterParams = () => {
     const v = form.value;
 
     if (v.brand_id && v.brand_id !== 'all') q.brand_id = v.brand_id;
+    if (v.company_id && v.company_id !== 'all') q.company_id = v.company_id;
     if (v.model_id && v.model_id !== 'all') q.model_id = v.model_id;
     if (v.min_price > 0) q.min_price = v.min_price;
     if (v.max_price < 200000) q.max_price = v.max_price;

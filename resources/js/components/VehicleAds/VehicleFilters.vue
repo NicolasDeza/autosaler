@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 // Import individual filter components
 import BodyFilter from './Filters/BodyFilter.vue';
 import BrandFilter from './Filters/BrandFilter.vue';
+import CompanyFilter from './Filters/CompanyFilter.vue';
 import DoorsFilter from './Filters/DoorsFilter.vue';
 import EuroNormFilter from './Filters/EuroNormFilter.vue';
 import ExteriorColorFilter from './Filters/ExteriorColorFilter.vue';
@@ -35,6 +36,7 @@ defineProps<{
     interiorColors?: any[];
     interiorTypes?: any[];
     features?: any[];
+    companies?: any[];
     models?: any[];
 }>();
 
@@ -95,6 +97,7 @@ watch(
                 'exteriorColors',
                 'euroNorms',
                 'features',
+                'companies',
             ]"
         >
             <template #fallback>
@@ -109,6 +112,12 @@ watch(
             <div class="space-y-6">
                 <!-- Marque -->
                 <BrandFilter v-model:form="form" :brands="brands ?? []" />
+
+                <!-- Société -->
+                <CompanyFilter
+                    v-model:form="form"
+                    :companies="companies ?? []"
+                />
 
                 <!-- Modèle -->
                 <ModelFilter v-model:form="form" :models="models ?? []" />

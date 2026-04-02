@@ -18,6 +18,7 @@ defineProps<{
     interiorColors?: any[];
     interiorTypes?: any[];
     features?: any[];
+    companies?: any[];
     models?: any[];
     badgeCount?: number;
 }>();
@@ -94,6 +95,7 @@ const toggleFavoritesFilter = () => {
                 :interior-colors="interiorColors"
                 :interior-types="interiorTypes"
                 :features="features"
+                :companies="companies"
                 :models="models"
                 @update:models="handleUpdateModels"
             />
@@ -162,6 +164,7 @@ const toggleFavoritesFilter = () => {
                 :interior-colors="interiorColors"
                 :interior-types="interiorTypes"
                 :features="features"
+                :companies="companies"
                 :models="models"
                 @update:models="handleUpdateModels"
             />

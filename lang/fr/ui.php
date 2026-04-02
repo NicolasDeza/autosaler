@@ -27,6 +27,7 @@ return [
     'phone' => 'Téléphone',
     'all_brands' => 'Toutes les marques',
     'all_models' => 'Tous les modèles',
+    'all_companies' => 'Toutes les sociétés',
     'all_colors' => 'Toutes les couleurs',
     'all_materials' => 'Tous les matériaux',
     'any' => 'Peu importe',

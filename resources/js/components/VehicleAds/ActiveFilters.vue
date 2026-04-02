@@ -16,6 +16,7 @@ const props = defineProps<{
     interiorColors?: any[];
     interiorTypes?: any[];
     features?: any[];
+    companies?: any[];
     models?: any[];
     currentYear: number;
 }>();
@@ -42,6 +43,18 @@ const activeFilters = computed(() => {
             key: 'brand_id',
             label: `${__('vehicleAd.brand')}: ${brand?.name || v.brand_id}`,
             onRemove: () => emit('updateFilter', 'brand_id', 'all'),
+        });
+    }
+
+    // Company
+    if (v.company_id && v.company_id !== 'all') {
+        const company = props.companies?.find(
+            (c: any) => String(c.id) === String(v.company_id),
+        );
+        filters.push({
+            key: 'company_id',
+            label: `${__('vehicleAd.company') || 'Société'}: ${company?.name || v.company_id}`,
+            onRemove: () => emit('updateFilter', 'company_id', 'all'),
         });
     }
 

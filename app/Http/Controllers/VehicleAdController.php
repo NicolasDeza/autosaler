@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreVehicleAdRequest;
 use App\Http\Requests\UpdateVehicleAdRequest;
 use App\Models\BodyType;
+use App\Models\Company;
 use App\Models\EuroNorm;
 use App\Models\ExteriorColor;
 use App\Models\Feature;
@@ -142,6 +143,12 @@ class VehicleAdController extends Controller
             $query->where('vehicle_version_name', 'like', '%'.$request->version.'%');
         }
 
+        if ($request->filled('company_id') && $request->company_id !== 'all') {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('company_id', $request->company_id);
+            });
+        }
+
         if ($request->filled('min_power')) {
             $query->where('power_kw', '>=', $request->min_power);
         }
@@ -208,6 +215,10 @@ class VehicleAdController extends Controller
 
         return Inertia::render('VehicleAds/Index', [
             'ads' => $ads,
+            'activeCompany' => $request->filled('company_id') && $request->company_id !== 'all'
+                ? Company::with(['city', 'country', 'media'])->find($request->company_id)
+                : null,
+            'companies' => Inertia::defer(fn () => Company::has('vehicleAds')->orderBy('name')->get(['id', 'name']), 'filters')->once(),
             'brands' => Inertia::defer(fn () => VehicleBrand::orderBy('name')->get(['id', 'name']), 'filters')->once(),
             'fuelTypes' => Inertia::defer(fn () => FuelType::orderBy('code')->get(['id', 'code']), 'filters')->once(),
             'bodyTypes' => Inertia::defer(fn () => BodyType::orderBy('code')->get(['id', 'code']), 'filters')->once(),
@@ -225,7 +236,7 @@ class VehicleAdController extends Controller
                 'interior_color_id', 'interior_type_id',
                 'doors', 'seats',
                 'is_damaged', 'has_accident', 'complete_maintenance_book', 'non_smoker',
-                'city_id', 'per_page',
+                'city_id', 'per_page', 'company_id',
                 'version', 'min_power', 'max_power', 'power_unit', 'features',
                 'favorites_only', 'search',
             ]) + ['sort' => $request->input('sort', 'latest')],

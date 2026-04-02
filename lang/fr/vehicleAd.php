@@ -20,6 +20,7 @@ return [
     // Vehicle properties (labels)
     'brand' => 'Marque',
     'model' => 'Modèle',
+    'company' => 'Société',
     'version' => 'Version',
     'version_placeholder' => 'Ex: Sport, Edition, ...',
     'vin' => 'Numéro de châssis (VIN)',
