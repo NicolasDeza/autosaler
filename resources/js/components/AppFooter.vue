@@ -6,22 +6,22 @@
             <div
                 class="grid grid-cols-1 gap-y-12 py-12 sm:py-24 lg:grid-cols-12 lg:gap-x-12"
             >
-                <div class="flex flex-col gap-10 lg:col-span-4">
-                    <div class="flex flex-col gap-6">
+                <div class="flex flex-col items-center gap-10 text-center lg:col-span-4 lg:items-start lg:text-left">
+                    <div class="flex flex-col items-center gap-6 lg:items-start">
                         <Link
                             :href="home().url"
-                            class="flex w-fit items-center transition-transform hover:scale-[1.02]"
+                            class="mx-auto flex w-fit items-center transition-transform hover:scale-[1.02] lg:mx-0"
                         >
                             <AppLogoLg />
                         </Link>
                         <p
-                            class="max-w-sm text-[14px] leading-relaxed font-light text-muted-foreground/70"
+                            class="mx-auto max-w-sm text-[14px] leading-relaxed font-light text-muted-foreground/70 lg:mx-0"
                         >
                             {{ __('nav.footer_description') }}
                         </p>
                     </div>
 
-                    <div class="flex gap-3">
+                    <div class="flex justify-center gap-3 lg:justify-start">
                         <a
                             v-for="social in socialLinks"
                             :key="social.label"
@@ -39,9 +39,9 @@
                     class="grid grid-cols-1 gap-10 sm:grid-cols-3 lg:col-span-8"
                 >
                     <div
-                        class="relative flex flex-col gap-8 pl-0 sm:pl-8 lg:border-l lg:border-white/5"
+                        class="relative flex flex-col items-center gap-8 pl-0 text-center sm:items-start sm:pl-8 sm:text-left lg:border-l lg:border-white/5"
                     >
-                        <div class="flex flex-col gap-2">
+                        <div class="flex flex-col items-center gap-2 sm:items-start">
                             <h3
                                 class="text-[11px] font-bold tracking-[0.25em] text-white uppercase"
                             >
@@ -49,12 +49,12 @@
                             </h3>
                             <div class="h-0.5 w-8 bg-primary"></div>
                         </div>
-                        <nav class="flex flex-col gap-3.5">
+                        <nav class="flex flex-col items-center gap-3.5 sm:items-start">
                             <Link
                                 v-for="item in menuItems"
                                 :key="item.title"
                                 :href="item.href"
-                                class="group flex items-center text-[14px] text-muted-foreground transition-all hover:translate-x-1 hover:text-white"
+                                class="group flex items-center justify-center text-[14px] text-muted-foreground transition-all hover:translate-x-1 hover:text-white sm:justify-start"
                             >
                                 <span
                                     class="mr-0 h-px w-0 bg-primary transition-all group-hover:mr-2 group-hover:w-3"
@@ -65,9 +65,9 @@
                     </div>
 
                     <div
-                        class="relative flex flex-col gap-8 pl-0 sm:pl-8 lg:border-l lg:border-white/5"
+                        class="relative flex flex-col items-center gap-8 pl-0 text-center sm:items-start sm:pl-8 sm:text-left lg:border-l lg:border-white/5"
                     >
-                        <div class="flex flex-col gap-2">
+                        <div class="flex flex-col items-center gap-2 sm:items-start">
                             <h3
                                 class="text-[11px] font-bold tracking-[0.25em] text-white uppercase"
                             >
@@ -75,12 +75,12 @@
                             </h3>
                             <div class="h-0.5 w-8 bg-primary"></div>
                         </div>
-                        <nav class="flex flex-col gap-3.5">
+                        <nav class="flex flex-col items-center gap-3.5 sm:items-start">
                             <Link
                                 v-for="item in legalItems"
                                 :key="item.title"
                                 :href="item.href"
-                                class="group flex items-center text-[14px] text-muted-foreground transition-all hover:translate-x-1 hover:text-white"
+                                class="group flex items-center justify-center text-[14px] text-muted-foreground transition-all hover:translate-x-1 hover:text-white sm:justify-start"
                             >
                                 <span
                                     class="mr-0 h-px w-0 bg-primary transition-all group-hover:mr-2 group-hover:w-3"
@@ -91,9 +91,9 @@
                     </div>
 
                     <div
-                        class="relative flex flex-col gap-8 pl-0 sm:pl-8 lg:border-l lg:border-white/5"
+                        class="relative flex flex-col items-center gap-8 pl-0 text-center sm:items-start sm:pl-8 sm:text-left lg:border-l lg:border-white/5"
                     >
-                        <div class="flex flex-col gap-2">
+                        <div class="flex flex-col items-center gap-2 sm:items-start">
                             <h3
                                 class="text-[11px] font-bold tracking-[0.25em] text-white uppercase"
                             >
@@ -101,7 +101,7 @@
                             </h3>
                             <div class="h-0.5 w-8 bg-primary"></div>
                         </div>
-                        <div class="flex flex-col gap-5">
+                        <div class="flex flex-col items-center gap-5 sm:items-start">
                             <p
                                 class="text-[13px] leading-relaxed text-muted-foreground/80"
                             >
@@ -109,7 +109,7 @@
                             </p>
                             <Button
                                 type="button"
-                                class="group relative inline-flex h-9 w-fit cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-primary/30 px-5 text-[10px] font-bold tracking-widest text-white uppercase transition-all hover:border-primary hover:bg-primary active:scale-95"
+                                class="group relative inline-flex h-9 w-fit cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-primary/30 px-5 text-[10px] font-bold tracking-widest text-white uppercase transition-all hover:border-primary hover:bg-primary active:scale-95 sm:self-start"
                                 @click="openContactModal"
                             >
                                 {{ __('nav.footer_contact_button') }}
@@ -123,7 +123,7 @@
                 class="flex flex-col items-center justify-between gap-8 border-t border-white/5 py-10 md:flex-row"
             >
                 <p
-                    class="text-[11px] font-medium tracking-wide text-muted-foreground/50"
+                    class="text-center text-[11px] font-medium tracking-wide text-muted-foreground/50 md:text-left"
                 >
                     © {{ new Date().getFullYear() }} —
                     <span class="text-white/80 uppercase">Autosaler</span>.
@@ -131,7 +131,7 @@
                 </p>
 
                 <div
-                    class="flex items-center gap-6 text-[11px] font-medium tracking-widest uppercase"
+                    class="flex flex-col items-center gap-3 text-[11px] font-medium tracking-widest uppercase sm:flex-row sm:gap-6"
                 >
                     <span class="text-muted-foreground/40">{{
                         __('nav.made_by')
