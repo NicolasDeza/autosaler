@@ -4,7 +4,7 @@ return [
     'page_title' => 'Concessionnaires',
     'hero_title_prefix' => 'Trouvez votre',
     'hero_title_highlight' => 'concessionnaire',
-    'hero_description' => 'Compare les concessionnaires en un coup d\'œil et accède rapidement aux annonces de chaque garage.',
+    'hero_description' => 'Comparez les garages, découvrez leurs véhicules et accédez rapidement à leurs annonces.',
     'hero_highlight_1' => 'Réseau pro vérifié',
     'home_title' => 'Trouver un concessionnaire',
     'home_title_prefix' => 'Trouver un',
