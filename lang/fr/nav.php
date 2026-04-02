@@ -24,9 +24,9 @@ return [
     'cookie_policy' => 'Politique de cookies',
 
     // footer
-    'footer_description' => 'Plateforme d’achat et de vente de véhicules d’occasion en toute confiance.',
+    'footer_description' => 'Plateforme d\'achat et de vente de véhicules d\'occasion en toute confiance.',
     'footer_platform' => 'Plateforme',
-    'footer_legal' => 'Legal',
+    'footer_legal' => 'Légal',
     'footer_contact' => 'Contact',
     'footer_contact_description' => 'Une question ou besoin d\'aide ? Notre équipe est à votre écoute.',
     'footer_contact_button' => 'Contactez-nous',
@@ -43,7 +43,7 @@ return [
     'contact_sending' => 'Envoi en cours...',
     'contact_modal_success_title' => 'Message bien envoyé',
     'contact_modal_success_description' => 'Merci, notre équipe vous répondra rapidement.',
-    'footer_vehicles' => 'Vehicules',
+    'footer_vehicles' => 'Véhicules',
     'footer_garages' => 'Concessionnaires',
     'all_rights_reserved' => 'Tous droits réservés.',
     'made_by' => 'Site réalisé par',
