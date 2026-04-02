@@ -192,6 +192,7 @@ const years = computed(() => {
                             <div class="col-span-1">
                                 <SearchSelect
                                     v-model="filters.brand"
+                                    name="brand_id"
                                     :options="brands ?? []"
                                     option-label="name"
                                     trigger-class="h-10! w-full cursor-pointer border-border bg-card! text-foreground"
@@ -204,6 +205,7 @@ const years = computed(() => {
                             <div class="col-span-1">
                                 <SearchSelect
                                     v-model="filters.model"
+                                    name="model_id"
                                     :options="models"
                                     option-label="name"
                                     :disabled="isModelDisabled"
@@ -276,7 +278,7 @@ const years = computed(() => {
                         <!-- Ligne 2 : 1ère immatriculation / Ville / Bouton -->
                         <div class="flex flex-col gap-3 lg:flex-row">
                             <div class="w-full lg:flex-1">
-                                <Select v-model="filters.year">
+                                <Select v-model="filters.year" name="min_year">
                                     <SelectTrigger
                                         class="h-10! w-full cursor-pointer border-border bg-card! text-foreground"
                                     >
@@ -310,6 +312,8 @@ const years = computed(() => {
                                         class="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-muted-foreground"
                                     />
                                     <Input
+                                        id="home-city"
+                                        name="city"
                                         v-model="filters.city"
                                         :placeholder="
                                             __(
