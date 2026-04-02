@@ -2,6 +2,8 @@
 
 use App\Models\Company;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
@@ -21,16 +23,12 @@ test('garages index page can be rendered', function () {
             ->where('garages.data.0.id', $company->id));
 });
 
-test('garage show page can be rendered', function () {
-    $company = Company::factory()->create();
+test('garage show route is removed', function () {
+    $garageRoutes = collect(Route::getRoutes()->getRoutesByName())
+        ->keys()
+        ->filter(fn (string $name): bool => Str::startsWith($name, 'garages.'))
+        ->values()
+        ->all();
 
-    $response = $this->get(route('garages.show', $company));
-
-    $response
-        ->assertSuccessful()
-        ->assertInertia(fn (Assert $page) => $page
-            ->component('Garages/Show')
-            ->has('garage.logo_url')
-            ->has('garage.background_url')
-            ->where('garage.id', $company->id));
+    expect($garageRoutes)->toBe(['garages.index']);
 });

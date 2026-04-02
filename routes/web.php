@@ -36,7 +36,6 @@ Route::get('/vehicles/{vehicleAd}', [VehicleAdController::class, 'show'])->name(
 Route::post('/vehicles/{vehicleAd}/contact', VehicleAdContactController::class)->name('vehicles.contact')->whereNumber('vehicleAd');
 Route::get('/dealers', [DealersPageController::class, 'index'])->name('dealers.index');
 Route::get('/garages', [GarageController::class, 'index'])->name('garages.index');
-Route::get('/garages/{company}', [GarageController::class, 'show'])->name('garages.show')->whereNumber('company');
 Route::post('/dealers/register', DealerRegistrationController::class)->name('dealers.register');
 Route::post('/contact', ContactAdminController::class)->name('contact.send');
 
