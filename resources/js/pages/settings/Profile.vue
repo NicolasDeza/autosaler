@@ -48,113 +48,130 @@ const user = page.props.auth.user;
                     :description="__('settings.profile_description')"
                 />
 
-                <Form
-                    v-bind="ProfileController.update.form()"
-                    class="space-y-6"
-                    v-slot="{ errors, processing, recentlySuccessful }"
+                <div
+                    class="rounded-2xl border border-border bg-card p-6 shadow-xs"
                 >
-                    <div class="flex gap-2">
-                        <div class="grid grow gap-2">
-                            <Label for="first_name">{{
-                                __('settings.profile_first_name')
-                            }}</Label>
-                            <Input
-                                id="first_name"
-                                class="mt-1 block w-full"
-                                name="first_name"
-                                :default-value="user.first_name"
-                                required
-                                autocomplete="given-name"
-                                :placeholder="__('settings.profile_first_name')"
-                            />
-                            <InputError
-                                class="mt-2"
-                                :message="errors.first_name"
-                            />
-                        </div>
-                        <div class="grid grow gap-2">
-                            <Label for="last_name">{{
-                                __('settings.profile_last_name')
-                            }}</Label>
-                            <Input
-                                id="last_name"
-                                class="mt-1 block w-full"
-                                name="last_name"
-                                :default-value="user.last_name"
-                                required
-                                autocomplete="family-name"
-                                :placeholder="__('settings.profile_last_name')"
-                            />
-                            <InputError
-                                class="mt-2"
-                                :message="errors.last_name"
-                            />
-                        </div>
-                    </div>
-                    <div class="grid gap-2">
-                        <Label for="email">{{
-                            __('settings.profile_email')
-                        }}</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            class="mt-1 block w-full"
-                            name="email"
-                            :default-value="user.email"
-                            required
-                            autocomplete="username"
-                            :placeholder="__('settings.profile_email')"
-                        />
-                        <InputError class="mt-2" :message="errors.email" />
-                    </div>
+                    <h3
+                        class="mb-6 text-[10px] font-black tracking-[0.2em] text-muted-foreground/50 uppercase"
+                    >
+                        {{ __('settings.section_identity') }}
+                    </h3>
 
-                    <div v-if="mustVerifyEmail && !user.email_verified_at">
-                        <p class="-mt-4 text-sm text-muted-foreground">
-                            {{ __('settings.profile_email_not_verified') }}
-                            <Link
-                                :href="send()"
-                                as="button"
-                                class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
+                    <Form
+                        v-bind="ProfileController.update.form()"
+                        class="space-y-6"
+                        v-slot="{ errors, processing, recentlySuccessful }"
+                    >
+                        <div class="flex gap-4">
+                            <div class="grid grow gap-2">
+                                <Label
+                                    for="first_name"
+                                    class="text-xs font-bold"
+                                    >{{
+                                        __('settings.profile_first_name')
+                                    }}</Label
+                                >
+                                <Input
+                                    id="first_name"
+                                    class="h-11 rounded-xl bg-muted/30"
+                                    name="first_name"
+                                    :default-value="user.first_name"
+                                    required
+                                    autocomplete="given-name"
+                                />
+                                <InputError
+                                    class="mt-1"
+                                    :message="errors.first_name"
+                                />
+                            </div>
+                            <div class="grid grow gap-2">
+                                <Label for="last_name" class="text-xs font-bold"
+                                    >{{
+                                        __('settings.profile_last_name')
+                                    }}</Label
+                                >
+                                <Input
+                                    id="last_name"
+                                    class="h-11 rounded-xl bg-muted/30"
+                                    name="last_name"
+                                    :default-value="user.last_name"
+                                    required
+                                    autocomplete="family-name"
+                                />
+                                <InputError
+                                    class="mt-1"
+                                    :message="errors.last_name"
+                                />
+                            </div>
+                        </div>
+                        <div class="grid gap-2">
+                            <Label for="email" class="text-xs font-bold">{{
+                                __('settings.profile_email')
+                            }}</Label>
+                            <Input
+                                id="email"
+                                type="email"
+                                class="h-11 rounded-xl bg-muted/30"
+                                name="email"
+                                :default-value="user.email"
+                                required
+                                autocomplete="username"
+                            />
+                            <InputError class="mt-1" :message="errors.email" />
+                        </div>
+
+                        <div v-if="mustVerifyEmail && !user.email_verified_at">
+                            <p class="-mt-4 text-sm text-muted-foreground">
+                                {{ __('settings.profile_email_not_verified') }}
+                                <Link
+                                    :href="send()"
+                                    as="button"
+                                    class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
+                                >
+                                    {{
+                                        __(
+                                            'settings.profile_send_verification_link',
+                                        )
+                                    }}
+                                </Link>
+                            </p>
+
+                            <div
+                                v-if="status === 'verification-link-sent'"
+                                class="mt-2 text-sm font-medium text-green-600"
                             >
                                 {{
                                     __(
-                                        'settings.profile_send_verification_link',
+                                        'settings.profile_email_verification_sent',
                                     )
                                 }}
-                            </Link>
-                        </p>
-
-                        <div
-                            v-if="status === 'verification-link-sent'"
-                            class="mt-2 text-sm font-medium text-green-600"
-                        >
-                            {{ __('settings.profile_email_verification_sent') }}
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="flex items-center gap-4">
-                        <Button
-                            :disabled="processing"
-                            data-test="update-profile-button"
-                            class="hover:cursor-pointer"
-                            >{{ __('settings.profile_save') }}</Button
-                        >
-
-                        <Transition
-                            enter-active-class="transition ease-in-out"
-                            enter-from-class="opacity-0"
-                            leave-active-class="transition ease-in-out"
-                            leave-to-class="opacity-0"
-                        >
-                            <p
-                                v-show="recentlySuccessful"
-                                class="text-sm text-neutral-600"
+                        <div class="flex items-center gap-4">
+                            <Button
+                                :disabled="processing"
+                                data-test="update-profile-button"
+                                class="hover:cursor-pointer"
+                                >{{ __('settings.profile_save') }}</Button
                             >
-                                {{ __('settings.profile_updated') }}
-                            </p>
-                        </Transition>
-                    </div>
-                </Form>
+
+                            <Transition
+                                enter-active-class="transition ease-in-out"
+                                enter-from-class="opacity-0"
+                                leave-active-class="transition ease-in-out"
+                                leave-to-class="opacity-0"
+                            >
+                                <p
+                                    v-show="recentlySuccessful"
+                                    class="text-sm text-neutral-600"
+                                >
+                                    {{ __('settings.profile_updated') }}
+                                </p>
+                            </Transition>
+                        </div>
+                    </Form>
+                </div>
             </div>
 
             <DeleteUser />

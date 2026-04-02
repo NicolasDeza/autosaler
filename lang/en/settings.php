@@ -51,8 +51,10 @@ return [
     'two_factor_enable_2fa' => 'Enable 2FA',
     'two_factor_disable_2fa' => 'Disable 2FA',
     'two_factor_continue_setup' => 'Continue setup',
-    'twa_factor_disable_description' => 'When you enable two-factor authentication, you will be prompted for a secure pin during login. This pin can be retrieved from a TOTP-supported application on your phone.',
-    'twa_factor_enable_description' => 'With two-factor authentication enabled, you will be prompted for a secure, random pin during login, which you can retrieve from the TOTP-supported application on your phone.',
+    'two_factor_disabled' => 'Disabled',
+    'two_factor_enabled' => 'Enabled',
+    'two_factor_disable_description' => 'When you enable two-factor authentication, you will be prompted for a secure pin during login. This pin can be retrieved from a TOTP-supported application on your phone.',
+    'two_factor_enable_description' => 'With two-factor authentication enabled, you will be prompted for a secure, random pin during login, which you can retrieve from the TOTP-supported application on your phone.',
 
     // company page
     'company_title' => 'Company Information',
@@ -74,4 +76,12 @@ return [
     'company_background' => 'Cover Image',
     'company_background_placeholder' => 'Add a cover image',
     'company_background_help' => '2:1 ratio recommended (e.g. 800x400). Max 5MB.',
+
+    'section_identity' => 'Identity',
+    'section_contact' => 'Location & Contact',
+    'section_legal' => 'Legal Information',
+    'section_password' => 'Password',
+    'section_security' => 'Security',
+    'section_danger_zone' => 'Danger Zone',
+    'company_city_search' => 'Search for a city...',
 ];

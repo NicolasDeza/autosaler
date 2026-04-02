@@ -396,10 +396,7 @@ const submit = () => {
                             <h3
                                 class="mb-6 text-[10px] font-black tracking-[0.2em] text-muted-foreground/50 uppercase"
                             >
-                                {{
-                                    __('settings.section_identity') ||
-                                    'Identité'
-                                }}
+                                {{ __('settings.section_identity') }}
                             </h3>
                             <div class="grid gap-6 md:grid-cols-2">
                                 <div class="grid gap-2">
@@ -449,10 +446,7 @@ const submit = () => {
                             <h3
                                 class="mb-6 text-[10px] font-black tracking-[0.2em] text-muted-foreground/50 uppercase"
                             >
-                                {{
-                                    __('settings.section_contact') ||
-                                    'Localisation & Contact'
-                                }}
+                                {{ __('settings.section_contact') }}
                             </h3>
                             <div class="grid gap-6">
                                 <div class="grid gap-2">
@@ -592,10 +586,7 @@ const submit = () => {
                             <h3
                                 class="mb-6 text-[10px] font-black tracking-[0.2em] text-muted-foreground/50 uppercase"
                             >
-                                {{
-                                    __('settings.section_legal') ||
-                                    'Informations Légales'
-                                }}
+                                {{ __('settings.section_legal') }}
                             </h3>
                             <div class="grid gap-2">
                                 <Label

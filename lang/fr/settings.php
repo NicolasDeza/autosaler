@@ -51,8 +51,10 @@ return [
     'two_factor_enable_2fa' => 'Activer l\'A2F',
     'two_factor_disable_2fa' => 'Désactiver l\'A2F',
     'two_factor_continue_setup' => 'Continuer la configuration',
-    'twa_factor_disable_description' => 'Lorsque vous activez l\'authentification à double facteur, un code sécurisé vous sera demandé lors de la connexion. Ce code peut être récupéré à partir d\'une application compatible TOTP sur votre téléphone.',
-    'twa_factor_enable_description' => 'Avec l\'authentification à double facteur activée, un code sécurisé et aléatoire vous sera demandé lors de la connexion, que vous pourrez récupérer depuis l\'application compatible TOTP sur votre téléphone.',
+    'two_factor_disabled' => 'Désactivé',
+    'two_factor_enabled' => 'Activé',
+    'two_factor_disable_description' => 'Lorsque vous activez l\'authentification à double facteur, un code sécurisé vous sera demandé lors de la connexion. Ce code peut être récupéré à partir d\'une application compatible TOTP sur votre téléphone.',
+    'two_factor_enable_description' => 'Avec l\'authentification à double facteur activée, un code sécurisé et aléatoire vous sera demandé lors de la connexion, que vous pourrez récupérer depuis l\'application compatible TOTP sur votre téléphone.',
 
     // company page
     'company_title' => 'Informations de l\'entreprise',
@@ -74,4 +76,12 @@ return [
     'company_background' => 'Image de couverture',
     'company_background_placeholder' => 'Ajouter une image',
     'company_background_help' => 'Ratio 2:1 recommandé (ex: 800x400). Max 5 Mo.',
+
+    'section_identity' => 'Identité',
+    'section_contact' => 'Localisation & Contact',
+    'section_legal' => 'Informations Légales',
+    'section_password' => 'Mot de passe',
+    'section_security' => 'Sécurité',
+    'section_danger_zone' => 'Zone de danger',
+    'company_city_search' => 'Rechercher une ville...',
 ];

@@ -36,88 +36,95 @@ const { __ } = useTranslation();
                     :description="__('settings.password_description')"
                 />
 
-                <Form
-                    v-bind="PasswordController.update.form()"
-                    :options="{
-                        preserveScroll: true,
-                    }"
-                    reset-on-success
-                    :reset-on-error="[
-                        'password',
-                        'password_confirmation',
-                        'current_password',
-                    ]"
-                    class="space-y-6"
-                    v-slot="{ errors, processing, recentlySuccessful }"
+                <div
+                    class="rounded-2xl border border-border bg-card p-6 shadow-xs"
                 >
-                    <div class="grid gap-2">
-                        <Label for="current_password">{{
-                            __('settings.password_current')
-                        }}</Label>
-                        <Input
-                            id="current_password"
-                            name="current_password"
-                            type="password"
-                            class="mt-1 block w-full"
-                            autocomplete="current-password"
-                            :placeholder="__('settings.password_current')"
-                        />
-                        <InputError :message="errors.current_password" />
-                    </div>
+                    <h3
+                        class="mb-6 text-[10px] font-black tracking-[0.2em] text-muted-foreground/50 uppercase"
+                    >
+                        {{ __('settings.section_password') }}
+                    </h3>
 
-                    <div class="grid gap-2">
-                        <Label for="password">{{
-                            __('settings.password_new')
-                        }}</Label>
-                        <Input
-                            id="password"
-                            name="password"
-                            type="password"
-                            class="mt-1 block w-full"
-                            autocomplete="new-password"
-                            :placeholder="__('settings.password_new')"
-                        />
-                        <InputError :message="errors.password" />
-                    </div>
+                    <Form
+                        v-bind="PasswordController.update.form()"
+                        :options="{
+                            preserveScroll: true,
+                        }"
+                        reset-on-success
+                        :reset-on-error="[
+                            'password',
+                            'password_confirmation',
+                            'current_password',
+                        ]"
+                        class="space-y-6"
+                        v-slot="{ errors, processing, recentlySuccessful }"
+                    >
+                        <div class="grid gap-2">
+                            <Label for="current_password" class="text-xs font-bold">{{
+                                __('settings.password_current')
+                            }}</Label>
+                            <Input
+                                id="current_password"
+                                name="current_password"
+                                type="password"
+                                class="h-11 rounded-xl bg-muted/30"
+                                autocomplete="current-password"
+                            />
+                            <InputError :message="errors.current_password" />
+                        </div>
 
-                    <div class="grid gap-2">
-                        <Label for="password_confirmation">{{
-                            __('settings.password_confirm')
-                        }}</Label>
-                        <Input
-                            id="password_confirmation"
-                            name="password_confirmation"
-                            type="password"
-                            class="mt-1 block w-full"
-                            autocomplete="new-password"
-                            :placeholder="__('settings.password_confirm')"
-                        />
-                        <InputError :message="errors.password_confirmation" />
-                    </div>
+                        <div class="grid gap-2">
+                            <Label for="password" class="text-xs font-bold">{{
+                                __('settings.password_new')
+                            }}</Label>
+                            <Input
+                                id="password"
+                                name="password"
+                                type="password"
+                                class="h-11 rounded-xl bg-muted/30"
+                                autocomplete="new-password"
+                            />
+                            <InputError :message="errors.password" />
+                        </div>
 
-                    <div class="flex items-center gap-4">
-                        <Button
-                            :disabled="processing"
-                            data-test="update-password-button"
-                            class="hover:cursor-pointer"
-                            >{{ __('settings.password_save') }}</Button
-                        >
+                        <div class="grid gap-2">
+                            <Label for="password_confirmation" class="text-xs font-bold">{{
+                                __('settings.password_confirm')
+                            }}</Label>
+                            <Input
+                                id="password_confirmation"
+                                name="password_confirmation"
+                                type="password"
+                                class="h-11 rounded-xl bg-muted/30"
+                                autocomplete="new-password"
+                            />
+                            <InputError :message="errors.password_confirmation" />
+                        </div>
 
-                        <Transition
-                            enter-active-class="transition ease-in-out"
-                            enter-from-class="opacity-0"
-                            leave-active-class="transition ease-in-out"
-                            leave-to-class="opacity-0"
-                        >
-                            <p
-                                v-show="recentlySuccessful"
-                                class="text-sm text-neutral-600"
+                        <div class="flex items-center gap-4">
+                            <Button
+                                :disabled="processing"
+                                data-test="update-password-button"
+                                class="hover:cursor-pointer"
+                                >{{ __('settings.password_save') }}</Button
                             >
-                                {{ __('settings.password_updated') }}
-                            </p>
-                        </Transition>
-                    </div>
-                </Form>
+
+                            <Transition
+                                enter-active-class="transition ease-in-out"
+                                enter-from-class="opacity-0"
+                                leave-active-class="transition ease-in-out"
+                                leave-to-class="opacity-0"
+                            >
+                                <p
+                                    v-show="recentlySuccessful"
+                                    class="text-sm text-neutral-600"
+                                >
+                                    {{ __('settings.password_updated') }}
+                                </p>
+                            </Transition>
+                        </div>
+                    </Form>
+                </div>
             </div>
         </SettingsLayout>
     </AppContent>

@@ -64,13 +64,17 @@ const { isCurrentUrl } = useCurrentUrl();
     >
         <!-- Mobile Menu (Teleported to Bottom Bar) -->
         <Teleport v-if="isMounted" to="#sticky-bottom-mobile-portal">
-            <div class="flex h-full w-full items-center justify-around gap-1 px-1 py-1">
+            <div
+                class="flex h-full w-full items-center justify-around gap-1 px-1 py-1"
+            >
                 <Link
                     v-for="item in sidebarNavItems"
                     :key="toUrl(item.href)"
                     :href="item.href"
                     class="bottom-bar-tool-btn relative flex-1"
-                    :class="isCurrentUrl(item.href) ? 'bg-white/15!' : 'opacity-70'"
+                    :class="
+                        isCurrentUrl(item.href) ? 'bg-white/15!' : 'opacity-70'
+                    "
                 >
                     <component
                         :is="item.icon"
@@ -116,23 +120,26 @@ const { isCurrentUrl } = useCurrentUrl();
                         v-for="item in sidebarNavItems"
                         :key="toUrl(item.href)"
                         variant="ghost"
-                        class="group relative w-full justify-start gap-3 rounded-xl px-3 py-6 transition-all duration-300"
+                        class="group relative h-auto w-full items-center justify-start gap-4 whitespace-normal rounded-2xl p-2 transition-all duration-300"
                         :class="{
-                            'bg-primary/10 text-primary hover:bg-primary/15':
+                            'bg-primary/10 text-primary shadow-xs ring-1 shadow-primary/5 ring-primary/20 hover:bg-primary/15':
                                 isCurrentUrl(item.href),
                             'text-muted-foreground hover:bg-muted/50 hover:text-foreground':
                                 !isCurrentUrl(item.href),
                         }"
                         as-child
                     >
-                        <Link :href="item.href">
+                        <Link
+                            :href="item.href"
+                            class="flex items-center gap-4"
+                        >
                             <div
-                                class="flex h-8 w-8 items-center justify-center rounded-lg bg-background shadow-xs transition-colors group-hover:bg-muted/10"
+                                class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-background shadow-xs transition-colors group-hover:bg-muted/10"
                             >
-                                <component :is="item.icon" class="h-4 w-4" />
+                                <component :is="item.icon" class="h-5 w-5" />
                             </div>
                             <span
-                                class="font-heading text-xs font-bold tracking-widest uppercase"
+                                class="font-heading text-xs font-black leading-relaxed tracking-widest uppercase"
                             >
                                 {{ item.title }}
                             </span>

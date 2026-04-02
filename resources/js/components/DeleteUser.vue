@@ -2,7 +2,6 @@
 import { Form } from '@inertiajs/vue3';
 import { useTemplateRef } from 'vue';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
-import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import {
@@ -25,21 +24,22 @@ const { __ } = useTranslation();
 </script>
 
 <template>
-    <div class="space-y-6">
-        <Heading
-            variant="small"
-            :title="__('settings.profile_delete_title')"
-            :description="__('settings.profile_delete_description')"
-        />
-        <div
-            class="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10"
+    <div
+        class="rounded-2xl border border-red-200/50 bg-red-50/50 p-6 shadow-xs dark:border-red-500/20 dark:bg-red-500/5"
+    >
+        <h3
+            class="mb-6 text-[10px] font-black tracking-[0.2em] text-red-600/70 uppercase dark:text-red-400/70"
         >
+            {{ __('settings.section_danger_zone') }}
+        </h3>
+
+        <div class="space-y-4">
             <div class="relative space-y-0.5 text-red-600 dark:text-red-100">
-                <p class="font-medium">
-                    {{ __('settings.profile_delete_warning_title') }}
+                <p class="text-sm font-bold">
+                    {{ __('settings.profile_delete_title') }}
                 </p>
-                <p class="text-sm">
-                    {{ __('settings.profile_delete_warning_description') }}
+                <p class="text-xs text-red-600/70 dark:text-red-100/60">
+                    {{ __('settings.profile_delete_description') }}
                 </p>
             </div>
             <Dialog>
