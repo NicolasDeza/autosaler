@@ -70,7 +70,7 @@
                                 />
                                 <Input
                                     v-model="form.search"
-                                    :placeholder="__('admin.search')"
+                                    :placeholder="__('vehicleAd.search')"
                                     autocomplete="off"
                                     class="h-9 border-border/20 bg-background/30 pl-10 text-sm transition-all focus-visible:bg-background focus-visible:ring-primary/20"
                                 />
@@ -94,7 +94,7 @@
                         />
                         <Input
                             v-model="form.search"
-                            :placeholder="__('admin.search')"
+                            :placeholder="__('vehicleAd.search')"
                             autocomplete="off"
                             class="h-9 border-border/20 bg-background/30 pl-10 text-sm transition-all focus-visible:bg-background focus-visible:ring-primary/20"
                         />

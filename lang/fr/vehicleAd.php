@@ -13,6 +13,7 @@ return [
     'try_modifying_filters' => 'Essayez de modifier vos critères de recherche.',
     'reset_filters' => 'Réinitialiser les filtres',
     'clear_all' => 'Tout effacer',
+    'search' => 'Rechercher',
     'listing_title' => 'Annonces véhicules',
     'available_vehicles' => 'véhicules disponibles',
 

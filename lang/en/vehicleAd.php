@@ -13,7 +13,9 @@ return [
     'try_modifying_filters' => 'Try modifying your search criteria.',
     'reset_filters' => 'Reset filters',
     'clear_all' => 'Clear all',
+    'search' => 'Search',
     'listing_title' => 'Vehicle Ads',
+    'available_vehicles' => 'available vehicles',
 
     // Vehicle properties (labels)
     'brand' => 'Brand',
