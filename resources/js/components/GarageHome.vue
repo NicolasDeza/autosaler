@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useTranslation } from '@/composables/useTranslation';
 import garageRoutes from '@/routes/garages';
+import vehiclesRoutes from '@/routes/vehicles';
 
 type Garage = {
     id: number;
@@ -48,7 +49,7 @@ const { __ } = useTranslation();
                 <Link
                     v-for="garage in garages"
                     :key="garage.id"
-                    :href="garageRoutes.show(garage.id).url"
+                    :href="vehiclesRoutes.index({ query: { company_id: garage.id } }).url"
                     class="group block"
                 >
                     <Card

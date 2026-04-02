@@ -8,6 +8,7 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { useTranslation } from '@/composables/useTranslation';
 import garageRoutes from '@/routes/garages';
+import vehiclesRoutes from '@/routes/vehicles';
 
 type Garage = {
     id: number;
@@ -124,7 +125,7 @@ watch(
                 <Link
                     v-for="garage in props.garages.data"
                     :key="garage.id"
-                    :href="garageRoutes.show(garage.id).url"
+                    :href="vehiclesRoutes.index({ query: { company_id: garage.id } }).url"
                     class="group block"
                 >
                     <Card
