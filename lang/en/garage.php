@@ -13,5 +13,12 @@ return [
     'home_cta' => 'View all garages',
     'stock_count' => ':count vehicles in stock',
     'stock_label' => 'vehicles in stock',
+    'stock_label_singular' => 'vehicle in stock',
+    'stock_label_plural' => 'vehicles in stock',
+    'search_placeholder' => 'Search for a garage...',
+    'sort_name_asc' => 'Name ascending (A to Z)',
+    'sort_name_desc' => 'Name descending (Z to A)',
+    'reset_filters' => 'Reset filters',
+    'reset_short' => 'Reset',
     'empty_state' => 'No garage available at the moment.',
 ];

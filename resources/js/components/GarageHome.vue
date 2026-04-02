@@ -26,6 +26,12 @@ defineProps<{
 }>();
 
 const { __ } = useTranslation();
+
+const getStockLabel = (count: number): string => {
+    return count === 1
+        ? __('garage.stock_label_singular')
+        : __('garage.stock_label_plural');
+};
 </script>
 
 <template>
@@ -105,7 +111,7 @@ const { __ } = useTranslation();
                                     {{ garage.active_vehicle_ads_count }}
                                 </span>
                                 <span class="text-foreground">
-                                    {{ ` ${__('garage.stock_label')}` }}
+                                    {{ ` ${getStockLabel(garage.active_vehicle_ads_count)}` }}
                                 </span>
                             </p>
                             <p
