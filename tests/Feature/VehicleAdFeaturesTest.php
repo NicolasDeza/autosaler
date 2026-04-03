@@ -10,12 +10,12 @@ it('seeds the expected vehicle feature catalog', function () {
     $this->seed(FeatureSeeder::class);
 
     expect(Feature::query()->whereIn('code', [
-        'ABS',
-        'Bluetooth',
-        'Climatisation automatique',
-        'Jantes alliage',
-        'Systeme de navigation',
-        'Verrouillage centralise avec telecommande',
+        'abs',
+        'bluetooth',
+        'automatic_air_conditioning',
+        'alloy_wheels',
+        'navigation_system',
+        'remote_central_locking',
     ])->count())->toBe(6);
 });
 
@@ -31,7 +31,7 @@ it('exposes attached features on the vehicle ad show page', function () {
     $this->seed(FeatureSeeder::class);
 
     $vehicleAd = VehicleAd::factory()->create();
-    $feature = Feature::query()->firstWhere('code', 'ABS');
+    $feature = Feature::query()->firstWhere('code', 'abs');
     $vehicleAd->features()->sync([$feature->id]);
 
     $response = $this->get(route('vehicles.show', $vehicleAd));
@@ -39,7 +39,7 @@ it('exposes attached features on the vehicle ad show page', function () {
     $response->assertSuccessful()
         ->assertInertia(fn (Assert $page) => $page
             ->component('VehicleAds/Show')
-            ->where('ad.features.0.code', 'ABS')
+            ->where('ad.features.0.code', 'abs')
         );
 });
 

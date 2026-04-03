@@ -125,9 +125,19 @@ const getValue = (item: any, path: string) => {
     return path.split('.').reduce((obj, key) => obj?.[key], item) ?? 'N/A';
 };
 
-const formatOptionLabel = (value?: string): string => {
+const formatOptionLabel = (
+    value?: string,
+    group: 'feature_categories' | 'features' = 'features',
+): string => {
     if (!value) {
         return '';
+    }
+
+    const translationKey = `vehicleAdFields.${group}.${value}`;
+    const translated = __(translationKey);
+
+    if (translated !== translationKey) {
+        return translated;
     }
 
     return value.replace(/[_-]+/g, ' ').trim();
@@ -147,7 +157,7 @@ const groupedFeatures = computed(() => {
     props.vehicles.forEach((vehicle) => {
         vehicle.features?.forEach((f: any) => {
             const categoryCode =
-                f.category?.code ?? f.category?.key ?? 'autres';
+                f.category?.code ?? f.category?.key ?? 'other';
             const categoryId = String(f.category?.id ?? categoryCode);
 
             if (!categories.has(categoryId)) {
@@ -387,7 +397,10 @@ const removeAndReload = (id: number) => {
                                             class="text-[10px] font-black tracking-[0.4em] text-muted-foreground uppercase"
                                         >
                                             {{
-                                                formatOptionLabel(category.code)
+                                                formatOptionLabel(
+                                                    category.code,
+                                                    'feature_categories',
+                                                )
                                             }}
                                         </span>
                                         <div class="h-px flex-1 bg-border/50" />
@@ -406,7 +419,12 @@ const removeAndReload = (id: number) => {
                                             <span
                                                 class="block pl-11 text-[10px] leading-relaxed font-bold tracking-[0.2em] text-muted-foreground uppercase"
                                             >
-                                                {{ formatOptionLabel(code) }}
+                                                {{
+                                                    formatOptionLabel(
+                                                        code,
+                                                        'features',
+                                                    )
+                                                }}
                                             </span>
                                         </div>
                                         <div

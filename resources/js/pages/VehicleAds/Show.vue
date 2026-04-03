@@ -76,7 +76,7 @@ const groupedFeatures = computed(() => {
 
     for (const feature of features) {
         const categoryCode =
-            feature.category?.code ?? feature.category?.key ?? 'autres';
+            feature.category?.code ?? feature.category?.key ?? 'other';
         const categoryId = String(feature.category?.id ?? categoryCode);
         const existingGroup = groups.get(categoryId);
 
@@ -110,10 +110,21 @@ const groupedFeatures = computed(() => {
         }));
 });
 
-const formatOptionLabel = (value?: string) => {
+const formatOptionLabel = (
+    value?: string,
+    group: 'feature_categories' | 'features' = 'features',
+) => {
     if (!value) {
         return '';
     }
+
+    const translationKey = `vehicleAdFields.${group}.${value}`;
+    const translated = __(translationKey);
+
+    if (translated !== translationKey) {
+        return translated;
+    }
+
     return value.replace(/[_-]+/g, ' ').trim();
 };
 

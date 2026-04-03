@@ -612,6 +612,7 @@
                             {{
                                 formatOptionLabel(
                                     category.code ?? category.key,
+                                    'feature_categories',
                                 )
                             }}
                         </h3>
@@ -647,6 +648,7 @@
                                     >{{
                                         formatOptionLabel(
                                             feature.code ?? feature.key,
+                                            'features',
                                         )
                                     }}</Label
                                 >
@@ -806,8 +808,21 @@ const normalizedFeatureIds = computed<string[]>(() =>
 const isFeatureSelected = (featureId: number | string): boolean =>
     normalizedFeatureIds.value.includes(String(featureId));
 
-const formatOptionLabel = (value?: string): string => {
-    if (!value) return '';
+const formatOptionLabel = (
+    value?: string,
+    group: 'feature_categories' | 'features' = 'features',
+): string => {
+    if (!value) {
+        return '';
+    }
+
+    const translationKey = `vehicleAdFields.${group}.${value}`;
+    const translated = __(translationKey);
+
+    if (translated !== translationKey) {
+        return translated;
+    }
+
     return value.replace(/[_-]+/g, ' ').trim();
 };
 

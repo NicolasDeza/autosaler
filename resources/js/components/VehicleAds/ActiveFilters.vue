@@ -30,6 +30,21 @@ const emit = defineEmits([
 
 const { __ } = useTranslation();
 
+const translateFeatureCode = (value?: string): string => {
+    if (!value) {
+        return '';
+    }
+
+    const translationKey = `vehicleAdFields.features.${value}`;
+    const translated = __(translationKey);
+
+    if (translated !== translationKey) {
+        return translated;
+    }
+
+    return value.replace(/[_-]+/g, ' ').trim();
+};
+
 const activeFilters = computed(() => {
     const filters: { key: string; label: string; onRemove: () => void }[] = [];
     const v = props.form;
@@ -322,7 +337,7 @@ const activeFilters = computed(() => {
             );
             filters.push({
                 key: `feature_${id}`,
-                label: `${__('vehicleAd.equipment')}: ${feature?.code || feature?.key || id}`,
+                label: `${__('vehicleAd.equipment')}: ${translateFeatureCode(feature?.code || feature?.key || String(id))}`,
                 onRemove: () => {
                     const newValue = v.features.filter(
                         (f: string) => String(f) !== String(id),
