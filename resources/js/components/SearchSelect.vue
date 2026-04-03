@@ -28,6 +28,7 @@ const props = withDefaults(
         searchPlaceholder?: string;
         searchInputId?: string;
         searchInputName?: string;
+        searchInputClass?: string;
     }>(),
     {
         optionLabel: 'name',
@@ -40,6 +41,7 @@ const props = withDefaults(
         showAllOption: true,
         allOptionValue: 'all',
         searchPlaceholder: 'Rechercher...',
+        searchInputClass: '',
     },
 );
 
@@ -125,7 +127,10 @@ const stopPropagation = (e: Event) => {
                         <Input
                             :id="searchFieldId"
                             :name="searchFieldName"
-                            class="h-8 w-full bg-muted/30 pl-8 text-sm placeholder:text-muted-foreground"
+                            :class="[
+                                'h-8 w-full bg-muted/30 pl-8 placeholder:text-muted-foreground',
+                                searchInputClass,
+                            ]"
                             :placeholder="searchPlaceholder"
                             v-model="searchQuery"
                             @click="stopPropagation"

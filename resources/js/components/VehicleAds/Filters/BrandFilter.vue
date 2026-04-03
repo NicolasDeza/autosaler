@@ -27,6 +27,7 @@ const isBrandActive = computed(() => form.value.brand_id !== 'all');
             :options="brands"
             option-label="name"
             :placeholder="__('ui.all_brands')"
+            search-input-class="text-base md:text-sm"
         />
     </FilterGroup>
 </template>
