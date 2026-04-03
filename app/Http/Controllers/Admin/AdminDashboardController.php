@@ -11,6 +11,7 @@ use App\Models\VehicleBrand;
 use App\Models\VehicleModel;
 use App\UserStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -111,7 +112,7 @@ class AdminDashboardController extends Controller
         $query = User::with(['roles', 'company', 'subscriptions.plan']);
 
         $showAdmins = $request->has('show_admins') && ($request->show_admins === 'true' || $request->show_admins === '1' || $request->show_admins === true);
-        
+
         if ($showAdmins) {
             $query->role('admin');
         } else {
@@ -140,7 +141,7 @@ class AdminDashboardController extends Controller
         match ($sort) {
             'name' => $query->orderBy('last_name', $direction)->orderBy('first_name', $direction),
             'role' => $query->orderBy(
-                \Spatie\Permission\Models\Role::select('name')
+                Role::select('name')
                     ->join('model_has_roles', 'roles.id', '=', 'model_has_roles.role_id')
                     ->whereColumn('model_has_roles.model_id', 'users.id')
                     ->where('model_has_roles.model_type', User::class)
@@ -165,7 +166,7 @@ class AdminDashboardController extends Controller
             'tab' => 'users',
             'users' => $users,
             'filters' => array_merge($request->only(['search', 'role', 'per_page', 'sort', 'direction']), [
-                'show_admins' => $showAdmins
+                'show_admins' => $showAdmins,
             ]),
             'roles' => Role::where('name', '!=', 'admin')->get(['id', 'name']),
             'subscription_plans' => SubscriptionPlan::all(),
@@ -180,16 +181,24 @@ class AdminDashboardController extends Controller
 
         $plan = SubscriptionPlan::findOrFail($request->subscription_plan_id);
 
-        $user->subscriptions()->update(['status' => 'cancelled', 'cancelled_at' => now()]);
+        DB::transaction(function () use ($user, $plan) {
+            // Uniquement annuler l'actif actuel pour éviter des effets de bord
+            $user->subscriptions()->where('status', 'active')->update([
+                'status' => 'cancelled',
+                'cancelled_at' => now(),
+            ]);
 
-        $user->subscriptions()->create([
-            'subscription_plan_id' => $plan->id,
-            'status' => 'active',
-            'starts_at' => now(),
-            'ends_at' => now()->addDays($plan->duration_days),
-        ]);
+            // Créer le nouvel abonnement
+            $user->subscriptions()->create([
+                'subscription_plan_id' => $plan->id,
+                'status' => 'active',
+                'starts_at' => now(),
+                'ends_at' => now()->addDays($plan->duration_days ?: 30),
+                'auto_renew' => false,
+            ]);
+        });
 
-        return back()->with('success', 'Abonnement mis à jour avec succès.');
+        return to_route('admin.dashboard', ['tab' => 'users'])->with('success', 'Abonnement mis à jour avec succès.');
     }
 
     public function cancelSubscription(User $user)
@@ -199,7 +208,7 @@ class AdminDashboardController extends Controller
             'cancelled_at' => now(),
         ]);
 
-        return back()->with('success', 'Abonnement annulé avec succès.');
+        return to_route('admin.dashboard', ['tab' => 'users'])->with('success', 'Abonnement annulé avec succès.');
     }
 
     public function updateStatus(Request $request, User $user)
@@ -210,17 +219,17 @@ class AdminDashboardController extends Controller
 
         $user->update(['status' => $request->status]);
 
-        return back()->with('success', 'Statut de l\'utilisateur mis à jour avec succès.');
+        return to_route('admin.dashboard', ['tab' => 'users'])->with('success', 'Statut de l\'utilisateur mis à jour avec succès.');
     }
 
     public function destroyUser(User $user)
     {
         if ($user->id === auth()->id()) {
-            return back()->with('error', 'Vous ne pouvez pas supprimer votre propre compte.');
+            return to_route('admin.dashboard', ['tab' => 'users'])->with('error', 'Vous ne pouvez pas supprimer votre propre compte.');
         }
 
         $user->delete();
 
-        return back()->with('success', 'Utilisateur supprimé avec succès.');
+        return to_route('admin.dashboard', ['tab' => 'users'])->with('success', 'Utilisateur supprimé avec succès.');
     }
 }
