@@ -16,6 +16,16 @@ class SubscriptionUsage extends Model
         'feature_used',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'subscription_id' => 'integer',
+            'user_id' => 'integer',
+            'listings_used' => 'integer',
+            'feature_used' => 'integer',
+        ];
+    }
+
     public function subscription()
     {
         return $this->belongsTo(Subscription::class);

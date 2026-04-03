@@ -23,6 +23,8 @@ class Subscription extends Model
     protected function casts(): array
     {
         return [
+            'user_id' => 'integer',
+            'subscription_plan_id' => 'integer',
             'starts_at' => 'datetime',
             'ends_at' => 'datetime',
             'trial_ends_at' => 'datetime',
