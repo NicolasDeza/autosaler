@@ -5,6 +5,7 @@ import {
     Plus,
     UploadCloud,
     Image as ImageIcon,
+    Loader2,
 } from 'lucide-vue-next';
 import { ref, watch, onMounted } from 'vue';
 import { toast } from 'vue-sonner';
@@ -40,6 +41,7 @@ const props = defineProps<{
     modelValue: File[];
     errors?: Record<string, string>;
     imageLimit?: number;
+    uploadProgress?: { percentage?: number } | null;
 }>();
 
 const emit = defineEmits<{
@@ -256,6 +258,48 @@ watch(
         </CardHeader>
 
         <CardContent class="space-y-4 p-6">
+            <!-- Upload Progress Bar -->
+            <div
+                v-if="uploadProgress"
+                class="relative overflow-hidden rounded-xl border border-primary/20 bg-primary/5 p-4"
+            >
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10"
+                    >
+                        <Loader2
+                            class="h-5 w-5 animate-spin text-primary"
+                        />
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div
+                            class="flex items-center justify-between gap-2"
+                        >
+                            <p
+                                class="text-sm font-semibold text-foreground"
+                            >
+                                {{ __('vehicleAd.gallery.uploading') }}
+                            </p>
+                            <span
+                                class="shrink-0 text-sm font-black tabular-nums text-primary"
+                            >
+                                {{ uploadProgress.percentage ?? 0 }}%
+                            </span>
+                        </div>
+                        <div
+                            class="mt-2 h-2 w-full overflow-hidden rounded-full bg-muted/30"
+                        >
+                            <div
+                                class="h-full rounded-full bg-primary transition-all duration-500 ease-out"
+                                :style="{
+                                    width:
+                                        (uploadProgress.percentage ?? 0) + '%',
+                                }"
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Dropzone area when empty -->
             <div
                 v-if="items.length === 0"

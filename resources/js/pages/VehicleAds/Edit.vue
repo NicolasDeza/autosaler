@@ -48,6 +48,7 @@
                         :is-processing-images="isProcessingImages"
                         :vehicle-id="ad.id"
                         :image-limit="imageLimit"
+                        :upload-progress="form.progress"
                         :mode="processingMode"
                         @toggle-feature="toggleFeature"
                         @close-processing="isProcessingImages = false"
