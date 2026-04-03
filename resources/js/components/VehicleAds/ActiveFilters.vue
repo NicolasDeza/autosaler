@@ -4,6 +4,7 @@ import { computed } from 'vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/composables/useTranslation';
+import { useVehicleAdFieldTranslation } from '@/composables/useVehicleAdFieldTranslation';
 
 const props = defineProps<{
     form: any;
@@ -29,20 +30,10 @@ const emit = defineEmits([
 ]);
 
 const { __ } = useTranslation();
+const { translateVehicleAdField } = useVehicleAdFieldTranslation();
 
 const translateFeatureCode = (value?: string): string => {
-    if (!value) {
-        return '';
-    }
-
-    const translationKey = `vehicleAdFields.features.${value}`;
-    const translated = __(translationKey);
-
-    if (translated !== translationKey) {
-        return translated;
-    }
-
-    return value.replace(/[_-]+/g, ' ').trim();
+    return translateVehicleAdField('features', value);
 };
 
 const activeFilters = computed(() => {
@@ -129,7 +120,7 @@ const activeFilters = computed(() => {
             );
             filters.push({
                 key: `fuel_type_${id}`,
-                label: `${__('vehicleAd.fuel')}: ${type?.code || id}`,
+                label: `${__('vehicleAd.fuel')}: ${translateVehicleAdField('fuel_types', type?.code || String(id))}`,
                 onRemove: () => {
                     const newValue = v.fuel_types.filter(
                         (t: string) => String(t) !== String(id),
@@ -148,7 +139,7 @@ const activeFilters = computed(() => {
             );
             filters.push({
                 key: `body_type_${id}`,
-                label: `${__('vehicleAd.body')}: ${type?.code || id}`,
+                label: `${__('vehicleAd.body')}: ${translateVehicleAdField('body_types', type?.code || String(id))}`,
                 onRemove: () => {
                     const newValue = v.body_types.filter(
                         (t: string) => String(t) !== String(id),
@@ -167,7 +158,7 @@ const activeFilters = computed(() => {
             );
             filters.push({
                 key: `transmission_type_${id}`,
-                label: `${__('vehicleAd.transmission')}: ${type?.code || id}`,
+                label: `${__('vehicleAd.transmission')}: ${translateVehicleAdField('transmission_types', type?.code || String(id))}`,
                 onRemove: () => {
                     const newValue = v.transmission_types.filter(
                         (t: string) => String(t) !== String(id),
@@ -185,7 +176,7 @@ const activeFilters = computed(() => {
         );
         filters.push({
             key: 'exterior_color_id',
-            label: `${__('vehicleAd.exterior_color')}: ${color?.code || v.exterior_color_id}`,
+            label: `${__('vehicleAd.exterior_color')}: ${translateVehicleAdField('exterior_colors', color?.code || String(v.exterior_color_id))}`,
             onRemove: () => emit('updateFilter', 'exterior_color_id', 'all'),
         });
     }
@@ -197,7 +188,7 @@ const activeFilters = computed(() => {
         );
         filters.push({
             key: 'euro_norm_id',
-            label: `${__('vehicleAd.euro_norm')}: ${norm?.code || v.euro_norm_id}`,
+            label: `${__('vehicleAd.euro_norm')}: ${translateVehicleAdField('euro_norms', norm?.code || String(v.euro_norm_id))}`,
             onRemove: () => emit('updateFilter', 'euro_norm_id', 'all'),
         });
     }
@@ -209,7 +200,7 @@ const activeFilters = computed(() => {
         );
         filters.push({
             key: 'interior_color_id',
-            label: `${__('vehicleAd.interior_color')}: ${color?.code || v.interior_color_id}`,
+            label: `${__('vehicleAd.interior_color')}: ${translateVehicleAdField('interior_colors', color?.code || String(v.interior_color_id))}`,
             onRemove: () => emit('updateFilter', 'interior_color_id', 'all'),
         });
     }
@@ -221,7 +212,7 @@ const activeFilters = computed(() => {
         );
         filters.push({
             key: 'interior_type_id',
-            label: `${__('vehicleAd.interior_material')}: ${type?.code || v.interior_type_id}`,
+            label: `${__('vehicleAd.interior_material')}: ${translateVehicleAdField('interior_types', type?.code || String(v.interior_type_id))}`,
             onRemove: () => emit('updateFilter', 'interior_type_id', 'all'),
         });
     }

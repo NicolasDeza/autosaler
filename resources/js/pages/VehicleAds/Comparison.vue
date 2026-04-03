@@ -26,10 +26,12 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useComparison } from '@/composables/useComparison';
 import { useTranslation } from '@/composables/useTranslation';
+import { useVehicleAdFieldTranslation } from '@/composables/useVehicleAdFieldTranslation';
 import { kwToHp } from '@/lib/utils';
 import vehiclesRoutes from '@/routes/vehicles';
 
 const { __ } = useTranslation();
+const { translateVehicleAdField } = useVehicleAdFieldTranslation();
 const { removeVehicle } = useComparison();
 
 const props = defineProps<{
@@ -65,36 +67,44 @@ const fields = [
         label: __('vehicleAd.fuel'),
         key: 'fuel_type.code',
         icon: Fuel,
+        format: (v: any) => translateVehicleAdField('fuel_types', v),
     },
     {
         label: __('vehicleAd.body'),
         key: 'body_type.code',
         icon: Car,
+        format: (v: any) => translateVehicleAdField('body_types', v),
     },
     {
         label: __('vehicleAd.transmission'),
         key: 'transmission_type.code',
         icon: Cog,
+        format: (v: any) =>
+            translateVehicleAdField('transmission_types', v),
     },
     {
         label: __('vehicleAd.exterior_color'),
         key: 'exterior_color.code',
         icon: Palette,
+        format: (v: any) => translateVehicleAdField('exterior_colors', v),
     },
     {
         label: __('vehicleAd.interior_color'),
         key: 'interior_color.code',
         icon: PaintBucket,
+        format: (v: any) => translateVehicleAdField('interior_colors', v),
     },
     {
         label: __('vehicleAd.interior_material'),
         key: 'interior_type.code',
         icon: Sofa,
+        format: (v: any) => translateVehicleAdField('interior_types', v),
     },
     {
         label: __('vehicleAd.euro_norm'),
         key: 'euro_norm.code',
         icon: Leaf,
+        format: (v: any) => translateVehicleAdField('euro_norms', v),
     },
     {
         label: __('vehicleAd.power'),
@@ -128,20 +138,7 @@ const getValue = (item: any, path: string) => {
 const formatOptionLabel = (
     value?: string,
     group: 'feature_categories' | 'features' = 'features',
-): string => {
-    if (!value) {
-        return '';
-    }
-
-    const translationKey = `vehicleAdFields.${group}.${value}`;
-    const translated = __(translationKey);
-
-    if (translated !== translationKey) {
-        return translated;
-    }
-
-    return value.replace(/[_-]+/g, ' ').trim();
-};
+): string => translateVehicleAdField(group, value);
 
 const groupedFeatures = computed(() => {
     const categories = new Map<

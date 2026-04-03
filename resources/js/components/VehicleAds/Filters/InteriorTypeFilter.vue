@@ -1,16 +1,26 @@
 <script setup lang="ts">
 import { Sofa } from 'lucide-vue-next';
+import { computed } from 'vue';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import { useTranslation } from '@/composables/useTranslation';
+import { useVehicleAdFieldTranslation } from '@/composables/useVehicleAdFieldTranslation';
 import FilterSelect from './Partials/FilterSelect.vue';
 
 const { __ } = useTranslation();
+const { translateVehicleAdField } = useVehicleAdFieldTranslation();
 
-defineProps<{
+const props = defineProps<{
     interiorTypes: any[];
 }>();
 
 const form = defineModel<any>('form', { required: true });
+
+const translatedInteriorTypes = computed(() =>
+    props.interiorTypes.map((item) => ({
+        ...item,
+        label: translateVehicleAdField('interior_types', item.code),
+    })),
+);
 </script>
 
 <template>
@@ -21,8 +31,8 @@ const form = defineModel<any>('form', { required: true });
     >
         <FilterSelect
             v-model="form.interior_type_id"
-            :options="interiorTypes"
-            option-label="code"
+            :options="translatedInteriorTypes"
+            option-label="label"
             :placeholder="__('ui.all_materials')"
         />
     </FilterGroup>

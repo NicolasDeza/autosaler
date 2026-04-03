@@ -1,16 +1,26 @@
 <script setup lang="ts">
 import { PaintBucket } from 'lucide-vue-next';
+import { computed } from 'vue';
 import FilterGroup from '@/components/VehicleAds/FilterGroup.vue';
 import { useTranslation } from '@/composables/useTranslation';
+import { useVehicleAdFieldTranslation } from '@/composables/useVehicleAdFieldTranslation';
 import FilterSelect from './Partials/FilterSelect.vue';
 
 const { __ } = useTranslation();
+const { translateVehicleAdField } = useVehicleAdFieldTranslation();
 
-defineProps<{
+const props = defineProps<{
     interiorColors: any[];
 }>();
 
 const form = defineModel<any>('form', { required: true });
+
+const translatedInteriorColors = computed(() =>
+    props.interiorColors.map((item) => ({
+        ...item,
+        label: translateVehicleAdField('interior_colors', item.code),
+    })),
+);
 </script>
 
 <template>
@@ -21,8 +31,8 @@ const form = defineModel<any>('form', { required: true });
     >
         <FilterSelect
             v-model="form.interior_color_id"
-            :options="interiorColors"
-            option-label="code"
+            :options="translatedInteriorColors"
+            option-label="label"
             :placeholder="__('ui.all_colors')"
         />
     </FilterGroup>

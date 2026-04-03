@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { useTranslation } from '@/composables/useTranslation';
+import { useVehicleAdFieldTranslation } from '@/composables/useVehicleAdFieldTranslation';
 
 const props = defineProps<{
     ad: any;
 }>();
 
 const { __ } = useTranslation();
+const { translateVehicleAdField } = useVehicleAdFieldTranslation();
 </script>
 
 <template>
@@ -33,7 +35,7 @@ const { __ } = useTranslation();
                 </div>
                 <div class="flex items-center justify-between border-b py-2.5">
                     <span class="text-muted-foreground">{{
-                        __('vehicleAd.gears')
+                        __('vehicleAd.gear_count')
                     }}</span>
                     <span class="font-medium">{{ ad.gear_count ?? '-' }}</span>
                 </div>
@@ -58,7 +60,12 @@ const { __ } = useTranslation();
                         __('vehicleAd.euro_norm')
                     }}</span>
                     <span class="font-medium">{{
-                        ad.euro_norm?.code ?? '-'
+                        ad.euro_norm?.code
+                            ? translateVehicleAdField(
+                                  'euro_norms',
+                                  ad.euro_norm.code,
+                              )
+                            : '-'
                     }}</span>
                 </div>
                 <div class="flex items-center justify-between border-b py-2.5">
@@ -75,7 +82,13 @@ const { __ } = useTranslation();
                         __('vehicleAd.exterior_color')
                     }}</span>
                     <span class="font-medium"
-                        >{{ ad.exterior_color?.code ?? '-'
+                        >{{
+                            ad.exterior_color?.code
+                                ? translateVehicleAdField(
+                                      'exterior_colors',
+                                      ad.exterior_color.code,
+                                  )
+                                : '-'
                         }}<span v-if="ad.exterior_color_metalised">
                             ({{ __('vehicleAd.metallic') }})</span
                         ></span
@@ -86,8 +99,22 @@ const { __ } = useTranslation();
                         __('vehicleAd.interior')
                     }}</span>
                     <span class="font-medium"
-                        >{{ ad.interior_color?.code ?? '-' }},
-                        {{ ad.interior_type?.code ?? '-' }}</span
+                        >{{
+                            ad.interior_color?.code
+                                ? translateVehicleAdField(
+                                      'interior_colors',
+                                      ad.interior_color.code,
+                                  )
+                                : '-'
+                        }},
+                        {{
+                            ad.interior_type?.code
+                                ? translateVehicleAdField(
+                                      'interior_types',
+                                      ad.interior_type.code,
+                                  )
+                                : '-'
+                        }}</span
                     >
                 </div>
                 <div class="flex items-center justify-between py-2.5">

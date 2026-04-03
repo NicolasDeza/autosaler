@@ -17,6 +17,7 @@ import VehicleGallery from '@/components/VehicleAds/VehicleGallery.vue';
 
 import { useComparison } from '@/composables/useComparison';
 import { useTranslation } from '@/composables/useTranslation';
+import { useVehicleAdFieldTranslation } from '@/composables/useVehicleAdFieldTranslation';
 
 import {
     edit as vehicleEdit,
@@ -29,6 +30,7 @@ const props = defineProps<{
 }>();
 
 const { __ } = useTranslation();
+const { translateVehicleAdField } = useVehicleAdFieldTranslation();
 const page = usePage();
 const { addVehicle, removeVehicle, isSelected } = useComparison();
 
@@ -113,20 +115,7 @@ const groupedFeatures = computed(() => {
 const formatOptionLabel = (
     value?: string,
     group: 'feature_categories' | 'features' = 'features',
-) => {
-    if (!value) {
-        return '';
-    }
-
-    const translationKey = `vehicleAdFields.${group}.${value}`;
-    const translated = __(translationKey);
-
-    if (translated !== translationKey) {
-        return translated;
-    }
-
-    return value.replace(/[_-]+/g, ' ').trim();
-};
+) => translateVehicleAdField(group, value);
 
 const openContactModal = () => {
     showContactModal.value = true;

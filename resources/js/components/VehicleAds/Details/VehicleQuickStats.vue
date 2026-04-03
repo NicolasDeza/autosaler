@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Calendar, Cog, Fuel, Gauge, Truck, Zap } from 'lucide-vue-next';
 import { useTranslation } from '@/composables/useTranslation';
+import { useVehicleAdFieldTranslation } from '@/composables/useVehicleAdFieldTranslation';
 import { kwToHp } from '@/lib/utils';
 
 const props = defineProps<{
@@ -8,6 +9,7 @@ const props = defineProps<{
 }>();
 
 const { __ } = useTranslation();
+const { translateVehicleAdField } = useVehicleAdFieldTranslation();
 </script>
 
 <template>
@@ -58,7 +60,9 @@ const { __ } = useTranslation();
                         >{{ __('vehicleAd.fuel') }}</span
                     >
                 </div>
-                <span class="font-semibold">{{ ad.fuel_type?.code }}</span>
+                <span class="font-semibold">{{
+                    translateVehicleAdField('fuel_types', ad.fuel_type?.code)
+                }}</span>
             </div>
             <div class="flex flex-col gap-1.5" v-if="ad.transmission_type">
                 <div class="flex items-center gap-1.5">
@@ -69,7 +73,10 @@ const { __ } = useTranslation();
                     >
                 </div>
                 <span class="font-semibold">{{
-                    ad.transmission_type?.code
+                    translateVehicleAdField(
+                        'transmission_types',
+                        ad.transmission_type?.code,
+                    )
                 }}</span>
             </div>
             <div class="flex flex-col gap-1.5" v-if="ad.body_type">
@@ -80,7 +87,9 @@ const { __ } = useTranslation();
                         >{{ __('vehicleAd.body') }}</span
                     >
                 </div>
-                <span class="font-semibold">{{ ad.body_type?.code }}</span>
+                <span class="font-semibold">{{
+                    translateVehicleAdField('body_types', ad.body_type?.code)
+                }}</span>
             </div>
         </div>
     </div>
