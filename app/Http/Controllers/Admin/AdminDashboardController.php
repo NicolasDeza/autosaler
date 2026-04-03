@@ -182,13 +182,11 @@ class AdminDashboardController extends Controller
         $plan = SubscriptionPlan::findOrFail($request->subscription_plan_id);
 
         DB::transaction(function () use ($user, $plan) {
-            // Uniquement annuler l'actif actuel pour éviter des effets de bord
             $user->subscriptions()->where('status', 'active')->update([
                 'status' => 'cancelled',
                 'cancelled_at' => now(),
             ]);
 
-            // Créer le nouvel abonnement
             $user->subscriptions()->create([
                 'subscription_plan_id' => $plan->id,
                 'status' => 'active',

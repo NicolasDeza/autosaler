@@ -56,6 +56,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
             'status' => UserStatus::class,
+            'company_id' => 'integer',
         ];
     }
 

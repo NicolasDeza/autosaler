@@ -34,8 +34,23 @@ class VehicleVersion extends Model
     protected function casts(): array
     {
         return [
-            'is_active' => 'boolean',
+            'model_id' => 'integer',
+            'body_type_id' => 'integer',
+            'fuel_type_id' => 'integer',
+            'transmission_type_id' => 'integer',
+            'euro_norm_id' => 'integer',
+
+            'start_year' => 'integer',
+            'end_year' => 'integer',
+            'power_kw' => 'integer',
+            'engine_displacement' => 'integer',
+            'cylinder_count' => 'integer',
             'fuel_consumption_avg' => 'decimal:2',
+            'weight_kg' => 'integer',
+            'co2_emission' => 'integer',
+            'gear_count' => 'integer',
+            'sort_order' => 'integer',
+            'is_active' => 'boolean',
         ];
     }
 

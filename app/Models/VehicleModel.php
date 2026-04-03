@@ -16,6 +16,13 @@ class VehicleModel extends Model
         'name',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'brand_id' => 'integer',
+        ];
+    }
+
     /**
      * @return BelongsTo<VehicleBrand, $this>
      */

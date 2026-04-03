@@ -105,8 +105,31 @@ class VehicleAd extends Model implements HasMedia
     protected function casts(): array
     {
         return [
+            'user_id' => 'integer',
+            'brand_id' => 'integer',
+            'model_id' => 'integer',
+            'vehicle_version_id' => 'integer',
+            'exterior_color_id' => 'integer',
+            'interior_color_id' => 'integer',
+            'interior_type_id' => 'integer',
+            'fuel_type_id' => 'integer',
+            'body_type_id' => 'integer',
+            'euro_norm_id' => 'integer',
+            'transmission_type_id' => 'integer',
+
             'price' => 'decimal:2',
+            'mileage' => 'integer',
+            'power_kw' => 'integer',
+            'engine_displacement' => 'integer',
+            'cylinder_count' => 'integer',
             'fuel_consumption_avg' => 'decimal:2',
+            'weight_kg' => 'integer',
+            'co2_emission' => 'integer',
+            'gear_count' => 'integer',
+            'doors' => 'integer',
+            'seats' => 'integer',
+            'previous_owner' => 'integer',
+
             'exterior_color_metalised' => 'boolean',
             'technical_inspection_status' => 'boolean',
             'is_damaged' => 'boolean',

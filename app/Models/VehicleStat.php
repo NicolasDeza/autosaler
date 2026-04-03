@@ -17,6 +17,16 @@ class VehicleStat extends Model
         'fav_count',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'vehicle_ad_id' => 'integer',
+            'views_count' => 'integer',
+            'contact_count' => 'integer',
+            'fav_count' => 'integer',
+        ];
+    }
+
     /**
      * @return BelongsTo<VehicleAd, $this>
      */
