@@ -204,7 +204,12 @@
                                     v-for="body in bodyTypes"
                                     :key="body.id"
                                     :value="String(body.id)"
-                                    >{{ body.code }}</SelectItem
+                                    >{{
+                                        translateVehicleAdField(
+                                            'body_types',
+                                            body.code,
+                                        )
+                                    }}</SelectItem
                                 >
                             </SelectContent>
                         </Select>
@@ -263,7 +268,12 @@
                                     v-for="fuel in fuelTypes"
                                     :key="fuel.id"
                                     :value="String(fuel.id)"
-                                    >{{ fuel.code }}</SelectItem
+                                    >{{
+                                        translateVehicleAdField(
+                                            'fuel_types',
+                                            fuel.code,
+                                        )
+                                    }}</SelectItem
                                 >
                             </SelectContent>
                         </Select>
@@ -339,7 +349,12 @@
                                     v-for="trans in transmissionTypes"
                                     :key="trans.id"
                                     :value="String(trans.id)"
-                                    >{{ trans.code }}</SelectItem
+                                    >{{
+                                        translateVehicleAdField(
+                                            'transmission_types',
+                                            trans.code,
+                                        )
+                                    }}</SelectItem
                                 >
                             </SelectContent>
                         </Select>
@@ -373,7 +388,12 @@
                                     v-for="euro in euroNorms"
                                     :key="euro.id"
                                     :value="String(euro.id)"
-                                    >{{ euro.code }}</SelectItem
+                                    >{{
+                                        translateVehicleAdField(
+                                            'euro_norms',
+                                            euro.code,
+                                        )
+                                    }}</SelectItem
                                 >
                             </SelectContent>
                         </Select>
@@ -472,7 +492,12 @@
                                             v-for="color in exteriorColors"
                                             :key="color.id"
                                             :value="String(color.id)"
-                                            >{{ color.code }}</SelectItem
+                                            >{{
+                                                translateVehicleAdField(
+                                                    'exterior_colors',
+                                                    color.code,
+                                                )
+                                            }}</SelectItem
                                         >
                                     </SelectContent>
                                 </Select>
@@ -510,7 +535,12 @@
                                             v-for="color in interiorColors"
                                             :key="color.id"
                                             :value="String(color.id)"
-                                            >{{ color.code }}</SelectItem
+                                            >{{
+                                                translateVehicleAdField(
+                                                    'interior_colors',
+                                                    color.code,
+                                                )
+                                            }}</SelectItem
                                         >
                                     </SelectContent>
                                 </Select>
@@ -532,7 +562,12 @@
                                             v-for="type in interiorTypes"
                                             :key="type.id"
                                             :value="String(type.id)"
-                                            >{{ type.code }}</SelectItem
+                                            >{{
+                                                translateVehicleAdField(
+                                                    'interior_types',
+                                                    type.code,
+                                                )
+                                            }}</SelectItem
                                         >
                                     </SelectContent>
                                 </Select>
@@ -612,6 +647,7 @@
                             {{
                                 formatOptionLabel(
                                     category.code ?? category.key,
+                                    'feature_categories',
                                 )
                             }}
                         </h3>
@@ -647,6 +683,7 @@
                                     >{{
                                         formatOptionLabel(
                                             feature.code ?? feature.key,
+                                            'features',
                                         )
                                     }}</Label
                                 >
@@ -755,9 +792,11 @@ import AdProcessingProgress from '@/components/VehicleAds/AdProcessingProgress.v
 import GalleryManager from '@/components/VehicleAds/GalleryManager.vue';
 import { SECTION_IDS } from '@/components/VehicleAds/VehicleAdFormSectionIds';
 import { useTranslation } from '@/composables/useTranslation';
+import { useVehicleAdFieldTranslation } from '@/composables/useVehicleAdFieldTranslation';
 import { kwToHp, hpToKw } from '@/lib/utils';
 
 const { __ } = useTranslation();
+const { translateVehicleAdField } = useVehicleAdFieldTranslation();
 
 type FeatureOption = {
     id: number | string;
@@ -806,9 +845,11 @@ const normalizedFeatureIds = computed<string[]>(() =>
 const isFeatureSelected = (featureId: number | string): boolean =>
     normalizedFeatureIds.value.includes(String(featureId));
 
-const formatOptionLabel = (value?: string): string => {
-    if (!value) return '';
-    return value.replace(/[_-]+/g, ' ').trim();
+const formatOptionLabel = (
+    value?: string,
+    group: 'feature_categories' | 'features' = 'features',
+): string => {
+    return translateVehicleAdField(group, value);
 };
 
 const stateChecks = computed(() => [

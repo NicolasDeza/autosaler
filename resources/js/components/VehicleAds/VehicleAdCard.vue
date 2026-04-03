@@ -15,6 +15,7 @@ import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useComparison } from '@/composables/useComparison';
 import { useTranslation } from '@/composables/useTranslation';
+import { useVehicleAdFieldTranslation } from '@/composables/useVehicleAdFieldTranslation';
 import vehiclesRoutes from '@/routes/vehicles';
 
 defineProps<{
@@ -23,6 +24,7 @@ defineProps<{
 }>();
 
 const { __ } = useTranslation();
+const { translateVehicleAdField } = useVehicleAdFieldTranslation();
 const { addVehicle, removeVehicle, isSelected } = useComparison();
 const page = usePage();
 const showLoginModal = ref(false);
@@ -231,7 +233,12 @@ const toggleFavorite = (adId: number) => {
                         ]"
                     >
                         <Fuel class="size-4 shrink-0 text-primary/60" />
-                        {{ ad.fuel_type.code }}
+                        {{
+                            translateVehicleAdField(
+                                'fuel_types',
+                                ad.fuel_type.code,
+                            )
+                        }}
                     </div>
                     <div
                         v-if="ad.transmission_type"
@@ -241,7 +248,12 @@ const toggleFavorite = (adId: number) => {
                         ]"
                     >
                         <Cog class="size-4 shrink-0 text-primary/60" />
-                        {{ ad.transmission_type.code }}
+                        {{
+                            translateVehicleAdField(
+                                'transmission_types',
+                                ad.transmission_type.code,
+                            )
+                        }}
                     </div>
                 </div>
 

@@ -8,6 +8,13 @@ return [
     'tab_users' => 'User Management',
 
     'stats' => [
+        'ads_overview' => 'Ads Overview',
+        'users_overview' => 'Users Overview',
+        'currently_published' => 'Currently Published',
+        'in_last_7_days' => 'In the last 7 days',
+        'registered_members' => 'Registered Members',
+        'private_users' => 'Private Users',
+        'professional_users' => 'Professionals',
         'total_vehicles' => 'Total Vehicles',
         'active' => 'Published',
         'draft' => 'Drafts',

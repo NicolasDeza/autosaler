@@ -9,6 +9,8 @@ return [
     'comparison_title' => 'Comparaison de véhicules',
     'view_offer' => "Voir l'offre",
     'results_found' => ':count véhicules trouvés',
+    'results_found_singular' => ':count véhicule trouvé',
+    'results_found_plural' => ':count véhicules trouvés',
     'no_vehicles_found' => 'Aucun véhicule trouvé',
     'try_modifying_filters' => 'Essayez de modifier vos critères de recherche.',
     'reset_filters' => 'Réinitialiser les filtres',

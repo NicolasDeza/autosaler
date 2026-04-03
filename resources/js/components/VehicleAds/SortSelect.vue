@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-1.5">
         <Select v-model="model">
-            <SelectTrigger class="h-inherit w-full bg-card">
+            <SelectTrigger class="h-inherit w-full cursor-pointer bg-card">
                 <SelectValue />
             </SelectTrigger>
             <SelectContent>

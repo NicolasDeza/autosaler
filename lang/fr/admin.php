@@ -8,6 +8,13 @@ return [
     'tab_users' => 'Gestion Utilisateurs',
 
     'stats' => [
+        'ads_overview' => 'Aperçu des annonces',
+        'users_overview' => 'Aperçu des utilisateurs',
+        'currently_published' => 'Actuellement publiées',
+        'in_last_7_days' => 'Sur 7 jours',
+        'registered_members' => 'Membres inscrits',
+        'private_users' => 'Particuliers',
+        'professional_users' => 'Professionnels',
         'total_vehicles' => 'Total Véhicules',
         'active' => 'Publiés',
         'draft' => 'Brouillons',

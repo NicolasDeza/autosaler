@@ -62,11 +62,7 @@
                             <h2
                                 class="hidden truncate text-xl font-black text-foreground sm:inline-block sm:text-2xl"
                             >
-                                {{
-                                    __('vehicleAd.results_found', {
-                                        count: ads.total,
-                                    })
-                                }}
+                                {{ getResultsFoundLabel(ads.total) }}
                             </h2>
 
                             <!-- Results Range Badge -->
@@ -311,6 +307,12 @@ const toArr = (v: any): string[] =>
     v ? (Array.isArray(v) ? v.map(String) : [String(v)]) : [];
 
 const { __ } = useTranslation();
+
+const getResultsFoundLabel = (count: number): string => {
+    return count <= 1
+        ? __('vehicleAd.results_found_singular', { count })
+        : __('vehicleAd.results_found_plural', { count });
+};
 
 interface FilterForm {
     brand_id: string;

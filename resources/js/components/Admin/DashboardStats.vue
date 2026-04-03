@@ -1,6 +1,5 @@
 <template>
     <div class="grid gap-6 md:grid-cols-2">
-        <!-- Carte Combinée : Annonces -->
         <Card
             class="group relative overflow-hidden border-border/40 bg-background/50 shadow-lg backdrop-blur-xl transition-all duration-500 hover:shadow-green-500/10"
         >
@@ -11,7 +10,7 @@
                 <CardTitle
                     class="font-heading text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase"
                 >
-                    Aperçu des Annonces
+                    {{ __('admin.stats.ads_overview') }}
                 </CardTitle>
                 <div
                     class="flex h-10 w-10 items-center justify-center rounded-xl bg-green-500/10 text-green-500 transition-all duration-500 group-hover:scale-110 group-hover:bg-green-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-green-500/20"
@@ -21,7 +20,6 @@
             </CardHeader>
             <CardContent>
                 <div class="flex items-start justify-between">
-                    <!-- Total en ligne -->
                     <div class="flex flex-col">
                         <span
                             class="font-heading text-5xl font-bold tracking-tight"
@@ -31,11 +29,10 @@
                             class="mt-2 flex items-center gap-2 text-[10px] font-bold tracking-widest text-muted-foreground uppercase"
                         >
                             <CheckCircle2 class="h-3.5 w-3.5 text-green-500" />
-                            Actuellement publiées
+                            {{ __('admin.stats.currently_published') }}
                         </div>
                     </div>
 
-                    <!-- Évolution -->
                     <div class="flex flex-col items-end text-right">
                         <div
                             class="font-heading flex items-center gap-1 text-2xl font-bold text-green-500"
@@ -46,12 +43,11 @@
                         <span
                             class="mt-1 text-[10px] font-bold tracking-widest text-muted-foreground/70 uppercase"
                         >
-                            Sur 7 jours
+                            {{ __('admin.stats.in_last_7_days') }}
                         </span>
                     </div>
                 </div>
 
-                <!-- Graphique -->
                 <div class="mt-8 h-[80px] w-full">
                     <VisXYContainer
                         :data="stats.evolution?.ads || []"
@@ -69,7 +65,6 @@
             </CardContent>
         </Card>
 
-        <!-- Carte Combinée : Utilisateurs -->
         <Card
             class="group relative overflow-hidden border-border/40 bg-background/50 shadow-lg backdrop-blur-xl transition-all duration-500 hover:shadow-purple-500/10"
         >
@@ -80,7 +75,7 @@
                 <CardTitle
                     class="font-heading text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase"
                 >
-                    Aperçu des Utilisateurs
+                    {{ __('admin.stats.users_overview') }}
                 </CardTitle>
                 <div
                     class="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/10 text-purple-500 transition-all duration-500 group-hover:scale-110 group-hover:bg-purple-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-purple-500/20"
@@ -90,7 +85,6 @@
             </CardHeader>
             <CardContent>
                 <div class="flex items-start justify-between">
-                    <!-- Total -->
                     <div class="flex flex-col">
                         <span
                             class="font-heading text-5xl font-bold tracking-tight"
@@ -100,11 +94,10 @@
                             class="mt-2 flex items-center gap-2 text-[10px] font-bold tracking-widest text-muted-foreground uppercase"
                         >
                             <Users class="h-3.5 w-3.5 text-purple-500" />
-                            Membres Inscrits
+                            {{ __('admin.stats.registered_members') }}
                         </div>
                     </div>
 
-                    <!-- Évolution -->
                     <div class="flex flex-col items-end text-right">
                         <div
                             class="font-heading flex items-center gap-1 text-2xl font-bold text-purple-500"
@@ -115,17 +108,16 @@
                         <span
                             class="mt-1 text-[10px] font-bold tracking-widest text-muted-foreground/70 uppercase"
                         >
-                            Sur 7 jours
+                            {{ __('admin.stats.in_last_7_days') }}
                         </span>
                     </div>
                 </div>
 
-                <!-- Répartition (Barres de progression) -->
                 <div class="mt-6 grid grid-cols-2 gap-6">
                     <div class="flex flex-col gap-1.5">
                         <span
                             class="flex justify-between text-[10px] font-bold tracking-widest text-muted-foreground uppercase"
-                            ><span>Particuliers</span
+                            ><span>{{ __('admin.stats.private_users') }}</span
                             ><span class="text-blue-500">{{
                                 stats.users.users
                             }}</span></span
@@ -149,7 +141,7 @@
                     <div class="flex flex-col gap-1.5">
                         <span
                             class="flex justify-between text-[10px] font-bold tracking-widest text-muted-foreground uppercase"
-                            ><span>Professionnels</span
+                            ><span>{{ __('admin.stats.professional_users') }}</span
                             ><span class="text-indigo-500">{{
                                 stats.users.dealers
                             }}</span></span
@@ -172,7 +164,6 @@
                     </div>
                 </div>
 
-                <!-- Graphique -->
                 <div class="mt-6 h-[80px] w-full">
                     <VisXYContainer
                         :data="stats.evolution?.users || []"
@@ -197,10 +188,13 @@ import { VisXYContainer, VisLine } from '@unovis/vue';
 import { CarFront, Users, TrendingUp, CheckCircle2 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useTranslation } from '@/composables/useTranslation';
 
 const props = defineProps<{
     stats: any;
 }>();
+
+const { __ } = useTranslation();
 
 const totalNewAds7Days = computed(() => {
     return (

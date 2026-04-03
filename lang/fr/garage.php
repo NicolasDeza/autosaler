@@ -13,5 +13,12 @@ return [
     'home_cta' => 'Voir tous les garages',
     'stock_count' => ':count véhicules en stock',
     'stock_label' => 'véhicules en stock',
+    'stock_label_singular' => 'véhicule en stock',
+    'stock_label_plural' => 'véhicules en stock',
+    'search_placeholder' => 'Rechercher un garage...',
+    'sort_name_asc' => 'Nom croissant (A à Z)',
+    'sort_name_desc' => 'Nom décroissant (Z à A)',
+    'reset_filters' => 'Réinitialiser les filtres',
+    'reset_short' => 'Reset',
     'empty_state' => 'Aucun garage disponible pour le moment.',
 ];

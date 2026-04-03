@@ -4,7 +4,10 @@ import { useTranslation } from '@/composables/useTranslation';
 
 defineProps<{
     groupedFeatures: any[];
-    formatOptionLabel: (value?: string) => string;
+    formatOptionLabel: (
+        value?: string,
+        group?: 'feature_categories' | 'features',
+    ) => string;
 }>();
 
 const { __ } = useTranslation();
@@ -24,7 +27,12 @@ const { __ } = useTranslation();
                 <h4
                     class="text-sm font-semibold tracking-wide text-muted-foreground uppercase"
                 >
-                    {{ formatOptionLabel(category.code) }}
+                    {{
+                        formatOptionLabel(
+                            category.code,
+                            'feature_categories',
+                        )
+                    }}
                 </h4>
                 <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <div
@@ -36,7 +44,10 @@ const { __ } = useTranslation();
                             class="mt-0.5 h-4 w-4 shrink-0 text-green-600"
                         />
                         <span>{{
-                            formatOptionLabel(feature.code ?? feature.key)
+                            formatOptionLabel(
+                                feature.code ?? feature.key,
+                                'features',
+                            )
                         }}</span>
                     </div>
                 </div>

@@ -14,6 +14,7 @@ import {
 const props = withDefaults(
     defineProps<{
         label?: string;
+        name?: string;
         modelValue?: string | number | null;
         options?: any[];
         optionLabel?: string;
@@ -25,6 +26,8 @@ const props = withDefaults(
         showAllOption?: boolean;
         allOptionValue?: string;
         searchPlaceholder?: string;
+        searchInputId?: string;
+        searchInputName?: string;
     }>(),
     {
         optionLabel: 'name',
@@ -45,6 +48,34 @@ const emit = defineEmits<{
 }>();
 
 const searchQuery = ref('');
+
+const sanitizeFieldToken = (value: string): string => {
+    return value.trim().replace(/[^a-zA-Z0-9_-]/g, '_');
+};
+
+const searchFieldId = computed<string | undefined>(() => {
+    if (props.searchInputId) {
+        return props.searchInputId;
+    }
+
+    if (props.name) {
+        return `${sanitizeFieldToken(props.name)}_search`;
+    }
+
+    return undefined;
+});
+
+const searchFieldName = computed<string | undefined>(() => {
+    if (props.searchInputName) {
+        return props.searchInputName;
+    }
+
+    if (props.name) {
+        return `${sanitizeFieldToken(props.name)}_search`;
+    }
+
+    return undefined;
+});
 
 const filteredOptions = computed(() => {
     const query = searchQuery.value.toLowerCase().trim();
@@ -68,6 +99,7 @@ const stopPropagation = (e: Event) => {
             :model-value="modelValue != null ? String(modelValue) : undefined"
             @update:model-value="emit('update:modelValue', $event as string)"
             :disabled="disabled"
+            :name="name"
         >
             <SelectTrigger
                 :class="[
@@ -91,6 +123,8 @@ const stopPropagation = (e: Event) => {
                             class="absolute top-1/2 left-2 h-3.5 w-3.5 shrink-0 -translate-y-1/2 text-muted-foreground"
                         />
                         <Input
+                            :id="searchFieldId"
+                            :name="searchFieldName"
                             class="h-8 w-full bg-muted/30 pl-8 text-sm placeholder:text-muted-foreground"
                             :placeholder="searchPlaceholder"
                             v-model="searchQuery"

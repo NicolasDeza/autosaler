@@ -26,10 +26,12 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useComparison } from '@/composables/useComparison';
 import { useTranslation } from '@/composables/useTranslation';
+import { useVehicleAdFieldTranslation } from '@/composables/useVehicleAdFieldTranslation';
 import { kwToHp } from '@/lib/utils';
 import vehiclesRoutes from '@/routes/vehicles';
 
 const { __ } = useTranslation();
+const { translateVehicleAdField } = useVehicleAdFieldTranslation();
 const { removeVehicle } = useComparison();
 
 const props = defineProps<{
@@ -65,36 +67,44 @@ const fields = [
         label: __('vehicleAd.fuel'),
         key: 'fuel_type.code',
         icon: Fuel,
+        format: (v: any) => translateVehicleAdField('fuel_types', v),
     },
     {
         label: __('vehicleAd.body'),
         key: 'body_type.code',
         icon: Car,
+        format: (v: any) => translateVehicleAdField('body_types', v),
     },
     {
         label: __('vehicleAd.transmission'),
         key: 'transmission_type.code',
         icon: Cog,
+        format: (v: any) =>
+            translateVehicleAdField('transmission_types', v),
     },
     {
         label: __('vehicleAd.exterior_color'),
         key: 'exterior_color.code',
         icon: Palette,
+        format: (v: any) => translateVehicleAdField('exterior_colors', v),
     },
     {
         label: __('vehicleAd.interior_color'),
         key: 'interior_color.code',
         icon: PaintBucket,
+        format: (v: any) => translateVehicleAdField('interior_colors', v),
     },
     {
         label: __('vehicleAd.interior_material'),
         key: 'interior_type.code',
         icon: Sofa,
+        format: (v: any) => translateVehicleAdField('interior_types', v),
     },
     {
         label: __('vehicleAd.euro_norm'),
         key: 'euro_norm.code',
         icon: Leaf,
+        format: (v: any) => translateVehicleAdField('euro_norms', v),
     },
     {
         label: __('vehicleAd.power'),
@@ -125,13 +135,10 @@ const getValue = (item: any, path: string) => {
     return path.split('.').reduce((obj, key) => obj?.[key], item) ?? 'N/A';
 };
 
-const formatOptionLabel = (value?: string): string => {
-    if (!value) {
-        return '';
-    }
-
-    return value.replace(/[_-]+/g, ' ').trim();
-};
+const formatOptionLabel = (
+    value?: string,
+    group: 'feature_categories' | 'features' = 'features',
+): string => translateVehicleAdField(group, value);
 
 const groupedFeatures = computed(() => {
     const categories = new Map<
@@ -147,7 +154,7 @@ const groupedFeatures = computed(() => {
     props.vehicles.forEach((vehicle) => {
         vehicle.features?.forEach((f: any) => {
             const categoryCode =
-                f.category?.code ?? f.category?.key ?? 'autres';
+                f.category?.code ?? f.category?.key ?? 'other';
             const categoryId = String(f.category?.id ?? categoryCode);
 
             if (!categories.has(categoryId)) {
@@ -387,7 +394,10 @@ const removeAndReload = (id: number) => {
                                             class="text-[10px] font-black tracking-[0.4em] text-muted-foreground uppercase"
                                         >
                                             {{
-                                                formatOptionLabel(category.code)
+                                                formatOptionLabel(
+                                                    category.code,
+                                                    'feature_categories',
+                                                )
                                             }}
                                         </span>
                                         <div class="h-px flex-1 bg-border/50" />
@@ -406,7 +416,12 @@ const removeAndReload = (id: number) => {
                                             <span
                                                 class="block pl-11 text-[10px] leading-relaxed font-bold tracking-[0.2em] text-muted-foreground uppercase"
                                             >
-                                                {{ formatOptionLabel(code) }}
+                                                {{
+                                                    formatOptionLabel(
+                                                        code,
+                                                        'features',
+                                                    )
+                                                }}
                                             </span>
                                         </div>
                                         <div
