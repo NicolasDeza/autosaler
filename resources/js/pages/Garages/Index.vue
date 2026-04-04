@@ -63,6 +63,9 @@ const props = defineProps<{
 }>();
 
 const { __ } = useTranslation();
+const seoTitle = 'Garages et concessionnaires en Belgique';
+const seoDescription =
+    'Trouvez un garage ou un concessionnaire en Belgique sur AutoSaler. Comparez les profils, consultez leur stock de véhicules et accédez à leurs annonces.';
 
 const perPage = ref<string>(String(props.garages.per_page ?? 15));
 const search = ref<string>(String(props.filters.search ?? ''));
@@ -245,7 +248,29 @@ watch(
 </script>
 
 <template>
-    <Head :title="__('garage.page_title')" />
+    <Head :title="seoTitle">
+        <meta
+            head-key="description"
+            name="description"
+            :content="seoDescription"
+        />
+        <meta head-key="og:title" property="og:title" :content="seoTitle" />
+        <meta
+            head-key="og:description"
+            property="og:description"
+            :content="seoDescription"
+        />
+        <meta
+            head-key="twitter:title"
+            name="twitter:title"
+            :content="seoTitle"
+        />
+        <meta
+            head-key="twitter:description"
+            name="twitter:description"
+            :content="seoDescription"
+        />
+    </Head>
 
     <AppContent>
         <section class="space-y-7 py-10 md:py-12">

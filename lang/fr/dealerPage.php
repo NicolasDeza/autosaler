@@ -2,7 +2,7 @@
 
 return [
     'page_title' => 'Concessionnaires',
-    'heading' => 'Professionnels',
+    'heading' => "Professionnels de l'automobile",
     'hero_subtitle' => 'Une plateforme pensée pour les professionnels de l\'automobile, pour vendre plus efficacement.',
     'hero_stat_performance' => 'Performance',
     'hero_stat_visibility' => 'Visibilité',

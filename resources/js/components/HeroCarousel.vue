@@ -18,13 +18,15 @@ const slides = computed(() => [
         subtitle: __('hero.subtitle1'),
         cta: __('hero.cta1'),
         ctaHref: vehicles.index().url,
+        secondaryCta: __('hero.cta_pro_link'),
+        secondaryCtaHref: dealers.index().url,
     },
     {
         image: hero2,
         title: __('hero.title2'),
         subtitle: __('hero.subtitle2'),
         cta: __('hero.cta2'),
-        ctaHref: dealers.index().url,
+        ctaHref: vehicles.index().url,
     },
 ]);
 
@@ -258,6 +260,15 @@ onUnmounted(() => {
                             {{ activeSlide.cta }}
                         </span>
                     </Button>
+                </div>
+
+                <div v-if="activeSlide.secondaryCtaHref" class="mt-4">
+                    <Link
+                        :href="activeSlide.secondaryCtaHref"
+                        class="pointer-events-auto text-sm font-semibold text-white/90 underline underline-offset-4 transition-colors hover:text-primary"
+                    >
+                        {{ activeSlide.secondaryCta }}
+                    </Link>
                 </div>
             </div>
         </div>

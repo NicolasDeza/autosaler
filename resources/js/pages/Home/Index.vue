@@ -36,10 +36,36 @@ defineProps<{
     featuredGarages: FeaturedGarage[];
     brands?: any[];
 }>();
+
+const seoTitle = "Véhicules d'occasion et neufs en Belgique";
+const seoDescription =
+    "Trouvez une voiture d’occasion ou neuve en Belgique avec AutoSaler. Comparez les annonces, les prix et le kilométrage, puis contactez un concessionnaire.";
 </script>
 
 <template>
-    <Head :title="'V\u00E9hicules d\'occasion et neufs'" />
+    <Head :title="seoTitle">
+        <meta
+            head-key="description"
+            name="description"
+            :content="seoDescription"
+        />
+        <meta head-key="og:title" property="og:title" :content="seoTitle" />
+        <meta
+            head-key="og:description"
+            property="og:description"
+            :content="seoDescription"
+        />
+        <meta
+            head-key="twitter:title"
+            name="twitter:title"
+            :content="seoTitle"
+        />
+        <meta
+            head-key="twitter:description"
+            name="twitter:description"
+            :content="seoDescription"
+        />
+    </Head>
 
     <HeroSection />
 

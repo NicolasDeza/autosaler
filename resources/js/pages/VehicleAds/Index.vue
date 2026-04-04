@@ -1,5 +1,27 @@
 <template>
-    <Head :title="__('vehicleAd.listing_title')" />
+    <Head :title="seoTitle">
+        <meta
+            head-key="description"
+            name="description"
+            :content="seoDescription"
+        />
+        <meta head-key="og:title" property="og:title" :content="seoTitle" />
+        <meta
+            head-key="og:description"
+            property="og:description"
+            :content="seoDescription"
+        />
+        <meta
+            head-key="twitter:title"
+            name="twitter:title"
+            :content="seoTitle"
+        />
+        <meta
+            head-key="twitter:description"
+            name="twitter:description"
+            :content="seoDescription"
+        />
+    </Head>
 
     <AppContent>
         <div
@@ -26,6 +48,10 @@
 
             <!-- Main Content -->
             <main class="flex min-w-0 flex-1 flex-col gap-6">
+                <h1 class="sr-only">
+                    Annonces de véhicules d'occasion et neufs en Belgique
+                </h1>
+
                 <!-- Company Info Card -->
                 <Transition
                     enter-from-class="opacity-0 translate-y-2"
@@ -307,6 +333,9 @@ const toArr = (v: any): string[] =>
     v ? (Array.isArray(v) ? v.map(String) : [String(v)]) : [];
 
 const { __ } = useTranslation();
+const seoTitle = "Annonces de véhicules d'occasion et neufs";
+const seoDescription =
+    "Parcourez les annonces auto en Belgique sur AutoSaler. Filtrez par marque, prix, kilométrage ou carburant, puis contactez rapidement un concessionnaire.";
 
 const getResultsFoundLabel = (count: number): string => {
     return count <= 1
