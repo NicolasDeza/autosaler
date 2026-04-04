@@ -31,7 +31,7 @@ const progress = ref(0);
 const ready = ref(false);
 const error = ref(false);
 const showModal = ref(true);
-let interval: any = null;
+const isProcessing = ref(false);
 
 const closeModal = () => {
     showModal.value = false;
@@ -39,6 +39,8 @@ const closeModal = () => {
 };
 
 const fetchStatus = async () => {
+    if (isProcessing.value || ready.value || error.value) return;
+
     try {
         const res = await axios.get(
             `/vehicles/${props.vehicleId}/images-status`,
@@ -47,28 +49,46 @@ const fetchStatus = async () => {
         ready.value = res.data.ready;
 
         if (ready.value) {
-            clearInterval(interval);
             emit('complete');
 
             // Refresh the page props to show the new images without full browser reload
             router.reload({
                 only: ['images', 'ad', 'flash'],
             });
+        } else if (res.data.next_media_id) {
+            // Trigger manual processing for the next pending media
+            await processMedia(res.data.next_media_id);
+        } else {
+            // If not ready but no next_media_id (shouldn't happen if logic is correct), 
+            // wait a bit and retry
+            setTimeout(fetchStatus, 2000);
         }
     } catch (e) {
         console.error('Error fetching image status:', e);
         error.value = true;
-        clearInterval(interval);
+    }
+};
+
+const processMedia = async (mediaId: number) => {
+    isProcessing.value = true;
+    try {
+        await axios.post(`/vehicles/media/${mediaId}/process`);
+        isProcessing.value = false;
+        // Check status again to get next media or finish
+        await fetchStatus();
+    } catch (e) {
+        console.error('Error processing media:', e);
+        error.value = true;
+        isProcessing.value = false;
     }
 };
 
 onMounted(() => {
     fetchStatus();
-    interval = setInterval(fetchStatus, 3000);
 });
 
 onUnmounted(() => {
-    if (interval) clearInterval(interval);
+    // Cleanup if needed
 });
 
 // Premium design constants

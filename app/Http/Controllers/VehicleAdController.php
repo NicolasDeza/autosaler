@@ -23,6 +23,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\MediaLibrary\Conversions\ConversionCollection;
+use Spatie\MediaLibrary\Conversions\FileManipulator;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class VehicleAdController extends Controller
 {
@@ -574,13 +577,28 @@ class VehicleAdController extends Controller
             ]);
         }
 
-        $done = $media->filter(function ($m) {
-            return $m->hasGeneratedConversion('card');
-        })->count();
+        $notReady = $media->filter(fn ($m) => ! $m->hasGeneratedConversion('card'));
+        $doneCount = $total - $notReady->count();
 
         return response()->json([
-            'progress' => round(($done / $total) * 100),
-            'ready' => $done === $total,
+            'progress' => round(($doneCount / $total) * 100),
+            'ready' => $notReady->isEmpty(),
+            'next_media_id' => $notReady->first()?->id,
         ]);
+    }
+
+    /**
+     * Process a single media item's conversions manually.
+     * Useful for shared hosting where workers are not available.
+     */
+    public function processMedia(Media $media): JsonResponse
+    {
+        // Only process if the conversions don't exist yet
+        if (! $media->hasGeneratedConversion('card')) {
+            $conversions = ConversionCollection::createForMedia($media);
+            app(FileManipulator::class)->performConversions($conversions, $media, true);
+        }
+
+        return response()->json(['success' => true]);
     }
 }
