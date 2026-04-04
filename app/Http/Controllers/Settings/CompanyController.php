@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\CompanyUpdateRequest;
 use App\Models\Country;
+use App\Utils\PhoneUtils;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -32,8 +33,12 @@ class CompanyController extends Controller
     public function update(CompanyUpdateRequest $request): RedirectResponse
     {
         $company = $request->user()->company;
+        $data = $request->validated();
 
-        $company->update($request->validated());
+        $country = Country::query()->select(['id', 'iso2'])->findOrFail($data['country_id']);
+        $data['phone'] = PhoneUtils::format($data['phone'], $country->iso2) ?? $data['phone'];
+
+        $company->update($data);
 
         if ($request->boolean('remove_logo')) {
             $company->clearMediaCollection('logo');

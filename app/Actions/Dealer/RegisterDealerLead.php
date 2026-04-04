@@ -6,6 +6,7 @@ use App\Models\City;
 use App\Models\Company;
 use App\Models\SubscriptionPlan;
 use App\Models\User;
+use App\Utils\PhoneUtils;
 use Illuminate\Support\Facades\DB;
 
 class RegisterDealerLead
@@ -21,7 +22,9 @@ class RegisterDealerLead
         return DB::transaction(function () use ($payload): array {
             $city = City::query()
                 ->select(['id', 'country_id'])
+                ->with(['country:id,iso2'])
                 ->findOrFail((int) $payload['city_id']);
+
             $subscriptionPlan = SubscriptionPlan::query()
                 ->select(['id', 'key', 'price', 'listing_limit'])
                 ->findOrFail((int) $payload['subscription_plan_id']);
@@ -30,7 +33,7 @@ class RegisterDealerLead
                 'name' => (string) $payload['company_name'],
                 'email' => (string) $payload['company_email'],
                 'tva_number' => $payload['tva_number'] ?: null,
-                'phone' => $payload['company_phone'] ?: null,
+                'phone' => PhoneUtils::format($payload['company_phone'] ?: null, $city->country->iso2),
                 'address' => (string) $payload['company_address'],
                 'country_id' => $city->country_id,
                 'city_id' => $city->id,
