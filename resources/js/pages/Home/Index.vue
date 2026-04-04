@@ -39,7 +39,7 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Véhicules d'occasion et neufs" />
+    <Head :title="'V\u00E9hicules d\'occasion et neufs'" />
 
     <HeroSection />
 

@@ -20,9 +20,22 @@
         <meta name="apple-mobile-web-app-title" content="AutoSaler" />
 
         <link rel="manifest" href="/manifest.webmanifest">
-
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+        @if (($page['component'] ?? null) === 'Home/Index')
+            <link
+                rel="preload"
+                as="image"
+                href="{{ Vite::asset('resources/assets/images/hero-1-mobile.webp') }}"
+                media="(max-width: 767px)"
+                fetchpriority="high"
+            />
+            <link
+                rel="preload"
+                as="image"
+                href="{{ Vite::asset('resources/assets/images/hero-1.webp') }}"
+                media="(min-width: 768px)"
+                fetchpriority="high"
+            />
+        @endif
 
         @vite(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
         @inertiaHead

@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import hero1Mobile from '@assets/images/hero-1-mobile.webp';
 import hero1 from '@assets/images/hero-1.webp';
 import hero2 from '@assets/images/hero-4.webp';
 import { Link } from '@inertiajs/vue3';
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/composables/useTranslation';
 import dealers from '@/routes/dealers';
@@ -29,43 +30,72 @@ const slides = computed(() => [
 
 const current = ref(0);
 const paused = ref(false);
-let interval: ReturnType<typeof setInterval> | undefined;
+const isMounted = ref(false);
+const isDesktop = ref(false);
 
-function goTo(index: number) {
-    if (index === current.value) return;
+const shouldUseCarousel = computed(() => isMounted.value && isDesktop.value);
+const activeSlide = computed(
+    () => slides.value[shouldUseCarousel.value ? current.value : 0],
+);
+
+let interval: ReturnType<typeof setInterval> | undefined;
+let desktopMediaQuery: MediaQueryList | undefined;
+let onDesktopViewportChange: ((event: MediaQueryListEvent) => void) | undefined;
+
+function goTo(index: number): void {
+    if (!shouldUseCarousel.value || index === current.value) {
+        return;
+    }
+
     current.value = index;
     resetInterval();
 }
 
-function next() {
+function next(): void {
     goTo((current.value + 1) % slides.value.length);
 }
 
-function prev() {
+function prev(): void {
     goTo((current.value - 1 + slides.value.length) % slides.value.length);
 }
 
-function togglePause() {
-    paused.value = !paused.value;
-    if (paused.value) {
-        clearInterval(interval);
-    } else {
-        resetInterval();
+function togglePause(): void {
+    if (!shouldUseCarousel.value) {
+        return;
     }
+
+    paused.value = !paused.value;
+
+    if (paused.value) {
+        if (interval) {
+            clearInterval(interval);
+            interval = undefined;
+        }
+
+        return;
+    }
+
+    resetInterval();
 }
 
-function resetInterval() {
+function resetInterval(): void {
     if (interval) {
         clearInterval(interval);
+        interval = undefined;
     }
-    if (!paused.value) {
+
+    if (shouldUseCarousel.value && !paused.value) {
         interval = setInterval(() => {
             next();
         }, 5000);
     }
 }
 
-function onKeydown(e: KeyboardEvent) {
+function onKeydown(e: KeyboardEvent): void {
+    if (!shouldUseCarousel.value) {
+        return;
+    }
+
     if (e.key === 'ArrowLeft') {
         prev();
     } else if (e.key === 'ArrowRight') {
@@ -73,15 +103,23 @@ function onKeydown(e: KeyboardEvent) {
     }
 }
 
-// Swipe en mobile
 const touchStartX = ref(0);
 
-function onTouchStart(e: TouchEvent) {
+function onTouchStart(e: TouchEvent): void {
+    if (!shouldUseCarousel.value) {
+        return;
+    }
+
     touchStartX.value = e.touches[0].clientX;
 }
 
-function onTouchEnd(e: TouchEvent) {
+function onTouchEnd(e: TouchEvent): void {
+    if (!shouldUseCarousel.value) {
+        return;
+    }
+
     const delta = touchStartX.value - e.changedTouches[0].clientX;
+
     if (Math.abs(delta) > 40) {
         if (delta > 0) {
             next();
@@ -91,13 +129,42 @@ function onTouchEnd(e: TouchEvent) {
     }
 }
 
+function syncDesktopViewport(): void {
+    if (!desktopMediaQuery) {
+        return;
+    }
+
+    isDesktop.value = desktopMediaQuery.matches;
+}
+
 onMounted(() => {
+    isMounted.value = true;
+
+    desktopMediaQuery = window.matchMedia('(min-width: 768px)');
+    syncDesktopViewport();
+
+    onDesktopViewportChange = (event: MediaQueryListEvent) => {
+        isDesktop.value = event.matches;
+        paused.value = false;
+        current.value = 0;
+        resetInterval();
+    };
+
+    desktopMediaQuery.addEventListener('change', onDesktopViewportChange);
+
     resetInterval();
 });
 
 onUnmounted(() => {
     if (interval) {
         clearInterval(interval);
+    }
+
+    if (desktopMediaQuery && onDesktopViewportChange) {
+        desktopMediaQuery.removeEventListener(
+            'change',
+            onDesktopViewportChange,
+        );
     }
 });
 </script>
@@ -106,16 +173,29 @@ onUnmounted(() => {
     <div
         class="absolute inset-0 overflow-hidden bg-background"
         role="region"
-        aria-roledescription="carousel"
+        :aria-roledescription="shouldUseCarousel ? 'carousel' : 'region'"
         :aria-label="__('hero.carousel_label')"
         @touchstart.passive="onTouchStart"
         @touchend.passive="onTouchEnd"
         @keydown="onKeydown"
         tabindex="0"
     >
-        <!-- Images de bg -->
+        <img
+            v-if="!shouldUseCarousel"
+            :src="hero1Mobile"
+            :alt="slides[0].title"
+            class="absolute inset-0 h-full w-full object-cover"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            width="900"
+            height="1000"
+            sizes="100vw"
+        />
+
         <div
             v-for="(slide, i) in slides"
+            v-else
             :key="'img-' + i"
             class="absolute inset-0"
             role="group"
@@ -134,12 +214,13 @@ onUnmounted(() => {
                 "
                 :loading="i === current ? 'eager' : 'lazy'"
                 :fetchpriority="i === current ? 'high' : 'auto'"
+                decoding="async"
                 width="2000"
                 height="1100"
+                sizes="100vw"
             />
         </div>
 
-        <!-- Contenu centré -->
         <div
             class="pointer-events-none absolute inset-0 z-1 bg-linear-to-b from-black/55 via-black/45 to-black/70"
             aria-hidden="true"
@@ -148,54 +229,41 @@ onUnmounted(() => {
         <div
             class="absolute inset-0 z-10 flex items-center justify-center px-6 pb-32 sm:pb-40"
         >
-            <div
-                v-for="(slide, i) in slides"
-                :key="'content-' + i"
-                class="absolute w-full max-w-4xl text-center transition-all duration-1500 ease-in-out"
-                :class="
-                    i === current
-                        ? 'translate-y-0 opacity-100'
-                        : 'pointer-events-none translate-y-8 opacity-0'
-                "
-            >
-                <!-- Titre -->
+            <div class="absolute w-full max-w-4xl text-center">
                 <h1
                     class="mb-5 text-4xl leading-[1.05] font-black text-white sm:text-5xl md:text-6xl lg:text-6xl"
                 >
-                    {{ slide.title }}
+                    {{ activeSlide.title }}
                 </h1>
 
-                <!-- Sous-titre -->
                 <p
                     class="mx-auto mb-8 min-h-13 max-w-xl text-base leading-relaxed font-semibold text-white/80 md:min-h-15 md:text-lg"
                 >
-                    {{ slide.subtitle }}
+                    {{ activeSlide.subtitle }}
                 </p>
 
-                <!-- CTA -->
                 <div class="flex justify-center">
                     <Button
-                        :as="slide.ctaHref ? Link : 'button'"
-                        :href="slide.ctaHref"
+                        :as="activeSlide.ctaHref ? Link : 'button'"
+                        :href="activeSlide.ctaHref"
                         size="lg"
                         class="group relative inline-flex cursor-pointer items-center overflow-hidden px-8 py-7 text-base font-bold transition-all duration-300 hover:-translate-y-0.5 md:text-lg"
                     >
-                        <!-- Diagonal sweep -->
                         <span
                             class="absolute inset-0 -translate-x-full -skew-x-12 bg-white/15 transition-transform duration-500 group-hover:translate-x-full"
                         />
-                        <!-- Text avec tracking expansion -->
                         <span
                             class="relative z-10 transition-all duration-300 group-hover:tracking-widest"
-                            >{{ slide.cta }}</span
                         >
+                            {{ activeSlide.cta }}
+                        </span>
                     </Button>
                 </div>
             </div>
         </div>
 
-        <!-- Flèche gauche -->
         <button
+            v-if="shouldUseCarousel"
             @click="prev"
             :aria-label="__('hero.prev_slide')"
             class="absolute top-1/2 left-4 z-20 hidden h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-black/25 text-white/60 backdrop-blur-sm transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white md:left-6 md:flex"
@@ -216,8 +284,8 @@ onUnmounted(() => {
             </svg>
         </button>
 
-        <!-- Flèche droite -->
         <button
+            v-if="shouldUseCarousel"
             @click="next"
             :aria-label="__('hero.next_slide')"
             class="absolute top-1/2 right-4 z-20 hidden h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-black/25 text-white/60 backdrop-blur-sm transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white md:right-6 md:flex"
@@ -238,8 +306,8 @@ onUnmounted(() => {
             </svg>
         </button>
 
-        <!-- Bouton pause (WCAG 2.2.2) -->
         <button
+            v-if="shouldUseCarousel"
             @click="togglePause"
             :aria-label="paused ? __('hero.play') : __('hero.pause')"
             :aria-pressed="paused"

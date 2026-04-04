@@ -161,10 +161,10 @@ const years = computed(() => {
 
 <template>
     <section class="relative w-full pb-8 sm:pb-12">
-        <div class="mx-auto max-w-6xl px-6">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6">
             <div class="relative z-30 -mt-24 sm:-mt-40">
                 <div
-                    class="rounded-lg border border-border bg-card/95 p-3 shadow-[0_20px_50px_rgba(0,0,0,0.1)] backdrop-blur-md sm:p-4"
+                    class="rounded-lg border border-border bg-card/95 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.1)] backdrop-blur-md"
                 >
                     <div class="mb-2 flex items-center px-2">
                         <div class="flex items-center gap-2">
@@ -182,7 +182,7 @@ const years = computed(() => {
                     </div>
 
                     <form
-                        class="flex flex-col gap-3 px-2"
+                        class="flex flex-col gap-3 px-1 sm:px-2"
                         @submit.prevent="submitSearch"
                     >
                         <!-- Ligne 1 : Marque / Modèle / Prix range -->
@@ -195,7 +195,7 @@ const years = computed(() => {
                                     name="brand_id"
                                     :options="brands ?? []"
                                     option-label="name"
-                                    trigger-class="h-10! w-full cursor-pointer !border-border bg-card! text-foreground hover:!border-border hover:!bg-card hover:!shadow-none focus-visible:!border-ring focus-visible:!ring-ring/50 focus-visible:!ring-[3px] data-[state=open]:!border-ring data-[state=open]:!ring-ring/50 data-[state=open]:!ring-[3px]"
+                                    trigger-class="h-11! w-full cursor-pointer !border-border bg-card! text-foreground sm:h-10! hover:!border-border hover:!bg-card hover:!shadow-none focus-visible:!border-ring focus-visible:!ring-ring/50 focus-visible:!ring-[3px] data-[state=open]:!border-ring data-[state=open]:!ring-ring/50 data-[state=open]:!ring-[3px]"
                                     :placeholder="
                                         __('homeFilter.brand_placeholder')
                                     "
@@ -209,7 +209,7 @@ const years = computed(() => {
                                     :options="models"
                                     option-label="name"
                                     :disabled="isModelDisabled"
-                                    :trigger-class="`h-10! w-full !border-border bg-card! text-foreground hover:!border-border hover:!bg-card hover:!shadow-none focus-visible:!border-ring focus-visible:!ring-ring/50 focus-visible:!ring-[3px] data-[state=open]:!border-ring data-[state=open]:!ring-ring/50 data-[state=open]:!ring-[3px] ${isModelDisabled ? 'cursor-not-allowed! opacity-50' : 'cursor-pointer'}`"
+                                    :trigger-class="`h-11! w-full !border-border bg-card! text-foreground sm:h-10! hover:!border-border hover:!bg-card hover:!shadow-none focus-visible:!border-ring focus-visible:!ring-ring/50 focus-visible:!ring-[3px] data-[state=open]:!border-ring data-[state=open]:!ring-ring/50 data-[state=open]:!ring-[3px] ${isModelDisabled ? 'cursor-not-allowed! opacity-50' : 'cursor-pointer'}`"
                                     :placeholder="__('homeFilter.model_placeholder')"
                                 />
                             </div>
@@ -219,7 +219,7 @@ const years = computed(() => {
                                     <PopoverTrigger as-child>
                                         <button
                                             type="button"
-                                            class="flex h-10 w-full cursor-pointer items-center justify-between rounded-md border border-border bg-card! px-3 text-sm text-foreground shadow-xs transition-colors hover:border-border hover:bg-muted/40"
+                                            class="flex h-11 w-full cursor-pointer items-center justify-between rounded-md border border-border bg-card! px-3 text-[15px] text-foreground shadow-xs transition-colors sm:h-10 sm:text-sm hover:border-border hover:bg-muted/40"
                                         >
                                             <span>{{ priceLabel }}</span>
                                             <ChevronDown
@@ -280,7 +280,7 @@ const years = computed(() => {
                             <div class="w-full lg:flex-1">
                                 <Select v-model="filters.year" name="min_year">
                                     <SelectTrigger
-                                        class="h-10! w-full cursor-pointer border-border bg-card! text-foreground hover:border-border hover:bg-muted/40"
+                                        class="h-11! w-full cursor-pointer border-border bg-card! text-foreground sm:h-10! hover:border-border hover:bg-muted/40"
                                     >
                                         <SelectValue
                                             :placeholder="
@@ -306,7 +306,7 @@ const years = computed(() => {
                             </div>
 
                             <div class="relative w-full lg:flex-1">
-                                <div class="relative h-10">
+                                <div class="relative h-11 sm:h-10">
                                     <MapPin
                                         :size="14"
                                         class="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-muted-foreground"
@@ -320,7 +320,7 @@ const years = computed(() => {
                                                 'homeFilter.location_placeholder',
                                             )
                                         "
-                                        class="h-full border-border bg-card! pl-9 text-foreground placeholder:text-foreground hover:border-border hover:bg-muted/40"
+                                        class="h-full border-border bg-card! pl-9 text-[15px] text-foreground placeholder:text-foreground sm:text-sm hover:border-border hover:bg-muted/40"
                                         @input="searchCities(filters.city)"
                                         @focus="
                                             filters.city.length >= 2
@@ -385,7 +385,7 @@ const years = computed(() => {
                         <Link
                             :href="vehiclesRoutes.index.url()"
                             :data="searchQuery"
-                            class="flex items-center justify-center gap-1.5 text-xs font-bold text-muted-foreground underline transition-colors hover:text-primary"
+                            class="flex items-center justify-center gap-1.5 py-1 text-sm font-bold text-muted-foreground underline transition-colors sm:text-xs hover:text-primary"
                         >
                             <Settings2 :size="14" />
                             {{ __('homeFilter.more_criteria') }}
