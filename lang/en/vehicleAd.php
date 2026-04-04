@@ -163,5 +163,6 @@ return [
         'partial_upload_limit' => 'Only the first :count images were added (limit: :limit)',
         'invalid_file_type' => ':filename is not an image',
         'file_too_large' => ':filename is too large (max :maxMo MB)',
+        'uploading' => 'Uploading images…',
     ],
 ];

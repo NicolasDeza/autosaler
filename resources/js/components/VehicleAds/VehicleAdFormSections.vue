@@ -710,6 +710,7 @@
             :existing-media="existingMedia"
             :errors="form.errors"
             :image-limit="imageLimit"
+            :upload-progress="uploadProgress"
             @update:media-order="
                 (ids: number[]) => emit('update:media-order', ids)
             "
@@ -829,6 +830,7 @@ const props = defineProps<{
     vehicleId?: number | null;
     mode?: 'create' | 'edit';
     imageLimit?: number;
+    uploadProgress?: { percentage?: number } | null;
 }>();
 
 const emit = defineEmits<{

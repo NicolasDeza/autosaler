@@ -22,7 +22,7 @@ class CompanyController extends Controller
 
         return Inertia::render('settings/Company', [
             'company' => $company,
-            'countries' => Country::get(['id', 'name']),
+            'countries' => Country::get(['id', 'code']),
         ]);
     }
 
