@@ -195,7 +195,7 @@ const years = computed(() => {
                                     name="brand_id"
                                     :options="brands ?? []"
                                     option-label="name"
-                                    trigger-class="h-10! w-full cursor-pointer !border-border bg-card! text-foreground hover:!border-border hover:!bg-card hover:!shadow-none focus-visible:!border-primary focus-visible:!ring-primary/20 data-[state=open]:!border-primary data-[state=open]:!ring-primary/20"
+                                    trigger-class="h-10! w-full cursor-pointer !border-border bg-card! text-foreground hover:!border-border hover:!bg-card hover:!shadow-none focus-visible:!border-ring focus-visible:!ring-ring/50 focus-visible:!ring-[3px] data-[state=open]:!border-ring data-[state=open]:!ring-ring/50 data-[state=open]:!ring-[3px]"
                                     :placeholder="
                                         __('homeFilter.brand_placeholder')
                                     "
@@ -209,7 +209,7 @@ const years = computed(() => {
                                     :options="models"
                                     option-label="name"
                                     :disabled="isModelDisabled"
-                                    :trigger-class="`h-10! w-full !border-border bg-card! text-foreground hover:!border-border hover:!bg-card hover:!shadow-none focus-visible:!border-primary focus-visible:!ring-primary/20 data-[state=open]:!border-primary data-[state=open]:!ring-primary/20 ${isModelDisabled ? 'cursor-not-allowed! opacity-50' : 'cursor-pointer'}`"
+                                    :trigger-class="`h-10! w-full !border-border bg-card! text-foreground hover:!border-border hover:!bg-card hover:!shadow-none focus-visible:!border-ring focus-visible:!ring-ring/50 focus-visible:!ring-[3px] data-[state=open]:!border-ring data-[state=open]:!ring-ring/50 data-[state=open]:!ring-[3px] ${isModelDisabled ? 'cursor-not-allowed! opacity-50' : 'cursor-pointer'}`"
                                     :placeholder="__('homeFilter.model_placeholder')"
                                 />
                             </div>
