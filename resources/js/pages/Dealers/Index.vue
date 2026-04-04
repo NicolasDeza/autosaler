@@ -16,6 +16,9 @@ const props = defineProps<{
 }>();
 const showDealerRegistrationModal = ref(false);
 const preselectedPlan = ref<string | number | null>(null);
+const seoTitle = "Professionnels de l'automobile et abonnements";
+const seoDescription =
+    "Rejoignez AutoSaler en tant que professionnel de l'automobile. Découvrez les abonnements, publiez vos annonces et gagnez en visibilité en Belgique.";
 
 const openDealerRegistrationModal = (
     plan: number | string | null = null,
@@ -26,7 +29,29 @@ const openDealerRegistrationModal = (
 </script>
 
 <template>
-    <Head :title="__('dealerPage.page_title')" />
+    <Head :title="seoTitle">
+        <meta
+            head-key="description"
+            name="description"
+            :content="seoDescription"
+        />
+        <meta head-key="og:title" property="og:title" :content="seoTitle" />
+        <meta
+            head-key="og:description"
+            property="og:description"
+            :content="seoDescription"
+        />
+        <meta
+            head-key="twitter:title"
+            name="twitter:title"
+            :content="seoTitle"
+        />
+        <meta
+            head-key="twitter:description"
+            name="twitter:description"
+            :content="seoDescription"
+        />
+    </Head>
 
     <section
         class="dark relative overflow-hidden bg-[#0a0a0a] py-20 md:py-24 lg:py-48"

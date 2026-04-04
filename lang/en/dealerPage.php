@@ -2,7 +2,7 @@
 
 return [
     'page_title' => 'Dealers',
-    'heading' => 'Dealers',
+    'heading' => 'Automotive professionals',
     'hero_subtitle' => 'A platform designed for automotive professionals, to sell more efficiently.',
     'hero_stat_performance' => 'Performance',
     'hero_stat_visibility' => 'Visibility',

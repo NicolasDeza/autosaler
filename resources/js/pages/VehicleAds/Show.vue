@@ -40,6 +40,15 @@ const showLoginModal = ref(false);
 const canEdit = computed(() => {
     return page.props.auth.user?.id === props.ad.user_id;
 });
+const seoTitle = computed(() => {
+    const titleParts = [
+        props.ad.brand?.name,
+        props.ad.model?.name,
+        props.ad.vehicle_version_name || props.ad.vehicle_version?.name,
+    ].filter(Boolean);
+
+    return titleParts.length ? titleParts.join(' ') : 'Annonce véhicule';
+});
 
 const toggleComparison = () => {
     if (isSelected(props.ad.id)) {
@@ -123,7 +132,7 @@ const openContactModal = () => {
 </script>
 
 <template>
-    <Head :title="`${ad.brand?.name} ${ad.model?.name}`" />
+    <Head :title="seoTitle" />
 
     <AppContent>
         <div class="mx-auto w-full space-y-8 py-4 pb-32 lg:py-8 lg:pb-8">
