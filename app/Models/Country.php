@@ -11,6 +11,9 @@ class Country extends Model
 
     protected $fillable = [
         'code',
+        'iso2',
+        'iso3',
+        'phone_code',
     ];
 
     public function cities()
