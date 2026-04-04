@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import hero1 from '@assets/images/hero-1.jpg';
-import hero2 from '@assets/images/hero-4.jpg';
+import hero1 from '@assets/images/hero-1.webp';
+import hero2 from '@assets/images/hero-4.webp';
 import { Link } from '@inertiajs/vue3';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Button } from '@/components/ui/button';
