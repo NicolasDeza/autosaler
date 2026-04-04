@@ -33,6 +33,7 @@ return [
     'all_colors' => 'Toutes les couleurs',
     'all_materials' => 'Tous les matériaux',
     'any' => 'Peu importe',
+    'all' => 'Tous',
     'on' => 'sur',
     'sorting' => [
         'sort_by' => 'Trier par',

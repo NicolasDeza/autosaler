@@ -32,6 +32,7 @@ return [
     'all_colors' => 'All colors',
     'all_materials' => 'All materials',
     'any' => 'Any',
+    'all' => 'All',
     'sorting' => [
         'sort_by' => 'Sort by',
         'latest' => 'Latest',

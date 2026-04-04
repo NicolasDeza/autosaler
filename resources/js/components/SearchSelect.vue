@@ -10,6 +10,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { useTranslation } from '@/composables/useTranslation';
+
+const { __ } = useTranslation();
 
 const props = withDefaults(
     defineProps<{
@@ -22,6 +25,7 @@ const props = withDefaults(
         placeholder?: string;
         disabled?: boolean;
         triggerClass?: string;
+        allOptionLabel?: string;
         contentClass?: string;
         showAllOption?: boolean;
         allOptionValue?: string;
@@ -33,17 +37,19 @@ const props = withDefaults(
     {
         optionLabel: 'name',
         optionValue: 'id',
-        placeholder: 'Tous',
         disabled: false,
         options: () => [],
         triggerClass: '',
         contentClass: '',
         showAllOption: true,
         allOptionValue: 'all',
-        searchPlaceholder: 'Rechercher...',
         searchInputClass: '',
     },
 );
+
+const displayPlaceholder = computed(() => props.placeholder ?? __('ui.all'));
+const displayAllOptionLabel = computed(() => props.allOptionLabel ?? displayPlaceholder.value);
+const displaySearchPlaceholder = computed(() => props.searchPlaceholder ?? __('ui.search'));
 
 const emit = defineEmits<{
     (e: 'update:modelValue', value: string): void;
@@ -109,7 +115,7 @@ const stopPropagation = (e: Event) => {
                     triggerClass,
                 ]"
             >
-                <SelectValue :placeholder="placeholder" />
+                <SelectValue :placeholder="displayPlaceholder" />
             </SelectTrigger>
             <SelectContent
                 :class="[
@@ -131,7 +137,7 @@ const stopPropagation = (e: Event) => {
                                 'h-8 w-full bg-muted/30 pl-8 placeholder:text-muted-foreground',
                                 searchInputClass,
                             ]"
-                            :placeholder="searchPlaceholder"
+                            :placeholder="displaySearchPlaceholder"
                             v-model="searchQuery"
                             @click="stopPropagation"
                             @pointerdown="stopPropagation"
@@ -140,7 +146,7 @@ const stopPropagation = (e: Event) => {
                     </div>
                 </div>
                 <SelectItem v-if="showAllOption" :value="allOptionValue">
-                    {{ placeholder }}
+                    {{ displayAllOptionLabel }}
                 </SelectItem>
                 <SelectItem
                     v-for="o in filteredOptions"
