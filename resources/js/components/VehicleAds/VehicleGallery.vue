@@ -214,16 +214,16 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
         <div
             v-if="images && images.length > 1"
             ref="thumbScrollRef"
-            class="scrollbar-thin flex w-full items-center gap-3 overflow-x-auto pb-3 scrollbar-thumb-primary/40 scrollbar-track-transparent hover:scrollbar-thumb-primary"
+            class="scrollbar-thin flex w-full items-center gap-3 overflow-x-auto p-1 scrollbar-thumb-primary/40 scrollbar-track-transparent hover:scrollbar-thumb-primary"
         >
             <button
                 v-for="(image, index) in images"
                 :key="image.id"
                 @click="scrollTo(index)"
-                class="relative h-20 w-32 shrink-0 cursor-pointer overflow-hidden rounded-xl border-2 transition-all duration-300"
+                class="relative h-16 w-24 shrink-0 cursor-pointer overflow-hidden rounded-xl border-2 transition-all duration-300 lg:h-20 lg:w-32"
                 :class="
                     selectedIndex === index
-                        ? 'border-primary'
+                        ? 'scale-105 border-primary ring-2 ring-primary/20'
                         : 'border-transparent opacity-60 grayscale-[0.5] hover:opacity-100 hover:grayscale-0'
                 "
             >
@@ -235,64 +235,89 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
             </button>
         </div>
 
-        <!-- Fullscreen Dialog / Lightbox -->
         <Dialog :open="showLightbox" @update:open="showLightbox = $event">
             <DialogContent
                 :show-close-button="false"
-                class="fixed! inset-0! flex h-screen! w-screen! max-w-none! translate-x-0! translate-y-0! flex-col overflow-hidden border-none bg-background p-0 shadow-none ring-0 sm:max-w-none!"
+                class="fixed! inset-0! z-50! flex h-screen! w-screen! max-w-none! translate-x-0! translate-y-0! flex-col overflow-hidden border-none bg-zinc-950 p-0 shadow-none ring-0 sm:max-w-none!"
             >
                 <DialogTitle class="sr-only">Galerie Fullscreen</DialogTitle>
-                <DialogDescription class="sr-only"
-                    >Parcourez les photos en haute qualité</DialogDescription
-                >
+                <DialogDescription class="sr-only">
+                    Parcourez les photos en haute qualité
+                </DialogDescription>
 
-                <!-- Grid Partitioning -->
-                <div class="grid h-full w-full grid-rows-[5rem_1fr_10rem]">
-                    <!-- 1. Header -->
+                <!-- Fullscreen Layout -->
+                <div class="flex h-full w-full flex-col overflow-hidden">
+                    <!-- 1. Elegant Header -->
                     <div
-                        class="flex w-full items-center justify-between px-8 text-foreground"
+                        class="flex h-20 w-full shrink-0 items-center justify-between px-6 lg:px-12"
                     >
-                        <span
-                            class="text-xs font-bold tracking-widest text-muted-foreground uppercase"
-                        >
-                            {{ brandName }} {{ modelName }}
-                        </span>
-                        <Button
-                            variant="secondary"
-                            size="icon"
-                            @click="showLightbox = false"
-                            class="h-12 w-12 cursor-pointer rounded-xl transition-colors active:scale-95"
-                        >
-                            <XIcon class="size-6" />
-                        </Button>
+                        <div class="flex flex-col gap-0.5">
+                            <span
+                                class="text-[10px] font-black tracking-[0.3em] text-zinc-500 uppercase lg:text-xs"
+                            >
+                                {{ brandName }}
+                            </span>
+                            <span
+                                class="text-sm font-bold text-zinc-100 lg:text-base"
+                            >
+                                {{ modelName }}
+                            </span>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="hidden items-center rounded-full bg-zinc-900/50 px-4 py-1.5 text-[10px] font-black tracking-widest text-zinc-400 uppercase backdrop-blur-md lg:flex"
+                            >
+                                {{ selectedIndex + 1 }} / {{ images.length }}
+                            </div>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                @click="showLightbox = false"
+                                class="h-10 w-10 cursor-pointer rounded-full bg-zinc-900 text-zinc-100 hover:bg-zinc-800 lg:h-12 lg:w-12"
+                            >
+                                <XIcon class="size-5 lg:size-6" />
+                            </Button>
+                        </div>
                     </div>
 
-                    <!-- 2. Main Carousel Stage -->
-                    <div class="relative min-h-0 w-full overflow-hidden">
-                        <!-- Navigation Arrows -->
-                        <Button
-                            v-if="images && images.length > 1"
-                            variant="secondary"
-                            size="icon"
-                            @click="prev"
-                            class="absolute top-1/2 left-4 z-50 flex h-12 w-12 -translate-y-1/2 cursor-pointer rounded-2xl shadow-lg transition-all lg:left-8 lg:h-20 lg:w-20 lg:rounded-3xl"
+                    <!-- 2. Main Stage (Flex-1 for responsiveness) -->
+                    <div
+                        class="group/lightbox relative min-h-0 w-full flex-1 overflow-hidden"
+                    >
+                        <!-- Floating Navigation Arrows -->
+                        <div
+                            class="pointer-events-none absolute inset-y-0 left-0 z-50 flex items-center px-4"
                         >
-                            <ChevronLeftIcon class="size-6 lg:size-10" />
-                        </Button>
-                        <Button
-                            v-if="images && images.length > 1"
-                            variant="secondary"
-                            size="icon"
-                            @click="next"
-                            class="absolute top-1/2 right-4 z-50 flex h-12 w-12 -translate-y-1/2 cursor-pointer rounded-2xl shadow-lg transition-all lg:right-8 lg:h-20 lg:w-20 lg:rounded-3xl"
+                            <Button
+                                v-if="images && images.length > 1"
+                                variant="secondary"
+                                size="icon"
+                                @click="prev"
+                                class="pointer-events-auto h-12 w-12 cursor-pointer rounded-full border-none bg-zinc-900/80 text-zinc-100 shadow-2xl backdrop-blur-md transition-all hover:scale-110 hover:bg-zinc-800 lg:h-20 lg:w-20"
+                            >
+                                <ChevronLeftIcon class="size-6 lg:size-10" />
+                            </Button>
+                        </div>
+
+                        <div
+                            class="pointer-events-none absolute inset-y-0 right-0 z-50 flex items-center px-4"
                         >
-                            <ChevronRightIcon class="size-6 lg:size-10" />
-                        </Button>
+                            <Button
+                                v-if="images && images.length > 1"
+                                variant="secondary"
+                                size="icon"
+                                @click="next"
+                                class="pointer-events-auto h-12 w-12 cursor-pointer rounded-full border-none bg-zinc-900/80 text-zinc-100 shadow-2xl backdrop-blur-md transition-all hover:scale-110 hover:bg-zinc-800 lg:h-20 lg:w-20"
+                            >
+                                <ChevronRightIcon class="size-6 lg:size-10" />
+                            </Button>
+                        </div>
 
                         <Carousel
                             class="h-full w-full"
                             @init-api="(val) => (lightboxApi = val)"
-                            :opts="{ loop: true, duration: 40 }"
+                            :opts="{ loop: true, duration: 45 }"
                         >
                             <CarouselContent class="ml-0 h-full w-full">
                                 <CarouselItem
@@ -300,34 +325,39 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
                                     :key="image.id"
                                     class="flex h-full w-full items-center justify-center pl-0"
                                 >
-                                    <img
-                                        :src="image.large"
-                                        class="h-full max-h-full w-full max-w-full object-contain"
-                                        :alt="`Photo ${index + 1}`"
-                                    />
+                                    <div
+                                        class="flex h-full w-full items-center justify-center p-4 lg:p-8"
+                                    >
+                                        <img
+                                            :src="image.large"
+                                            class="h-auto max-h-full w-auto max-w-full object-contain shadow-2xl transition-all duration-500 select-none"
+                                            :alt="`Photo ${index + 1}`"
+                                            draggable="false"
+                                        />
+                                    </div>
                                 </CarouselItem>
                             </CarouselContent>
                         </Carousel>
                     </div>
 
-                    <!-- 3. Bottom Thumbnails -->
+                    <!-- 3. Refined Bottom Thumbnails Row -->
                     <div
                         v-if="images && images.length > 1"
-                        class="flex w-full flex-col items-center border-t border-border bg-background/95 px-8 py-4 backdrop-blur"
+                        class="flex w-full shrink-0 flex-col items-center border-t border-zinc-800/50 bg-zinc-950/80 px-6 py-6 backdrop-blur-xl lg:px-12"
                     >
                         <div
                             ref="lightboxThumbScrollRef"
-                            class="scrollbar-thin flex w-full max-w-4xl items-center gap-4 overflow-x-auto pb-3 scrollbar-thumb-primary/40 scrollbar-track-transparent hover:scrollbar-thumb-primary"
+                            class="scrollbar-none flex w-full max-w-5xl items-center gap-3 overflow-x-auto p-1 lg:px-6 lg:py-4"
                         >
                             <button
                                 v-for="(image, index) in images"
                                 :key="image.id"
                                 @click="scrollTo(index)"
-                                class="group/thumb relative h-16 w-24 shrink-0 cursor-pointer overflow-hidden rounded-xl border-2 transition-all duration-300"
+                                class="group/thumb relative h-14 w-20 shrink-0 cursor-pointer overflow-hidden rounded-lg border-2 transition-all duration-300 lg:h-20 lg:w-32"
                                 :class="
                                     selectedIndex === index
-                                        ? 'border-primary ring-2 ring-primary ring-offset-2 ring-offset-background'
-                                        : 'border-border/50 opacity-50 hover:border-border hover:opacity-100'
+                                        ? 'scale-105 border-primary ring-2 ring-primary/20'
+                                        : 'border-transparent opacity-40 grayscale-[0.8] hover:opacity-100 hover:grayscale-0'
                                 "
                             >
                                 <img
@@ -337,10 +367,19 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
                                 />
                             </button>
                         </div>
-                        <div
-                            class="mt-4 text-[10px] font-black tracking-[0.4em] text-muted-foreground uppercase"
-                        >
-                            {{ selectedIndex + 1 }} / {{ images.length }}
+
+                        <!-- Progress indicator for mobile -->
+                        <div class="mt-4 flex gap-1 lg:hidden">
+                            <div
+                                v-for="(_, i) in images"
+                                :key="i"
+                                class="h-1 rounded-full transition-all duration-300"
+                                :class="
+                                    i === selectedIndex
+                                        ? 'w-4 bg-primary'
+                                        : 'w-1 bg-zinc-800'
+                                "
+                            />
                         </div>
                     </div>
                 </div>
