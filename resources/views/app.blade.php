@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -17,13 +17,30 @@
             $currentPath = request()->getPathInfo();
             $canonicalUrl = $currentPath === '/' ? $siteUrl : $siteUrl.'/'.ltrim($currentPath, '/');
             $component = $page['component'] ?? null;
-            $defaultTitle = "Véhicules d'occasion et neufs en Belgique - AutoSaler";
+
+            $defaultTitle = "Véhicules d'occasion et neufs en Belgique";
             $defaultDescription = "Trouvez votre prochaine voiture d'occasion ou neuve en Belgique avec AutoSaler. Comparez les annonces, les prix et le kilométrage, puis contactez les garages et les concessionnaires.";
+
             $isVehicleShow = $component === 'VehicleAds/Show';
             $ad = $isVehicleShow ? ($page['props']['ad'] ?? []) : [];
             $pageOgImage = $isVehicleShow ? data_get($page, 'props.ogImage') : null;
             $pageOgImageType = $isVehicleShow ? data_get($page, 'props.ogImageType') : null;
+
             $ogType = $isVehicleShow ? 'product' : 'website';
+            $ogTitle = $defaultTitle;
+            $ogDescription = $defaultDescription;
+
+            if ($isVehicleShow) {
+                $brand = trim((string) data_get($ad, 'brand.name', ''));
+                $model = trim((string) data_get($ad, 'model.name', ''));
+                $version = trim((string) (data_get($ad, 'vehicle_version_name') ?? data_get($ad, 'vehicle_version.name', '')));
+                $vehicleName = trim(implode(' ', array_filter([$brand, $model, $version])));
+
+                if ($vehicleName !== '') {
+                    $ogTitle = $vehicleName;
+                    $ogDescription = "Découvrez cette {$vehicleName} d'occasion sur AutoSaler. Contactez rapidement le vendeur.";
+                }
+            }
 
             $ogImage = $siteUrl.'/images/og-autosaler.jpg';
             $ogImageWidth = '1600';
@@ -56,21 +73,23 @@
                 $ogImageType = $vehicleImageType;
             }
         @endphp
+
         <link rel="canonical" href="{{ $canonicalUrl }}" inertia="canonical" />
-        <meta name="description" content="{{ $defaultDescription }}" inertia="description" />
+        <meta name="description" content="{{ $ogDescription }}" inertia="description" />
         <meta property="og:type" content="{{ $ogType }}" />
         <meta property="og:site_name" content="{{ config('app.name') }}" />
         <meta property="og:url" content="{{ $canonicalUrl }}" inertia="og:url" />
-        <meta property="og:title" content="{{ $defaultTitle }}" inertia="og:title" />
-        <meta property="og:description" content="{{ $defaultDescription }}" inertia="og:description" />
+        <meta property="og:title" content="{{ $ogTitle }}" inertia="og:title" />
+        <meta property="og:description" content="{{ $ogDescription }}" inertia="og:description" />
         <meta property="og:image" content="{{ $ogImage }}" />
         <meta property="og:image:type" content="{{ $ogImageType }}" />
         <meta property="og:image:secure_url" content="{{ $ogImage }}" />
         <meta property="og:image:width" content="{{ $ogImageWidth }}" />
         <meta property="og:image:height" content="{{ $ogImageHeight }}" />
+
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="{{ $defaultTitle }}" inertia="twitter:title" />
-        <meta name="twitter:description" content="{{ $defaultDescription }}" inertia="twitter:description" />
+        <meta name="twitter:title" content="{{ $ogTitle }}" inertia="twitter:title" />
+        <meta name="twitter:description" content="{{ $ogDescription }}" inertia="twitter:description" />
         <meta name="twitter:image" content="{{ $ogImage }}" />
 
         <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -80,6 +99,7 @@
         <meta name="apple-mobile-web-app-title" content="AutoSaler" />
 
         <link rel="manifest" href="/manifest.webmanifest">
+
         @if (($page['component'] ?? null) === 'Home/Index')
             <link
                 rel="preload"

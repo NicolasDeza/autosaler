@@ -21,16 +21,12 @@
                         </p>
                     </div>
 
-                    <div class="flex justify-center gap-3 lg:justify-start">
+                    <div class="flex justify-center lg:justify-start">
                         <a
-                            v-for="social in socialLinks"
-                            :key="social.label"
-                            :href="social.href"
-                            class="group flex size-10 items-center justify-center rounded-lg border border-white/5 bg-white/2 transition-all hover:border-primary/40 hover:bg-primary/5"
+                            href="mailto:contact@autosaler.be"
+                            class="text-[13px] text-muted-foreground underline decoration-primary/50 underline-offset-4 transition-all hover:text-primary hover:decoration-primary"
                         >
-                            <Facebook
-                                class="size-4 text-muted-foreground transition-colors group-hover:text-primary"
-                            />
+                            contact@autosaler.be
                         </a>
                     </div>
                 </div>
@@ -161,7 +157,6 @@
 
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { Facebook } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import ContactModal from '@/components/ContactModal.vue';
 import { Button } from '@/components/ui/button';
@@ -180,8 +175,6 @@ import AppLogoLg from './AppLogoLg.vue';
 const { __ } = useTranslation();
 const { can } = usePermissions();
 const isContactModalOpen = ref(false);
-
-const socialLinks = [{ label: 'Facebook', href: '#', icon: 'facebook' }];
 
 const openContactModal = (): void => {
     isContactModalOpen.value = true;
