@@ -229,17 +229,17 @@ onUnmounted(() => {
         />
 
         <div
-            class="absolute inset-0 z-10 flex items-center justify-center px-6 pb-32 sm:pb-40"
+            class="absolute inset-0 z-10 flex items-center justify-center px-6 pt-4 pb-24 sm:pt-0 sm:pb-40"
         >
-            <div class="absolute w-full max-w-4xl text-center">
+            <div class="absolute w-full max-w-sm text-center sm:max-w-4xl">
                 <h1
-                    class="mb-5 text-4xl leading-[1.05] font-black text-white sm:text-5xl md:text-6xl lg:text-6xl"
+                    class="mx-auto mb-4 max-w-[13ch] text-[1.95rem] leading-[1.04] font-black text-white sm:mb-5 sm:max-w-none sm:text-5xl md:text-6xl lg:text-6xl"
                 >
                     {{ activeSlide.title }}
                 </h1>
 
                 <p
-                    class="mx-auto mb-8 min-h-13 max-w-xl text-base leading-relaxed font-semibold text-white/80 md:min-h-15 md:text-lg"
+                    class="mx-auto mb-6 min-h-11 max-w-88 text-sm leading-relaxed font-semibold text-white/80 sm:mb-8 sm:min-h-13 sm:max-w-xl sm:text-base md:min-h-15 md:text-lg"
                 >
                     {{ activeSlide.subtitle }}
                 </p>
@@ -249,7 +249,7 @@ onUnmounted(() => {
                         :as="activeSlide.ctaHref ? Link : 'button'"
                         :href="activeSlide.ctaHref"
                         size="lg"
-                        class="group relative inline-flex cursor-pointer items-center overflow-hidden px-8 py-7 text-base font-bold transition-all duration-300 hover:-translate-y-0.5 md:text-lg"
+                        class="group relative inline-flex cursor-pointer items-center overflow-hidden px-7 py-5 text-[15px] font-bold transition-all duration-300 hover:-translate-y-0.5 sm:px-8 sm:py-7 sm:text-base md:text-lg"
                     >
                         <span
                             class="absolute inset-0 -translate-x-full -skew-x-12 bg-white/15 transition-transform duration-500 group-hover:translate-x-full"
@@ -265,7 +265,7 @@ onUnmounted(() => {
                 <div v-if="activeSlide.secondaryCtaHref" class="mt-4">
                     <Link
                         :href="activeSlide.secondaryCtaHref"
-                        class="pointer-events-auto text-sm font-semibold text-white/90 underline underline-offset-4 transition-colors hover:text-primary"
+                        class="pointer-events-auto inline-flex text-sm font-semibold text-white/90 underline underline-offset-4 transition-colors hover:text-primary"
                     >
                         {{ activeSlide.secondaryCta }}
                     </Link>

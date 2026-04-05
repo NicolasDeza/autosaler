@@ -84,9 +84,11 @@ class VehicleAd extends Model implements HasMedia
 
         return [
             'id' => $media->id,
+            'original' => parse_url($media->getUrl(), PHP_URL_PATH),
             'thumb' => parse_url($media->getUrl('thumb'), PHP_URL_PATH),
             'card' => parse_url($media->getUrl('card'), PHP_URL_PATH),
             'large' => parse_url($media->getUrl('large'), PHP_URL_PATH),
+            'mime_type' => $media->mime_type,
         ];
     }
 
@@ -95,9 +97,11 @@ class VehicleAd extends Model implements HasMedia
         return $this->getMedia('gallery')->sortBy('order_column')->map(function ($media) {
             return [
                 'id' => $media->id,
+                'original' => parse_url($media->getUrl(), PHP_URL_PATH),
                 'thumb' => parse_url($media->getUrl('thumb'), PHP_URL_PATH),
                 'card' => parse_url($media->getUrl('card'), PHP_URL_PATH),
                 'large' => parse_url($media->getUrl('large'), PHP_URL_PATH),
+                'mime_type' => $media->mime_type,
             ];
         });
     }

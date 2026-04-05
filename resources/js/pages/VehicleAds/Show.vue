@@ -49,6 +49,32 @@ const seoTitle = computed(() => {
 
     return titleParts.length ? titleParts.join(' ') : 'Annonce véhicule';
 });
+const siteUrl = (
+    import.meta.env.VITE_SITE_URL ||
+    (typeof window !== 'undefined'
+        ? window.location.origin
+        : 'https://dev.autosaler.be')
+).replace(/\/$/, '');
+const seoDescription = computed(() => {
+    const vehicleName = [props.ad.brand?.name, props.ad.model?.name]
+        .filter(Boolean)
+        .join(' ');
+    const details = [
+        props.ad.mileage ? `${Number(props.ad.mileage).toLocaleString('fr-BE')} km` : null,
+        props.ad.fuel_type?.code ? String(props.ad.fuel_type.code) : null,
+    ].filter(Boolean);
+
+    if (vehicleName !== '') {
+        const detailsText = details.length > 0 ? ` ${details.join(' - ')}.` : '';
+
+        return `Découvrez cette ${vehicleName} d'occasion sur AutoSaler.${detailsText} Contactez rapidement le vendeur.`;
+    }
+
+    return "Consultez cette annonce auto d'occasion sur AutoSaler. Découvrez les photos, les caractéristiques et contactez rapidement le vendeur.";
+});
+const canonicalUrl = computed(() => {
+    return `${siteUrl}/vehicles/${props.ad.id}`;
+});
 
 const toggleComparison = () => {
     if (isSelected(props.ad.id)) {
@@ -132,7 +158,31 @@ const openContactModal = () => {
 </script>
 
 <template>
-    <Head :title="seoTitle" />
+    <Head :title="seoTitle">
+        <link head-key="canonical" rel="canonical" :href="canonicalUrl" />
+        <meta head-key="og:url" property="og:url" :content="canonicalUrl" />
+        <meta
+            head-key="description"
+            name="description"
+            :content="seoDescription"
+        />
+        <meta head-key="og:title" property="og:title" :content="seoTitle" />
+        <meta
+            head-key="og:description"
+            property="og:description"
+            :content="seoDescription"
+        />
+        <meta
+            head-key="twitter:title"
+            name="twitter:title"
+            :content="seoTitle"
+        />
+        <meta
+            head-key="twitter:description"
+            name="twitter:description"
+            :content="seoDescription"
+        />
+    </Head>
 
     <AppContent>
         <div class="mx-auto w-full space-y-8 py-4 pb-32 lg:py-8 lg:pb-8">

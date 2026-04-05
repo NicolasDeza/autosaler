@@ -66,6 +66,13 @@ const { __ } = useTranslation();
 const seoTitle = 'Garages et concessionnaires en Belgique';
 const seoDescription =
     'Trouvez un garage ou un concessionnaire en Belgique sur AutoSaler. Comparez les profils, consultez leur stock de véhicules et accédez à leurs annonces.';
+const siteUrl = (
+    import.meta.env.VITE_SITE_URL ||
+    (typeof window !== 'undefined'
+        ? window.location.origin
+        : 'https://dev.autosaler.be')
+).replace(/\/$/, '');
+const canonicalUrl = `${siteUrl}/garages`;
 
 const perPage = ref<string>(String(props.garages.per_page ?? 15));
 const search = ref<string>(String(props.filters.search ?? ''));
@@ -249,6 +256,8 @@ watch(
 
 <template>
     <Head :title="seoTitle">
+        <link head-key="canonical" rel="canonical" :href="canonicalUrl" />
+        <meta head-key="og:url" property="og:url" :content="canonicalUrl" />
         <meta
             head-key="description"
             name="description"

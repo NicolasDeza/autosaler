@@ -13,96 +13,64 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
         @php
-            $siteUrl = 'https://dev.autosaler.be';
+            $siteUrl = rtrim(request()->getSchemeAndHttpHost(), '/');
             $currentPath = request()->getPathInfo();
-            $canonicalUrl = $currentPath === '/' ? $siteUrl : rtrim($siteUrl, '/') . $currentPath;
+            $canonicalUrl = $currentPath === '/' ? $siteUrl : $siteUrl.'/'.ltrim($currentPath, '/');
             $component = $page['component'] ?? null;
+            $defaultTitle = "Véhicules d'occasion et neufs en Belgique - AutoSaler";
+            $defaultDescription = "Trouvez votre prochaine voiture d'occasion ou neuve en Belgique avec AutoSaler. Comparez les annonces, les prix et le kilométrage, puis contactez les garages et les concessionnaires.";
+            $isVehicleShow = $component === 'VehicleAds/Show';
+            $ad = $isVehicleShow ? ($page['props']['ad'] ?? []) : [];
+            $pageOgImage = $isVehicleShow ? data_get($page, 'props.ogImage') : null;
+            $pageOgImageType = $isVehicleShow ? data_get($page, 'props.ogImageType') : null;
+            $ogType = $isVehicleShow ? 'product' : 'website';
 
-            $ogType = 'website';
-            $ogTitle = config('app.name', 'AutoSaler');
-            $ogDescription = null;
-            $metaDescription = null;
-            $ogImage = rtrim($siteUrl, '/') . '/images/og-autosaler.jpg';
+            $ogImage = $siteUrl.'/images/og-autosaler.jpg';
             $ogImageWidth = '1600';
             $ogImageHeight = '750';
+            $ogImageType = 'image/jpeg';
 
-            if ($component === 'VehicleAds/Show') {
-                $ad = $page['props']['ad'] ?? [];
-                $metaDescription = "Consultez cette annonce auto d'occasion sur AutoSaler. Découvrez les photos, les caractéristiques et contactez rapidement le vendeur.";
-                $ogDescription = $metaDescription;
+            $vehicleImagePath = $pageOgImage
+                ?? data_get($ad, 'primary_image.original')
+                ?? data_get($ad, 'gallery.0.original')
+                ?? data_get($ad, 'primary_image.large')
+                ?? data_get($ad, 'primary_image.card')
+                ?? data_get($ad, 'primary_image.thumb')
+                ?? data_get($ad, 'gallery.0.large')
+                ?? data_get($ad, 'gallery.0.card')
+                ?? data_get($ad, 'gallery.0.thumb');
 
-                $brand = data_get($ad, 'brand.name');
-                $model = data_get($ad, 'model.name');
-                $version = data_get($ad, 'vehicle_version_name') ?: data_get($ad, 'vehicle_version.name');
-                $mileage = data_get($ad, 'mileage');
-                $fuelType = data_get($ad, 'fuel_type.code');
+            if (is_string($vehicleImagePath) && $vehicleImagePath !== '') {
+                $ogImage = \Illuminate\Support\Str::startsWith($vehicleImagePath, ['http://', 'https://'])
+                    ? $vehicleImagePath
+                    : $siteUrl.$vehicleImagePath;
+                $ogImageWidth = '1600';
+                $ogImageHeight = '1200';
+            }
 
-                $ogType = 'product';
-                $titleParts = array_filter([$brand, $model, $version]);
+            $vehicleImageType = $pageOgImageType
+                ?? data_get($ad, 'primary_image.mime_type')
+                ?? data_get($ad, 'gallery.0.mime_type');
 
-                if ($titleParts !== []) {
-                    $ogTitle = implode(' ', $titleParts).' | AutoSaler';
-                }
-
-                $vehicleLabel = trim(implode(' ', array_filter([$brand, $model])));
-                $specs = [];
-
-                if (is_numeric($mileage)) {
-                    $specs[] = number_format((int) $mileage, 0, ',', ' ').' km';
-                }
-
-                if (is_string($fuelType) && $fuelType !== '') {
-                    $specs[] = $fuelType;
-                }
-
-                if ($vehicleLabel !== '') {
-                    $metaDescription = "Découvrez cette {$vehicleLabel} d'occasion sur AutoSaler.";
-
-                    if ($specs !== []) {
-                        $metaDescription .= ' '.implode(' - ', $specs).'.';
-                    }
-
-                    $metaDescription .= ' Contactez rapidement le vendeur.';
-                    $ogDescription = $metaDescription;
-                }
-
-                $vehicleImagePath = data_get($ad, 'primary_image.large')
-                    ?? data_get($ad, 'primary_image.card')
-                    ?? data_get($ad, 'primary_image.thumb');
-
-                if (is_string($vehicleImagePath) && $vehicleImagePath !== '') {
-                    $ogImage = \Illuminate\Support\Str::startsWith($vehicleImagePath, ['http://', 'https://'])
-                        ? $vehicleImagePath
-                        : rtrim($siteUrl, '/').$vehicleImagePath;
-                    $ogImageWidth = '1600';
-                    $ogImageHeight = '1200';
-                }
+            if (is_string($vehicleImageType) && $vehicleImageType !== '') {
+                $ogImageType = $vehicleImageType;
             }
         @endphp
-        <link rel="canonical" href="{{ $canonicalUrl }}" />
-        @if ($metaDescription)
-            <meta name="description" content="{{ $metaDescription }}" />
-        @endif
+        <link rel="canonical" href="{{ $canonicalUrl }}" inertia="canonical" />
+        <meta name="description" content="{{ $defaultDescription }}" inertia="description" />
         <meta property="og:type" content="{{ $ogType }}" />
         <meta property="og:site_name" content="{{ config('app.name') }}" />
-        <meta property="og:url" content="{{ $canonicalUrl }}" />
-        @if ($component === 'VehicleAds/Show')
-            <meta property="og:title" content="{{ $ogTitle }}" />
-        @endif
-        @if ($component === 'VehicleAds/Show' && $ogDescription)
-            <meta property="og:description" content="{{ $ogDescription }}" />
-        @endif
+        <meta property="og:url" content="{{ $canonicalUrl }}" inertia="og:url" />
+        <meta property="og:title" content="{{ $defaultTitle }}" inertia="og:title" />
+        <meta property="og:description" content="{{ $defaultDescription }}" inertia="og:description" />
         <meta property="og:image" content="{{ $ogImage }}" />
+        <meta property="og:image:type" content="{{ $ogImageType }}" />
         <meta property="og:image:secure_url" content="{{ $ogImage }}" />
         <meta property="og:image:width" content="{{ $ogImageWidth }}" />
         <meta property="og:image:height" content="{{ $ogImageHeight }}" />
         <meta name="twitter:card" content="summary_large_image" />
-        @if ($component === 'VehicleAds/Show')
-            <meta name="twitter:title" content="{{ $ogTitle }}" />
-        @endif
-        @if ($component === 'VehicleAds/Show' && $ogDescription)
-            <meta name="twitter:description" content="{{ $ogDescription }}" />
-        @endif
+        <meta name="twitter:title" content="{{ $defaultTitle }}" inertia="twitter:title" />
+        <meta name="twitter:description" content="{{ $defaultDescription }}" inertia="twitter:description" />
         <meta name="twitter:image" content="{{ $ogImage }}" />
 
         <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />

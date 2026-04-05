@@ -1,5 +1,7 @@
 <template>
     <Head :title="seoTitle">
+        <link head-key="canonical" rel="canonical" :href="canonicalUrl" />
+        <meta head-key="og:url" property="og:url" :content="canonicalUrl" />
         <meta
             head-key="description"
             name="description"
@@ -336,6 +338,13 @@ const { __ } = useTranslation();
 const seoTitle = "Annonces de véhicules d'occasion et neufs";
 const seoDescription =
     "Parcourez les annonces auto en Belgique sur AutoSaler. Filtrez par marque, prix, kilométrage ou carburant, puis contactez rapidement un concessionnaire.";
+const siteUrl = (
+    import.meta.env.VITE_SITE_URL ||
+    (typeof window !== 'undefined'
+        ? window.location.origin
+        : 'https://dev.autosaler.be')
+).replace(/\/$/, '');
+const canonicalUrl = `${siteUrl}/vehicles`;
 
 const getResultsFoundLabel = (count: number): string => {
     return count <= 1

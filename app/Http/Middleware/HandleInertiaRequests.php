@@ -2,9 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Laravel\Fortify\Features;
+use Symfony\Component\HttpFoundation\Response;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -16,6 +18,24 @@ class HandleInertiaRequests extends Middleware
      * @var string
      */
     protected $rootView = 'app';
+
+    public function handle(Request $request, Closure $next): Response
+    {
+        /** @var Response $response */
+        $response = parent::handle($request, $next);
+
+        // Keep caches/proxies from mixing Inertia JSON and normal HTML responses.
+        $existingVary = array_filter(array_map('trim', explode(',', (string) $response->headers->get('Vary'))));
+        $varyValues = array_unique([...$existingVary, 'X-Inertia', 'X-Requested-With']);
+        $response->headers->set('Vary', implode(', ', $varyValues));
+
+        // Prevent edge caches from storing JSON payloads requested by Inertia visits.
+        if ($request->headers->has('X-Inertia')) {
+            $response->headers->set('Cache-Control', 'no-store, private');
+        }
+
+        return $response;
+    }
 
     /**
      * Determines the current asset version.

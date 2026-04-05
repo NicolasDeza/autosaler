@@ -19,6 +19,13 @@ const preselectedPlan = ref<string | number | null>(null);
 const seoTitle = "Professionnels de l'automobile et abonnements";
 const seoDescription =
     "Rejoignez AutoSaler en tant que professionnel de l'automobile. Découvrez les abonnements, publiez vos annonces et gagnez en visibilité en Belgique.";
+const siteUrl = (
+    import.meta.env.VITE_SITE_URL ||
+    (typeof window !== 'undefined'
+        ? window.location.origin
+        : 'https://dev.autosaler.be')
+).replace(/\/$/, '');
+const canonicalUrl = `${siteUrl}/dealers`;
 
 const openDealerRegistrationModal = (
     plan: number | string | null = null,
@@ -30,6 +37,8 @@ const openDealerRegistrationModal = (
 
 <template>
     <Head :title="seoTitle">
+        <link head-key="canonical" rel="canonical" :href="canonicalUrl" />
+        <meta head-key="og:url" property="og:url" :content="canonicalUrl" />
         <meta
             head-key="description"
             name="description"

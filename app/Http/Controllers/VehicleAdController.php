@@ -329,9 +329,15 @@ class VehicleAdController extends Controller
             $vehicleAd->is_favorited = auth()->user()->favoriteVehicleAds()->where('vehicle_ad_id', $vehicleAd->id)->exists();
         }
 
+        $primaryMedia = $vehicleAd->getFirstMedia('gallery');
+        $ogImage = $primaryMedia?->getUrl();
+        $ogImageType = $primaryMedia?->mime_type;
+
         return Inertia::render('VehicleAds/Show', [
             'ad' => $vehicleAd,
             'canEdit' => auth()->check() && Gate::forUser(auth()->user())->allows('update', $vehicleAd),
+            'ogImage' => $ogImage,
+            'ogImageType' => $ogImageType,
         ]);
     }
 
