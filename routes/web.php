@@ -47,6 +47,7 @@ Route::middleware(['auth', 'verified', 'role:admin|dealer'])->group(function () 
         Route::post('/', [VehicleAdController::class, 'store'])->name('store');
         Route::get('/{vehicleAd}/edit', [VehicleAdController::class, 'edit'])->name('edit');
         Route::get('/{vehicleAd}/images-status', [VehicleAdController::class, 'imagesStatus'])->name('images_status');
+        Route::post('/media/{media}/process', [VehicleAdController::class, 'processMedia'])->name('process_media');
         Route::put('/{vehicleAd}', [VehicleAdController::class, 'update'])->name('update');
         Route::patch('/{vehicleAd}/status', [VehicleAdController::class, 'updateStatus'])->name('update_status');
         Route::delete('/{vehicleAd}', [VehicleAdController::class, 'destroy'])->name('destroy');
